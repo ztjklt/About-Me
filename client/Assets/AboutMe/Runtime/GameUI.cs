@@ -14,6 +14,8 @@ namespace AboutMe
     [Serializable] class SessionResponse {public string token;public Profile profile;}
     [Serializable] class GenerationRequest {public string nickname,introduction,color;public int outfit;}
     [Serializable] class Transcription {public string text;}
+    [Serializable] class ServiceHealth {public bool ok,aiConfigured,asrConfigured;}
+    [Serializable] class ErrorDetail {public string detail;}
     [Serializable] class WechatLoginRequest {public string code,nickname;}
     public class TouchPad : MonoBehaviour, IPointerDownHandler,IDragHandler,IPointerUpHandler
     {
@@ -41,7 +43,7 @@ namespace AboutMe
         readonly List<Button> bagButtons=new List<Button>();
         readonly List<string> favorites=new List<string>();
         Profile profile;string lastInventory="";int lastEvent;
-        bool busy,inventoryOpen,recording,optionsOpen,pendingRoom;float nextSend,nextUI;
+        bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured;float nextSend,nextUI;
         string selectedColor="#79CFC5";int outfit;
         Vector2 movement;float yaw;TouchPad movePad;
         public void Build(GameNetwork network,ToyWorld toyWorld)
@@ -53,7 +55,7 @@ namespace AboutMe
             net.Endpoint=endpoint.text;net.ApiUrl=api.text;
             net.Token=PlayerPrefs.GetString("token","");if(net.Token!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
-            RefreshTouchVisibility();ConfigureUIPreview();
+            RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
         }
         RectTransform inventoryContent;
         PersonaInstance[] QuickItems(Snapshot state)=>state.inventory.OrderBy(x=>{int i=favorites.IndexOf(x.asset.assetId);return i<0?10000:i;}).ToArray();
@@ -90,6 +92,8 @@ namespace AboutMe
         IEnumerator Generate()
         {
             if(busy)yield break;
+            if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="请先写至少 3 个字的自我介绍。";yield break;}
+            if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 尚未配置；请配置 server/.env，或点击“本地样例（无需 AI）”继续测试。";yield break;}
             busy=true;net.Sample=false;net.Status="正在把你变成游戏内容…";
             net.ApiUrl=api.text.Trim().TrimEnd('/');
             if(string.IsNullOrEmpty(net.Token)||net.Token==PlayerPrefs.GetString("sampleToken","!"))
@@ -111,7 +115,28 @@ namespace AboutMe
             busy=false;
             TryAutoJoin();
         }
-        void Fail(UnityWebRequest request){busy=false;net.Status="服务请求失败："+(string.IsNullOrEmpty(request.downloadHandler.text)?request.error:request.downloadHandler.text);}
+        IEnumerator CheckService()
+        {
+            net.ApiUrl=api.text.Trim().TrimEnd('/');
+            using(var req=UnityWebRequest.Get(net.ApiUrl+"/health"))
+            {
+                req.timeout=4;yield return req.SendWebRequest();
+                if(req.result==UnityWebRequest.Result.Success)
+                {
+                    var health=JsonUtility.FromJson<ServiceHealth>(req.downloadHandler.text);aiCapabilityKnown=true;aiConfigured=health!=null&&health.aiConfigured;
+                    SetAIServiceStatus(aiConfigured?"真实 AI 已连接":"真实 AI 未配置",aiConfigured?UITheme.Mint:UITheme.Yellow);
+                }
+                else{aiCapabilityKnown=false;aiConfigured=false;SetAIServiceStatus("AI 服务不可达",UITheme.Red);}
+            }
+        }
+        void SetAIServiceStatus(string value,Color color){if(aiServiceText)aiServiceText.text=value;if(aiServiceSurface)aiServiceSurface.color=color;}
+        void Fail(UnityWebRequest request)
+        {
+            busy=false;string message=request.error;
+            if(request.downloadHandler!=null&&!string.IsNullOrEmpty(request.downloadHandler.text))
+            {try{var parsed=JsonUtility.FromJson<ErrorDetail>(request.downloadHandler.text);message=string.IsNullOrWhiteSpace(parsed?.detail)?request.downloadHandler.text:parsed.detail;}catch(Exception){message=request.downloadHandler.text;}}
+            net.Status="服务请求失败："+message;
+        }
         void Enter()
         {
             if(profile==null||profile.personas.Length==0){net.Status="请先生成 Persona，或明确选择样例测试";return;}

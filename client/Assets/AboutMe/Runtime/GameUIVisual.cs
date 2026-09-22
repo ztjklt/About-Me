@@ -13,8 +13,8 @@ namespace AboutMe
         RectTransform[] playerCards=new RectTransform[6];
         Text[] playerNames=new Text[6],playerMeta=new Text[6];
         Image[] playerAvatars=new Image[6],playerReadyMarks=new Image[6];
-        Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText;
-        Image stabilityFill,progressFill,statusSurface;
+        Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText,aiServiceText;
+        Image stabilityFill,progressFill,statusSurface,aiServiceSurface;
         RectTransform statusPill;
         StickerButton generateStyle,recordStyle,readyStyle,startStyle;
         readonly List<StickerButton> slotStyles=new List<StickerButton>(),colorStyles=new List<StickerButton>();
@@ -75,11 +75,12 @@ namespace AboutMe
                 string choice=colors[i];var chip=ColorChip(studioCard,choice,222+i*53,473,42,()=>{selectedColor=choice;RefreshColorSelection();});colorStyles.Add(chip);
             }
             var outfitButton=ArtButton(studioCard,"换装 · 1",451,470,169,48,()=>{outfit=(outfit+1)%3;outfitText.text="换装 · "+(outfit+1);net.Status="外观方案 "+(outfit+1);},UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
-            generate=ArtButton(studioCard,"生成我的 Persona",30,536,590,56,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            generate=ArtButton(studioCard,"AI 生成 Persona",30,536,590,56,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
             var profileCard=ArtPanel(studioCard,"Persona result",30,610,590,91,UITheme.Field,true,false);
             profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,9,554,72,17,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             join=ArtButton(studioCard,"带上自己，进入房间",30,718,590,56,Enter,UITheme.Mint,UITheme.Ink,"ready");
-            ArtButton(studioCard,"使用样例测试",30,785,208,37,()=>{net.Sample=true;net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));PlayerPrefs.SetString("sampleToken",net.Token);profile=GameNetwork.SampleProfile(net.Token,nickname.text);DisplayProfile();net.Status="样例测试：不是 AI 生成。服务器也须开启样例模式。";},UITheme.Field,UITheme.Ink,"status");
+            ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,()=>{net.Sample=true;net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));PlayerPrefs.SetString("sampleToken",net.Token);profile=GameNetwork.SampleProfile(net.Token,nickname.text);DisplayProfile();net.Status="已载入固定测试资产；它们不是根据介绍生成的。";},UITheme.Yellow,UITheme.Ink,"status");
+            var service=ArtPanel(studioCard,"AI service status",306,785,314,37,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,7,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,2,265,32,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             ArtButton(home,"连接设置",1370,848,174,40,()=>{optionsOpen=!optionsOpen;settings.gameObject.SetActive(optionsOpen);},UITheme.Paper,UITheme.Ink,"settings");
             RefreshColorSelection();
         }
@@ -97,7 +98,7 @@ namespace AboutMe
             api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
             var note=ArtPanel(card,"Secret note",32,360,660,76,UITheme.Yellow,true,false);
             ArtIcon(note,"status",18,18,38,UITheme.Ink);ArtText(note,"密钥只放在服务端 .env；客户端仅保存公开地址。",68,10,570,56,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            ArtButton(card,"保存连接设置",32,468,316,58,()=>{net.Endpoint=endpoint.text.Trim();net.ApiUrl=api.text.Trim().TrimEnd('/');PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";},UITheme.Mint,UITheme.Ink,"ready");
+            ArtButton(card,"保存连接设置",32,468,316,58,()=>{net.Endpoint=endpoint.text.Trim();net.ApiUrl=api.text.Trim().TrimEnd('/');PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";StartCoroutine(CheckService());},UITheme.Mint,UITheme.Ink,"ready");
             var local=ArtButton(card,"本机测试服务器",376,468,316,58,()=>{net.AllowSamples=true;if(!Mirror.NetworkServer.active)net.StartServer();net.Status="本机样例服务器已启动，端口 7777";},UITheme.Field,UITheme.Ink,"settings");
             local.gameObject.SetActive(Application.platform==RuntimePlatform.OSXPlayer||Application.platform==RuntimePlatform.WindowsPlayer||Application.isEditor);
         }
@@ -387,7 +388,9 @@ namespace AboutMe
         {
             var rect=ArtPanel(parent,"Input · "+placeholder,x,y,width,height,UITheme.Field,true,false);var input=rect.gameObject.AddComponent<InputField>();input.targetGraphic=rect.GetComponent<Image>();
             var text=ArtText(rect,"",14,5,width-28,height-10,18,UITheme.Ink,FontStyle.Normal,multiline?TextAnchor.UpperLeft:TextAnchor.MiddleLeft);var hint=ArtText(rect,placeholder,14,5,width-28,height-10,18,UITheme.Muted,FontStyle.Normal,multiline?TextAnchor.UpperLeft:TextAnchor.MiddleLeft);
-            input.textComponent=text;input.placeholder=hint;input.characterLimit=multiline?8000:256;input.lineType=multiline?InputField.LineType.MultiLineNewline:InputField.LineType.SingleLine;return input;
+            input.textComponent=text;input.placeholder=hint;input.characterLimit=multiline?8000:256;input.lineType=multiline?InputField.LineType.MultiLineNewline:InputField.LineType.SingleLine;
+            input.contentType=InputField.ContentType.Standard;input.inputType=InputField.InputType.Standard;input.characterValidation=InputField.CharacterValidation.None;input.keyboardType=TouchScreenKeyboardType.Default;
+            rect.gameObject.AddComponent<IMEInputBridge>().Configure(input);return input;
         }
         StickerButton ColorChip(Transform parent,string color,float x,float y,float size,Action action)
         {
