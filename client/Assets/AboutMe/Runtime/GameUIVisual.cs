@@ -13,7 +13,7 @@ namespace AboutMe
         RectTransform[] playerCards=new RectTransform[6];
         Text[] playerNames=new Text[6],playerMeta=new Text[6];
         Image[] playerAvatars=new Image[6],playerReadyMarks=new Image[6];
-        Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText,aiServiceText;
+        Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText,aiServiceText,introCounter;
         Image stabilityFill,progressFill,statusSurface,aiServiceSurface;
         RectTransform statusPill;
         StickerButton generateStyle,recordStyle,readyStyle,startStyle;
@@ -65,9 +65,10 @@ namespace AboutMe
             ArtText(studioCard,"房间",314,168,120,25,15,UITheme.Muted,FontStyle.Bold);
             nickname=ArtField(studioCard,30,195,268,50,"你的名字",false);nickname.text=PlayerPrefs.GetString("nickname","玩家");
             room=ArtField(studioCard,314,195,306,50,"房间码 · 留空创建",false);
-            ArtText(studioCard,"自我介绍",30,257,200,25,15,UITheme.Muted,FontStyle.Bold);
+            ArtText(studioCard,"自我介绍",30,257,200,25,15,UITheme.Muted,FontStyle.Bold);introCounter=ArtText(studioCard,"0 / 1200",450,257,170,25,14,UITheme.Muted,FontStyle.Bold,TextAnchor.UpperRight);
             introduction=ArtField(studioCard,30,284,590,128,"我来自哪里、喜欢什么、有什么特别经历……",true);introduction.text=PlayerPrefs.GetString("introduction","");
-            StepBadge(studioCard,"2",30,428,UITheme.Pink);ArtText(studioCard,"选择你的玩具外观",70,429,250,34,18,UITheme.Ink,FontStyle.Bold);
+            introduction.characterLimit=1200;introduction.onValueChanged.AddListener(value=>introCounter.text=value.Length+" / 1200");introCounter.text=introduction.text.Length+" / 1200";
+            StepBadge(studioCard,"2",30,428,UITheme.Pink);ArtText(studioCard,"设计人物外观（不影响 Persona）",70,429,350,34,18,UITheme.Ink,FontStyle.Bold);
             var record=ArtButton(studioCard,"录音介绍",30,470,174,48,ToggleRecording,UITheme.Field,UITheme.Ink,"mic");recordLabel=record.GetComponentInChildren<Text>();recordStyle=record.GetComponent<StickerButton>();
             string[] colors={"#79CFC5","#F3AFC2","#FFD773","#9FAFF2"};
             for(int i=0;i<colors.Length;i++)
@@ -128,7 +129,7 @@ namespace AboutMe
             start=ArtButton(lobbyCard,"开始互相介绍",346,598,306,58,()=>Send("start"),UITheme.Ink,UITheme.Paper,"attack");startStyle=start.GetComponent<StickerButton>();
             ArtButton(lobbyCard,"分享房间码",24,675,306,50,()=>platform.Share(net.State?.room??""),UITheme.Yellow,UITheme.Ink,"share");
             ArtButton(lobbyCard,"离开房间",346,675,306,50,Leave,UITheme.Field,UITheme.Ink,"exit");
-            ArtText(lobbyCard,"所有人 Ready 后，由房主开始。掉线角色在开局后会留在场内。",28,748,610,48,15,UITheme.Muted,FontStyle.Normal,TextAnchor.MiddleLeft);
+            ArtText(lobbyCard,"2–6 人均可开局；达到 2 人后房主可随时开始。Ready 仅作状态提示。",28,748,610,48,15,UITheme.Muted,FontStyle.Normal,TextAnchor.MiddleLeft);
         }
 
         void BuildHud()

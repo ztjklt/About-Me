@@ -1,6 +1,6 @@
 {"items":[
  {"templateId":"Projectile","visualId":"basketball","label":"篮球","color":"#FF934F"},
- {"templateId":"Disc","visualId":"school-disc","label":"学校圆盘","color":"#77C8BD"},
+ {"templateId":"Disc","visualId":"school-disc","label":"大学校徽圆盘","color":"#77C8BD"},
  {"templateId":"Melee","visualId":"book","label":"知识之书","color":"#AA91ED"},
  {"templateId":"HeavyWeapon","visualId":"computer","label":"电脑","color":"#86ADCB"},
  {"templateId":"Utility","visualId":"camera","label":"相机","color":"#FFE08D"},

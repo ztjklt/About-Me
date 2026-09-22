@@ -29,7 +29,7 @@ namespace AboutMe
             if(host&&now>=nextTrace){nextTrace=now+5;File.WriteAllText(marker+".state.json",JsonUtility.ToJson(s));Debug.Log("PROBE_STATE "+s.phase+" ground="+s.ground.Length+" eaten="+s.eaten.Length);}
             if(host&&!File.Exists(marker)){File.WriteAllText(marker,s.room);Debug.Log("PROBE_ROOM "+s.room);}
             if(!ready){net.Send("ready");ready=true;}
-            if(host&&!started&&s.players.Length>=requiredPlayers&&s.players.All(p=>p.ready)){net.Send("start");started=true;}
+            if(host&&!started&&s.players.Length>=requiredPlayers){net.Send("start");started=true;}
             if(s.phase==MatchPhase.Lobby)return;
             seen++;
             if(s.phase==MatchPhase.Finished&&seen>30){Debug.Log("PROBE_PASS players="+s.players.Length+" eaten="+s.eaten.Length+" phase="+s.phase);Application.Quit(0);return;}

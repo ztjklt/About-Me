@@ -66,6 +66,7 @@ namespace AboutMe.Editor
             Test("input sequence and finite checks reject stale movement",()=>{var m=M();m.Receive("a",new Command{sequence=5,x=1});m.Receive("a",new Command{sequence=4,x=-1});Assert(m.Players["a"].input.x==1,"stale command");m.Receive("a",new Command{sequence=6,x=float.NaN});Assert(m.Players["a"].sequence==5,"nonfinite accepted");});
             Test("reveal is protected and final burst keeps ownership",()=>{var m=M();m.Phase=MatchPhase.Reveal;m.Receive("a",new Command{sequence=0,action="light"});Assert(m.Players["b"].stability==100,"reveal attack");Tick(m,1.2f);Assert(m.Phase==MatchPhase.FinalBurst&&m.Items.All(x=>x.state==ItemState.Ground),"missing final burst");Assert(m.Players.Values.All(x=>!x.eliminated),"burst eliminated players");});
             Test("grabbing item is not direct theft",()=>{var m=M();m.Players["b"].position=m.Players["a"].position+Vector3.forward*1.5f;var item=m.Item(m.Players["b"].equipped);m.Receive("a",new Command{sequence=0,action="grab_item"});Assert(item.ownerId=="b"&&item.state==ItemState.Equipped,"grab stole item");});
+            Test("host starts with any two players without ready",()=>{var m=new Match("ROOM",new MatchRules());m.Add(P("host"));m.Add(P("guest"));m.Receive("host",new Command{sequence=0,action="start"});Assert(m.Phase==MatchPhase.Reveal,"two-player room did not start");});
             Debug.Log("ABOUTME_RULE_TESTS_PASSED "+passed);
         }
         [MenuItem("About Me/3. Build macOS demo")]

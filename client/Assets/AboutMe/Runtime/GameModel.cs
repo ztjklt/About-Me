@@ -159,7 +159,7 @@ namespace AboutMe
             var movement = Vector2.ClampMagnitude(new Vector2(input.x, input.z), 1);
             input.x = movement.x; input.z = movement.y; p.input = input;
             if (input.action == "ready" && Phase == MatchPhase.Lobby) p.ready = !p.ready;
-            if (input.action == "start" && Phase == MatchPhase.Lobby && Host == id && Players.Count >= 2 && Players.Values.All(x => x.ready && x.connected))
+            if (input.action == "start" && Phase == MatchPhase.Lobby && Host == id && Players.Count >= 2)
             { Phase = MatchPhase.Reveal; Time = 0; LastHand = 0; Say("你的自我，登场！展示阶段不可抢夺。"); }
             if (!Active || p.eliminated) return;
             if (input.action == "cancel") { Interrupt(p); ReleaseGrab(p); p.chargingSince = -1; return; }

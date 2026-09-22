@@ -32,6 +32,24 @@ def test_invalid_templates_dedup_and_variable_count():
     with pytest.raises(ValueError): module.validate_personas(raw)
     with pytest.raises(ValueError): module.validate_personas({'personas': []})
 
+def test_generation_is_grounded_and_school_is_one_badge():
+    raw = {'personas': [
+        dict(name='逸仙精神', source='中山大学', templateId='Projectile', visualId='basketball', color='#FFFFFF'),
+        dict(name='校园猫', source='校园猫文化', templateId='Summon', visualId='cat', color='#FFFFFF'),
+        dict(name='三校区', source='广州、珠海、深圳三校区', templateId='Disc', visualId='school-disc', color='#FFFFFF'),
+    ]}
+    result = module.validate_personas(raw, '中山大学')
+    assert len(result) == 1
+    assert result[0]['name'] == '中山大学校徽圆盘'
+    assert (result[0]['templateId'], result[0]['visualId']) == ('Disc', 'school-disc')
+    assert result[0]['color'] == '#77C8BD'
+
+def test_introduction_length_is_bounded_before_provider(client):
+    headers, _ = credentials(client)
+    response = client.post('/personas/generate', headers=headers,
+        json={'nickname':'玩家', 'introduction':'长' * (module.MAX_INTRO_CHARS + 1)})
+    assert response.status_code == 422
+
 def test_generation_persistence_reroll_and_new_assets(client, monkeypatch):
     async def fake(_): return module.validate_personas(candidates())
     monkeypatch.setattr(module, 'generate_with_provider', fake)

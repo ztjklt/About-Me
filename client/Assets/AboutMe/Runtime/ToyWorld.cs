@@ -20,7 +20,7 @@ namespace AboutMe
             var go=GameObject.CreatePrimitive(type);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=pos;go.transform.localScale=scale;
             go.GetComponent<Renderer>().sharedMaterial=Material(color);if(!collider)UnityEngine.Object.Destroy(go.GetComponent<Collider>());return go;
         }
-        public static GameObject Item(string visual,string color,Transform parent)
+        public static GameObject Item(string visual,string color,Transform parent,string label="")
         {
             var root=new GameObject(visual);root.transform.SetParent(parent,false);var t=root.transform;
             switch(visual)
@@ -36,7 +36,11 @@ namespace AboutMe
                     for(int i=0;i<2;i++){var seam=Shape("seam",PrimitiveType.Cylinder,t,Vector3.zero,new Vector3(.66f,.009f,.66f),"#483E41");seam.transform.localRotation=Quaternion.Euler(i*90,0,0);}break;
                 case "school-disc":
                     Shape("disc",PrimitiveType.Cylinder,t,Vector3.zero,new Vector3(.8f,.08f,.8f),color);
-                    Shape("crest",PrimitiveType.Cube,t,Vector3.up*.095f,new Vector3(.3f,.02f,.3f),"#FFF1D2");break;
+                    Shape("crest",PrimitiveType.Cylinder,t,Vector3.up*.095f,new Vector3(.48f,.018f,.48f),"#FFF1D2");
+                    var school=new GameObject("school name");school.transform.SetParent(t,false);school.transform.localPosition=new Vector3(0,.122f,0);school.transform.localRotation=Quaternion.Euler(90,0,0);
+                    var schoolText=school.AddComponent<TextMesh>();var shortName=(label??"").Replace("校徽圆盘","").Replace("校徽","");if(shortName.Length>6)shortName=shortName.Substring(0,6);
+                    schoolText.text=shortName;schoolText.anchor=TextAnchor.MiddleCenter;schoolText.alignment=TextAlignment.Center;schoolText.characterSize=.075f;schoolText.fontSize=52;schoolText.color=ColorOf("#263248");
+                    var schoolFont=Resources.Load<Font>("AboutMeFont");if(schoolFont){schoolText.font=schoolFont;school.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}break;
                 case "book":
                     Shape("cover",PrimitiveType.Cube,t,Vector3.zero,new Vector3(.65f,.8f,.2f),color);
                     Shape("pages",PrimitiveType.Cube,t,new Vector3(.035f,0,-.005f),new Vector3(.59f,.73f,.21f),"#FFF1D2");break;
@@ -122,7 +126,7 @@ namespace AboutMe
             mouth.localScale=new Vector3(.16f+p.progress*.7f,.07f+p.progress*.7f,.04f);
             label.text=p.nickname==""?"":p.nickname+" · "+p.remaining+(p.connected?"":" [离线]");label.transform.rotation=camera.transform.rotation;
             if(visual!=p.equippedVisual)
-            {if(held)UnityEngine.Object.Destroy(held);visual=p.equippedVisual;if(visual!=""){held=ToyFactory.Item(visual,p.equippedColor,root.transform);held.transform.localScale=Vector3.one*.75f;}}
+            {if(held)UnityEngine.Object.Destroy(held);visual=p.equippedVisual;if(visual!=""){held=ToyFactory.Item(visual,p.equippedColor,root.transform,p.equippedName);held.transform.localScale=Vector3.one*.75f;}}
             if(held){held.transform.localPosition=new Vector3(.72f,p.charge>0?.9f:.05f,.45f);held.transform.localRotation=Quaternion.Euler(-p.charge*65,UnityEngine.Time.time*10,0);held.SetActive(p.interaction==""&&string.IsNullOrEmpty(p.publicProp));}
         }
     }
@@ -203,7 +207,7 @@ namespace AboutMe
             var present=new HashSet<string>();
             if(state.revealed!=null)foreach(var item in state.revealed)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot);objects[item.id]=display;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name);objects[item.id]=display;}
                 display.transform.position=item.position+Vector3.up*(.2f*Mathf.Sin(UnityEngine.Time.time*3));display.transform.Rotate(Vector3.up,70*UnityEngine.Time.deltaTime);
             }
             if(state.props!=null)foreach(var prop in state.props)
@@ -213,7 +217,7 @@ namespace AboutMe
             }
             foreach(var item in state.ground)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot);objects[item.id]=go;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name);objects[item.id]=go;}
                 go.transform.position=Vector3.Lerp(go.transform.position,item.position,1-Mathf.Exp(-UnityEngine.Time.deltaTime*20));
                 go.transform.Rotate(Vector3.up,45*UnityEngine.Time.deltaTime);
                 float scale=1;

@@ -93,6 +93,7 @@ namespace AboutMe
         {
             if(busy)yield break;
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="请先写至少 3 个字的自我介绍。";yield break;}
+            if(introduction.text.Length>1200){net.Status="自我介绍最多 1200 字，请精简后再生成。";yield break;}
             if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 尚未配置；请配置 server/.env，或点击“本地样例（无需 AI）”继续测试。";yield break;}
             busy=true;net.Sample=false;net.Status="正在把你变成游戏内容…";
             net.ApiUrl=api.text.Trim().TrimEnd('/');
@@ -188,7 +189,7 @@ namespace AboutMe
             if(UnityEngine.Time.unscaledTime>=nextUI)
             {
                 nextUI=UnityEngine.Time.unscaledTime+.1f;
-                start.gameObject.SetActive(state.you==state.host);start.interactable=state.players.Length>=2&&state.players.All(p=>p.ready);
+                start.gameObject.SetActive(state.you==state.host);start.interactable=state.players.Length>=2;
                 if(startStyle)startStyle.SetState(start.interactable?UIVisualState.Selected:UIVisualState.Normal);
                 var me=state.players.FirstOrDefault(p=>p.id==state.you);
                 if(state.events.Length>0&&state.events.Last().id!=lastEvent){lastEvent=state.events.Last().id;eventText.text=state.events.Last().text;toastPulse.Play();}
