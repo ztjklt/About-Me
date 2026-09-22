@@ -1,5 +1,6 @@
 """Start the delivered local sample environment; Ctrl+C stops only owned services."""
 import argparse
+import json
 import pathlib
 import socket
 import subprocess
@@ -63,7 +64,11 @@ try:
     print('本地样例环境已就绪：http://127.0.0.1:8080', flush=True)
     print('桌面和浏览器各点「样例测试」；桌面房间码留空创建，浏览器填同一码加入。', flush=True)
     print('各自 Ready 后由房主开始。无需点击「本机测试服务器」，它已经启动。', flush=True)
-    print('真实 AI / 语音尚未配置。普通对局保留 5 分钟大手与 15 分钟终局。', flush=True)
+    with urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=2) as response:
+        health = json.load(response)
+    ai_state = '已连接' if health.get('aiConfigured') else '尚未配置'
+    asr_state = '已连接' if health.get('asrConfigured') else '尚未配置'
+    print(f'真实 AI：{ai_state}；语音识别：{asr_state}。普通对局保留 5 分钟大手与 15 分钟终局。', flush=True)
     print('保留此终端；按 Ctrl+C 停止本次服务。日志：artifacts/local', flush=True)
     if not args.no_open:
         subprocess.run(['open', '-n', str(root / 'builds/mac/About Me.app')], check=True)
