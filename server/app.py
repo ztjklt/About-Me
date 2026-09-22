@@ -143,6 +143,23 @@ def validate_personas(raw, introduction=None):
     return result
 
 
+def profile_follows_generation_rules(profile, introduction):
+    personas = profile.get('personas', []) if isinstance(profile, dict) else []
+    if not personas or len(personas) > 8:
+        return False
+    grounded_in, seen = normalized_fact(introduction), set()
+    for item in personas:
+        source = plain(item.get('source', ''), 160)
+        identity = normalized_fact(source)
+        if not identity or identity not in grounded_in or identity in seen:
+            return False
+        seen.add(identity)
+        school = institution_name(source)
+        if school and (item.get('templateId'), item.get('visualId')) != ('Disc', 'school-disc'):
+            return False
+    return True
+
+
 async def generate_with_provider(introduction):
     key, model, base = (os.getenv(k, '') for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     if not all((key, model, base)):
@@ -253,12 +270,12 @@ async def room_qrcode(room: str, authorization: str | None = Header(default=None
 @app.post('/personas/generate')
 async def generate(body: GenerateRequest, authorization: str | None = Header(default=None)):
     player_id, previous, intro = authenticate(authorization)
-    if intro == body.introduction.strip():
+    old = json.loads(previous)
+    if intro == body.introduction.strip() and profile_follows_generation_rules(old, intro):
         raise HTTPException(409, '请修改自我介绍后重新生成；不支持原文重 Roll')
     if not body.introduction.strip():
         raise HTTPException(422, '请填写自我介绍')
     personas = await generate_with_provider(body.introduction)
-    old = json.loads(previous)
     result = dict(playerId=player_id, nickname=plain(body.nickname, 24),
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=personas, revision=old['revision'] + 1)

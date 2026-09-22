@@ -51,7 +51,12 @@ def test_introduction_length_is_bounded_before_provider(client):
     assert response.status_code == 422
 
 def test_generation_persistence_reroll_and_new_assets(client, monkeypatch):
-    async def fake(_): return module.validate_personas(candidates())
+    async def fake(introduction):
+        raw = {'personas': [
+            dict(name='篮球', source='篮球', templateId='Projectile', visualId='basketball'),
+            dict(name='猫', source='猫', templateId='Summon', visualId='cat'),
+        ]}
+        return module.validate_personas(raw, introduction)
     monkeypatch.setattr(module, 'generate_with_provider', fake)
     headers, _ = credentials(client)
     body = {'nickname': '猫猫', 'introduction': '我喜欢篮球和猫'}
@@ -63,6 +68,22 @@ def test_generation_persistence_reroll_and_new_assets(client, monkeypatch):
     assert second['revision'] == 2
     assert second['personas'][0]['assetId'] != first.json()['personas'][0]['assetId']
     assert client.get('/profiles/me', headers=headers).json() == second
+
+def test_legacy_ungrounded_result_can_be_regenerated_with_same_intro(client, monkeypatch):
+    headers, data = credentials(client)
+    legacy = dict(data['profile'], personas=[dict(assetId='old', name='校园猫', source='校园猫文化',
+        templateId='Summon', visualId='cat', color='#FFFFFF')], revision=1)
+    with module.db() as con:
+        con.execute('UPDATE profiles SET profile=?,intro=? WHERE id=?',
+            (json.dumps(legacy, ensure_ascii=False), '中山大学', data['profile']['playerId']))
+    async def fixed(introduction):
+        return module.validate_personas({'personas':[dict(name='学校', source='中山大学',
+            templateId='Disc', visualId='school-disc')]}, introduction)
+    monkeypatch.setattr(module, 'generate_with_provider', fixed)
+    result = client.post('/personas/generate', headers=headers,
+        json={'nickname':'玩家', 'introduction':'中山大学'})
+    assert result.status_code == 200
+    assert len(result.json()['personas']) == 1
 
 def test_no_fake_ai_fallback(client, monkeypatch):
     monkeypatch.delenv('LLM_API_KEY', raising=False)
