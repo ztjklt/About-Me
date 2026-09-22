@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>About Me · 你的自我，既是武器，也是生命</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee8dc;color:#222c3c;font-family:system-ui,sans-serif}
+    main{position:fixed;inset:0;display:grid;place-items:center}canvas{display:block;width:min(100vw,177.7778vh);height:min(56.25vw,100vh);outline:0}
+    #loading{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:18px;background:#eee8dc}h1{font-size:56px;margin:0;letter-spacing:-3px}progress{width:270px;accent-color:#74bdb1}#error{max-width:600px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <main><canvas id="game" tabindex="0" aria-label="About Me 游戏画面"></canvas><section id="loading"><h1>ABOUT ME.</h1><div>把自己，变成游戏。</div><progress max="1" value="0"></progress><div id="error" role="status"></div></section></main>
+  <script>
+    const canvas=document.getElementById('game'),loading=document.getElementById('loading');
+    const config={dataUrl:'Build/{{{ DATA_FILENAME }}}',frameworkUrl:'Build/{{{ FRAMEWORK_FILENAME }}}',codeUrl:'Build/{{{ CODE_FILENAME }}}',streamingAssetsUrl:'StreamingAssets',companyName:'About Me Studio',productName:'About Me',productVersion:'0.1.0',autoSyncPersistentDataPath:true,devicePixelRatio:Math.min(devicePixelRatio,1.5),showBanner:(message,type)=>{if(type==='error')document.getElementById('error').textContent=message;}};
+    const loader=document.createElement('script');loader.src='Build/{{{ LOADER_FILENAME }}}';
+    loader.onload=()=>createTuanjieInstance(canvas,config,p=>document.querySelector('progress').value=p).then(()=>{loading.style.display='none';canvas.focus();}).catch(e=>document.getElementById('error').textContent='加载失败，请刷新重试。\n'+String(e));
+    loader.onerror=()=>document.getElementById('error').textContent='无法下载游戏，请检查网络。';document.body.appendChild(loader);
+  </script>
+</body>
+</html>

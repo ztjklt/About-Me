@@ -1,0 +1,8 @@
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libglib2.0-0 libstdc++6 && rm -rf /var/lib/apt/lists/* && useradd -m -u 10001 aboutme
+WORKDIR /game
+COPY builds/linux/ /game/
+RUN chmod +x /game/AboutMeServer
+USER aboutme
+EXPOSE 7777
+CMD ["/game/AboutMeServer", "-batchmode", "-nographics", "--aboutme-server", "-logFile", "/dev/stdout"]

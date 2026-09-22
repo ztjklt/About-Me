@@ -1,0 +1,17 @@
+{$API_DOMAIN} {
+    @private path /internal/*
+    respond @private 404
+    request_body {
+        max_size 11MB
+    }
+    reverse_proxy api:8081
+}
+{$GAME_DOMAIN} {
+    reverse_proxy game:7777
+}
+{$PLAY_DOMAIN} {
+    header Cross-Origin-Opener-Policy same-origin
+    header Cross-Origin-Embedder-Policy require-corp
+    root * /srv
+    file_server
+}

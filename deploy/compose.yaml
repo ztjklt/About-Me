@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    env_file: ../server/.env
+    environment:
+      ABOUTME_DB: /data/aboutme.sqlite3
+    volumes:
+      - profiles:/data
+    restart: unless-stopped
+  game:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.game
+    env_file: ../server/.env
+    environment:
+      ABOUTME_API_URL: http://api:8081
+    depends_on:
+      - api
+    restart: unless-stopped
+  edge:
+    image: caddy:2.10.0
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
+      GAME_DOMAIN: ${GAME_DOMAIN:?Set GAME_DOMAIN}
+      PLAY_DOMAIN: ${PLAY_DOMAIN:?Set PLAY_DOMAIN}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../builds/web:/srv:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      - game
+    restart: unless-stopped
+volumes:
+  profiles:
+  caddy_data:
+  caddy_config:
