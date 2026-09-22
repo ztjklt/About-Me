@@ -63,7 +63,7 @@ try:
         raise RuntimeError('游戏服务器端口未就绪')
     print('本地样例环境已就绪：http://127.0.0.1:8080', flush=True)
     print('桌面和浏览器各点「样例测试」；桌面房间码留空创建，浏览器填同一码加入。', flush=True)
-    print('各自 Ready 后由房主开始。无需点击「本机测试服务器」，它已经启动。', flush=True)
+    print('房间达到 2 人后房主即可开始，最多 6 人；Ready 仅作状态提示。无需点击「本机测试服务器」。', flush=True)
     with urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=2) as response:
         health = json.load(response)
     ai_state = '已连接' if health.get('aiConfigured') else '尚未配置'
