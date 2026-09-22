@@ -160,6 +160,21 @@ def profile_follows_generation_rules(profile, introduction):
     return True
 
 
+def preset_personas(introduction):
+    """Handle single institution facts deterministically without asking the model to invent details."""
+    school = institution_name(introduction)
+    if not school:
+        return None
+    remainder = normalized_fact(introduction)
+    for fragment in (school, '我', '是', '来自', '就读于', '毕业于', '在', '读书', '学生'):
+        remainder = remainder.replace(normalized_fact(fragment), '')
+    if remainder:
+        return None
+    catalog = CATALOG_BY_PAIR[('Disc', 'school-disc')]
+    return [dict(assetId=uuid.uuid4().hex, name=school + '校徽圆盘', templateId='Disc',
+                 visualId='school-disc', color=catalog['color'], source=school)]
+
+
 async def generate_with_provider(introduction):
     key, model, base = (os.getenv(k, '') for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     if not all((key, model, base)):
@@ -275,7 +290,7 @@ async def generate(body: GenerateRequest, authorization: str | None = Header(def
         raise HTTPException(409, '请修改自我介绍后重新生成；不支持原文重 Roll')
     if not body.introduction.strip():
         raise HTTPException(422, '请填写自我介绍')
-    personas = await generate_with_provider(body.introduction)
+    personas = preset_personas(body.introduction) or await generate_with_provider(body.introduction)
     result = dict(playerId=player_id, nickname=plain(body.nickname, 24),
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=personas, revision=old['revision'] + 1)

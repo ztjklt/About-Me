@@ -43,6 +43,9 @@ def test_generation_is_grounded_and_school_is_one_badge():
     assert result[0]['name'] == '中山大学校徽圆盘'
     assert (result[0]['templateId'], result[0]['visualId']) == ('Disc', 'school-disc')
     assert result[0]['color'] == '#77C8BD'
+    preset = module.preset_personas('我在中山大学读书')
+    assert len(preset) == 1 and preset[0]['name'] == '中山大学校徽圆盘'
+    assert module.preset_personas('我在中山大学读书，也喜欢篮球') is None
 
 def test_introduction_length_is_bounded_before_provider(client):
     headers, _ = credentials(client)
