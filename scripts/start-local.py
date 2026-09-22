@@ -1,6 +1,7 @@
 """Start the delivered local sample environment; Ctrl+C stops only owned services."""
 import argparse
 import json
+import os
 import pathlib
 import socket
 import subprocess
@@ -24,10 +25,30 @@ out.mkdir(parents=True, exist_ok=True)
 processes, logs = [], []
 
 
-def start(name, command):
+def load_service_environment():
+    """Load the same server/.env values for the API and authoritative game server."""
+    env = os.environ.copy()
+    env_file = root / 'server/.env'
+    if not env_file.exists():
+        return env
+    loaded = subprocess.run(
+        ['sh', '-c', 'set -a; . ./server/.env; env -0'],
+        cwd=root, check=True, capture_output=True).stdout
+    for entry in loaded.split(b'\0'):
+        if b'=' not in entry:
+            continue
+        key, value = entry.split(b'=', 1)
+        env[key.decode()] = value.decode()
+    return env
+
+
+service_env = load_service_environment()
+
+
+def start(name, command, env=None):
     log = (out / f'{name}.log').open('w')
     logs.append(log)
-    proc = subprocess.Popen(command, cwd=root, stdout=log, stderr=subprocess.STDOUT)
+    proc = subprocess.Popen(command, cwd=root, stdout=log, stderr=subprocess.STDOUT, env=env)
     processes.append(proc)
     return proc
 
@@ -47,9 +68,9 @@ def ready(url):
 
 
 try:
-    start('api', ['sh', 'scripts/start-api.sh'])
+    start('api', ['sh', 'scripts/start-api.sh'], service_env)
     start('web', [str(python), '-m', 'http.server', '8080', '--bind', '127.0.0.1', '--directory', 'builds/web'])
-    start('game', [str(binary), '-batchmode', '-nographics', '--aboutme-server', '--allow-samples', '-logFile', str(out / 'game-engine.log')])
+    start('game', [str(binary), '-batchmode', '-nographics', '--aboutme-server', '--allow-samples', '-logFile', str(out / 'game-engine.log')], service_env)
     ready('http://127.0.0.1:8081/health')
     ready('http://127.0.0.1:8080/')
     for _ in range(60):

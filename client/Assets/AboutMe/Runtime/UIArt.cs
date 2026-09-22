@@ -180,7 +180,10 @@ namespace AboutMe
             if(!SafeRoot||!Artboard||Screen.width<=0||Screen.height<=0)return;
             lastW=Screen.width;lastH=Screen.height;lastSafe=Screen.safeArea;
             SafeRoot.anchorMin=new Vector2(lastSafe.xMin/lastW,lastSafe.yMin/lastH);SafeRoot.anchorMax=new Vector2(lastSafe.xMax/lastW,lastSafe.yMax/lastH);SafeRoot.offsetMin=SafeRoot.offsetMax=Vector2.zero;
-            Canvas.ForceUpdateCanvases();float scale=Mathf.Min(SafeRoot.rect.width/1600f,SafeRoot.rect.height/900f);Artboard.sizeDelta=new Vector2(1600,900);Artboard.localScale=Vector3.one*Mathf.Min(1,scale);
+            // CanvasScaler already maps the 1600 x 900 reference canvas to the
+            // current screen. Scaling the artboard again made WebGL render at
+            // roughly half size on 960 x 540 and Retina displays.
+            Artboard.sizeDelta=new Vector2(1600,900);Artboard.localScale=Vector3.one;
         }
     }
 }
