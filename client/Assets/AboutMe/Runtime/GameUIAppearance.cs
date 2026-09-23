@@ -129,13 +129,23 @@ namespace AboutMe
         }
         IEnumerator EnsureAppearanceSession()
         {
-            if(!string.IsNullOrEmpty(net.Token))yield break;
             net.ApiUrl=api.text.Trim().TrimEnd('/');
+            if(net.ApiUrl==""){busy=false;net.Status="请先在连接设置中填写角色服务地址。";yield break;}
+            net.Token=SavedTokenForApi();
+            if(!string.IsNullOrEmpty(net.Token))yield break;
             using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
             {
-                yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                var response=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text);net.Token=response.token;profile=response.profile;PlayerPrefs.SetString("token",net.Token);
+                yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req,"建立角色会话");yield break;}
+                var response=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text);net.Token=response.token;profile=response.profile;SaveTokenForApi(net.Token);
             }
+        }
+        IEnumerator UnlockDSGirl()
+        {
+            if(busy)yield break;
+            if(net.Sample){net.Status="请先退出本地样例，再用真实介绍解锁 DS 娘。";yield break;}
+            if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3)
+            {net.Status="先写至少 3 个字的介绍，例如“我喜欢 DeepSeek”。";yield break;}
+            yield return SaveAppearance(true);
         }
         IEnumerator RecommendAppearance()
         {
@@ -151,7 +161,7 @@ namespace AboutMe
             }
             busy=false;
         }
-        IEnumerator SaveAppearance()
+        IEnumerator SaveAppearance(bool openWardrobeOnUnlock=false)
         {
             if(busy)yield break;
             if(net.Sample)
@@ -160,12 +170,30 @@ namespace AboutMe
             }
             busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
             string intro=string.IsNullOrWhiteSpace(introduction.text)?null:introduction.text.Trim();
-            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0,characterSkin=skinDraft,introduction=intro!=null&&intro.Length>=3?intro:null}),net.Token))
+            for(int attempt=0;attempt<2;attempt++)
             {
-                yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                bool wasUnlocked=profile!=null&&profile.dsGirlUnlocked;
-                profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();net.Status="穿搭已保存，Persona 没有改变。";
-                if(wardrobeNote)wardrobeNote.text=!wasUnlocked&&profile.dsGirlUnlocked?"已解锁 DS 娘。点击右上角切换，再保存即可使用。":"已保存。你可以直接带着这套穿搭进入房间。";
+                using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0,characterSkin=skinDraft,introduction=intro!=null&&intro.Length>=3?intro:null}),net.Token))
+                {
+                    yield return req.SendWebRequest();
+                    if(req.responseCode==401&&attempt==0)
+                    {net.Token="";SaveTokenForApi("");yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;continue;}
+                    if(req.result!=UnityWebRequest.Result.Success){Fail(req,"保存穿搭与 DS 娘解锁");if(wardrobeNote)wardrobeNote.text=net.Status;yield break;}
+                    bool wasUnlocked=profile!=null&&profile.dsGirlUnlocked;
+                    profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();
+                    PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
+                    busy=false;
+                    if(openWardrobeOnUnlock)
+                    {
+                        if(profile.dsGirlUnlocked){OpenWardrobe();net.Status="DS 娘已解锁。请在衣橱中切换并保存。";wardrobeNote.text="已解锁 DS 娘。点击右上角切换，再保存即可使用。";}
+                        else net.Status="尚未解锁：请在介绍中写明你喜欢 DeepSeek，然后重试。";
+                    }
+                    else
+                    {
+                        net.Status="穿搭已保存，Persona 没有改变。";
+                        if(wardrobeNote)wardrobeNote.text=!wasUnlocked&&profile.dsGirlUnlocked?"已解锁 DS 娘。点击右上角切换，再保存即可使用。":"已保存。你可以直接带着这套穿搭进入房间。";
+                    }
+                    yield break;
+                }
             }
             busy=false;
         }

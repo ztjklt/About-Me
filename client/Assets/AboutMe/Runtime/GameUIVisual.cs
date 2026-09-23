@@ -76,6 +76,7 @@ namespace AboutMe
             BuildExpressionChoices(studioCard);
             imageUpload=ArtButton(studioCard,"图片识别",30,526,230,42,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
             generate=ArtButton(studioCard,"AI 生成 Persona",30,578,230,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            ArtButton(studioCard,"免费解锁 DS 娘",278,578,342,48,()=>StartCoroutine(UnlockDSGirl()),UITheme.Mint,UITheme.Ink,"status");
             var profileCard=ArtPanel(studioCard,"Persona result",30,638,590,66,UITheme.Field,true,false);
             profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,5,554,56,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;

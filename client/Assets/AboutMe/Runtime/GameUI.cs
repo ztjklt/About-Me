@@ -71,6 +71,8 @@ namespace AboutMe
             favorites.AddRange(PlayerPrefs.GetString("favorites","").Split(',').Where(x=>x!=""));
             font=Resources.Load<Font>("AboutMeFont");if(!font)font=Font.CreateDynamicFontFromOSFont(new[]{"PingFang SC","Arial","Microsoft YaHei"},20);
             BuildArtUI();BuildMenus();battleMusic=gameObject.AddComponent<BattleMusic>();
+            var configuredApi=Environment.GetEnvironmentVariable("ABOUTME_API_URL");
+            if(!string.IsNullOrWhiteSpace(configuredApi))api.text=configuredApi.Trim().TrimEnd('/');
             var sessionEndpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");
             if(Application.platform==RuntimePlatform.WebGLPlayer)
             {
@@ -140,7 +142,7 @@ namespace AboutMe
             using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions/wechat",JsonUtility.ToJson(new WechatLoginRequest{code=code,nickname=nickname.text})))
             {
                 yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                var response=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text);net.Token=response.token;profile=response.profile;net.Sample=false;PlayerPrefs.SetString("token",net.Token);DisplayProfile();TryAutoJoin();
+                var response=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text);net.Token=response.token;profile=response.profile;net.Sample=false;SaveTokenForApi(net.Token);DisplayProfile();TryAutoJoin();
             }
             busy=false;
         }
@@ -211,7 +213,7 @@ namespace AboutMe
                     using(var session=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
                     {
                         yield return session.SendWebRequest();
-                        if(session.result!=UnityWebRequest.Result.Success){Fail(session);yield break;}
+                        if(session.result!=UnityWebRequest.Result.Success){Fail(session,"建立角色会话");yield break;}
                         generationToken=JsonUtility.FromJson<SessionResponse>(session.downloadHandler.text)?.token;
                         if(string.IsNullOrEmpty(generationToken)){busy=false;net.Status="无法建立角色会话，请稍后重试。";yield break;}
                         SaveTokenForApi(generationToken);
@@ -222,7 +224,7 @@ namespace AboutMe
                     req.timeout=100;yield return req.SendWebRequest();
                     if(req.responseCode==401&&attempt==0)
                     {generationToken="";SaveTokenForApi("");continue;}
-                    if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
+                    if(req.result!=UnityWebRequest.Result.Success){Fail(req,"Persona 生成");yield break;}
                     var generated=JsonUtility.FromJson<Profile>(req.downloadHandler.text);
                     if(generated?.personas==null||generated.personas.Length==0)
                     {busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
@@ -269,12 +271,21 @@ namespace AboutMe
             if(apiChanged&&!net.Sample&&net.Token!="")StartCoroutine(LoadProfile());
             StartCoroutine(CheckService());
         }
-        void Fail(UnityWebRequest request)
+        void Fail(UnityWebRequest request,string operation="请求")
         {
-            busy=false;string message=request.error;
-            if(request.downloadHandler!=null&&!string.IsNullOrEmpty(request.downloadHandler.text))
-            {try{var parsed=JsonUtility.FromJson<ErrorDetail>(request.downloadHandler.text);message=string.IsNullOrWhiteSpace(parsed?.detail)?request.downloadHandler.text:parsed.detail;}catch(Exception){message=request.downloadHandler.text;}}
-            net.Status="服务请求失败："+message;
+            busy=false;
+            string detail="";var body=request.downloadHandler?.text;
+            if(!string.IsNullOrWhiteSpace(body))
+            {try{detail=JsonUtility.FromJson<ErrorDetail>(body)?.detail??"";}catch(Exception){}}
+            if(string.IsNullOrWhiteSpace(detail))detail=request.error??"";
+            detail=detail.Replace('\n',' ').Replace('\r',' ').Trim();if(detail.Length>160)detail=detail.Substring(0,160)+"…";
+            string path="",address="API";
+            if(Uri.TryCreate(request.url,UriKind.Absolute,out var uri))
+            {path=uri.AbsolutePath;address=uri.Host+(uri.IsDefaultPort?"":":"+uri.Port);}
+            if(request.result==UnityWebRequest.Result.ConnectionError)
+                net.Status=operation+"失败：无法连接 "+address+"。请启动本机 API，或在设置中核对服务地址。";
+            else net.Status=operation+"失败（HTTP "+request.responseCode+"）："+(detail==""?"请稍后重试。":detail);
+            Debug.LogWarning("ABOUTME_API_FAILURE op="+operation+" path="+path+" status="+request.responseCode+" result="+request.result+" detail="+detail);
         }
         string CurrentRoomCode()
         {
