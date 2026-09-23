@@ -94,7 +94,7 @@ namespace AboutMe
             ArtButton(card,"关闭",630,28,60,42,()=>{optionsOpen=false;settings.gameObject.SetActive(false);},UITheme.Field,UITheme.Ink,"exit");
             ArtText(card,"游戏服务器 WebSocket 地址",32,142,630,26,16,UITheme.Muted,FontStyle.Bold);
             endpoint=ArtField(card,32,174,660,54,"wss://game.example.com",false);endpoint.text=PlayerPrefs.GetString("endpoint",net.Endpoint);
-            ArtText(card,"AI / 角色服务 HTTPS 地址",32,250,630,26,16,UITheme.Muted,FontStyle.Bold);
+            ArtText(card,"AI / 角色服务地址",32,250,630,26,16,UITheme.Muted,FontStyle.Bold);
             api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
             var note=ArtPanel(card,"Secret note",32,360,660,58,UITheme.Yellow,true,false);
             ArtIcon(note,"status",18,10,38,UITheme.Ink);ArtText(note,"密钥仅保存在服务端",68,3,570,48,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
