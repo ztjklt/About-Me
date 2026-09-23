@@ -4,7 +4,7 @@
 
 API 使用单副本 SQLite。容器监听 `0.0.0.0:8081`；设置 `ABOUTME_DB=/data/aboutme.sqlite3`，并保证运行用户能写挂载卷。浏览器通过 Web 同源 HTTPS `/api/*` 代理访问公开接口；代理应剥离 `/api` 前缀并拒绝 `/api/internal/*`。Game 服务经私网 `http://api.railway.internal:8081` 调内部接口。`GAME_SERVER_KEY` 只配置在 Game 与 API 服务端。
 
-文本生成与调侃共用服务端环境变量 `LLM_BASE_URL`、`LLM_MODEL`、`LLM_API_KEY`；本轮实际验证使用 DeepSeek 官方主机及模型 `deepseek-v4-flash-vision-exp`。密钥不进客户端、镜像、仓库或日志。`DEEPSEEK_API_KEY` 是单独的图片识别配置，不是文本生成/调侃的必需变量。`GET /health` 返回非秘密的 `aiConfigured`、`aiProvider`、`aiModel`。缺少文本模型配置时生成和调侃返回 503。
+文本生成与调侃共用服务端环境变量 `LLM_BASE_URL`、`LLM_MODEL`、`LLM_API_KEY`；本轮实际验证使用 DeepSeek 官方主机及模型 `deepseek-v4-flash-vision-exp`。密钥不进客户端、镜像、仓库或日志。校徽视觉核对与自我介绍图片识别优先使用 `DEEPSEEK_API_KEY`，未单独配置时复用官方 DeepSeek 文本提供方的 `LLM_API_KEY`；视觉请求显式关闭默认思考模式，确保有限输出预算用于 JSON 正文。`GET /health` 返回非秘密的 `aiConfigured`、`aiProvider`、`aiModel` 和 `visionConfigured`。缺少相应模型配置时返回 503。
 
 公开试玩建议将 `ABOUTME_SESSION_GLOBAL_PER_MINUTE=60`、`ABOUTME_SESSION_PEER_PER_MINUTE=10`、`ABOUTME_AI_GLOBAL_PER_MINUTE=12`、`ABOUTME_AI_PEER_PER_MINUTE=6`、`ABOUTME_AI_DAILY_LIMIT=30` 作为初始预算；实际值由部署者按试玩人数调整。超额返回 429，非法额度配置返回 503。内部权威调侃计入 AI 全局分钟和每日额度，不按 Game 私网的单一 peer 限制；同事件缓存重读不重复扣额。来源识别和代理密钥见 [联机安全边界](NETWORK_SAFETY.md)。CORS 只允许配置的浏览器来源，不承担访问准入。
 

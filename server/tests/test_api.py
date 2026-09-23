@@ -182,6 +182,7 @@ def test_deepseek_vision_selects_candidate_and_returns_complete_crop():
         async def post(self, url, **kwargs):
             body = kwargs['json']
             assert body['model'] == 'deepseek-v4-flash-vision-exp'
+            assert body['thinking'] == {'type': 'disabled'}
             assert body['messages'][1]['content'][1]['type'] == 'image_url'
             return httpx.Response(200, json={'choices':[{'message':{'content':json.dumps({
                 'selectedIndex':0,'crop':{'x':.06,'y':.06,'width':.88,'height':.88},
@@ -297,6 +298,7 @@ def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(cl
         async def post(self,url,**kw):
             assert url=='https://deepseek.example/v1/chat/completions'
             assert kw['json']['model']=='deepseek-v4-flash-vision-exp'
+            assert kw['json']['thinking']=={'type':'disabled'}
             content=kw['json']['messages'][1]['content']
             assert content[1]['type']=='image_url' and content[1]['image_url']['url'].startswith('data:image/png;base64,')
             return httpx.Response(200,json={'choices':[{'message':{'content':'{"introduction":"我喜欢篮球和摄影"}'}}]},request=httpx.Request('POST',url))
@@ -305,6 +307,14 @@ def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(cl
     png=b'\x89PNG\r\n\x1a\n' + b'test image'
     response=client.post('/introduction/recognize-image',headers=headers,files={'file':('intro.png',png,'image/png')})
     assert response.status_code==200 and response.json()=={'introduction':'我喜欢篮球和摄影'}
+
+
+def test_vision_can_use_existing_deepseek_text_credentials(monkeypatch):
+    monkeypatch.delenv('DEEPSEEK_API_KEY',raising=False)
+    monkeypatch.setenv('LLM_API_KEY','test-text-key')
+    monkeypatch.setenv('LLM_BASE_URL','https://api.deepseek.com/v1')
+    assert module.deepseek_vision_credentials()==('test-text-key','https://api.deepseek.com/v1')
+    assert module.health()['visionConfigured'] is True
 
 
 def test_intro_image_rejects_non_images(client):

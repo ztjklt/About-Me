@@ -392,7 +392,8 @@ async def select_school_emblem_with_deepseek(client, key, base, school, candidat
             'model': DEEPSEEK_V4FLASH_VISION_MODEL,
             'messages': [{'role': 'system', 'content': '你只进行校徽视觉核对和完整轮廓裁切。'},
                          {'role': 'user', 'content': content}],
-            'response_format': {'type': 'json_object'}, 'temperature': 0, 'max_tokens': 500})
+            'response_format': {'type': 'json_object'}, 'thinking': {'type': 'disabled'},
+            'temperature': 0, 'max_tokens': 500})
     response.raise_for_status()
     decision = json.loads(response.json()['choices'][0]['message']['content'])
     index = int(decision.get('selectedIndex', -1))
@@ -588,8 +589,7 @@ def image_mime(data):
 
 async def recognize_introduction_image(data, mime):
     """Use DeepSeek V4 Flash Vision only to turn an uploaded intro card into editable text."""
-    key = os.getenv('DEEPSEEK_API_KEY', '')
-    base = os.getenv('DEEPSEEK_BASE_URL', 'https://api.deepseek.com/v1')
+    key, base = deepseek_vision_credentials()
     if not key:
         raise HTTPException(503, '尚未配置 DeepSeek 图片识别服务')
     prompt = ('识别图片中属于用户自我介绍的文字，并整理为一段可编辑的第一人称自我介绍。'
@@ -611,7 +611,7 @@ async def recognize_introduction_image(data, mime):
                           ]},
                       ],
                       'response_format': {'type': 'json_object'},
-                      'temperature': 0, 'max_tokens': 1400})
+                      'thinking': {'type': 'disabled'}, 'temperature': 0, 'max_tokens': 1400})
             response.raise_for_status()
             result = json.loads(response.json()['choices'][0]['message']['content'])
         introduction = plain(result.get('introduction', ''), MAX_INTRO_CHARS)
