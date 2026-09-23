@@ -57,6 +57,8 @@
 
 Mac 构建设置为 Windowed，客户端启动时也会把旧全屏偏好切回窗口模式。该运行时保护不替代窗口化构建设置；独立 QA 存储域不会继承旧版用户偏好。已有旧偏好的无参数首帧显示未单独复现，不宣称从未出现全屏过渡。
 
+后续在用户电脑测试时，Mac 启动明确传 `-screen-fullscreen 0 -screen-width 1280 -screen-height 720`；不要最大化测试窗口，也不要请求浏览器全屏。
+
 | 证据 | 实际覆盖 |
 |---|---|
 | `artifacts/BuildDeliverables.log` | 同一次运行中 `ABOUTME_MAC_BUILD_OK`、`ABOUTME_SERVER_BUILD_OK`、`ABOUTME_WEB_BUILD_OK`，27 项规则和 13 项菜单/NPC 测试通过。 |
