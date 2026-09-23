@@ -8,7 +8,7 @@ namespace AboutMe
     // Explicit test client, never substituted for a real person in normal play.
     public class NetworkProbe : MonoBehaviour
     {
-        GameNetwork net;float next,startTime;bool ready,started;int seen,sequence,requiredPlayers=2;
+        GameNetwork net;float next,startTime;bool ready,started;int seen,sequence,requiredPlayers=2,timeoutSeconds=100;
         string marker;bool host;
         float nextTrace,reconnectAt;bool reconnectRequested,reconnecting,reconnected;string originalId;int physicalFrames;
         void Start()
@@ -16,6 +16,8 @@ namespace AboutMe
             net=GetComponent<GameNetwork>();var args=Environment.GetCommandLineArgs();
             string Arg(string key,string fallback=""){int i=Array.IndexOf(args,key);return i>=0&&i+1<args.Length?args[i+1]:fallback;}
             requiredPlayers=int.Parse(Arg("--players","2"));reconnectRequested=args.Contains("--reconnect");
+            if(!int.TryParse(Arg("--probe-timeout","100"),out timeoutSeconds)||timeoutSeconds<30||timeoutSeconds>900)
+            {Debug.LogError("PROBE_TIMEOUT_ARGUMENT_INVALID expected 30..900 seconds");Application.Quit(9);return;}
             marker=Arg("--marker","/tmp/about-me-room");host=args.Contains("--create-room");
             net.Endpoint=Arg("--endpoint","ws://127.0.0.1:7777");net.Sample=true;net.Token=Arg("--identity",Guid.NewGuid().ToString("N"));net.Nickname="TEST "+net.Token.Substring(0,Math.Min(5,net.Token.Length));
             int appearanceIndex=host?0:int.TryParse(net.Token.Replace("client",""),out int parsedIndex)?parsedIndex:1;
@@ -26,7 +28,7 @@ namespace AboutMe
         {
             if(net==null)return;
             float now=UnityEngine.Time.realtimeSinceStartup;
-            if(now-startTime>100){Debug.LogError("PROBE_TIMEOUT seen="+seen);Application.Quit(2);return;}
+            if(now-startTime>timeoutSeconds){Debug.LogError("PROBE_TIMEOUT seen="+seen+" limit="+timeoutSeconds);Application.Quit(2);return;}
             if(reconnecting){if(now<reconnectAt)return;reconnecting=false;net.Connect();return;}
             var s=net.State;if(s==null)return;
             if(JsonUtility.ToJson(s).Contains("\"source\""))
