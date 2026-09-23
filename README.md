@@ -2,6 +2,14 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
+## 2026-09-24 当前 DS 娘与真实 AI 整合候选
+
+当前候选以 `codex/ds-local-current` 的 `git rev-parse HEAD` 为唯一源码版本。它保留新版四气泡首页、战斗音乐、校徽飞盘与 DeepSeek Vision 校徽裁切，加入 DS 娘免费解锁与选装、八件 Persona 实体投掷，以及真实 Persona 生成和由游戏服务器异步请求、向同房广播的 DeepSeek 吞噬调侃。结算页可接收晚到事件，网页房间码输入修复也已包含。此处说明源码范围；可运行包的构建 SHA 和验收范围以 [当前整合交付](docs/CURRENT_DS_INTEGRATION.md) 为准。
+
+本机窗口试玩双击 `scripts/start-local-ds-windowed.command`：它先启动当前分支的 Persona API，再打开独立的 `builds/ds-local-current-qa/About Me Integration QA.app`。旧版游戏窗口及其存储域不受影响。角色介绍页可用“免费解锁 DS 娘”，随后在衣橱显式切换并保存；“AI 生成 Persona”才会调用真实文本模型。若 API 端口 8081 已被别的服务占用，启动器会提示维护者切换，不会悄悄使用旧服务。
+
+GitHub 与微信发布必须取同一已验收源码提交重新构建。微信导出还需要正确的 AppID、CDN 地址和微信真机验收；本机 macOS 或浏览器运行不能替代微信真机结论。下方 2026-09-23 试玩记录保留为历史交付，不代表当前候选。
+
 ## 2026-09-23 普通角色与界面整合试玩
 
 当前整合源码为 `codex/unity-default-menu-integration` 的 `18ca3f4`。从同一次构建得到的试玩包位于 `builds/reviewed-windowed-mac/About Me QA.app`、`builds/reviewed-windowed-web` 与 `builds/reviewed-windowed-linux/AboutMeServer`。Mac 包采用独立 QA 存储域，默认 1280×720 窗口；它不会覆盖旧版游戏。首次启动直接进入暖色教室四气泡菜单。普通布娃娃的脚部接地、移动与单键道具规则以及 Persona 背包和触控按钮已整合；DS 娘、GPT 娘仍保持暂停状态。
