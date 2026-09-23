@@ -11,6 +11,10 @@ namespace AboutMe
         void Awake()
         {
             Application.runInBackground=true;Application.targetFrameRate=60;UnityEngine.Time.fixedDeltaTime=.02f;
+#if UNITY_STANDALONE_OSX && !UNITY_EDITOR
+            if(!Application.isBatchMode&&Screen.fullScreenMode!=FullScreenMode.Windowed)
+                Screen.fullScreenMode=FullScreenMode.Windowed;
+#endif
             var go=new GameObject("AboutMe Network");go.AddComponent<SimpleWebTransport>();var network=go.AddComponent<GameNetwork>();
             var args=Environment.GetCommandLineArgs();
             if(args.Contains("--character-motion-probe")){go.AddComponent<CharacterMotionProbe>();return;}

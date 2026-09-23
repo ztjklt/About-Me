@@ -19,7 +19,8 @@ namespace AboutMe.Editor
             EditorSettings.serializationMode=SerializationMode.ForceText;
             EditorSettings.externalVersionControl="Visible Meta Files";
             PlayerSettings.companyName="About Me Studio";PlayerSettings.productName="About Me";
-            PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;
+            PlayerSettings.defaultScreenWidth=1280;PlayerSettings.defaultScreenHeight=720;
+            PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
             PlayerSettings.runInBackground=true;PlayerSettings.resizableWindow=true;
             PlayerSettings.iOS.microphoneUsageDescription="录制你的自我介绍，用于语音转写和生成 Persona。";
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone,"com.aboutme.party");
