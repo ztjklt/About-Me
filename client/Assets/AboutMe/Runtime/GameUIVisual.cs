@@ -80,7 +80,7 @@ namespace AboutMe
             profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,5,554,56,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
             join=ArtButton(studioCard,"进入房间",30,718,230,56,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
-            ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,()=>{net.Sample=true;net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));PlayerPrefs.SetString("sampleToken",net.Token);profile=GameNetwork.SampleProfile(net.Token,nickname.text);DisplayProfile();net.Status="已载入固定测试资产；它们不是根据介绍生成的。";},UITheme.Yellow,UITheme.Ink,"status");
+            ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
             var service=ArtPanel(studioCard,"AI service status",306,785,314,37,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,7,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,2,265,32,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             RefreshColorSelection();
         }

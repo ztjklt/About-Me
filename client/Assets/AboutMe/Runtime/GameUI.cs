@@ -70,13 +70,34 @@ namespace AboutMe
             favorites.AddRange(PlayerPrefs.GetString("favorites","").Split(',').Where(x=>x!=""));
             font=Resources.Load<Font>("AboutMeFont");if(!font)font=Font.CreateDynamicFontFromOSFont(new[]{"PingFang SC","Arial","Microsoft YaHei"},20);
             BuildArtUI();BuildMenus();
-            var sessionEndpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");if(!string.IsNullOrEmpty(sessionEndpoint))endpoint.text=sessionEndpoint;
+            var sessionEndpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");
+            if(Application.platform==RuntimePlatform.WebGLPlayer)
+            {
+                var webEndpoint=WebGameEndpoint(Application.absoluteURL);
+                if(webEndpoint!=null)sessionEndpoint=webEndpoint;
+            }
+            if(sessionEndpoint!=null)endpoint.text=sessionEndpoint;
             net.Endpoint=endpoint.text;net.ApiUrl=api.text;
             net.Token=PlayerPrefs.GetString("token","");if(net.Token!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
         }
         RectTransform inventoryContent;
+        static string WebGameEndpoint(string absoluteUrl)
+        {
+            if(!Uri.TryCreate(absoluteUrl,UriKind.Absolute,out var page))return null;
+            foreach(var part in page.Query.TrimStart('?').Split('&'))
+            {
+                var pair=part.Split(new[]{'='},2);
+                if(pair.Length==0||pair[0]!="game")continue;
+                var value=pair.Length==2?Uri.UnescapeDataString(pair[1]):"";
+                if(Uri.TryCreate(value,UriKind.Absolute,out var game)
+                    &&(game.Scheme=="wss"||(page.Scheme==Uri.UriSchemeHttp&&game.Scheme=="ws"))
+                    &&game.UserInfo==""&&game.Fragment=="")return game.AbsoluteUri;
+                return "";
+            }
+            return null;
+        }
         PublicPersonaInstance[] QuickItems(Snapshot state)=>state.inventory.OrderBy(x=>{int i=favorites.IndexOf(x.asset.assetId);return i<0?10000:i;}).ToArray();
         void Favorite(string assetId){favorites.Remove(assetId);favorites.Insert(0,assetId);if(favorites.Count>5)favorites.RemoveAt(5);PlayerPrefs.SetString("favorites",string.Join(",",favorites));lastInventory="";}
         public void WechatLogin(string code){StartCoroutine(LoginWechat(code));}
@@ -103,6 +124,15 @@ namespace AboutMe
         }
         void DisplayProfile()
         {LoadAppearance();profileText.text=(net.Sample?"[样例测试 · 非 AI 生成]\n":"")+"PERSONA × "+profile.personas.Length+"\n"+string.Join("  /  ",profile.personas.Select(p=>p.name));profileText.rectTransform.sizeDelta=new Vector2(554,Mathf.Max(72,profileText.preferredHeight));CacheProfile();}
+        void LoadPracticePersona()
+        {
+            net.Sample=true;
+            net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));
+            PlayerPrefs.SetString("sampleToken",net.Token);
+            profile=GameNetwork.SampleProfile(net.Token,nickname.text);
+            DisplayProfile();
+            net.Status="已载入练习道具（非 AI）";
+        }
         IEnumerator LoadProfile()
         {
             using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me",null,net.Token))

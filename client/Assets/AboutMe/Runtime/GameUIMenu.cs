@@ -42,8 +42,9 @@ namespace AboutMe
             room.characterLimit=6;room.contentType=InputField.ContentType.Alphanumeric;
             ArtButton(multiplayerMenu,"加入房间",615,402,325,64,()=>{if(room.text.Trim().Length!=6){net.Status="请输入 6 位房间码";return;}Enter();},UITheme.Yellow,UITheme.Ink,"ready");
             ArtText(multiplayerMenu,"2–6 人 · 两人即可开局",40,496,650,40,20,UITheme.Muted);
-            ArtButton(multiplayerMenu,"自我介绍",40,600,230,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);
-            ArtButton(multiplayerMenu,"连接设置",292,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
+            ArtButton(multiplayerMenu,"练习道具（非 AI）",40,600,230,56,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
+            ArtButton(multiplayerMenu,"自我介绍",292,600,210,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);
+            ArtButton(multiplayerMenu,"连接设置",524,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
             BuildDraftLibrary();ApplyAdaptiveLayout(true);
             LoadCachedProfile();ShowPage(MenuPage.Main);statusPill.SetAsLastSibling();
         }
