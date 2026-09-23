@@ -13,7 +13,7 @@ namespace AboutMe
             for(int i=0;i<choices.Length;i++)
             {
                 string id=choices[i].id;
-                var button=ArtButton(parent,choices[i].label.Substring(0,2),30+i*99,529,92,36,()=>{if(busy)return;appearanceDraft.expression=id;appearanceDirty=true;RefreshAppearancePreview();net.Status="表情已选："+choices.First(o=>o.id==id).label+"。可在衣橱预览并保存。";},UITheme.Field,UITheme.Ink);
+                var button=ArtButton(parent,choices[i].label.Substring(0,2),30+i*99,529,84,36,()=>{if(busy)return;appearanceDraft.expression=id;appearanceDirty=true;RefreshAppearancePreview();net.Status="表情已选："+choices.First(o=>o.id==id).label+"。可在衣橱预览并保存。";},UITheme.Field,UITheme.Ink);
                 button.gameObject.name="Expression · "+id;expressionChoices[id]=button;
             }
             RefreshExpressionChoices();

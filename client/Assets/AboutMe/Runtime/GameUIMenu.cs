@@ -145,6 +145,11 @@ namespace AboutMe
         {
             if(homeHero)homeHero.gameObject.SetActive(false);
             var library=draftLibrary=ArtPanel(home,"Introduction draft library",45,34,800,820,UITheme.Paper,true,true);
+            var notebookFrame=ArtPanel(library,"Clay notebook display",541,57,209,138,UITheme.Yellow,false,false);
+            notebookFrame.GetComponent<Image>().raycastTarget=false;
+            MenuSprite(library,"Story notebook","StartMenu2D/arm-book",487,43,284,160);
+            Accent(library,519,68,47,10,-19,UITheme.Pink);
+            Accent(library,699,173,34,9,23,UITheme.Mint);
             Tape(library,"MY INTRODUCTIONS",30,24,260,38,UITheme.Yellow);
             ArtText(library,"自我介绍预设",30,75,660,84,34,UITheme.Ink,FontStyle.Bold);
             ArtButton(library,"返回菜单",30,735,174,55,()=>ShowPage(MenuPage.Main),UITheme.Field,UITheme.Ink,"exit");
@@ -155,6 +160,15 @@ namespace AboutMe
             ArtButton(library,"删除草稿",240,287,190,52,DeleteDraft,UITheme.Field,UITheme.Ink);
             draftHeading=ArtText(library,"",30,360,720,40,18,UITheme.Muted);
             var viewport=ArtPanel(library,"Draft scroll",30,410,720,300,UITheme.Field,false,false);viewport.gameObject.AddComponent<RectMask2D>();
+            string[] keepsakes={"book-single","cactus-small-a","pillow-a"};
+            Color[] keepsakeColors={UITheme.Yellow,UITheme.Mint,UITheme.Pink};
+            for(int i=0;i<keepsakes.Length;i++)
+            {
+                var sticker=ArtPanel(viewport,"Persona keepsake sticker",82+i*218,126,145,137,keepsakeColors[i],false,false);
+                sticker.GetComponent<Image>().raycastTarget=false;
+                sticker.localRotation=Quaternion.Euler(0,0,i==1?4:-5);
+                MenuSprite(sticker,"Persona keepsake · "+keepsakes[i],"PersonaThumbs/"+keepsakes[i],20,6,105,105);
+            }
             draftList=ArtRect(viewport,"Draft list",Vector2.zero,new Vector2(710,300));
             var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=draftList;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=30;
             try{drafts=JsonUtility.FromJson<IntroductionDrafts>(PlayerPrefs.GetString("introductionDrafts",""));}catch(Exception){}

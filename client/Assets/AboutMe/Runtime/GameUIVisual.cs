@@ -52,10 +52,16 @@ namespace AboutMe
         void BuildHome()
         {
             home=ArtPanel(artboard,"Introduction",0,0,1600,900,Color.clear,false,false);
-            // The old split title/window page is retired. This canvas is now the
-            // introduction editor only; the layered four-bubble stage owns home.
+            MenuSprite(home,"Campus workshop background","StartMenu2D/background",0,0,1600,900,false);
+            var backdropWash=ArtPanel(home,"Warm paper backdrop",0,0,1600,900,new Color(1f,.98f,.93f,.55f),false,false);
+            backdropWash.GetComponent<Image>().raycastTarget=false;
 
-            studioCard=ArtPanel(home,"Persona studio",900,34,650,820,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
+            studioCard=ArtPanel(home,"Persona studio",900,34,650,836,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
+            var mascotFrame=ArtPanel(studioCard,"Clay mascot cameo",486,22,134,143,UITheme.Mint,false,false);
+            mascotFrame.GetComponent<Image>().raycastTarget=false;
+            MenuSprite(mascotFrame,"Workshop mascot","StartMenu2D/mascot-open",-5,-13,144,178);
+            Accent(studioCard,473,22,42,11,-16,UITheme.Yellow);
+            Accent(studioCard,582,152,34,9,24,UITheme.Pink);
             Tape(studioCard,"PERSONA WORKSHOP",30,24,216,38,UITheme.Mint);
             ArtText(studioCard,"先介绍一下，你是谁？",30,72,575,45,31,UITheme.Ink,FontStyle.Bold);
             StepBadge(studioCard,"1",30,126,UITheme.Yellow);ArtText(studioCard,"写下关于你的线索",70,127,260,34,18,UITheme.Ink,FontStyle.Bold);
@@ -76,14 +82,15 @@ namespace AboutMe
             var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
             BuildExpressionChoices(studioCard);
             imageUpload=ArtButton(studioCard,"图片识别",274,250,150,32,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
-            generate=ArtButton(studioCard,"AI 生成 Persona",30,578,230,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
-            ArtButton(studioCard,"免费解锁 DS 娘",278,578,342,48,()=>StartCoroutine(UnlockDSGirl()),UITheme.Mint,UITheme.Ink,"status");
-            var profileCard=ArtPanel(studioCard,"Persona result",30,638,590,66,UITheme.Field,true,false);
-            profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,5,554,56,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
+            generate=ArtButton(studioCard,"生成 Persona",30,578,200,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            ArtButton(studioCard,"解锁 DS",246,578,168,48,()=>StartCoroutine(UnlockCosmetic("ds-girl")),UITheme.Mint,UITheme.Ink);
+            ArtButton(studioCard,"解锁 Claude",430,578,190,48,()=>StartCoroutine(UnlockCosmetic("claude-girl")),UITheme.Yellow,UITheme.Ink);
+            var profileCard=ArtPanel(studioCard,"Persona result",30,642,590,60,UITheme.Field,true,false);
+            profileText=ArtText(profileCard,"Persona 尚未生成。",18,3,554,54,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
-            join=ArtButton(studioCard,"进入房间",30,718,230,56,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
-            ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
-            var service=ArtPanel(studioCard,"AI service status",306,785,314,37,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,7,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,2,265,32,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            join=ArtButton(studioCard,"进入房间",30,718,230,50,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
+            ArtButton(studioCard,"本地样例（无需 AI）",30,784,260,34,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
+            var service=ArtPanel(studioCard,"AI service status",306,784,314,34,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,5,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,1,265,31,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             RefreshColorSelection();
         }
 
@@ -255,7 +262,7 @@ namespace AboutMe
             }
             else
             {
-                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,34,650,820);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
+                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,34,650,836);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
             }
         }
 
