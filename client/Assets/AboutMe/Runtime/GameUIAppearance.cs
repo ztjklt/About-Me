@@ -8,14 +8,14 @@ using UnityEngine.UI;
 
 namespace AboutMe
 {
-    [Serializable] class AppearanceSaveRequest {public AppearanceData appearance;public int expectedRevision;}
+    [Serializable] class AppearanceSaveRequest {public AppearanceData appearance;public int expectedRevision;public string characterSkin,introduction;}
     [Serializable] class AppearanceRecommendRequest {public AppearanceData appearance;public string introduction;}
     [Serializable] class AppearanceRecommendation {public AppearanceData appearance;public string reason;}
     public partial class GameUI
     {
-        AppearanceData appearanceDraft=new AppearanceData();bool appearanceDirty;
+        AppearanceData appearanceDraft=new AppearanceData();bool appearanceDirty;string skinDraft="normal";
         RectTransform wardrobe;Camera wardrobeCamera;ToyActor wardrobeActor;RenderTexture wardrobeTexture;
-        GameObject wardrobeLight;Text wardrobeNote;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
+        GameObject wardrobeLight;Text wardrobeNote,skinButtonLabel;Button skinButton,recommendButton;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
         readonly List<Button> wardrobeButtons=new List<Button>();
         UILiquidTabIndicator wardrobeViewIndicator;readonly Text[] wardrobeViewLabels=new Text[3];
         public AppearanceData CurrentAppearance=>appearanceDraft.Copy();
@@ -26,6 +26,8 @@ namespace AboutMe
             ArtText(card,"我的校园穿搭",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
             ArtText(card,"自由搭配 · 不影响战斗属性或 Persona",34,84,810,32,18,UITheme.Muted);
             wardrobeButtons.Add(ArtButton(card,"关闭",1220,28,116,46,CloseWardrobe,UITheme.Field,UITheme.Ink));
+            skinButton=ArtButton(card,"DS 娘 · 未解锁",965,82,371,42,ToggleCharacterSkin,UITheme.Mint,UITheme.Ink);
+            skinButtonLabel=skinButton.GetComponentInChildren<Text>();wardrobeButtons.Add(skinButton);
             var preview=ArtPanel(card,"Doll preview",32,137,435,484,UITheme.Field,true,false);var viewport=ArtRect(preview,"Preview image",new Vector2(5,-5),new Vector2(425,474));var raw=viewport.gameObject.AddComponent<RawImage>();
             wardrobeTexture=new RenderTexture(640,740,24){antiAliasing=4};raw.texture=wardrobeTexture;raw.raycastTarget=false;
             var cameraObject=new GameObject("Wardrobe camera");wardrobeCamera=cameraObject.AddComponent<Camera>();wardrobeCamera.orthographic=true;wardrobeCamera.orthographicSize=1.5f;wardrobeCamera.clearFlags=CameraClearFlags.SolidColor;wardrobeCamera.backgroundColor=UITheme.Field;wardrobeCamera.cullingMask=1<<30;wardrobeCamera.targetTexture=wardrobeTexture;wardrobeCamera.enabled=false;
@@ -53,7 +55,7 @@ namespace AboutMe
                 wardrobeValues[id]=ArtText(value,"",9,3,459,31,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
                 wardrobeButtons.Add(ArtButton(card,"›",1202,y,46,37,()=>CycleAppearance(id,1),UITheme.Field,UITheme.Ink));
             }
-            wardrobeButtons.Add(ArtButton(card,"根据介绍 AI 推荐",510,704,357,52,()=>StartCoroutine(RecommendAppearance()),UITheme.Yellow,UITheme.Ink));
+            recommendButton=ArtButton(card,"根据介绍 AI 推荐",510,704,357,52,()=>StartCoroutine(RecommendAppearance()),UITheme.Yellow,UITheme.Ink);wardrobeButtons.Add(recommendButton);
             wardrobeButtons.Add(ArtButton(card,"保存穿搭",885,704,363,52,()=>StartCoroutine(SaveAppearance()),UITheme.Mint,UITheme.Ink));
             wardrobeButtons.Add(ArtButton(card,"撤销未保存修改",510,771,357,37,()=>{appearanceDirty=false;LoadAppearance();wardrobeNote.text="已恢复上次保存的穿搭。";},UITheme.Field,UITheme.Ink));
             wardrobeButtons.Add(ArtButton(card,"重新载入角色",885,771,363,37,()=>{if(net.Sample){appearanceDirty=false;LoadAppearance();}else StartCoroutine(ReloadAppearance());},UITheme.Field,UITheme.Ink));
@@ -62,6 +64,8 @@ namespace AboutMe
         void OpenWardrobe()
         {
             if(busy)return;if(!wardrobe)BuildWardrobe();wardrobe.gameObject.SetActive(true);wardrobe.SetAsLastSibling();RefreshAppearancePreview();SetWardrobeView(0,true);wardrobeCamera.enabled=true;
+            if(profile==null||!profile.dsGirlUnlocked)wardrobeNote.text="介绍里写喜欢 DeepSeek，保存穿搭后可解锁 DS 娘。";
+            else if(skinDraft=="ds-girl")wardrobeNote.text="DS 娘使用固定套装；原校园穿搭仍保留。";
         }
         void CloseWardrobe(){wardrobe.gameObject.SetActive(false);wardrobeCamera.enabled=false;}
         void SetWardrobeView(int view,bool immediate=false)
@@ -75,9 +79,17 @@ namespace AboutMe
             if(busy)return;var slot=AppearanceCatalog.Data.slots.First(x=>x.id==id);int index=Array.FindIndex(slot.options,x=>x.id==appearanceDraft.Get(id));appearanceDraft.Set(id,slot.options[(index+step+slot.options.Length)%slot.options.Length].id);appearanceDirty=true;RefreshAppearancePreview();
         }
         void SetDraftColor(string color){appearanceDraft.topColor=color;appearanceDirty=true;RefreshAppearancePreview();}
+        void ToggleCharacterSkin()
+        {
+            if(busy||profile==null||!profile.dsGirlUnlocked)return;
+            skinDraft=skinDraft=="ds-girl"?"normal":"ds-girl";appearanceDirty=true;
+            wardrobeNote.text=skinDraft=="ds-girl"?"DS 娘使用固定套装；原穿搭保留。保存后生效。":"已切回校园玩偶；保存后生效。";RefreshAppearancePreview();
+        }
         void LoadAppearance()
         {
-            if(appearanceDirty){RefreshAppearancePreview();return;}
+            if(appearanceDirty)
+            {if(profile==null||!profile.dsGirlUnlocked)skinDraft="normal";RefreshAppearancePreview();return;}
+            skinDraft=profile!=null&&profile.dsGirlUnlocked&&profile.characterSkin=="ds-girl"?"ds-girl":"normal";
             if(net.Sample)
             {
                 var saved=PlayerPrefs.GetString("sampleAppearance","");appearanceDraft=AppearanceData.Resolve(saved==""?profile?.appearance:JsonUtility.FromJson<AppearanceData>(saved));
@@ -88,8 +100,12 @@ namespace AboutMe
         }
         void RefreshAppearancePreview()
         {
-            appearanceDraft=AppearanceData.Resolve(appearanceDraft);selectedColor=appearanceDraft.topColor;world.PreviewAppearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();RefreshColorSelection();RefreshExpressionChoices();
+            appearanceDraft=AppearanceData.Resolve(appearanceDraft);appearanceDraft.character=profile!=null&&profile.dsGirlUnlocked&&skinDraft=="ds-girl"?"ds":"normal";
+            selectedColor=appearanceDraft.topColor;world.PreviewAppearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();RefreshColorSelection();RefreshExpressionChoices();
             if(!wardrobe)return;
+            skinButton.interactable=profile!=null&&profile.dsGirlUnlocked&&!busy;
+            skinButtonLabel.text=profile!=null&&profile.dsGirlUnlocked?(skinDraft=="ds-girl"?"切换为校园玩偶":"切换为 DS 娘"):"DS 娘 · 未解锁";
+            recommendButton.interactable=skinDraft!="ds-girl"&&!busy;
             foreach(var slot in AppearanceCatalog.Data.slots)
             {
                 wardrobeValues[slot.id].text=slot.options.First(x=>x.id==appearanceDraft.Get(slot.id)).label;
@@ -124,6 +140,7 @@ namespace AboutMe
         IEnumerator RecommendAppearance()
         {
             if(busy)yield break;
+            if(skinDraft=="ds-girl"){wardrobeNote.text="DS 娘套装固定；切回校园玩偶后可推荐穿搭。";yield break;}
             if(net.Sample){net.Status="样例模式可手动搭配；真实 AI 推荐请使用真实角色。";yield break;}
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="先写一段介绍，再让 AI 推荐穿搭。";yield break;}
             busy=true;wardrobeNote.text="正在根据你的介绍推荐穿搭…";yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
@@ -142,10 +159,13 @@ namespace AboutMe
                 if(profile!=null)profile.appearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();PlayerPrefs.SetString("sampleAppearance",JsonUtility.ToJson(appearanceDraft));PlayerPrefs.Save();appearanceDirty=false;net.Status="样例穿搭已保存到本机。";yield break;
             }
             busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
-            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0}),net.Token))
+            string intro=string.IsNullOrWhiteSpace(introduction.text)?null:introduction.text.Trim();
+            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0,characterSkin=skinDraft,introduction=intro!=null&&intro.Length>=3?intro:null}),net.Token))
             {
                 yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();net.Status="穿搭已保存，Persona 没有改变。";if(wardrobeNote)wardrobeNote.text="已保存。你可以直接带着这套穿搭进入房间。";
+                bool wasUnlocked=profile!=null&&profile.dsGirlUnlocked;
+                profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();net.Status="穿搭已保存，Persona 没有改变。";
+                if(wardrobeNote)wardrobeNote.text=!wasUnlocked&&profile.dsGirlUnlocked?"已解锁 DS 娘。点击右上角切换，再保存即可使用。":"已保存。你可以直接带着这套穿搭进入房间。";
             }
             busy=false;
         }

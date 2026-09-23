@@ -50,6 +50,8 @@ namespace AboutMe
                         var worldVertex=matrix.MultiplyPoint3x4(points[i]);
                         vertices.Add(worldVertex);
                         var delta=Vector3.zero;string name=part.name;
+                        bool dsEye=name.StartsWith("DS Eye ",StringComparison.Ordinal);
+                        bool isEye=dsEye||name=="Eye white"||name=="Pupil"||name=="Eye glint";
                         if(name.StartsWith("Head(")||name=="Round head and chin")
                         {
                             var inHead=bones[bone].InverseTransformPoint(root.TransformPoint(worldVertex));float lower=Mathf.Clamp01((-inHead.y-.03f)/.42f);delta=new Vector3(inHead.x*.10f*lower,.10f*lower+Mathf.Clamp01(inHead.y/.48f)*.12f,.18f*lower);
@@ -59,11 +61,15 @@ namespace AboutMe
                         else if(name.StartsWith("Cap "))delta=Vector3.up*.20f;
                         else if(name.StartsWith("Headphones("))delta=Vector3.up*.16f;
                         else if(name.Contains("fringe")||name=="Hair crown")delta=Vector3.up*.16f;
-                        else if(name=="Eye white"||name=="Pupil"||name=="Eye glint")delta=new Vector3(Mathf.Sign(part.transform.localPosition.x)*.085f,.20f,.015f);
+                        else if(isEye)
+                        {
+                            var local=bones[bone].InverseTransformPoint(root.TransformPoint(worldVertex));
+                            delta=new Vector3(Mathf.Sign(dsEye?local.x:part.transform.localPosition.x)*.085f,.20f+(dsEye?DSGirlFaceDetails.EyeDrop:0),.015f);
+                        }
                         gulp.Add(root.InverseTransformVector(bones[bone].TransformVector(delta)));
                         var eyeDelta=Vector3.zero;
-                        if(name=="Eye white"||name=="Pupil"||name=="Eye glint")
-                        {var local=bones[bone].InverseTransformPoint(root.TransformPoint(worldVertex));eyeDelta.y=(.05f-local.y)*.96f;}
+                        if(isEye)
+                        {var local=bones[bone].InverseTransformPoint(root.TransformPoint(worldVertex));eyeDelta.y=(.05f-(dsEye?DSGirlFaceDetails.EyeDrop:0)-local.y)*.96f;}
                         blink.Add(root.InverseTransformVector(bones[bone].TransformVector(eyeDelta)));
                         var swelling=Vector3.zero;
                         if(bones[bone]==torso&&name!="Neck"&&name!="Collar"&&name!="Hood")

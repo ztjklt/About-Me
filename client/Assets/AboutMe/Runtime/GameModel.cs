@@ -26,6 +26,8 @@ namespace AboutMe
         public string playerId, nickname, color = "#77C8BD";
         public int outfit, revision, appearanceRevision;
         public AppearanceData appearance;
+        public bool dsGirlUnlocked;
+        public string characterSkin = "normal";
         public PersonaAsset[] personas = Array.Empty<PersonaAsset>();
     }
     [Serializable] public class CatalogEntry { public string templateId, visualId, label, color; }
@@ -110,6 +112,7 @@ namespace AboutMe
         public bool getUpFaceUp;
         public BodyPose bodyPose;
         public AppearanceData appearance;
+        public string characterSkin;
         public Vector3 position, velocity, impactImpulse, grabAnchor;
         public int actionId, actionVariant, impactId;
         public string actionKind="idle", actionTarget="";
@@ -181,14 +184,17 @@ namespace AboutMe
             for(int i=0;i<positions.Length;i++)Props.Add(new PublicProp{id="prop-"+i,visual=i<4?"box":"trash",position=positions[i]});
         }
         public static Vector3 Spawn(int index) => new Vector3((index%3-1)*6,1,-22+(index/3)*4);
+        static string VerifiedCharacterSkin(Profile profile) => profile!=null&&profile.dsGirlUnlocked&&profile.characterSkin=="ds-girl"?"ds-girl":"normal";
         public bool Add(Profile profile)
         {
             if (Players.TryGetValue(profile.playerId, out var existing))
-            { if(Phase==MatchPhase.Lobby)existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);
+            { if(Phase==MatchPhase.Lobby)
+                {existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);existing.profile.dsGirlUnlocked=profile.dsGirlUnlocked;existing.profile.characterSkin=VerifiedCharacterSkin(profile);}
                 existing.connected = true; existing.lastInput = Time; existing.sequence = -1; return true; }
             if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0) return false;
             if (Host == null) Host = profile.playerId;
             profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);
+            profile.characterSkin=VerifiedCharacterSkin(profile);
             Players[profile.playerId] = new Player { profile = profile, position = Spawn(Players.Count), stability = Rules.maxStability };
             foreach (var asset in profile.personas)
                 Items.Add(new PersonaInstance { id = Guid.NewGuid().ToString("N"), ownerId = profile.playerId, asset = asset.Copy(), state = ItemState.Inventory });
@@ -650,7 +656,7 @@ namespace AboutMe
             return new Snapshot {protocolVersion=3,serverTick=serverTick,combatEvents=CombatEvents.ToArray(),grabLinks=GrabLinks(),room=Room,matchId=MatchId,you=recipient,host=Host,winner=Winner,winners=Winners,rankings=Rankings,endReason=EndReason,simulationTime=Time,handEventId=HandEventId,handStartedAt=LastHand,phase=Phase,handPosition=handPosition,handFist=handFist,
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
-                    var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),
+                    var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
                         equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=p.escapeStartedAt<0?0:Mathf.Clamp01((Time-p.escapeStartedAt)/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
