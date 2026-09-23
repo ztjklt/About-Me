@@ -112,6 +112,8 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     for visual, template, accepted, rejected in [
         ('football-cc0', 'Ricochet', '我踢足球', '我踢美式足球'),
         ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用电脑笔记本写代码'),
+        ('football-cc0', 'Ricochet', 'I play soccer', 'I play gridiron football'),
+        ('notebook-cc0', 'Disc', 'I write in my paper notebook', 'I use a notebook computer'),
     ]:
         accepted_raw = {'personas': [dict(name='道具', source=accepted,
             templateId=template, visualId=visual)]}
