@@ -148,15 +148,18 @@ def test_generation_is_grounded_and_school_is_one_badge():
     assert result[0]['name'] == '中山大学校徽圆盘'
     assert (result[0]['templateId'], result[0]['visualId']) == ('Disc', 'school-disc')
     assert result[0]['color'] == '#77C8BD'
-    preset = module.preset_personas('我在中山大学读书')
-    assert len(preset) == 1 and preset[0]['name'] == '中山大学校徽圆盘'
-    assert module.preset_personas('我在中山大学读书，也喜欢篮球') is None
 
 @pytest.mark.parametrize('school', ['清华大学', '北京大学', '中山大学'])
-def test_three_school_discs_are_marked_as_deepseek_generated(client, school):
+def test_three_school_discs_are_marked_as_deepseek_generated(client, school, monkeypatch):
+    async def school_provider(introduction):
+        return module.validate_personas({'personas': [dict(name='校徽', source=school,
+            templateId='Disc', visualId='school-disc')]}, introduction)
+    monkeypatch.setattr(module, 'generate_with_provider', school_provider)
     headers, _ = credentials(client)
-    result = client.post('/personas/generate', headers=headers,
-        json={'nickname':'玩家', 'introduction':'我在'+school+'读书'}).json()['personas'][0]
+    response = client.post('/personas/generate', headers=headers,
+        json={'nickname':'玩家', 'introduction':'我在'+school+'读书'})
+    assert response.status_code == 200
+    result = response.json()['personas'][0]
     assert result['name'] == school + '校徽圆盘'
     assert result['generatedBy'] == 'DeepSeek Flash Vision'
     assert result['emblemPath'].startswith('/school-emblems/')

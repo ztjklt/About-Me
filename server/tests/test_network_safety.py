@@ -25,6 +25,7 @@ def identity(client):
 
 
 BODY = {'item_name': '篮球', 'template_id': 'Projectile', 'visual_id': 'basketball'}
+ROAST_LINE = '篮球刚上场就想投三分，结果先投进了对手的胃里。'
 
 
 def test_roast_forbids_source_and_rejects_private_name(client, monkeypatch):
@@ -64,9 +65,90 @@ def test_unsafe_provider_output_is_never_returned(client, monkeypatch):
 
     monkeypatch.setattr(module.httpx, 'AsyncClient', Provider)
     result = client.post('/roast', json=BODY, headers=headers)
-    assert result.status_code == 200
-    assert result.json()['roast'] == module.ROAST_FALLBACK
+    assert result.status_code == 502
     assert '13800138000' not in result.text
+
+
+def test_internal_roast_is_authenticated_and_idempotent(client, monkeypatch):
+    calls = []
+    async def fake(item):
+        calls.append(item)
+        return ROAST_LINE
+    monkeypatch.setattr(module, 'roast_with_provider', fake)
+    body = dict(BODY, match_id='a' * 32, event_id='b' * 32)
+    assert client.post('/internal/roast', json=body).status_code == 403
+    auth = {'X-Game-Key': 'test-server-key'}
+    first = client.post('/internal/roast', json=body, headers=auth)
+    assert first.status_code == 200
+    assert first.json() == {'event_id': 'b' * 32, 'roast': ROAST_LINE, 'aiSource': 'provider'}
+    assert client.post('/internal/roast', json=body, headers=auth).json() == first.json()
+    assert len(calls) == 1 and calls[0] == BODY
+    with module.db() as con:
+        billed = con.execute("SELECT count FROM request_limits WHERE bucket LIKE 'ai:daily:%'").fetchone()[0]
+    assert billed == 1
+    assert client.post('/internal/roast', json=dict(body, item_name='排球'), headers=auth).status_code == 409
+    assert client.post('/internal/roast', json=dict(body, source='私密介绍'), headers=auth).status_code == 422
+
+
+def test_failed_internal_roast_does_not_cache_fake_success(client, monkeypatch):
+    body = dict(BODY, match_id='c' * 32, event_id='d' * 32)
+    auth = {'X-Game-Key': 'test-server-key'}
+    async def fail(_):
+        raise HTTPException(502, '模型失败')
+    monkeypatch.setattr(module, 'roast_with_provider', fail)
+    assert client.post('/internal/roast', json=body, headers=auth).status_code == 502
+    with module.db() as con:
+        assert con.execute('SELECT COUNT(*) FROM roast_events').fetchone()[0] == 0
+    async def succeed(_): return ROAST_LINE
+    monkeypatch.setattr(module, 'roast_with_provider', succeed)
+    assert client.post('/internal/roast', json=body, headers=auth).status_code == 200
+
+
+def test_pending_internal_roast_rejects_duplicate_without_provider_call(client, monkeypatch):
+    body = dict(BODY, match_id='1' * 32, event_id='2' * 32)
+    item = module.validated_roast_item(module.InternalRoastRequest(**body))
+    digest = module.hashlib.sha256(json.dumps(item, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    with module.db() as con:
+        con.execute('INSERT INTO roast_events VALUES (?,?,?,?,?)',
+                    (body['match_id'] + ':' + body['event_id'], digest, 'pending', None, module.time.time()))
+    async def unexpected(_):
+        pytest.fail('duplicate pending event called provider')
+    monkeypatch.setattr(module, 'roast_with_provider', unexpected)
+    response = client.post('/internal/roast', json=body, headers={'X-Game-Key': 'test-server-key'})
+    assert response.status_code == 409
+    with module.db() as con:
+        assert con.execute("SELECT count(*) FROM request_limits WHERE bucket LIKE 'ai:daily:%'").fetchone()[0] == 0
+
+
+def test_unconfigured_internal_roast_returns_503_without_cache(client, monkeypatch):
+    monkeypatch.delenv('LLM_API_KEY')
+    body = dict(BODY, match_id='e' * 32, event_id='f' * 32)
+    result = client.post('/internal/roast', json=body, headers={'X-Game-Key': 'test-server-key'})
+    assert result.status_code == 503
+    with module.db() as con:
+        assert con.execute('SELECT COUNT(*) FROM roast_events').fetchone()[0] == 0
+
+
+def test_school_only_generation_requires_real_provider(client, monkeypatch):
+    monkeypatch.delenv('LLM_API_KEY')
+    headers = identity(client)
+    response = client.post('/personas/generate', headers=headers,
+                           json={'nickname': '玩家', 'introduction': '我在中山大学读书'})
+    assert response.status_code == 503
+
+
+def test_public_playtest_ai_budget_is_configurable(client, monkeypatch):
+    monkeypatch.setenv('ABOUTME_AI_DAILY_LIMIT', '2')
+    request = SimpleNamespace(client=SimpleNamespace(host='shared-api-peer'))
+    module.enforce_quota(request, 'ai_internal')
+    module.enforce_quota(request, 'ai_internal')
+    with pytest.raises(HTTPException) as error:
+        module.enforce_quota(request, 'ai_internal')
+    assert error.value.status_code == 429
+    monkeypatch.setenv('ABOUTME_AI_DAILY_LIMIT', 'invalid')
+    with pytest.raises(HTTPException) as error:
+        module.enforce_quota(request, 'ai_internal')
+    assert error.value.status_code == 503
 
 
 def test_new_identities_share_ai_peer_budget(client, monkeypatch):

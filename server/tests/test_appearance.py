@@ -6,7 +6,11 @@ from server import appearance as appearance_module
 from server.tests.test_api import client,credentials
 
 
-def test_catalog_save_and_reconnect_do_not_change_personas(client):
+def test_catalog_save_and_reconnect_do_not_change_personas(client, monkeypatch):
+    async def school_provider(introduction):
+        return module.validate_personas({'personas': [dict(name='校徽', source=introduction,
+            templateId='Disc', visualId='school-disc')]}, introduction)
+    monkeypatch.setattr(module, 'generate_with_provider', school_provider)
     headers,data=credentials(client)
     before=client.post('/personas/generate',headers=headers,json={'nickname':'玩家','introduction':'中山大学'}).json()
     saved=client.post('/profiles/me/appearance',headers=headers,json={'expectedRevision':0,'appearance':{'hair':'tied','bag':'sling','top':'shirt','expression':'confident'}})

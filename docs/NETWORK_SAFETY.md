@@ -3,14 +3,15 @@
 ## 数据路径
 
 - 本人鉴权资料和游戏服务器内部保留 Persona `source`，用于生成来源核对。`Match.View` 对 Reveal、Ground、Carried 和本人 Inventory/Equipped 都生成独立的公开道具副本，资产字段只显式复制 `assetId`、`name`、`templateId`、`visualId`、`color`；不会修改权威状态中的原件。其他玩家无法通过快照拿到介绍原文。
-- 客户端调侃请求只发送公开道具名称与已发布的模板、外观标识。`/roast` 禁止额外字段，拒绝包含明显联系方式、账号、住址、证件号码和攻击性词句的名称；不会把 `source` 转发给模型。未配置模型、模型调用失败时，客户端仅显示固定的安全文案。游戏服务器取历史档案时也复核公开名称，不合规的旧资料不能加入多人房间。
-- Persona 生成入口在服务端校验来源与公开名称，规则见 [Persona 生成与公开边界](PERSONA_GENERATION_BOUNDARY.md)。调侃响应由服务端检查长度、单行格式、长号码、网址、联系方式及明确辱骂/色情/仇恨词；未通过时只返回固定安全文案，不展示原响应。
+- 调侃请求只发送公开道具名称与已发布的模板、外观标识。`/roast` 与 `/internal/roast` 禁止额外字段，拒绝包含明显联系方式、账号、住址、证件号码和攻击性词句的名称；不会把 `source` 转发给模型。未配置模型或模型调用失败时返回非 2xx，不显示假 AI 调侃。游戏服务器取历史档案时也复核公开名称，不合规的旧资料不能加入多人房间。
+- Persona 生成入口在服务端校验来源与公开名称，规则见 [Persona 生成与公开边界](PERSONA_GENERATION_BOUNDARY.md)。调侃响应由服务端检查长度、单行格式、长号码、网址、联系方式及明确辱骂/色情/仇恨词；未通过时返回 502，不展示原响应。
 
 ## 房间与额度
 
 - Lobby 最后一人断线时立即删除房间。已开始的房间在全部连接断开后保留 120 秒供原身份重连，到期释放房间与 32 房容量；`--accelerated` 自动验收模式使用 3 秒宽限。
-- SQLite `request_limits` 表跨同一数据库的 API worker 原子计数。`/sessions` 和 `/sessions/wechat`：同一网络来源每分钟 10 次，全局每分钟 120 次。AI 接口（生成、调侃、语音转写、图片识别、外观推荐）：同一网络来源每分钟 6 次，全局每分钟 30 次，且全局每天 500 次；超额返回 429。调侃另保留每身份 2 秒冷却。创建新身份仍共享网络来源和全局额度。
-- 默认网络来源取 API 实际连接的 peer，不信任客户端自报的转发头。反向代理部署在 API 与 Caddy 环境中使用相同、未提交的 `ABOUTME_PROXY_KEY`；Caddy 覆盖写入 `X-AboutMe-Client-IP: {remote_host}` 和 `X-AboutMe-Proxy-Key: {$ABOUTME_PROXY_KEY}`。API 只在密钥匹配且客户端 IP 是单个合法 IPv4/IPv6 地址时使用该来源；其他请求仍按连接 peer 计数。Uvicorn 禁用默认代理头处理，API 容器端口不直接对外。全局额度仍生效；多 API 实例须共享同一数据库或改用集中式限流存储。
+- SQLite `request_limits` 表跨同一数据库的 API worker 原子计数。默认 `/sessions` 和 `/sessions/wechat` 同一网络来源每分钟 10 次、全局每分钟 120 次；AI 接口默认同一网络来源每分钟 6 次、全局每分钟 30 次、全局每天 500 次。内部权威调侃仅计 AI 全局分钟和每日额度，避免把 Game 私网连接当作单个玩家；重复事件缓存读取不再次扣额。额度可通过 `ABOUTME_SESSION_*` 与 `ABOUTME_AI_*` 环境变量调整，建议公网试玩值见 [DeepSeek 公网试玩 API 契约](DEEPSEEK_PLAYTEST_API.md)。超额返回 429。公开 `/roast` 另保留每身份 2 秒冷却。创建新身份仍共享网络来源和全局额度。
+- 默认网络来源取 API 实际连接的 peer，不信任客户端自报的转发头。反向代理部署可在 API 与 Caddy 环境中设置相同、未提交的 `ABOUTME_PROXY_KEY`；Caddy 必须**覆盖写入** `X-AboutMe-Client-IP: {remote_host}` 和 `X-AboutMe-Proxy-Key: {$ABOUTME_PROXY_KEY}`。API 只在密钥匹配且客户端 IP 为单个合法 IPv4/IPv6 地址时使用该来源；其他请求仍按连接 peer 计数。Caddy 的 `header_up` 会覆盖同名来路头，`{remote_host}` 是连接来源地址；参考 [Caddy reverse_proxy 文档](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy)和[占位符文档](https://caddyserver.com/docs/caddyfile/concepts#placeholders)。
+- 部署时为 Caddy 与 API 注入同一密钥，并将 Uvicorn 设为 `--no-proxy-headers`，避免框架先用未受控的转发头改写 `request.client.host`。API 不直接开放公网端口。代理来源识别只拆分每 peer 的分钟额度，30 次/分钟与 500 次/天全局 AI 额度仍保持；多 API 实例须共享同一数据库或改用集中式限流存储。
 
 ## 单一「使用道具」最终整合证据（2026-09-23，代码基线 `61470c8`）
 
