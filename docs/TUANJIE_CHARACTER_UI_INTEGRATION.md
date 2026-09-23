@@ -47,13 +47,13 @@
 
 ## 最终整合交付（2026-09-23）
 
-源码：`codex/unity-default-menu-integration`，`52ff497`。玩法规则来自 `ae384ac`，美术与交互来自 `fc45675`，复核截图来自 `ba73883`；普通角色与菜单修正由客户端在该分支整合。构建使用这一冻结源码的一次 `BuildDeliverables`，产物没有提交 Git：
+源码：`codex/unity-default-menu-integration`，`18ca3f4`。相对 `52ff497`，只把设置页标签缩短为“AI / 角色服务地址”。玩法规则来自 `ae384ac`，美术与交互来自 `fc45675`，复核截图来自 `ba73883`；普通角色与菜单修正由客户端在该分支整合。构建使用这一冻结源码的一次 `BuildDeliverables`，产物没有提交 Git：
 
 | 平台 | 位置 | 启动与边界 |
 |---|---|---|
-| macOS QA 客户端 | `builds/final-windowed-mac/About Me QA.app` | 独立 `com.aboutme.party.integrationqa` 存储域；默认 1280×720 窗口。需固定本轮普通默认角色时传 `--qa-default-actor`；测试中可再传 `-screen-fullscreen 0 -screen-width 1280 -screen-height 720`。 |
-| WebGL | `builds/final-windowed-web/index.html` | 经本机 HTTP 打开；`?qa-default-actor` 只影响此会话。浏览器不进入全屏。 |
-| Linux 权威服务 | `builds/final-windowed-linux/AboutMeServer` | x86_64 Dedicated Server 已构建；未在 Linux 主机运行。 |
+| macOS QA 客户端 | `builds/reviewed-windowed-mac/About Me QA.app` | 独立 `com.aboutme.party.integrationqa` 存储域；默认 1280×720 窗口。需固定本轮普通默认角色时传 `--qa-default-actor`；测试中可再传 `-screen-fullscreen 0 -screen-width 1280 -screen-height 720`。 |
+| WebGL | `builds/reviewed-windowed-web/index.html` | 经本机 HTTP 打开；`?qa-default-actor` 只影响此会话。浏览器不进入全屏。 |
+| Linux 权威服务 | `builds/reviewed-windowed-linux/AboutMeServer` | x86_64 Dedicated Server 已构建；未在 Linux 主机运行。 |
 
 Mac 构建设置为 Windowed，客户端启动时也会把旧全屏偏好切回窗口模式。该运行时保护不替代窗口化构建设置；独立 QA 存储域不会继承旧版用户偏好。已有旧偏好的无参数首帧显示未单独复现，不宣称从未出现全屏过渡。
 
@@ -62,8 +62,10 @@ Mac 构建设置为 Windowed，客户端启动时也会把旧全屏偏好切回�
 | 证据 | 实际覆盖 |
 |---|---|
 | `artifacts/BuildDeliverables.log` | 同一次运行中 `ABOUTME_MAC_BUILD_OK`、`ABOUTME_SERVER_BUILD_OK`、`ABOUTME_WEB_BUILD_OK`，27 项规则和 13 项菜单/NPC 测试通过。 |
-| `artifacts/final-windowed-network-{2,4,6}` | 最终 Mac 二进制按 2/4/6 个真实本机进程通过 Mirror WebSocket 自动对局，均收到 Finished；不是异地真人或手机联机。 |
+| `artifacts/final-windowed-network-{2,4,6}` | `52ff497` 的 Mac 二进制按 2/4/6 个真实本机进程通过 Mirror WebSocket 自动对局，均收到 Finished；之后仅改设置页标签，未重跑。不是异地真人或手机联机。 |
 | `artifacts/ValidateFeet.log`、`ValidateLocomotionControls.log`、`ValidateBody.log`、`StartMenuAudit.log` | 普通角色七类脚底运动、跑跳/反向、四方向倒地和起身、跌落/楼梯/拖动以及首页中心角色静止和眨眼的编辑器专项验证；执行于最终美术合入前，相应物理和开场代码在最终构建中未再改动。 |
 | `docs/ui-touch-polish/home-english-1600x900.png`、`bag-1600x900.png`、`touch-1600x900.png` | 桌面真实 Mac 预览：完整英文四入口、背包三列短按钮与快捷栏、横屏触控布局。截图不是手机真机证据。 |
+
+QA 在 `52ff497` 的 WebGL 实际单人局确认：首页直达、八件练习 Persona 与五个快捷槽、B 打开背包并滚动、NPC 吞噬时背包卡片与随身/剩余数量同步变化、结果页重开与返回首页、设置页及减少动态效果开关。装备目标 A→B→A 未取得稳定的实际局操作证据；`--ui-preview bag` 不连 Match，不能替代这一项。`18ca3f4` 仅修正设置页地址标签，其他 UI 行为沿用前版。
 
 Persona 目录有 60 项，其中 52 项有预制体；34 项显示实际缩略图，18 项小模型与 8 项无预制体目录项使用对应模板图标。背包卡片提供装备和置顶按钮，五快捷栏保留；最终 Mac/WebGL 真实交互、返回和结算以 QA 交付摘要为准。鼠标锁定失败时 WebGL 可用右键拖动镜头；移动设备多指组合操作、微信真机及旧偏好首帧显示仍需设备验收。原版和旧候选未清理。
