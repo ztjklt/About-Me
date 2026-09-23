@@ -50,11 +50,11 @@ namespace AboutMe
         GameNetwork net;ToyWorld world;PlatformBridge platform;BattleMusic battleMusic;
         Font font;RectTransform canvas,home,lobby,hud,results,settings,bag,touch;
         InputField nickname,introduction,room,endpoint,api;
-        Text status,profileText,lobbyText,hudText,eventText,resultText,bagText,recordLabel;
+        Text status,profileText,lobbyText,hudText,eventText,resultText,resultEventText,bagText,recordLabel;
         Button generate,ready,start,join,imageUpload;
         readonly List<Button> slots=new List<Button>();
         readonly List<string> favorites=new List<string>();
-        Profile profile;string lastInventory="";int lastEvent;
+        Profile profile;string lastInventory="",lastEventMatch="";int lastEvent;
         string webPracticeToken;
         bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured;float nextSend,nextUI;
         string selectedColor="#79CFC5";int outfit;
@@ -310,7 +310,7 @@ namespace AboutMe
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
             net.Nickname=nickname.text;net.RoomCode=(requestedRoom??CurrentRoomCode()).Trim().ToUpperInvariant();SetRoomCode(net.RoomCode);net.Endpoint=endpoint.text.Trim();net.Connect();
         }
-        void Leave(){net.Close();lastInventory="";lastEvent=0;lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
+        void Leave(){net.Close();lastInventory="";lastEvent=0;lastEventMatch="";lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
         void ToggleBag()
         {
             inventoryOpen=!inventoryOpen;bag.gameObject.SetActive(inventoryOpen);
@@ -448,7 +448,16 @@ namespace AboutMe
                 start.gameObject.SetActive(state.you==state.host);start.interactable=state.players.Length>=2;
                 if(startStyle)startStyle.SetState(start.interactable?UIVisualState.Selected:UIVisualState.Normal);
                 var me=state.players.FirstOrDefault(p=>p.id==state.you);
-                if(state.events.Length>0&&state.events.Last().id!=lastEvent){lastEvent=state.events.Last().id;eventText.text=state.events.Last().text;toastPulse.Play();}
+                if(state.matchId!=lastEventMatch)
+                {lastEventMatch=state.matchId;lastEvent=0;if(resultEventLine)resultEventLine.gameObject.SetActive(false);}
+                if(state.events.Length>0&&state.events.Last().id!=lastEvent)
+                {
+                    lastEvent=state.events.Last().id;
+                    var line=state.events.Last().text;
+                    eventText.text=line;if(resultEventText)resultEventText.text=line;
+                    if(resultEventLine)resultEventLine.gameObject.SetActive(true);
+                    toastPulse.Play();
+                }
                 string inventory=string.Join("|",state.inventory.Select(x=>x.id+":"+x.state));
                 if(inventory!=lastInventory)
                 {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace AboutMe
 {
     public partial class GameUI
     {
-        RectTransform safeRoot,artboard,studioCard,homeHero,lobbyCard,lobbyGrid,hudCard,hudToast,hudProgress,hotbar,resultContent,keyboardHint;
+        RectTransform safeRoot,artboard,studioCard,homeHero,lobbyCard,lobbyGrid,hudCard,hudToast,hudProgress,hotbar,resultContent,resultEventLine,keyboardHint;
         ScrollRect inventoryScroll;
         Button keyboardHelpButton;
         readonly List<RectTransform> inventoryCards=new List<RectTransform>();
@@ -200,6 +201,9 @@ namespace AboutMe
             var fitter=resultContent.gameObject.AddComponent<ContentSizeFitter>();fitter.verticalFit=ContentSizeFitter.FitMode.PreferredSize;
             var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=resultContent;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=32;
             resultText=ArtText(card,"",34,640,1030,1,1,Color.clear);
+            resultEventLine=ArtPanel(card,"Latest match event",34,636,1080,32,UITheme.Pink,true,false);
+            resultEventText=ArtText(resultEventLine,"",12,1,1056,30,21,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
+            resultEventLine.gameObject.SetActive(false);
             ArtButton(card,"保存结算截图",34,672,350,58,()=>platform.Screenshot(),UITheme.Yellow,UITheme.Ink,"camera");
             ArtButton(card,"返回主菜单",776,672,338,58,Leave,UITheme.Ink,UITheme.Paper,"ready");
             replay=ArtButton(card,"再来一局",412,672,338,58,ReplaySolo,UITheme.Mint,UITheme.Ink,"ready");
@@ -393,9 +397,16 @@ namespace AboutMe
             bool lobbyPreview=previewKind=="lobby"||previewKind=="lobby-ds"||previewKind=="qr";
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);var players=Enumerable.Range(0,lobbyPreview?6:3).Select(i=>new PublicPlayer{id="preview-"+i,nickname=new[]{"小宇宙","海盐汽水","凌晨三点","社团王牌","猫派代表","最后一页"}[i],color=catalog.items[i].color,remaining=Mathf.Max(1,8-i),position=Match.Spawn(i),yaw=i*55,stability=100-i*17,ready=i!=4,connected=i!=5,equippedName=catalog.items[i].label,equippedVisual=catalog.items[i].visualId,equippedColor=catalog.items[i].color,characterSkin=i==0&&previewKind.EndsWith("-ds")?"ds-girl":"normal",interaction=i==0&&(previewKind=="hud"||previewKind=="hud-ds")?"eat":"",progress=.62f}).ToArray();
             var inventory=catalog.items.Select((x,i)=>new PublicPersonaInstance{id="preview-item-"+i,ownerId="preview-0",asset=new PublicPersonaAsset{assetId="asset-"+i,name=x.label,templateId=x.templateId,visualId=x.visualId,color=x.color},state=i==0?ItemState.Equipped:ItemState.Inventory}).ToArray();
-            var phase=lobbyPreview?MatchPhase.Lobby:previewKind=="results"?MatchPhase.Finished:MatchPhase.Battle;
+            var phase=lobbyPreview?MatchPhase.Lobby:previewKind=="results"||previewKind=="results-late-event"?MatchPhase.Finished:MatchPhase.Battle;
             net.State=new Snapshot{room="PARTY",matchId="preview",you="preview-0",host="preview-0",winner="preview-1",phase=phase,time=196,finalAt=450,players=players,inventory=inventory,ground=Array.Empty<PublicPersonaInstance>(),revealed=Array.Empty<PublicPersonaInstance>(),effects=Array.Empty<EffectState>(),props=Array.Empty<PublicProp>(),events=new[]{new MatchEvent{id=1,text="海盐汽水吃掉了小宇宙的「篮球」！"}},eaten=new[]{new EatRecord{instanceId="eat-1",eater="海盐汽水",owner="小宇宙",persona="篮球"},new EatRecord{instanceId="eat-2",eater="凌晨三点",owner="猫派代表",persona="相机"}}};
-            net.Status="UI 预览 · 不连接服务器";if(previewKind=="bag"){inventoryOpen=true;bag.gameObject.SetActive(true);}if(previewKind=="qr")OpenQrOverlay(CreatePreviewQr(),"PARTY",true);RefreshTouchVisibility();
+            net.Status="UI 预览 · 不连接服务器";if(previewKind=="bag"){inventoryOpen=true;bag.gameObject.SetActive(true);}if(previewKind=="qr")OpenQrOverlay(CreatePreviewQr(),"PARTY",true);if(previewKind=="results-late-event")StartCoroutine(PreviewLateResultEvent());RefreshTouchVisibility();
+        }
+
+        IEnumerator PreviewLateResultEvent()
+        {
+            yield return new WaitForSecondsRealtime(1);
+            if(net.State?.matchId!="preview"||net.State.phase!=MatchPhase.Finished)yield break;
+            net.State.events=new[]{new MatchEvent{id=1,text="海盐汽水吃掉了小宇宙的「篮球」！"},new MatchEvent{id=2,text="模拟晚到调侃：篮球刚上场，就进了别人的收藏夹。"}};
         }
 
         void OpenQrOverlay(Texture texture,string roomCode,bool destroyTexture)
