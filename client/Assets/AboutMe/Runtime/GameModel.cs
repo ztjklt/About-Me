@@ -225,7 +225,14 @@ namespace AboutMe
             if (Time < p.staggerUntil || BodyLocked(p)) return;
             switch (input.action)
             {
-                case "jump": if (!IsGrabbed(p) && p.position.y <= Floor(p.position) + 1.03f) { p.verticalSpeed = Rules.jumpSpeed; SetAction(p,"jump"); } Interrupt(p); break;
+                case "jump":
+                    // The physical pelvis bobs above the motor's grounded height while running.
+                    // Judge takeoff from the motor path so a supported running stride can jump.
+                    float motorY=BodyWorld!=null?p.motorHeight:p.position.y;
+                    float ground=Floor(new Vector3(p.position.x,motorY,p.position.z))+1;
+                    if(!IsGrabbed(p)&&!p.airborne&&p.verticalSpeed<=0&&Mathf.Abs(motorY-ground)<=.15f)
+                    {p.verticalSpeed=Rules.jumpSpeed;SetAction(p,"jump");}
+                    Interrupt(p);break;
                 case "use_item": UseItem(p); break;
                 case "equip": Equip(p, input.itemId); break;
                 case "grab": Grab(p, false); break;
@@ -402,7 +409,10 @@ namespace AboutMe
             }
             float damage=(heavy?Rules.heavyDamage*(.65f+.65f*charge):Rules.lightDamage)*(equipped==null?.4f:1);
             float force=heavy?6+charge*3:4.5f;
-            bool knockdown=heavy&&(charge>=.9f||template=="SpecialAbility"||template=="HeavyWeapon");
+            // The single use_item input always supplies full internal charge. Only these
+            // two force-focused templates knock down on a non-depleting hit; the rest
+            // still knock down and drop one Persona when stability reaches zero.
+            bool knockdown=heavy&&(template=="SpecialAbility"||template=="HeavyWeapon");
             if(heavy && template=="Tether")
             {
                 var target=Players.Values.Where(x=>x!=p&&!x.eliminated&&Vector3.Distance(x.position,p.position)<=6f)

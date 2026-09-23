@@ -272,6 +272,42 @@ namespace AboutMe.Editor
                     Tick(m,.08f);
                     Check(victim.stability<100&&victim.impulse.magnitude>0,"item use lacked the existing template hit");
                 });
+                Test("ordinary item templates stagger but do not force a full-stability knockdown",()=>
+                {
+                    foreach(var template in new[]{"Melee","Projectile","Disc","Ricochet","Deployable","Summon","Utility"})
+                    {
+                        var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
+                        m.Item(attacker.equipped).asset.templateId=template;
+                        Send(m,"a","use_item");Tick(m,.2f);
+                        Check(victim.stability<100,"template missed its use hit: "+template);
+                        Check(victim.bodyMode==BodyMode.Stagger,"ordinary template forced knockdown: "+template);
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==0,"ordinary hit dropped Persona: "+template);
+                        if(new[]{"Disc","Ricochet","Deployable","Summon"}.Contains(template))
+                            Check(m.Effects.Any(e=>e.kind==template&&!e.knockdown),"effect carries forced knockdown: "+template);
+                    }
+                });
+                Test("HeavyWeapon and SpecialAbility retain explicit strong knockdown",()=>
+                {
+                    foreach(var template in new[]{"HeavyWeapon","SpecialAbility"})
+                    {
+                        var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
+                        m.Item(attacker.equipped).asset.templateId=template;
+                        Send(m,"a","use_item");Tick(m,.2f);
+                        Check(victim.bodyMode==BodyMode.Falling,"strong template did not knock down: "+template);
+                        Check(victim.stability>0,"strong fixture unexpectedly depleted stability: "+template);
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==0,"non-depleting strong hit dropped Persona: "+template);
+                    }
+                });
+                Test("stability exhaustion still drops once with ordinary item use",()=>
+                {
+                    var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
+                    victim.stability=40;
+                    Send(m,"a","use_item");Tick(m,.2f);
+                    Check(victim.bodyMode==BodyMode.Falling&&victim.stability==65,"depleting use did not fall and restore stability");
+                    Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==1,"depleting use did not drop exactly one Persona");
+                    for(int i=0;i<30;i++){m.Hit(victim,attacker,999,12,true,true);m.Tick(Step);}
+                    Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==1,"downed follow-ups duplicated the drop");
+                });
                 Test("stagger and either disconnect clear all grip links",()=>
                 {
                     foreach(var target in new[]{"a","b"})
