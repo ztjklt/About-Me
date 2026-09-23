@@ -1,5 +1,6 @@
 """About Me profile/AI gateway. Run from repository root: uvicorn server.app:app."""
 import hashlib
+import ipaddress
 import json
 import os
 import re
@@ -75,10 +76,24 @@ def require_server(key):
         raise HTTPException(403, '游戏服务器凭据无效')
 
 
+def quota_peer(request: Request):
+    """Accept a client IP only from the configured proxy's overwritten header pair."""
+    peer = request.client.host if request.client else 'unknown'
+    expected = os.getenv('ABOUTME_PROXY_KEY', '')
+    headers = getattr(request, 'headers', {})
+    provided = headers.get('x-aboutme-proxy-key', '')
+    if not expected or not provided or not secrets.compare_digest(expected.encode(), provided.encode()):
+        return peer
+    try:
+        return ipaddress.ip_address(headers.get('x-aboutme-client-ip', '').strip()).compressed
+    except ValueError:
+        return peer
+
+
 def enforce_quota(request: Request, kind: str):
     """Atomic limits shared by all workers and identities using the same SQLite DB."""
     now = time.time()
-    peer = request.client.host if request.client else 'unknown'
+    peer = quota_peer(request)
     minute = int(now // 60)
     day = int(now // 86400)
     buckets = ([('sessions:global:' + str(minute), 120, (minute + 1) * 60),

@@ -25,6 +25,7 @@ services:
       API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN}
       GAME_DOMAIN: ${GAME_DOMAIN:?Set GAME_DOMAIN}
       PLAY_DOMAIN: ${PLAY_DOMAIN:?Set PLAY_DOMAIN}
+      ABOUTME_PROXY_KEY: ${ABOUTME_PROXY_KEY:?Set ABOUTME_PROXY_KEY in server/.env}
     ports:
       - '80:80'
       - '443:443'

@@ -99,6 +99,26 @@ def test_global_budgets_apply_across_distinct_peers(client):
         module.enforce_quota(SimpleNamespace(client=SimpleNamespace(host='new-identity')), 'ai')
     assert error.value.status_code == 429
 
+
+def test_only_authenticated_proxy_header_splits_peer_quota(client, monkeypatch):
+    monkeypatch.setenv('ABOUTME_PROXY_KEY', 'test-proxy-secret')
+
+    def request(ip, secret='test-proxy-secret'):
+        return SimpleNamespace(client=SimpleNamespace(host='caddy-container'),
+                               headers={'x-aboutme-client-ip': ip, 'x-aboutme-proxy-key': secret})
+
+    assert module.quota_peer(request('2001:0db8::1')) == '2001:db8::1'
+    assert module.quota_peer(request('198.51.100.1', 'wrong')) == 'caddy-container'
+    assert module.quota_peer(request('198.51.100.1, 198.51.100.2')) == 'caddy-container'
+    for index in range(6):
+        module.enforce_quota(request(f'198.51.100.{index + 1}'), 'ai')
+    for index in range(6):
+        module.enforce_quota(request(f'203.0.113.{index + 1}', 'wrong'), 'ai')
+    with pytest.raises(HTTPException) as error:
+        module.enforce_quota(request('198.51.100.99', 'wrong'), 'ai')
+    # An untrusted header shares the direct peer bucket; it cannot mint new peers.
+    assert error.value.status_code == 429
+
     for index in range(120):
         module.enforce_quota(SimpleNamespace(client=SimpleNamespace(host=f'session-{index}')), 'sessions')
     with pytest.raises(HTTPException) as error:

@@ -4,7 +4,10 @@
     request_body {
         max_size 11MB
     }
-    reverse_proxy api:8081
+    reverse_proxy api:8081 {
+        header_up X-AboutMe-Client-IP {remote_host}
+        header_up X-AboutMe-Proxy-Key {$ABOUTME_PROXY_KEY}
+    }
 }
 {$GAME_DOMAIN} {
     reverse_proxy game:7777

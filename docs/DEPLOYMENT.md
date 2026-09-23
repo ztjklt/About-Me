@@ -12,18 +12,20 @@
 
 先生成 `builds/linux/AboutMeServer` 和 `builds/web`，将工程与构建产物同步到服务器。Linux Dedicated Server 模块须与引擎版本一致。
 
-创建 `server/.env` 并填写实际配置；`GAME_SERVER_KEY` 使用随机长字符串。设置 `ALLOWED_ORIGINS=https://play.example.com`。
+创建 `server/.env` 并填写实际配置；`GAME_SERVER_KEY` 与 `ABOUTME_PROXY_KEY` 分别使用不同的随机长字符串。设置 `ALLOWED_ORIGINS=https://play.example.com`。Caddy 与 API 共享代理密钥，Caddy 覆盖写入真实连接来源，API 只在密钥匹配且 IP 合法时按该来源计分钟额度。不要在外网直连 API 容器端口。
 
 ```sh
 export API_DOMAIN=api.example.com
 export GAME_DOMAIN=game.example.com
 export PLAY_DOMAIN=play.example.com
-docker compose -f deploy/compose.yaml up -d --build
+docker compose --env-file server/.env -f deploy/compose.yaml up -d --build
 ```
 
 访问游戏页面后，在连接设置填写 `wss://game.example.com` 和 `https://api.example.com`。Caddy 自动申请 HTTPS 证书并转发 WebSocket。外网无法访问 `/internal/*`；该接口仅由游戏容器调用。无需暴露 SQLite 或 API 容器端口。
 
 首次验收用两台真正处于不同网络的电脑完成一局，检查两端赢家、吞噬记录和剩余数量一致；再扩展到 4、6 人。**本机多进程测试不代替异地验收。**
+
+部署前可在 macOS 上安装 Caddy 后运行 `.venv/bin/python scripts/test-proxy-quota.py`，检查反代来源额度和伪造头。该脚本会启动临时本机 Caddy/API，自动停进程并删除测试数据库；它不替代目标 Linux 主机上的 `docker compose`、HTTPS 证书和异地连通性验收。API 的全局额度由 `server/tests/test_network_safety.py` 覆盖。
 
 ## 局域网与 Linux 主机验证
 
