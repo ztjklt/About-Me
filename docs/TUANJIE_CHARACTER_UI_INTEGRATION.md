@@ -51,7 +51,7 @@
 
 | 平台 | 位置 | 启动与边界 |
 |---|---|---|
-| macOS QA 客户端 | `builds/reviewed-windowed-mac/About Me QA.app` | 独立 `com.aboutme.party.integrationqa` 存储域；默认 1280×720 窗口。需固定本轮普通默认角色时传 `--qa-default-actor`；测试中可再传 `-screen-fullscreen 0 -screen-width 1280 -screen-height 720`。 |
+| macOS QA 客户端 | `builds/reviewed-windowed-mac/About Me QA.app` | 首选双击同目录 `Start About Me QA Windowed.command`，脚本按自身位置找到 app，并显式传 1280×720 窗口参数与 `--qa-default-actor`；使用独立 `com.aboutme.party.integrationqa` 存储域。 |
 | WebGL | `builds/reviewed-windowed-web/index.html` | 经本机 HTTP 打开；`?qa-default-actor` 只影响此会话。浏览器不进入全屏。 |
 | Linux 权威服务 | `builds/reviewed-windowed-linux/AboutMeServer` | x86_64 Dedicated Server 已构建；未在 Linux 主机运行。 |
 
