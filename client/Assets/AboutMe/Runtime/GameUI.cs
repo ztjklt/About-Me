@@ -75,10 +75,14 @@ namespace AboutMe
             {
                 var webEndpoint=WebGameEndpoint(Application.absoluteURL);
                 if(webEndpoint!=null)sessionEndpoint=webEndpoint;
+                if(Uri.TryCreate(Application.absoluteURL,UriKind.Absolute,out var page)
+                    &&page.Scheme==Uri.UriSchemeHttps
+                    &&Uri.TryCreate(api.text,UriKind.Absolute,out var service)
+                    &&service.IsLoopback)api.text="";
             }
             if(sessionEndpoint!=null)endpoint.text=sessionEndpoint;
             net.Endpoint=endpoint.text;net.ApiUrl=api.text;
-            net.Token=PlayerPrefs.GetString("token","");if(net.Token!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
+            net.Token=PlayerPrefs.GetString("token","");if(net.Token!=""&&net.ApiUrl!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
         }
@@ -169,6 +173,12 @@ namespace AboutMe
         IEnumerator CheckService()
         {
             net.ApiUrl=api.text.Trim().TrimEnd('/');
+            if(net.ApiUrl=="")
+            {
+                aiCapabilityKnown=true;aiConfigured=false;
+                SetAIServiceStatus("AI / 角色服务本次试玩未开放",UITheme.Yellow);
+                yield break;
+            }
             using(var req=UnityWebRequest.Get(net.ApiUrl+"/health"))
             {
                 req.timeout=4;yield return req.SendWebRequest();
