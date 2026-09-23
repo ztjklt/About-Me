@@ -115,7 +115,7 @@ namespace AboutMe
 
         Text sensitivityLabel,touchSettingLabel,motionSettingLabel,shakeSettingLabel;
         void RefreshSettingLabels()
-        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");}
+        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");if(startMenuStage)startMenuStage.SetMotionEnabled(!reduceMotion);}
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);
@@ -239,6 +239,7 @@ namespace AboutMe
             lastScreenWidth=Screen.width;lastScreenHeight=Screen.height;
             bool next=Application.isMobilePlatform||platform.IsWeChat||Screen.height<=600||Screen.width/(float)Mathf.Max(1,Screen.height)<1.48f;
             if(!force&&next==compactLayout)return;compactLayout=next;
+            if(startMenuStage)startMenuStage.SetCompact(compactLayout);
             if(draftLibrary){draftLibrary.localScale=Vector3.one*(compactLayout?.94f:1);}
             if(compactLayout)
             {
@@ -362,7 +363,7 @@ namespace AboutMe
         {
             var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--ui-preview");if(index<0||index+1>=args.Length)return;previewKind=args[index+1].ToLowerInvariant();
             if(previewKind=="wardrobe"){appearanceDraft=AppearanceData.Demo(0);OpenWardrobe();net.Status="衣橱预览";return;}
-            if(previewKind=="home"){ShowPage(MenuPage.Main);RefreshTouchVisibility();return;}
+            if(previewKind=="home"||previewKind=="home-expanded"){ShowPage(MenuPage.Main);startMenuStage.SetExpanded(previewKind=="home-expanded",true);RefreshTouchVisibility();return;}
             if(previewKind=="presets"||previewKind=="solo"||previewKind=="multiplayer"){ShowPage(previewKind=="presets"?MenuPage.Presets:previewKind=="solo"?MenuPage.Solo:MenuPage.Multiplayer);return;}
             if(previewKind=="settings"){OpenSettings();net.Status="连接设置预览";RefreshTouchVisibility();return;}
             bool lobbyPreview=previewKind=="lobby"||previewKind=="qr";

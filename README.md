@@ -32,7 +32,7 @@ V4 主动布娃娃新版在 `builds/v4-mac/About Me.app`；直接打开后选择
   --capture "$PWD/artifacts/ui-home.png"
 ```
 
-`--ui-preview` 支持 `home`、`solo`、`multiplayer`、`presets`、`settings`、`lobby`、`qr`、`hud`、`bag`、`touch` 和 `results`。预览数据明确标注为 UI 预览，不连接服务器，也不写入正式结算。
+`--ui-preview` 支持 `home`、`home-expanded`（兼容别名）、`solo`、`multiplayer`、`presets`、`settings`、`lobby`、`qr`、`hud`、`bag`、`touch` 和 `results`。`home` 直接显示四个英文气泡入口；预览数据明确标注为 UI 预览，不连接服务器，也不写入正式结算。
 
 ## 打开和运行
 

@@ -81,6 +81,12 @@ namespace AboutMe
         HandPresentation handPresentation;
         ImpactFeedback impactFeedback;
         string spectate="";
+        bool menuPreviewVisible=true;
+        public void SetMenuPreviewVisible(bool visible)
+        {
+            if(menuPreviewVisible==visible)return;menuPreviewVisible=visible;
+            if(GameNetwork.Game?.State==null&&ViewCamera)ViewCamera.enabled=visible;
+        }
         public void Build()
         {
             RenderSettings.ambientLight=new Color(.72f,.76f,.8f);RenderSettings.fog=true;RenderSettings.fogColor=ToyFactory.ColorOf("#EEE8DC");RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=80;RenderSettings.fogEndDistance=180;
@@ -107,6 +113,8 @@ namespace AboutMe
             var state=GameNetwork.Game?.State;
             if(state==null)
             {
+                if(!menuPreviewVisible){if(ViewCamera)ViewCamera.enabled=false;return;}
+                if(ViewCamera&&!ViewCamera.enabled)ViewCamera.enabled=true;
                 handPresentation.Draw(null,hand,handOpen,handFist,ViewCamera);
                 if(actors.Keys.Any(k=>!k.StartsWith("preview-")))
                 {foreach(var actor in actors.Values)Destroy(actor.root);actors.Clear();cameraSkins.Clear();foreach(var obj in objects.Values)Destroy(obj);objects.Clear();hand.gameObject.SetActive(false);}
@@ -121,6 +129,7 @@ namespace AboutMe
                 int index=0;foreach(var a in actors.Values)a.Draw(new PublicPlayer{id="preview",nickname="",color="#77C8BD",remaining=0,position=new Vector3((index++-1)*3,1,0),yaw=180,connected=true,stability=100,appearance=index==1?PreviewAppearance:AppearanceData.Demo(index-1),equippedVisual=index==1?"basketball":index==2?"cat":"computer",equippedColor="#FF934F",interaction="",grabbing=""},ViewCamera);
                 return;
             }
+            if(ViewCamera&&!ViewCamera.enabled)ViewCamera.enabled=true;
             ViewCamera.rect=new Rect(0,0,1,1);
             foreach(var key in actors.Keys.Where(k=>!state.players.Any(p=>p.id==k)).ToArray()){Destroy(actors[key].root);actors.Remove(key);cameraSkins.Remove(key);}
             foreach(var p in state.players)

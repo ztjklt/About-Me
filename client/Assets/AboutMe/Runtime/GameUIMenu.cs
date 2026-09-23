@@ -13,6 +13,7 @@ namespace AboutMe
     {
         MenuPage page;
         RectTransform mainMenu,soloMenu,multiplayerMenu,draftList,draftLibrary;
+        StartMenuStage2D startMenuStage;
         Text soloSummary,multiSummary,draftHeading;
         InputField draftName;
         IntroductionDrafts drafts;
@@ -25,19 +26,7 @@ namespace AboutMe
         {
             cameraSensitivity=PlayerPrefs.GetFloat("cameraSensitivity",1);touchMode=PlayerPrefs.GetInt("touchMode",0);reduceMotion=PlayerPrefs.GetInt("reduceMotion",0)==1;
             RefreshSettingLabels();
-            mainMenu=ArtPanel(artboard,"Main menu",0,0,1600,900,Color.clear,false,false);
-            Tape(mainMenu,"YOUR STORY. YOUR PARTY.",65,55,285,40,UITheme.Yellow);
-            ArtText(mainMenu,"About Me",65,100,820,180,94,UITheme.Ink,FontStyle.Bold);
-            ArtText(mainMenu,"你的自我，既是武器，也是生命。",70,279,780,48,28,UITheme.Ink,FontStyle.Bold);
-            ArtText(mainMenu,"介绍自己 · 拿自己打架 · 保住最后的自我",70,340,760,42,21,UITheme.Muted);
-            ArtFrame(mainMenu,"Your party stage",40,453,830,345);
-            var card=ArtPanel(mainMenu,"Start menu",960,185,535,560,UITheme.Paper,true,true);
-            Tape(card,"LET'S PLAY",30,28,180,38,UITheme.Pink);
-            ArtButton(card,"单人游戏",30,102,475,82,()=>ShowPage(MenuPage.Solo),UITheme.Mint,UITheme.Ink,"attack");
-            ArtButton(card,"多人游戏",30,206,475,82,()=>ShowPage(MenuPage.Multiplayer),UITheme.Yellow,UITheme.Ink,"share");
-            ArtButton(card,"自我介绍预设",30,310,475,82,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink,"bag");
-            ArtButton(card,"设置",30,414,475,82,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
-            ArtText(mainMenu,"每 2:30 大手点名  ·  7:30 到时结算",985,778,560,38,19,UITheme.Ink);
+            BuildStartMenuStage();
             soloMenu=MenuCard("单人游戏","OFFLINE PRACTICE");
             soloSummary=ArtText(soloMenu,"",40,170,900,135,24,UITheme.Ink,FontStyle.Bold);
             ArtText(soloMenu,"对手：陪练 NPC\n会追击、争夺、吞噬和回收；不需要服务器。\n吞噬数优先，同分比较剩余 Persona。",40,320,900,135,22,UITheme.Muted);
@@ -56,6 +45,63 @@ namespace AboutMe
             BuildDraftLibrary();ApplyAdaptiveLayout(true);
             LoadCachedProfile();ShowPage(MenuPage.Main);statusPill.SetAsLastSibling();
         }
+        void BuildStartMenuStage()
+        {
+            mainMenu=ArtPanel(artboard,"Main menu · 2.5D stage",0,0,1600,900,Color.clear,false,false);
+            MenuSprite(mainMenu,"Warm campus background","StartMenu2D/background",0,0,1600,900,false);
+            var title=MenuSprite(mainMenu,"About Me clay title","StartMenu2D/title",400,24,800,267);
+
+            var arms=new List<RectTransform>();
+            arms.Add(MenuSprite(mainMenu,"Camera arm","StartMenu2D/arm-camera",-44,78,500,333));
+            arms.Add(MenuSprite(mainMenu,"Pizza arm","StartMenu2D/arm-pizza",1144,92,500,333));
+            arms.Add(MenuSprite(mainMenu,"Controller arm","StartMenu2D/arm-controller",-55,264,480,320));
+            arms.Add(MenuSprite(mainMenu,"Stylus arm","StartMenu2D/arm-stylus",1160,278,480,320));
+
+            var hero=ArtRect(mainMenu,"Central mascot",new Vector2(570,-238),new Vector2(460,690));
+            var heroOpen=MenuSprite(hero,"Mascot · open","StartMenu2D/mascot-open",0,0,460,690).GetComponent<Image>();
+            var heroBlink=MenuSprite(hero,"Mascot · blink","StartMenu2D/mascot-blink",0,0,460,690).GetComponent<Image>();heroBlink.enabled=false;
+
+            arms.Add(MenuSprite(mainMenu,"Story arm","StartMenu2D/arm-book",-54,450,470,313));
+            arms.Add(MenuSprite(mainMenu,"Cat arm","StartMenu2D/arm-cat",-52,640,430,287));
+            arms.Add(MenuSprite(mainMenu,"Clover arm","StartMenu2D/arm-clover",1184,466,470,313));
+            arms.Add(MenuSprite(mainMenu,"Photo arm","StartMenu2D/arm-photo",1170,650,450,300));
+
+            var doodles=ArtRect(mainMenu,"Clay doodles",Vector2.zero,new Vector2(1600,900));
+            ArtText(doodles,"?",760,202,80,92,72,UITheme.Paper,FontStyle.Bold,TextAnchor.MiddleCenter);
+            Accent(doodles,497,373,38,9,-36,UITheme.Paper);Accent(doodles,478,414,34,9,-8,UITheme.Paper);Accent(doodles,1080,348,38,9,34,UITheme.Paper);
+            Accent(doodles,1090,398,34,9,8,UITheme.Yellow);Accent(doodles,415,545,34,9,-28,UITheme.Yellow);Accent(doodles,1150,548,34,9,28,UITheme.Yellow);
+
+            var dimmer=ArtPanel(mainMenu,"Stage click catcher",0,0,1600,900,Color.clear,false,false);Stretch(dimmer);
+            var dimmerImage=dimmer.GetComponent<Image>();dimmerImage.raycastTarget=true;
+            dimmer.gameObject.AddComponent<Button>().onClick.AddListener(()=>startMenuStage.ToggleExpanded());
+
+            var hint=ArtPanel(mainMenu,"Tap to enter",635,808,330,58,new Color(UITheme.Paper.r,UITheme.Paper.g,UITheme.Paper.b,.92f),true,true);
+            ArtText(hint,"点击进入  ·  TAP TO BEGIN",12,4,306,50,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
+            var hintGroup=hint.gameObject.AddComponent<CanvasGroup>();
+
+            var sheet=ArtPanel(mainMenu,"Expanded start menu",82,650,1436,210,new Color(UITheme.Paper.r,UITheme.Paper.g,UITheme.Paper.b,.96f),true,true);
+            Tape(sheet,"CHOOSE YOUR STORY",30,24,222,38,UITheme.Pink);
+            ArtText(sheet,"你的自我，既是武器，也是生命。",275,26,550,38,20,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            ArtText(sheet,"点击画面空白处收起",1090,29,310,32,16,UITheme.Muted,FontStyle.Normal,TextAnchor.MiddleRight);
+            var menuButtons=new[]{
+                ArtButton(sheet,"单人游戏",30,82,330,78,()=>ShowPage(MenuPage.Solo),UITheme.Mint,UITheme.Ink,"attack"),
+                ArtButton(sheet,"多人游戏",382,82,330,78,()=>ShowPage(MenuPage.Multiplayer),UITheme.Yellow,UITheme.Ink,"share"),
+                ArtButton(sheet,"自我介绍预设",734,82,330,78,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink,"bag"),
+                ArtButton(sheet,"设置",1086,82,330,78,OpenSettings,UITheme.Field,UITheme.Ink,"settings")};
+            var sheetGroup=sheet.gameObject.AddComponent<CanvasGroup>();
+
+            startMenuStage=mainMenu.gameObject.AddComponent<StartMenuStage2D>();
+            startMenuStage.Configure(title,hero,heroOpen,heroBlink,doodles,arms.ToArray(),sheet,sheetGroup,hintGroup,dimmerImage,menuButtons.Select(x=>(RectTransform)x.transform).ToArray());
+            startMenuStage.SetMotionEnabled(!reduceMotion);
+        }
+        RectTransform MenuSprite(Transform parent,string name,string resource,float x,float y,float width,float height,bool preserve=true)
+        {
+            var sprite=Resources.Load<Sprite>(resource);if(!sprite)throw new InvalidOperationException("Missing start-menu sprite: "+resource);
+            var rect=ArtRect(parent,name,new Vector2(x,-y),new Vector2(width,height));var image=rect.gameObject.AddComponent<Image>();
+            image.sprite=sprite;image.type=Image.Type.Simple;image.preserveAspect=preserve;image.raycastTarget=false;return rect;
+        }
+        void Accent(Transform parent,float x,float y,float width,float height,float rotation,Color color)
+        {var mark=ArtPanel(parent,"Clay accent",x,y,width,height,color,false,false);mark.GetComponent<Image>().sprite=UITheme.Rounded;mark.localRotation=Quaternion.Euler(0,0,rotation);}
         RectTransform MenuCard(string title,string tape)
         {
             var panel=ArtPanel(artboard,title,310,66,980,720,UITheme.Paper,true,true);
@@ -66,9 +112,11 @@ namespace AboutMe
         void ShowPage(MenuPage next)
         {
             if(busy){net.Status="请等待当前操作完成";return;}
+            bool returningToMain=next==MenuPage.Main&&page!=MenuPage.Main;
             SaveDraft(false);page=next;pendingRoom=false;
             if(wardrobe&&wardrobe.gameObject.activeSelf)CloseWardrobe();
             optionsOpen=false;settings.gameObject.SetActive(false);RefreshMenuSummary();UpdateMenuVisibility();
+            if(returningToMain&&startMenuStage)startMenuStage.SetExpanded(true);
             net.Status="";
         }
         void UpdateMenuVisibility()
@@ -78,6 +126,7 @@ namespace AboutMe
             soloMenu.gameObject.SetActive(show&&page==MenuPage.Solo);
             multiplayerMenu.gameObject.SetActive(show&&page==MenuPage.Multiplayer);
             home.gameObject.SetActive(show&&page==MenuPage.Presets);
+            if(world)world.SetMenuPreviewVisible(!(show&&page==MenuPage.Main));
         }
         void RefreshMenuSummary()
         {
