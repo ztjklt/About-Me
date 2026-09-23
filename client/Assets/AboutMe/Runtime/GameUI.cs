@@ -47,7 +47,7 @@ namespace AboutMe
     public partial class GameUI : MonoBehaviour
     {
         public static GameUI UI;
-        GameNetwork net;ToyWorld world;PlatformBridge platform;
+        GameNetwork net;ToyWorld world;PlatformBridge platform;BattleMusic battleMusic;
         Font font;RectTransform canvas,home,lobby,hud,results,settings,bag,touch;
         InputField nickname,introduction,room,endpoint,api;
         Text status,profileText,lobbyText,hudText,eventText,resultText,bagText,recordLabel;
@@ -70,7 +70,7 @@ namespace AboutMe
             UI=this;net=network;world=toyWorld;platform=gameObject.AddComponent<PlatformBridge>();
             favorites.AddRange(PlayerPrefs.GetString("favorites","").Split(',').Where(x=>x!=""));
             font=Resources.Load<Font>("AboutMeFont");if(!font)font=Font.CreateDynamicFontFromOSFont(new[]{"PingFang SC","Arial","Microsoft YaHei"},20);
-            BuildArtUI();BuildMenus();
+            BuildArtUI();BuildMenus();battleMusic=gameObject.AddComponent<BattleMusic>();
             var sessionEndpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");
             if(Application.platform==RuntimePlatform.WebGLPlayer)
             {
@@ -421,6 +421,7 @@ namespace AboutMe
             if(net==null)return;
             generate.interactable=!busy;join.interactable=!busy;if(imageUpload)imageUpload.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
             var state=net.State;
+            if(battleMusic)battleMusic.Sync(state,net.IsSolo||Mirror.NetworkClient.isConnected);
             UpdateMenuVisibility();
             if(Input.GetKeyDown(KeyCode.Escape)){if(inventoryOpen)ToggleBag();else if(optionsOpen){optionsOpen=false;settings.gameObject.SetActive(false);}else if(wardrobe&&wardrobe.gameObject.activeSelf)CloseWardrobe();else if(state==null)ShowPage(MenuPage.Main);else {cursorReleased=!cursorReleased;if(cursorReleased){ResetMovement();Send("cancel");}}}
             lobby.gameObject.SetActive(state!=null&&state.phase==MatchPhase.Lobby);

@@ -103,14 +103,15 @@ namespace AboutMe
             foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,224,58);
             var sensitivity=ArtButton(card,"",32,460,256,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
             var touchButton=ArtButton(card,"",32,534,256,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
+            var music=ArtButton(card,"",370,534,322,54,()=>{float volume=BattleMusic.SavedVolume;PlayerPrefs.SetFloat("battleMusicVolume",volume<.05f?.16f:volume<.22f?.30f:volume<.4f?.50f:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);musicSettingLabel=music.GetComponentInChildren<Text>();
             var motion=ArtButton(card,"",32,608,322,54,()=>{reduceMotion=!reduceMotion;PlayerPrefs.SetInt("reduceMotion",reduceMotion?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);motionSettingLabel=motion.GetComponentInChildren<Text>();
             var shake=ArtButton(card,"",370,608,322,54,()=>{float v=PlayerPrefs.GetFloat("hitShake",.3f);PlayerPrefs.SetFloat("hitShake",v<.1f?.3f:v<.6f?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);shakeSettingLabel=shake.GetComponentInChildren<Text>();
 
         }
 
-        Text sensitivityLabel,touchSettingLabel,motionSettingLabel,shakeSettingLabel;
+        Text sensitivityLabel,touchSettingLabel,musicSettingLabel,motionSettingLabel,shakeSettingLabel;
         void RefreshSettingLabels()
-        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");if(startMenuStage)startMenuStage.SetMotionEnabled(!reduceMotion);}
+        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];if(musicSettingLabel){float volume=BattleMusic.SavedVolume;musicSettingLabel.text="战斗音乐 · "+(volume<.05f?"关闭":volume<.22f?"轻柔":volume<.4f?"标准":"响亮");}motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");if(startMenuStage)startMenuStage.SetMotionEnabled(!reduceMotion);}
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);

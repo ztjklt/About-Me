@@ -41,6 +41,14 @@ namespace AboutMe.Editor
                         Assert(CampusGeometry.Blocked(new Vector3(side*x,5.5f,26.3f)),"rear side gap "+side+":"+x);
                 }
             });
+            Test("battle music is imported and phase gated",()=>
+            {
+                var clip=Resources.Load<AudioClip>("Audio/BattleMusic");
+                Assert(clip!=null&&clip.length>120,"missing or truncated battle music");
+                Assert(!BattleMusic.PlaysIn(MatchPhase.Lobby)&&!BattleMusic.PlaysIn(MatchPhase.Reveal)
+                    &&BattleMusic.PlaysIn(MatchPhase.Battle)&&BattleMusic.PlaysIn(MatchPhase.FinalBurst)
+                    &&!BattleMusic.PlaysIn(MatchPhase.Finished),"music phase gate");
+            });
             Test("direct start-menu entries and reduced motion are stable",()=>
             {
                 var root=new GameObject("start-menu-test",typeof(RectTransform));
