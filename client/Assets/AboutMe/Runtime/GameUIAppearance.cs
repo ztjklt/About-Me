@@ -132,7 +132,18 @@ namespace AboutMe
             net.ApiUrl=api.text.Trim().TrimEnd('/');
             if(net.ApiUrl==""){busy=false;net.Status="请先在连接设置中填写角色服务地址。";yield break;}
             net.Token=SavedTokenForApi();
-            if(!string.IsNullOrEmpty(net.Token))yield break;
+            if(!string.IsNullOrEmpty(net.Token))
+            {
+                if(profile!=null&&!net.Sample)yield break;
+                using(var existing=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me",null,net.Token))
+                {
+                    yield return existing.SendWebRequest();
+                    if(existing.result==UnityWebRequest.Result.Success)
+                    {profile=JsonUtility.FromJson<Profile>(existing.downloadHandler.text);yield break;}
+                    if(existing.responseCode!=401){Fail(existing,"读取角色资料");yield break;}
+                    net.Token="";SaveTokenForApi("");
+                }
+            }
             using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
             {
                 yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req,"建立角色会话");yield break;}
@@ -142,9 +153,9 @@ namespace AboutMe
         IEnumerator UnlockDSGirl()
         {
             if(busy)yield break;
-            if(net.Sample){net.Status="请先退出本地样例，再用真实介绍解锁 DS 娘。";yield break;}
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3)
             {net.Status="先写至少 3 个字的介绍，例如“我喜欢 DeepSeek”。";yield break;}
+            if(net.Sample){net.Sample=false;net.Token="";profile=null;}
             yield return SaveAppearance(true);
         }
         IEnumerator RecommendAppearance()
