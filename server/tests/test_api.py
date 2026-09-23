@@ -27,17 +27,59 @@ def test_tokens_and_private_profiles(client):
 def test_invalid_templates_dedup_and_variable_count():
     raw = candidates(7)
     raw['personas'].append(raw['personas'][0].copy())
-    assert len(module.validate_personas(raw)) == 7
+    intro = '；'.join(f'兴趣{i}' for i in range(7))
+    assert len(module.validate_personas(raw, intro)) == 7
     raw['personas'][0]['templateId'] = 'RunArbitraryCode'
-    with pytest.raises(ValueError): module.validate_personas(raw)
-    with pytest.raises(ValueError): module.validate_personas({'personas': []})
+    with pytest.raises(ValueError): module.validate_personas(raw, intro)
+    with pytest.raises(ValueError): module.validate_personas({'personas': []}, intro)
+
+def test_real_generation_varies_with_grounded_facts_and_has_a_room_budget():
+    facts = [f'爱好{i}篮球' for i in range(module.MAX_PERSONAS + 2)]
+    raw = {'personas': [dict(name=f'玩具{i}', source=fact, templateId='Projectile',
+                             visualId='basketball') for i, fact in enumerate(facts)]}
+    assert len(module.validate_personas({'personas': raw['personas'][:1]}, facts[0])) == 1
+    assert len(module.validate_personas({'personas': raw['personas'][:9]}, '；'.join(facts))) == 9
+    assert len(module.validate_personas(raw, '；'.join(facts))) == module.MAX_PERSONAS
+
+
+def test_source_must_be_a_nonempty_exact_intro_span_and_repeated_fact_collapses():
+    intro = '我喜欢篮球，也热爱篮球；我还喜欢摄影。'
+    pair = ('Projectile', 'basketball')
+    raw = {'personas': [
+        dict(name='篮球一号', source='喜欢篮球', templateId=pair[0], visualId=pair[1]),
+        dict(name='篮球二号', source='热爱篮球', templateId=pair[0], visualId=pair[1]),
+        dict(name='相机', source='喜欢摄影', templateId='Utility', visualId='camera'),
+        dict(name='虚构道具', source='从没写过的事实', templateId=pair[0], visualId=pair[1]),
+    ]}
+    result = module.validate_personas(raw, intro)
+    assert [item['source'] for item in result] == ['喜欢篮球', '喜欢摄影']
+    assert module.profile_follows_generation_rules({'personas': result}, intro)
+    with pytest.raises(ValueError):
+        module.validate_personas({'personas': [dict(name='篮球三号', source='',
+            templateId=pair[0], visualId=pair[1])]}, intro)
+    assert not module.profile_follows_generation_rules({'personas': [dict(result[0], source='')]}, intro)
+
+
+def test_private_and_abusive_facts_do_not_become_personas():
+    intro = '我喜欢摄影，手机号是13800138000，住在幸福路12号。'
+    raw = {'personas': [
+        dict(name='相机', source='喜欢摄影', templateId='Utility', visualId='camera'),
+        dict(name='号码球', source='手机号是13800138000', templateId='Projectile', visualId='basketball'),
+        dict(name='住址球', source='住在幸福路12号', templateId='Projectile', visualId='basketball'),
+        dict(name='去死球', source='喜欢摄影', templateId='Projectile', visualId='basketball'),
+    ]}
+    result = module.validate_personas(raw, intro)
+    assert [item['name'] for item in result] == ['相机']
+    assert all(not module.sensitive_persona_text(item['name']) for item in result)
+    with pytest.raises(ValueError):
+        module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
     assert len(module.CATALOG) == 56
-    result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]})
+    result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):
-        module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Projectile', visualId='pillow-a')]})
+        module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Projectile', visualId='pillow-a')]}, '抱枕')
 
 def test_generation_is_grounded_and_school_is_one_badge():
     raw = {'personas': [

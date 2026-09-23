@@ -25,6 +25,34 @@ docker compose -f deploy/compose.yaml up -d --build
 
 首次验收用两台真正处于不同网络的电脑完成一局，检查两端赢家、吞噬记录和剩余数量一致；再扩展到 4、6 人。**本机多进程测试不代替异地验收。**
 
+## 局域网与 Linux 主机验证
+
+先在本地运行 `sh scripts/editor.sh BuildServer` 和 `sh scripts/editor.sh BuildMac`。`BuildServer` 只证明生成了 Linux x86_64 文件；还须复制到实际 Linux x86_64 主机运行。以下使用明确标注的样例身份和加速对局，仅供隔离的测试网络使用：
+
+```sh
+# Linux 主机：开放测试网段到 7777/TCP，生产部署仍只对外开放 80/443。
+chmod +x builds/linux/AboutMeServer
+ABOUTME_GAME_PORT=7777 ./builds/linux/AboutMeServer -batchmode -nographics \
+  --aboutme-server --allow-samples --accelerated -logFile ./game-test.log
+```
+
+在第一台 Mac 上启动样例探针，并将它输出到本地 `room.txt` 的六位房间码发给第二台测试机。第二台 Mac 把房间码写入自己的 `room.txt` 后运行加入命令。两台机器都必须能到达 Linux 主机的局域网 IP；每台客户端使用不同的 `--identity`。两个进程各自出现 `PROBE_PASS` 才算该轮联机探针通过。
+
+```sh
+# Mac A，先启动。
+'builds/mac/About Me.app/Contents/MacOS/About Me' -batchmode -nographics \
+  -logFile ./lan-host.log --bot --endpoint ws://LINUX_LAN_IP:7777 \
+  --create-room --marker ./room.txt --identity lan-host --players 2 --reconnect
+
+# Mac B，先将 Mac A 的真实房间码填到本机文件。
+printf '%s' 'ROOM_CODE' > ./room.txt
+'builds/mac/About Me.app/Contents/MacOS/About Me' -batchmode -nographics \
+  -logFile ./lan-guest.log --bot --endpoint ws://LINUX_LAN_IP:7777 \
+  --marker ./room.txt --identity lan-guest
+```
+
+`--reconnect` 验证 Mac A 断线后用原身份返回；服务器保留开局后全部断线的房间 120 秒，过期后释放容量。局域网探针只是跨设备 WebSocket、快照和自动输入验收；仍要用真人客户端另验操作手感。公网部署后把客户端地址改为 `wss://game.example.com`，并分别从两种外部网络运行，再扩至 4/6 人。正式公网服务不要使用 `--allow-samples` 或 `--accelerated`。
+
 ## 微信小游戏
 
 官方 WXSDK 固定提交为 `a09d4b29daa1dd8358b09b5b5639554ab08cfdc2`。安装命令：

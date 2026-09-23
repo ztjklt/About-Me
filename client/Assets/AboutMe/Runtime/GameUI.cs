@@ -76,7 +76,7 @@ namespace AboutMe
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
         }
         RectTransform inventoryContent;
-        PersonaInstance[] QuickItems(Snapshot state)=>state.inventory.OrderBy(x=>{int i=favorites.IndexOf(x.asset.assetId);return i<0?10000:i;}).ToArray();
+        PublicPersonaInstance[] QuickItems(Snapshot state)=>state.inventory.OrderBy(x=>{int i=favorites.IndexOf(x.asset.assetId);return i<0?10000:i;}).ToArray();
         void Favorite(string assetId){favorites.Remove(assetId);favorites.Insert(0,assetId);if(favorites.Count>5)favorites.RemoveAt(5);PlayerPrefs.SetString("favorites",string.Join(",",favorites));lastInventory="";}
         public void WechatLogin(string code){StartCoroutine(LoginWechat(code));}
         IEnumerator LoginWechat(string code)
@@ -272,6 +272,7 @@ namespace AboutMe
                 if(startStyle)startStyle.SetState(start.interactable?UIVisualState.Selected:UIVisualState.Normal);
                 var me=state.players.FirstOrDefault(p=>p.id==state.you);
                 if(state.events.Length>0&&state.events.Last().id!=lastEvent){lastEvent=state.events.Last().id;eventText.text=state.events.Last().text;toastPulse.Play();}
+                UpdateRoast(state);
                 string inventory=string.Join("|",state.inventory.Select(x=>x.id+":"+x.state));
                 if(inventory!=lastInventory)
                 {

@@ -9,6 +9,13 @@ namespace AboutMe
     {
         public string assetId, name, templateId, visualId, color, source;
         public PersonaAsset Copy() => (PersonaAsset)MemberwiseClone();
+        public PublicPersonaAsset PublicCopy() => new PublicPersonaAsset
+        { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color };
+    }
+    // A separate wire type prevents private profile fields from being serialized.
+    [Serializable] public class PublicPersonaAsset
+    {
+        public string assetId, name, templateId, visualId, color;
     }
     [Serializable] public class Profile
     {
@@ -48,6 +55,15 @@ namespace AboutMe
         public ItemState state;
         public Vector3 position, velocity;
         public PersonaInstance Copy() => (PersonaInstance)MemberwiseClone();
+        public PublicPersonaInstance PublicCopy() => new PublicPersonaInstance
+        { id=id, ownerId=ownerId, carrierId=carrierId, asset=asset?.PublicCopy(), state=state, position=position, velocity=velocity };
+    }
+    [Serializable] public class PublicPersonaInstance
+    {
+        public string id, ownerId, carrierId;
+        public PublicPersonaAsset asset;
+        public ItemState state;
+        public Vector3 position, velocity;
     }
     public class Player
     {
@@ -121,7 +137,7 @@ namespace AboutMe
         public MatchPhase phase;
         public float time, handAt, finalAt, handAnimation;
         public PublicPlayer[] players;
-        public PersonaInstance[] ground, inventory, revealed;
+        public PublicPersonaInstance[] ground, inventory, revealed;
         public Vector3 handPosition;
         public bool handFist;
         public EffectState[] effects;
@@ -591,9 +607,9 @@ namespace AboutMe
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=p.escapeStartedAt<0?0:Mathf.Clamp01((Time-p.escapeStartedAt)/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
-                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried).Select(x=>x.Copy()).ToArray(),
-                inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.Copy()).ToArray(),
-                revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.Copy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PersonaInstance>(),
+                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried).Select(x=>x.PublicCopy()).ToArray(),
+                inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),
+                revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.PublicCopy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PublicPersonaInstance>(),
                 effects=Effects.ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};
         }
     }

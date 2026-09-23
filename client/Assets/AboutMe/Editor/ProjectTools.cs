@@ -58,6 +58,20 @@ namespace AboutMe.Editor
             Test("variable inventory and maximum players",()=>{var m=M(9);Assert(m.Remaining("a")==9,"fixed persona count");for(int i=0;i<4;i++)Assert(m.Add(P("c"+i))==false,"mid-match join");m.Phase=MatchPhase.Lobby;for(int i=0;i<4;i++)Assert(m.Add(P("c"+i)),"six players");Assert(!m.Add(P("overflow")),"seventh player allowed");});
             Test("dropped and carried items still count as life",()=>{var m=M();SetGround(m,"b",m.Players["a"].position);m.Interact(m.Players["a"]);Assert(m.Remaining("b")==2&&!m.Players["b"].eliminated,"premature death");});
             Test("public snapshot does not reveal opponent inventory",()=>{var m=M(8);var v=m.View("a");Assert(v.inventory.Length==8&&v.inventory.All(x=>x.ownerId=="a"),"private inventory leaked");Assert(v.ground.Length==0,"inventory exposed as ground");});
+            Test("snapshots never expose introduction source",()=>{
+                var m=M();foreach(var item in m.Items)item.asset.source="PRIVATE_INTRO_FRAGMENT";
+                m.Phase=MatchPhase.Reveal;var reveal=m.View("a");
+                Assert(reveal.revealed.Length>0,"reveal items missing");
+                Assert(!JsonUtility.ToJson(reveal).Contains("\"source\""),"reveal serialized a private field");
+                m.Drop(m.Players["b"],1);var view=m.View("a");
+                Assert(view.ground.Length>0&&view.inventory.Length>0,"snapshot items missing");
+                var json=JsonUtility.ToJson(view);
+                Assert(!json.Contains("PRIVATE_INTRO_FRAGMENT"),"serialized snapshot leaked source");
+                Assert(!json.Contains("\"source\""),"serialized snapshot exposed a private field");
+                var carried=m.Items.First(x=>x.state==ItemState.Ground);carried.state=ItemState.Carried;carried.carrierId="a";
+                Assert(!JsonUtility.ToJson(m.View("b")).Contains("\"source\""),"carried item serialized a private field");
+                Assert(m.Items.All(x=>x.asset.source=="PRIVATE_INTRO_FRAGMENT"),"projection changed authority state");
+            });
             Test("contested pickup has one winner",()=>{var m=M();SetGround(m,"b",m.Players["a"].position);m.Players["b"].position=m.Players["a"].position;var item=m.Items.First(x=>x.ownerId=="b");m.Interact(m.Players["a"]);m.Interact(m.Players["b"]);Assert(m.Players["a"].carrying!=m.Players["b"].carrying,"duplicated pickup");Assert(item.carrierId=="a","pickup stolen");});
             Test("interrupt returns carried item without consumption",()=>{var m=M();SetGround(m,"b",m.Players["a"].position);m.Interact(m.Players["a"]);var item=m.Item(m.Players["a"].carrying);m.Hit(m.Players["a"],m.Players["b"],5,0,false);Tick(m,.2f);Assert(item.state==ItemState.Ground&&m.Remaining("b")==2&&m.Eaten.Count==0,"interrupted item consumed");});
             Test("last consumed persona alone eliminates and settles once",()=>{var m=M(1);SetGround(m,"b",m.Players["a"].position);m.Interact(m.Players["a"]);Tick(m,.2f);Assert(m.Players["b"].eliminated&&m.Winner=="a"&&m.Phase==MatchPhase.Finished,"no correct winner");Tick(m,.3f);Assert(m.Eaten.Count==1,"duplicate result");Assert(m.Players["b"].profile.personas.Length==1,"persistent persona deleted");});

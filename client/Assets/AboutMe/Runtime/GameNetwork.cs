@@ -52,7 +52,10 @@ namespace AboutMe
         readonly Dictionary<int, (Match match, string player)> seats = new Dictionary<int, (Match,string)>();
         readonly HashSet<int> pending = new HashSet<int>();
         readonly Dictionary<int,float> joins = new Dictionary<int,float>();
+        readonly Dictionary<string,float> emptyRooms = new Dictionary<string,float>();
         readonly HashSet<string> saved = new HashSet<string>();
+        const float ReconnectGraceSeconds = 120f;
+        float reconnectGrace = ReconnectGraceSeconds;
         float nextSnapshot;
         int sequence;
         int frame,receivingFrame=-1;
@@ -71,7 +74,7 @@ namespace AboutMe
             string api=Environment.GetEnvironmentVariable("ABOUTME_API_URL");if(!string.IsNullOrEmpty(api))ApiUrl=api;
             var args=Environment.GetCommandLineArgs();
             AllowSamples=args.Contains("--allow-samples");
-            if(args.Contains("--accelerated"))Rules=new MatchRules{revealDuration=2,handInterval=4,finalTime=8,eatDuration=.2f,recoverDuration=.15f};
+            if(args.Contains("--accelerated")){Rules=new MatchRules{revealDuration=2,handInterval=4,finalTime=8,eatDuration=.2f,recoverDuration=.15f};reconnectGrace=3f;}
             if(args.Contains("--aboutme-server")) { Application.targetFrameRate=50;StartServer();Status="Server listening :"+((SimpleWebTransport)transport).port; }
         }
         public void Connect()
@@ -152,6 +155,7 @@ namespace AboutMe
             if(seats.Values.Any(x=>x.player==profile.playerId)){Reject(conn,"此角色已在另一连接中使用");return;}
             if(!room.Add(profile)){Reject(conn,"房间已开局、人数已满或角色无 Persona");return;}
             pending.Remove(conn.connectionId);joins.Remove(conn.connectionId);seats[conn.connectionId]=(room,profile.playerId);
+            emptyRooms.Remove(code);
             SendSnapshot(conn,room.View(profile.playerId));
             Debug.Log("ABOUTME_JOIN room="+code+" players="+room.Players.Count);
         }
@@ -164,11 +168,16 @@ namespace AboutMe
             if(seats.TryGetValue(conn.connectionId,out var seat))
             {
                 seat.match.Disconnect(seat.player);seats.Remove(conn.connectionId);
-                if(seat.match.Players.Count==0||(seat.match.Phase==MatchPhase.Finished&&!seats.Values.Any(x=>x.match==seat.match))){seat.match.Dispose();rooms.Remove(seat.match.Room);}
+                if(!seats.Values.Any(x=>x.match==seat.match))
+                {
+                    if(seat.match.Phase==MatchPhase.Lobby)
+                    {seat.match.Dispose();rooms.Remove(seat.match.Room);emptyRooms.Remove(seat.match.Room);}
+                    else emptyRooms[seat.match.Room]=UnityEngine.Time.realtimeSinceStartup;
+                }
             }
             base.OnServerDisconnect(conn);
         }
-        public override void OnStopServer(){foreach(var room in rooms.Values)room.Dispose();rooms.Clear();seats.Clear();pending.Clear();joins.Clear();saved.Clear();}
+        public override void OnStopServer(){foreach(var room in rooms.Values)room.Dispose();rooms.Clear();seats.Clear();pending.Clear();joins.Clear();emptyRooms.Clear();saved.Clear();}
         void FixedUpdate()
         {
             if(localSession!=null)
@@ -178,8 +187,15 @@ namespace AboutMe
                 {localResultSaved=true;PlayerPrefs.SetString("lastSoloResult",JsonUtility.ToJson(State));PlayerPrefs.Save();}
             }
             if(!NetworkServer.active)return;
-            foreach(var room in rooms.Values){room.EnableBodyPhysics();room.Tick(UnityEngine.Time.fixedDeltaTime);}
             float now=UnityEngine.Time.realtimeSinceStartup;
+            foreach(var entry in emptyRooms.ToArray())
+                if(now-entry.Value>=reconnectGrace)
+                {
+                    if(rooms.TryGetValue(entry.Key,out var abandoned))
+                    {abandoned.Dispose();rooms.Remove(entry.Key);saved.Remove(abandoned.MatchId);Debug.Log("ABOUTME_ROOM_EXPIRED room="+entry.Key+" remaining="+rooms.Count);}
+                    emptyRooms.Remove(entry.Key);
+                }
+            foreach(var room in rooms.Values){room.EnableBodyPhysics();room.Tick(UnityEngine.Time.fixedDeltaTime);}
             foreach(var entry in joins.ToArray())if(now-entry.Value>20&&NetworkServer.connections.TryGetValue(entry.Key,out var conn))conn.Disconnect();
             if(now<nextSnapshot)return;nextSnapshot=now+.05f;
             foreach(var entry in seats.ToArray())
@@ -220,11 +236,24 @@ namespace AboutMe
             if(token!="")request.SetRequestHeader("Authorization","Bearer "+token);
             return request;
         }
+        static readonly (string templateId,string visualId)[] SampleCatalogPairs =
+        {
+            ("Projectile","basketball"),
+            ("Disc","school-disc"),
+            ("Melee","book"),
+            ("HeavyWeapon","computer"),
+            ("Utility","camera"),
+            ("Deployable","plant"),
+            ("Summon","cat"),
+            ("SpecialAbility","robot")
+        };
+
         public static Profile SampleProfile(string id,string nickname)
         {
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);
-            return new Profile{playerId="sample-"+id,nickname=string.IsNullOrWhiteSpace(nickname)?"样例玩家":nickname,color=catalog.items[Math.Abs(id.GetHashCode()%8)].color,
-                personas=catalog.items.Select((x,i)=>new PersonaAsset{assetId="sample-"+i,name=x.label,source="明确标注的测试样例",templateId=x.templateId,visualId=x.visualId,color=x.color}).ToArray()};
+            var sampleItems=SampleCatalogPairs.Select(pair=>catalog.items.Single(x=>x.templateId==pair.templateId&&x.visualId==pair.visualId)).ToArray();
+            return new Profile{playerId="sample-"+id,nickname=string.IsNullOrWhiteSpace(nickname)?"样例玩家":nickname,color=sampleItems[Math.Abs(id.GetHashCode()%sampleItems.Length)].color,
+                personas=sampleItems.Select((x,i)=>new PersonaAsset{assetId="sample-"+i,name=x.label,source="明确标注的测试样例",templateId=x.templateId,visualId=x.visualId,color=x.color}).ToArray()};
         }
     }
 }

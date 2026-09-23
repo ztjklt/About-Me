@@ -29,6 +29,8 @@ namespace AboutMe
             if(now-startTime>100){Debug.LogError("PROBE_TIMEOUT seen="+seen);Application.Quit(2);return;}
             if(reconnecting){if(now<reconnectAt)return;reconnecting=false;net.Connect();return;}
             var s=net.State;if(s==null)return;
+            if(JsonUtility.ToJson(s).Contains("\"source\""))
+            {Debug.LogError("PROBE_PRIVATE_SOURCE_LEAK");Application.Quit(8);return;}
             if(originalId==null)originalId=s.you;
             if(s.you!=originalId){Debug.LogError("PROBE_RECONNECT_ID_CHANGED");Application.Quit(5);return;}
             if(reconnectRequested&&!reconnected&&s.phase==MatchPhase.Battle&&s.time>4){reconnected=true;reconnecting=true;reconnectAt=now+1;net.StopClient();net.State=null;Debug.Log("PROBE_RECONNECT_STARTED");return;}
