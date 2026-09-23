@@ -210,62 +210,67 @@ namespace AboutMe.Editor
                 });
                 Test("grabber attacks only after releasing the grip",()=>
                 {
-                    var m=Make(); Connect(m); Send(m,"a","light");
+                    var m=Make(); Connect(m); Send(m,"a","use_item");
                     Check(m.Players["a"].grabbing=="","grabber can attack while retaining victim");
                 });
                 Test("grabbed player can counterattack and interrupt grabber",()=>
                 {
                     var m=Make(); Connect(m); var before=m.Players["a"].stability;
-                    Send(m,"b","light"); Tick(m,.14f);
+                    Send(m,"b","use_item"); Tick(m,.20f);
                     Check(m.Players["a"].stability<before,"victim's counterattack was suppressed");
                     Check(m.Players["a"].grabbing=="","hit grabber kept grip");
                 });
-                Test("light strike waits for contact and deals damage only once",()=>
+                Test("item use waits for contact and deals damage only once",()=>
                 {
                     var m=Make(); var victim=m.Players["b"]; var before=victim.stability;
-                    Send(m,"a","light"); Check(victim.stability==before,"light hit immediately");
-                    Tick(m,.06f); Check(victim.stability==before,"light hit during anticipation");
+                    Send(m,"a","use_item"); Check(victim.stability==before,"item use hit immediately");
+                    Tick(m,.12f); Check(victim.stability==before,"item use hit during anticipation");
                     Tick(m,.08f); var hit=victim.stability;
-                    Check(hit<before,"light missed valid contact window");
+                    Check(hit<before,"item use missed valid contact window");
                     Tick(m,.5f); Check(Mathf.Abs(victim.stability-hit)<.001f,"one strike dealt repeated damage");
+                });
+                Test("old attack intents and empty hands cannot attack",()=>
+                {
+                    foreach(var action in new[]{"light","charge","heavy"})
+                    {
+                        var m=Make(); Send(m,"a",action); Tick(m,.24f);
+                        Check(m.Players["b"].stability==100&&m.Players["a"].pendingAction==""&&m.Players["a"].chargingSince<0,"legacy intent attacked: "+action);
+                    }
+                    var empty=Make();var actor=empty.Players["a"];
+                    empty.Item(actor.equipped).state=ItemState.Inventory;actor.equipped="";
+                    Send(empty,"a","use_item");Tick(empty,.24f);
+                    Check(empty.Players["b"].stability==100&&actor.pendingAction=="","empty hands attacked");
                 });
                 Test("cancel and equipment changes discard pending contact",()=>
                 {
-                    foreach(var attack in new[]{"light","grab"})
+                    foreach(var attack in new[]{"use_item","grab"})
                     {
                         var m=Make(); Send(m,"a",attack); Tick(m,.04f); Send(m,"a","cancel"); Tick(m,.3f);
                         Check(m.Players["b"].stability==100&&m.Players["a"].grabbing=="","cancelled action resolved later: "+attack);
                     }
-                    var swap=Make(); Send(swap,"a","light");
+                    var swap=Make(); Send(swap,"a","use_item");
                     var p=swap.Players["a"];
                     swap.Receive("a",new Command {sequence=p.sequence+1,action="equip",itemId=swap.Items.First(x=>x.ownerId=="a"&&x.state==ItemState.Inventory).id});
                     Tick(swap,.2f); Check(swap.Players["b"].stability==100,"weapon switch allowed old pending hit");
                 });
-                Test("public prop remains held through charge and is thrown at contact",()=>
+                Test("public prop is thrown by item use at contact",()=>
                 {
                     var m=Make(); m.Players["b"].position=new Vector3(10,1,10);
                     var prop=new PublicProp {id="test-box",visual="box",position=new Vector3(0,1,1.10f)};
                     m.Props.Add(prop); Send(m,"a","grab"); Tick(m,.24f);
                     Check(m.Players["a"].publicProp==prop.id&&prop.holder=="a","box grab failed");
-                    Send(m,"a","charge");
-                    Check(m.Players["a"].publicProp==prop.id&&prop.holder=="a","charge prematurely released public prop");
-                    for(int i=0;i<20;i++) { Send(m,"a"); m.Tick(Step); }
-                    Send(m,"a","heavy"); Tick(m,.08f);
-                    Check(prop.holder=="a","prop throw happened before heavy contact");
+                    Send(m,"a","use_item"); Tick(m,.08f);
+                    Check(prop.holder=="a","prop throw happened before item-use contact");
                     Tick(m,.12f);
-                    Check(prop.holder==""&&m.Players["a"].publicProp==""&&prop.thrower=="a"&&prop.velocity.z>5,"heavy did not throw the held prop");
+                    Check(prop.holder==""&&m.Players["a"].publicProp==""&&prop.thrower=="a"&&prop.velocity.z>5,"item use did not throw the held prop");
                 });
-                Test("charged heavy strike is delayed and stronger than light",()=>
+                Test("item use applies the existing full-charge template strength",()=>
                 {
-                    var light=Make(); Send(light,"a","light"); Tick(light,.14f);
-                    float lightLoss=100-light.Players["b"].stability;
-                    var heavy=Make(); Send(heavy,"a","charge");
-                    for(int i=0;i<30;i++) { Send(heavy,"a"); heavy.Tick(Step); }
-                    Send(heavy,"a","heavy"); var victim=heavy.Players["b"];
-                    Tick(heavy,.12f); Check(victim.stability==100,"heavy hit during anticipation");
-                    Tick(heavy,.08f);
-                    Check(100-victim.stability>lightLoss,"charged heavy is not stronger than light");
-                    Check(victim.impulse.magnitude>light.Players["b"].impulse.magnitude,"heavy has no stronger recoil");
+                    var m=Make(); Send(m,"a","use_item"); var victim=m.Players["b"];
+                    Check(m.Players["a"].pendingCharge==1,"template did not receive full internal charge");
+                    Tick(m,.12f); Check(victim.stability==100,"item use hit during anticipation");
+                    Tick(m,.08f);
+                    Check(victim.stability<100&&victim.impulse.magnitude>0,"item use lacked the existing template hit");
                 });
                 Test("stagger and either disconnect clear all grip links",()=>
                 {
@@ -277,27 +282,27 @@ namespace AboutMe.Editor
                     var hit=Make(); Connect(hit); hit.Hit(hit.Players["b"],hit.Players["a"],5,1,false); Tick(hit,Step);
                     Check(hit.Players.Values.All(p=>p.grabbing==""),"stagger left incoming grip link");
                 });
-                Test("grip exhaustion interrupts a victim's held heavy charge",()=>
+                Test("grip exhaustion interrupts pending item use",()=>
                 {
                     var m=Make(); Connect(m); var victim=m.Players["b"];
-                    victim.stability=.1f; Send(m,"b","charge");
-                    Check(victim.chargingSince>=0,"victim charge fixture did not start");
+                    victim.stability=.1f; Send(m,"b","use_item");
+                    Check(victim.pendingAction=="heavy","victim item-use fixture did not start");
                     Tick(m,Step);
                     Check(victim.staggerUntil>m.Time,"grip did not exhaust low stability");
-                    Check(victim.chargingSince<0&&victim.pendingAction=="","grip exhaustion retained heavy charge or pending contact");
+                    Check(victim.pendingAction=="","grip exhaustion retained pending contact");
                     Check(m.Players["a"].grabbing=="","exhausted victim remained attached");
                     for(int i=0;i<55;i++) { Send(m,"b"); m.Tick(Step); }
-                    Check(victim.chargingSince<0,"keepalive input revived cancelled charge after stagger");
+                    Check(victim.pendingAction=="","keepalive input revived cancelled attack after stagger");
                 });
-                Test("out-of-map respawn cancels charge before controls recover",()=>
+                Test("out-of-map respawn cancels item use before controls recover",()=>
                 {
-                    var m=Make(); var fallen=m.Players["a"]; Send(m,"a","charge");
-                    Check(fallen.chargingSince>=0,"respawn charge fixture did not start");
+                    var m=Make(); var fallen=m.Players["a"]; Send(m,"a","use_item");
+                    Check(fallen.pendingAction=="heavy","respawn item-use fixture did not start");
                     fallen.position=new Vector3(0,-9,0); Tick(m,Step);
                     Check(fallen.position.y>0&&fallen.staggerUntil>m.Time,"out-of-map fixture did not respawn");
-                    Check(fallen.chargingSince<0&&fallen.pendingAction=="","respawn retained heavy charge or pending contact");
+                    Check(fallen.pendingAction=="","respawn retained pending contact");
                     for(int i=0;i<40;i++) { Send(m,"a"); m.Tick(Step); }
-                    Check(fallen.chargingSince<0,"keepalive input revived charge after respawn");
+                    Check(fallen.pendingAction=="","keepalive input revived attack after respawn");
                 });
                 Test("double tap W A S D independently starts and releases sprint",()=>
                 {

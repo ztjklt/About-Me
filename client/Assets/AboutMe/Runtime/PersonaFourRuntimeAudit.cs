@@ -31,6 +31,8 @@ namespace AboutMe
             foreach(var item in Cases)
             {
                 var entry=catalog.items.Single(x=>x.templateId==item.template&&x.visualId==item.visual);
+                if(item.visual=="notebook-cc0"&&entry.label!="纸质笔记本")
+                    throw new Exception("PERSONA_FOUR_FAILED notebook display name");
                 var model=PersonaVisualCatalog.Create(item.visual, null);
                 try
                 {
@@ -60,7 +62,7 @@ namespace AboutMe
                     instance.position=match.Players["other"].position;
                     match.Receive("other",new Command{sequence=0,action="interact",itemId=instance.id});
                     Tick(match,.16f);
-                    if(instance.state!=ItemState.Consumed||match.Eaten.Count!=1||match.Eaten[0].visual!=item.visual||!owner.eliminated)
+                    if(instance.state!=ItemState.Consumed||match.Eaten.Count!=1||match.Eaten[0].visual!=item.visual||match.Eaten[0].persona!=entry.label||!owner.eliminated)
                         throw new Exception("PERSONA_FOUR_FAILED consume "+item.visual);
                 }
                 finally { match.Dispose(); }
@@ -72,17 +74,16 @@ namespace AboutMe
                     var target=combat.Players["other"];
                     attacker.position=new Vector3(0,1,0);attacker.yaw=0;
                     target.position=new Vector3(0,1,item.template=="Melee"?2.2f:4f);
-                    combat.Receive("owner",new Command{sequence=1,action="charge",yaw=0});
-                    Tick(combat,.08f);
-                    combat.Receive("owner",new Command{sequence=2,action="heavy",yaw=0});
-                    Tick(combat,.16f);
-                    if(!combat.Effects.Any(x=>x.kind==item.effect&&(item.effect=="Pulse"||x.visual==item.visual)))
-                        throw new Exception("PERSONA_FOUR_FAILED heavy effect "+item.visual);
+                    bool HasEffect()=>combat.Effects.Any(x=>x.kind==item.effect&&(item.effect=="Pulse"||x.visual==item.visual));
+                    combat.Receive("owner",new Command{sequence=1,action="use_item",yaw=0});
+                    Tick(combat,.2f);
+                    if(!HasEffect())
+                        throw new Exception("PERSONA_FOUR_FAILED use_item effect "+item.visual);
                     if((item.template=="Melee"||item.template=="Utility")&&target.stability>=100)
-                        throw new Exception("PERSONA_FOUR_FAILED heavy hit "+item.visual);
+                        throw new Exception("PERSONA_FOUR_FAILED use_item hit "+item.visual);
                 }
                 finally { combat.Dispose(); }
-                Debug.Log("PERSONA_FOUR_PASS "+item.visual+" equip drop recover consume heavy");
+                Debug.Log("PERSONA_FOUR_PASS "+item.visual+" equip drop recover consume use_item");
             }
             Debug.Log("PERSONA_FOUR_CLIENT_AUDIT_PASSED four assets; fixed sample eight");
         }

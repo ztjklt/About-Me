@@ -160,7 +160,7 @@ namespace AboutMe
             var progressTrack=ArtPanel(hudProgress,"Progress track",18,42,474,18,UITheme.Field,true,false);progressFill=ArtPanel(progressTrack,"Progress fill",3,3,468,12,UITheme.Pink,false,false).GetComponent<Image>();progressFill.rectTransform.anchorMin=new Vector2(0,0);progressFill.rectTransform.anchorMax=new Vector2(1,1);progressFill.rectTransform.offsetMin=new Vector2(3,3);progressFill.rectTransform.offsetMax=new Vector2(-3,-3);hudProgress.gameObject.SetActive(false);
             keyboardHint=ArtPanel(hud,"Keyboard help",34,700,382,157,new Color(1,1,1,.84f),true,false);
             ArtText(keyboardHint,"KEYBOARD KIT",16,9,330,25,14,UITheme.Muted,FontStyle.Bold);
-            ArtText(keyboardHint,"WASD 行走 · 双击 WASD 奔跑 · SPACE 跳跃\nJ 轻击  ·  K 蓄力重击  ·  G 抓人\nH 抓道具 · E 吞噬/回收 · B 背包\n鼠标转视角 · Q 挣脱 · Esc 光标",16,37,348,107,15,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
+            ArtText(keyboardHint,"WASD 行走 · 双击 WASD 奔跑 · SPACE 跳跃\nF 使用已装备道具 · G 抓人 · H 抓道具\nE 吞噬/回收 · B 背包 · 1–5 切换道具\n鼠标转视角 · Q 挣脱 · Esc 光标",16,37,348,107,15,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             hotbar=ArtPanel(hud,"Persona hotbar",380,795,840,84,UITheme.Paper,true,true);
             for(int i=0;i<5;i++)
             {
@@ -216,8 +216,7 @@ namespace AboutMe
             var pad=ArtPanel(touch,"Move joystick",54,592,224,224,new Color(1,1,1,.52f),true,true);movePad=pad.gameObject.AddComponent<TouchPad>();
             movePad.Knob=ArtPanel(pad,"Joystick center",66,66,92,92,new Color(UITheme.Mint.r,UITheme.Mint.g,UITheme.Mint.b,.78f),true,false);movePad.Hint=ArtText(pad,"向前推满奔跑",20,154,184,34,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             var look=ArtPanel(touch,"Camera zone",850,180,690,300,new Color(1,1,1,.01f),false,false);look.GetComponent<Image>().raycastTarget=true;var lookPad=look.gameObject.AddComponent<TouchPad>();lookPad.CameraPad=true;lookPad.OnLook=d=>{world.CameraYaw+=d.x*.12f*cameraSensitivity;world.CameraPitch=Mathf.Clamp(world.CameraPitch-d.y*.1f*cameraSensitivity,10,65);};
-            var light=ArtButton(touch,"轻击",1188,578,132,70,()=>Send("light"),UITheme.Yellow,UITheme.Ink,"attack");
-            var heavyButton=ArtButton(touch,"按住重击",1334,542,178,106,()=>{},UITheme.Pink,UITheme.Ink,"attack");var heavy=heavyButton.gameObject.AddComponent<PressButton>();heavy.Down=()=>{heavyButton.GetComponent<StickerButton>().SetState(UIVisualState.Recording);Send("charge");};heavy.Up=()=>{heavyButton.GetComponent<StickerButton>().SetState(UIVisualState.Normal);Send("heavy");};
+            ArtButton(touch,"使用道具",1188,578,178,86,()=>Send("use_item"),UITheme.Yellow,UITheme.Ink,"attack");
             ArtButton(touch,"跳跃",1362,670,150,66,()=>Send("jump"),UITheme.Purple,UITheme.Ink,"jump");
             ArtButton(touch,"抓人",1035,578,132,70,()=>Send("grab"),UITheme.Mint,UITheme.Ink,"grab");
             ArtButton(touch,"抓道具",1035,665,132,66,()=>Send("grab_item"),UITheme.Field,UITheme.Ink,"grab");

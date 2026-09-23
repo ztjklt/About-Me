@@ -55,8 +55,8 @@
  {"templateId":"Barricade","visualId":"trashcan","label":"垃圾桶","color":"#79CFC5"},
  {"templateId":"Melee","visualId":"sword","label":"短剑","color":"#9FAFF2"},
  {"templateId":"SpecialAbility","visualId":"toy-bomb","label":"玩具炸弹","color":"#E77770"},
- {"templateId":"Ricochet","visualId":"football-cc0","label":"足球","color":"#FFF9EF","evidenceTerms":["足球","football","soccer"],"excludeTerms":["美式足球","美式橄榄球","american football"]},
+ {"templateId":"Ricochet","visualId":"football-cc0","label":"足球","color":"#FFF9EF","evidenceTerms":["足球","football","soccer"],"excludeTerms":["美式足球","美式橄榄球","american football","gridiron football"]},
  {"templateId":"Utility","visualId":"gamepad-cc0","label":"游戏手柄","color":"#A2B7FF","evidenceTerms":["手柄","gamepad","controller"]},
  {"templateId":"Melee","visualId":"ukulele-cc0","label":"尤克里里","color":"#F49A6B","evidenceTerms":["尤克里里","ukulele"]},
- {"templateId":"Disc","visualId":"notebook-cc0","label":"笔记本","color":"#AA91ED","evidenceTerms":["笔记本","手账","手帐","记事本","notebook"],"excludeTerms":["笔记本电脑","电脑笔记本","laptop"]}
+ {"templateId":"Disc","visualId":"notebook-cc0","label":"纸质笔记本","color":"#AA91ED","evidenceTerms":["笔记本","手账","手帐","记事本","notebook"],"excludeTerms":["笔记本电脑","电脑笔记本","laptop","notebook computer"]}
 ]}

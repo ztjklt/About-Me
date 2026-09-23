@@ -66,7 +66,7 @@ namespace AboutMe
             var target=s.players.FirstOrDefault(p=>p.id!=s.you);if(target==null)return;
             var d=target.position-me.position;d.y=0;var direction=d.normalized;
             float yaw=Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg;
-            string action=(++sequence%15)==0?"light":"";
+            string action=(++sequence%15)==0?"use_item":"";
             net.Send(action,"",d.magnitude>1.7f?new Vector2(direction.x,direction.z):Vector2.zero,yaw,d.magnitude>3);
         }
     }

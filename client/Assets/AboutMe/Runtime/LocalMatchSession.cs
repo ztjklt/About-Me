@@ -49,7 +49,7 @@ namespace AboutMe
     {
         public readonly string Id;
         int sequence, attacks;
-        float nextAttack, chargeStarted=-1, nextPath, stuckAt, reactionUntil, grabReactionAt=-1, nextGrab;
+        float nextAttack, nextPath, stuckAt, reactionUntil, grabReactionAt=-1, nextGrab;
         string trackedEnemy="";
         Vector3 previous, destination;
         readonly Queue<Vector3> path=new Queue<Vector3>();
@@ -63,13 +63,13 @@ namespace AboutMe
             var enemy=state.players.Where(p=>p.id!=Id&&!p.eliminated).OrderBy(p=>Vector3.Distance(p.position,me.position)).FirstOrDefault();
             if(enemy==null)return c;
             if(trackedEnemy!=enemy.id){trackedEnemy=enemy.id;reactionUntil=now+.35f;}
-            if(me.grabbed){if(grabReactionAt<0)grabReactionAt=now+.35f;c.escapeHeld=now>=grabReactionAt;c.yaw=me.yaw;chargeStarted=-1;return c;}
+            if(me.grabbed){if(grabReactionAt<0)grabReactionAt=now+.35f;c.escapeHeld=now>=grabReactionAt;c.yaw=me.yaw;return c;}
             grabReactionAt=-1;
             c.yaw=me.yaw;
             bool danger=state.handAnimation>0&&now-state.handStartedAt<.65f&&Mathf.Abs(me.position.y-state.handPosition.y)<2&&FlatDistance(me.position,state.handPosition)<4;
             if(danger)
             {
-                if(me.interaction!=""||me.charge>0)c.action="cancel";
+                if(me.interaction!="")c.action="cancel";
                 var away=me.position-state.handPosition;away.y=0;if(away.sqrMagnitude<.1f)away=Vector3.forward;
                 Move(c,me.position,me.position+away.normalized*5,now);return c;
             }
@@ -87,20 +87,13 @@ namespace AboutMe
             if(now<reactionUntil)return c;
             float distance=Vector3.Distance(enemy.position,me.position);
             var aim=enemy.position-me.position;c.yaw=Mathf.Atan2(aim.x,aim.z)*Mathf.Rad2Deg;
-            if(chargeStarted>=0)
-            {
-                if(now-chargeStarted>=.9f){c.action="heavy";chargeStarted=-1;nextAttack=now+1.1f;}
-                else if(distance>1.5f)Move(c,me.position,enemy.position,now);
-                return c;
-            }
             if(distance>1.08f)Move(c,me.position,enemy.position,now);
             if(distance<2.4f&&now>=nextAttack)
             {
                 attacks++;
                 if(me.grabbing!=""){c.action="cancel";nextAttack=now+.4f;nextGrab=now+2.5f;}
                 else if(attacks%5==0&&distance<1.25f&&now>=nextGrab){c.action="grab";nextAttack=now+1.2f;nextGrab=now+3.5f;}
-                else if(enemy.stability<=55||attacks%3==0){c.action="charge";chargeStarted=now;nextAttack=now+1.2f;}
-                else {c.action="light";nextAttack=now+.85f;}
+                else if(me.equippedVisual!=""||me.publicProp!="") {c.action="use_item";nextAttack=now+1.1f;}
             }
             return c;
         }

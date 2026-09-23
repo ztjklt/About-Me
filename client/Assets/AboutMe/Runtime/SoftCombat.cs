@@ -42,6 +42,13 @@ namespace AboutMe
             SetAction(p,heavy?"heavy":"light");p.pendingAction=p.actionKind;p.pendingCharge=charge;
             p.pendingAt=Time+(heavy?.16f:.10f);p.nextAttack=Time+(heavy?Rules.heavyInterval:Rules.lightInterval);
         }
+        void UseItem(Player p)
+        {
+            // Attacks are always an explicit use of an equipped Persona (or a
+            // public prop being carried). There is no unarmed light attack.
+            if(Item(p.equipped)==null&&Props.Find(x=>x.id==p.publicProp)==null)return;
+            Attack(p,true,1f);
+        }
         void Grab(Player p,bool item)
         {
             if(p.grabbing!=""||p.publicProp!=""){ReleaseGrab(p);return;}

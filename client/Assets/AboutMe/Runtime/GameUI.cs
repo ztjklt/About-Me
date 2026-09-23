@@ -315,8 +315,7 @@ namespace AboutMe
             if(Input.GetKeyUp(KeyCode.Q))Send("escape_end");
             if(canAct)
             {
-                if(Input.GetKeyDown(KeyCode.Space))Send("jump");if(Input.GetKeyDown(KeyCode.J))Send("light");
-                if(Input.GetKeyDown(KeyCode.K))Send("charge");if(Input.GetKeyUp(KeyCode.K))Send("heavy");
+                if(Input.GetKeyDown(KeyCode.Space))Send("jump");if(Input.GetKeyDown(KeyCode.F))Send("use_item");
                 if(Input.GetKeyDown(KeyCode.G))Send("grab");if(Input.GetKeyDown(KeyCode.H))Send("grab_item");
                 if(Input.GetKeyDown(KeyCode.E))Send("interact");
                 for(int i=0;i<5;i++)if(Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1+i))){var quick=QuickItems(state);if(i<quick.Length)Send("equip",quick[i].id);}

@@ -63,7 +63,7 @@
 | `football-cc0` | 足球 | `Ricochet` | 飞行道具在边界或静态障碍反弹 | 观察反弹方向并移动 |
 | `gamepad-cc0` | 游戏手柄 | `Utility` | 较远距离的定向玩具冲击，冷却较长 | 侧移并趁冷却接近 |
 | `ukulele-cc0` | 尤克里里 | `Melee` | 正面 2.8 米玩具重击 | 拉开距离或侧移 |
-| `notebook-cc0` | 笔记本 | `Disc` | 飞出后返回，单目标最多命中一次 | 避开去程与回程路线 |
+| `notebook-cc0` | 纸质笔记本 | `Disc` | 飞出后返回，单目标最多命中一次 | 避开去程与回程路线 |
 
 ## 新增四件的来源、视觉与生成边界
 
@@ -72,7 +72,7 @@
 | 足球 | “我每周踢足球” | [Poly Haven football](https://polyhaven.com/a/football)，CC0，1K FBX 精选充气球体 | `Ricochet/football-cc0`；只在介绍直接提到普通足球时选择，排除“美式足球” |
 | 游戏手柄 | “我喜欢用手柄玩游戏” | [Poly Haven gamepad](https://polyhaven.com/a/gamepad)，CC0，1K FBX | `Utility/gamepad-cc0`；只表现远距玩具冲击，不宣称操纵对手 |
 | 尤克里里 | “我会弹尤克里里” | [Poly Haven Ukulele 01](https://polyhaven.com/a/Ukulele_01)，CC0，1K FBX | `Melee/ukulele-cc0`；不增加音波、眩晕或演奏加成 |
-| 笔记本 | “我习惯用笔记本记手账” | [Poly Haven binder notebook](https://polyhaven.com/a/binder_notebook)，CC0，1K FBX 精选展开模型 | `Disc/notebook-cc0`；排除“笔记本电脑”“电脑笔记本”等电子设备表述 |
+| 纸质笔记本 | “我习惯用纸质笔记本记手账” | [Poly Haven binder notebook](https://polyhaven.com/a/binder_notebook)，CC0，1K FBX 精选展开模型 | `Disc/notebook-cc0`；排除“笔记本电脑”“电脑笔记本”“notebook computer”等电子设备表述 |
 
 游戏内的 `source` 必须逐字对应玩家介绍中的连续片段；以上只是生成测试输入，不写入固定玩家资产。四件没有专属 Buff，掉落、回收、吞噬和生命数量遵循统一规则。
 

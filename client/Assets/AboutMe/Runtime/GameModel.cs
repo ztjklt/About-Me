@@ -226,11 +226,7 @@ namespace AboutMe
             switch (input.action)
             {
                 case "jump": if (!IsGrabbed(p) && p.position.y <= Floor(p.position) + 1.03f) { p.verticalSpeed = Rules.jumpSpeed; SetAction(p,"jump"); } Interrupt(p); break;
-                case "light": Attack(p, false, 0); break;
-                case "charge": if (Time >= p.nextAttack && p.chargingSince < 0 && p.pendingAction=="") { Interrupt(p); if(p.grabbing!="")ReleaseGrab(p); p.chargingSince = Time; SetAction(p,"charge"); } break;
-                case "heavy":
-                    if (p.chargingSince >= 0) Attack(p, true, Mathf.Clamp01((Time - p.chargingSince) / 1.2f));
-                    p.chargingSince = -1; break;
+                case "use_item": UseItem(p); break;
                 case "equip": Equip(p, input.itemId); break;
                 case "grab": Grab(p, false); break;
                 case "grab_item": Grab(p, true); break;
