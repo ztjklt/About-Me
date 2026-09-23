@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace AboutMe
 {
@@ -20,7 +21,7 @@ namespace AboutMe
             var go=GameObject.CreatePrimitive(type);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=pos;go.transform.localScale=scale;
             go.GetComponent<Renderer>().sharedMaterial=Material(color);if(!collider){if(Application.isPlaying)UnityEngine.Object.Destroy(go.GetComponent<Collider>());else UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());}return go;
         }
-        public static GameObject Item(string visual,string color,Transform parent,string label="")
+        public static GameObject Item(string visual,string color,Transform parent,string label="",string emblemPath="",string emblemCrop="",string generatedBy="")
         {
             var imported=PersonaVisualCatalog.Create(visual,parent);
             if(imported)return imported;
@@ -38,11 +39,19 @@ namespace AboutMe
                     for(int i=0;i<2;i++){var seam=Shape("seam",PrimitiveType.Cylinder,t,Vector3.zero,new Vector3(.66f,.009f,.66f),"#483E41");seam.transform.localRotation=Quaternion.Euler(i*90,0,0);}break;
                 case "school-disc":
                     Shape("disc",PrimitiveType.Cylinder,t,Vector3.zero,new Vector3(.8f,.08f,.8f),color);
-                    Shape("crest",PrimitiveType.Cylinder,t,Vector3.up*.095f,new Vector3(.48f,.018f,.48f),"#FFF1D2");
+                    var crest=Shape("crest",PrimitiveType.Cylinder,t,Vector3.up*.095f,new Vector3(.48f,.018f,.48f),"#FFF1D2");
                     var school=new GameObject("school name");school.transform.SetParent(t,false);school.transform.localPosition=new Vector3(0,.122f,0);school.transform.localRotation=Quaternion.Euler(90,0,0);
                     var schoolText=school.AddComponent<TextMesh>();var shortName=(label??"").Replace("校徽圆盘","").Replace("校徽","");if(shortName.Length>6)shortName=shortName.Substring(0,6);
                     schoolText.text=shortName;schoolText.anchor=TextAnchor.MiddleCenter;schoolText.alignment=TextAlignment.Center;schoolText.characterSize=.075f;schoolText.fontSize=52;schoolText.color=ColorOf("#263248");
-                    var schoolFont=Resources.Load<Font>("AboutMeFont");if(schoolFont){schoolText.font=schoolFont;school.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}break;
+                    var schoolFont=Resources.Load<Font>("AboutMeFont");if(schoolFont){schoolText.font=schoolFont;school.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}
+                    if(!string.IsNullOrEmpty(emblemPath))root.AddComponent<SchoolDiscTextureLoader>().Configure(crest.GetComponent<Renderer>(),schoolText,emblemPath,emblemCrop);
+                    if(!string.IsNullOrEmpty(generatedBy))
+                    {
+                        var badge=new GameObject("DeepSeek generated mark");badge.transform.SetParent(t,false);badge.transform.localPosition=new Vector3(0,.128f,-.57f);badge.transform.localRotation=Quaternion.Euler(90,0,0);
+                        var badgeText=badge.AddComponent<TextMesh>();badgeText.text="DeepSeek 生成";badgeText.anchor=TextAnchor.MiddleCenter;badgeText.alignment=TextAlignment.Center;badgeText.characterSize=.035f;badgeText.fontSize=44;badgeText.color=ColorOf("#263248");
+                        if(schoolFont){badgeText.font=schoolFont;badge.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}
+                    }
+                    break;
                 case "book":
                     Shape("cover",PrimitiveType.Cube,t,Vector3.zero,new Vector3(.65f,.8f,.2f),color);
                     Shape("pages",PrimitiveType.Cube,t,new Vector3(.035f,0,-.005f),new Vector3(.59f,.73f,.21f),"#FFF1D2");break;
@@ -158,8 +167,9 @@ namespace AboutMe
                 if(!actors.TryGetValue(p.id,out var actor)){actor=new ToyActor(p.id,p.color,p.outfit,actorRoot,p.appearance);actor.root.transform.position=p.position;actors[p.id]=actor;}
                 if(state.eaten!=null){var consumed=state.eaten.LastOrDefault(x=>x.eaterId==p.id);if(consumed!=null)actor.ConfirmSwallow(consumed.instanceId);}
                 actor.Draw(p,ViewCamera,state.simulationTime);
-                if(!cameraSkins.TryGetValue(p.id,out var cached)||cached.skin!=actor.Skin||cached.equipped!=p.equippedVisual)
-                    cameraSkins[p.id]=(actor.Skin,p.equippedVisual,actor.root.GetComponentsInChildren<Renderer>(true),cached.hidden);
+                var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath;
+                if(!cameraSkins.TryGetValue(p.id,out var cached)||cached.skin!=actor.Skin||cached.equipped!=equipmentKey)
+                    cameraSkins[p.id]=(actor.Skin,equipmentKey,actor.root.GetComponentsInChildren<Renderer>(true),cached.hidden);
             }
             // Both bodies have now sampled the same snapshot clock. Resolve contact in that rendered space.
             if(state.grabLinks!=null)foreach(var link in state.grabLinks)
@@ -197,7 +207,7 @@ namespace AboutMe
             var present=new HashSet<string>();
             if(state.revealed!=null)foreach(var item in state.revealed)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name);objects[item.id]=display;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy);objects[item.id]=display;}
                 display.transform.position=item.position+Vector3.up*(.2f*Mathf.Sin(UnityEngine.Time.time*3));display.transform.Rotate(Vector3.up,70*UnityEngine.Time.deltaTime);
             }
             if(state.props!=null)foreach(var prop in state.props)
@@ -207,7 +217,7 @@ namespace AboutMe
             }
             foreach(var item in state.ground)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name);objects[item.id]=go;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy);objects[item.id]=go;}
                 bool carried=item.state==ItemState.Carried;
                 if(carried&&actors.TryGetValue(item.carrierId,out var carrier))
                 {
@@ -226,7 +236,7 @@ namespace AboutMe
             {
                 present.Add(effect.id);
                 if(!objects.TryGetValue(effect.id,out var go))
-                {go=effect.kind=="Pulse"?ToyFactory.Shape("impact",PrimitiveType.Sphere,objectRoot,effect.position,Vector3.one,effect.color):ToyFactory.Item(effect.visual,effect.color,objectRoot);objects[effect.id]=go;}
+                {go=effect.kind=="Pulse"?ToyFactory.Shape("impact",PrimitiveType.Sphere,objectRoot,effect.position,Vector3.one,effect.color):ToyFactory.Item(effect.visual,effect.color,objectRoot,"",effect.emblemPath,effect.emblemCrop,effect.generatedBy);objects[effect.id]=go;}
                 go.transform.position=effect.position;
                 if(effect.kind=="Pulse")go.transform.localScale=Vector3.one*Mathf.Max(.1f,effect.remaining*3);
                 else go.transform.Rotate(Vector3.up,UnityEngine.Time.deltaTime*(effect.kind=="ThrownDisc"?(effect.landed?32:900):200));
@@ -234,5 +244,32 @@ namespace AboutMe
             foreach(var key in objects.Keys.Where(k=>!present.Contains(k)).ToArray()){Destroy(objects[key]);objects.Remove(key);}
             handPresentation.Draw(state,hand,handOpen,handFist,ViewCamera);
         }
+    }
+
+    public class SchoolDiscTextureLoader : MonoBehaviour
+    {
+        Renderer target;TextMesh fallback;string path,crop;Texture2D texture;
+        public void Configure(Renderer renderer,TextMesh fallbackText,string emblemPath,string emblemCrop)
+        {target=renderer;fallback=fallbackText;path=emblemPath;crop=emblemCrop;StartCoroutine(Load());}
+        System.Collections.IEnumerator Load()
+        {
+            var api=GameNetwork.Game?.ApiUrl??"";
+            var url=path.StartsWith("http",StringComparison.OrdinalIgnoreCase)?path:api.TrimEnd('/')+"/"+path.TrimStart('/');
+            using(var request=UnityWebRequestTexture.GetTexture(url,true))
+            {
+                request.timeout=20;yield return request.SendWebRequest();
+                if(request.result!=UnityWebRequest.Result.Success||!target)yield break;
+                texture=DownloadHandlerTexture.GetContent(request);texture.wrapMode=TextureWrapMode.Clamp;texture.filterMode=FilterMode.Bilinear;
+                var material=new Material(target.sharedMaterial);material.color=Color.white;material.mainTexture=texture;
+                var values=(crop??"").Split(',');
+                if(values.Length==4&&float.TryParse(values[0],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out var x)
+                    &&float.TryParse(values[1],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out var y)
+                    &&float.TryParse(values[2],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out var width)
+                    &&float.TryParse(values[3],System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out var height))
+                {material.mainTextureScale=new Vector2(width,height);material.mainTextureOffset=new Vector2(x,1-y-height);}
+                target.sharedMaterial=material;if(fallback)fallback.gameObject.SetActive(false);
+            }
+        }
+        void OnDestroy(){if(texture)Destroy(texture);}
     }
 }

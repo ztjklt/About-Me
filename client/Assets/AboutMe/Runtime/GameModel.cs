@@ -8,6 +8,8 @@ namespace AboutMe
     [Serializable] public class PersonaAsset
     {
         public string assetId, name, templateId, visualId, color, source;
+        public string emblemPath, emblemCrop, emblemSource, emblemLicense, generatedBy;
+        public float generationConfidence;
         public PersonaAsset Copy() => (PersonaAsset)MemberwiseClone();
         public PublicPersonaAsset PublicCopy() => new PublicPersonaAsset
         { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color };
@@ -98,6 +100,7 @@ namespace AboutMe
     [Serializable] public class PublicPlayer
     {
         public string id, nickname, color, equippedName, equippedVisual, equippedColor, carrying, grabbing, interaction,publicProp;
+        public string equippedEmblemPath, equippedEmblemCrop, equippedGeneratedBy;
         public int outfit, remaining;
         public BodyMode bodyMode;
         public float bodyStateAt,bodyProtectedUntil;
@@ -116,6 +119,7 @@ namespace AboutMe
     [Serializable] public class EffectState
     {
         public string id, owner, kind, visual, color, targetId = "";
+        public string emblemPath, emblemCrop, generatedBy;
         public Vector3 position, velocity;
         public float remaining, damage, force, nextHit, radius = .7f;
         public int health, bounces;
@@ -445,6 +449,7 @@ namespace AboutMe
                 bool schoolDisc=equipped!=null&&equipped.asset.visualId=="school-disc";
                 Effects.Add(new EffectState { id=Guid.NewGuid().ToString("N"), owner=p.profile.playerId, kind=schoolDisc?"ThrownDisc":template,
                     visual=equipped.asset.visualId,color=equipped.asset.color,position=p.position+Forward(p),
+                    emblemPath=equipped.asset.emblemPath,emblemCrop=equipped.asset.emblemCrop,generatedBy=equipped.asset.generatedBy,
                     velocity=schoolDisc?Forward(p)*18+Vector3.up*2.2f:Forward(p)*(template=="Disc"?14:12),
                     remaining=schoolDisc?6:template=="Deployable"?8:template=="Summon"?7:template=="Ricochet"?3:2,
                     damage=damage,force=force,heavy=true,knockdown=knockdown,bounces=template=="Ricochet"?2:0 });
@@ -645,6 +650,7 @@ namespace AboutMe
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),
                         equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
+                        equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=p.escapeStartedAt<0?0:Mathf.Clamp01((Time-p.escapeStartedAt)/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),

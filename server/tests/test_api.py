@@ -7,6 +7,12 @@ from server import app as module
 def client(tmp_path, monkeypatch):
     monkeypatch.setenv('ABOUTME_DB', str(tmp_path / 'test.sqlite3'))
     monkeypatch.setenv('GAME_SERVER_KEY', 'test-server-key')
+    monkeypatch.setattr(module, 'SCHOOL_EMBLEM_DIR', tmp_path / 'school-emblems')
+    async def generated_emblem(school):
+        return {'emblemPath':'/school-emblems/test.png','emblemCrop':'0.0600,0.0600,0.8800,0.8800',
+                'emblemSource':'https://example.test/'+school,'emblemLicense':'test-only',
+                'generatedBy':'DeepSeek Flash Vision','generationConfidence':.98}
+    monkeypatch.setattr(module, 'generate_school_emblem', generated_emblem)
     return TestClient(module.app)
 
 def credentials(client):
@@ -141,6 +147,42 @@ def test_generation_is_grounded_and_school_is_one_badge():
     assert len(preset) == 1 and preset[0]['name'] == '中山大学校徽圆盘'
     assert module.preset_personas('我在中山大学读书，也喜欢篮球') is None
 
+@pytest.mark.parametrize('school', ['清华大学', '北京大学', '中山大学'])
+def test_three_school_discs_are_marked_as_deepseek_generated(client, school):
+    headers, _ = credentials(client)
+    result = client.post('/personas/generate', headers=headers,
+        json={'nickname':'玩家', 'introduction':'我在'+school+'读书'}).json()['personas'][0]
+    assert result['name'] == school + '校徽圆盘'
+    assert result['generatedBy'] == 'DeepSeek Flash Vision'
+    assert result['emblemPath'].startswith('/school-emblems/')
+    assert result['emblemCrop'] == '0.0600,0.0600,0.8800,0.8800'
+
+def test_deepseek_crop_must_keep_a_complete_emblem():
+    assert module.safe_crop({'x':.05,'y':.04,'width':.9,'height':.91}) == '0.0500,0.0400,0.9000,0.9100'
+    with pytest.raises(ValueError):
+        module.safe_crop({'x':.4,'y':.4,'width':.1,'height':.1})
+
+def test_deepseek_vision_selects_candidate_and_returns_complete_crop():
+    import asyncio
+    import httpx
+    candidates = [{'title':'Current crest','url':'https://images.test/crest.png',
+                   'pageUrl':'https://source.test/crest','license':'test','mime':'image/png'}]
+    png = b'\x89PNG\r\n\x1a\n' + b'prototype-image'
+    class Provider:
+        async def get(self, url, **kwargs):
+            return httpx.Response(200, content=png, request=httpx.Request('GET', url))
+        async def post(self, url, **kwargs):
+            body = kwargs['json']
+            assert body['model'] == 'deepseek-flash'
+            assert body['messages'][1]['content'][1]['type'] == 'image_url'
+            return httpx.Response(200, json={'choices':[{'message':{'content':json.dumps({
+                'selectedIndex':0,'crop':{'x':.06,'y':.06,'width':.88,'height':.88},
+                'confidence':.97,'reason':'完整现行校徽'})}}]}, request=httpx.Request('POST', url))
+    selected, (data, mime), crop, confidence = asyncio.run(module.select_school_emblem_with_deepseek(
+        Provider(), 'key', 'https://api.deepseek.test/v1', '清华大学', candidates))
+    assert selected['title'] == 'Current crest' and data == png and mime == 'image/png'
+    assert crop == '0.0600,0.0600,0.8800,0.8800' and confidence == .97
+
 def test_introduction_length_is_bounded_before_provider(client):
     headers, _ = credentials(client)
     response = client.post('/personas/generate', headers=headers,
@@ -246,7 +288,7 @@ def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(cl
         async def __aexit__(self,*args):pass
         async def post(self,url,**kw):
             assert url=='https://deepseek.example/v1/chat/completions'
-            assert kw['json']['model']=='deepseek-v4-flash-vision-exp'
+            assert kw['json']['model']=='deepseek-flash'
             content=kw['json']['messages'][1]['content']
             assert content[1]['type']=='image_url' and content[1]['image_url']['url'].startswith('data:image/png;base64,')
             return httpx.Response(200,json={'choices':[{'message':{'content':'{"introduction":"我喜欢篮球和摄影"}'}}]},request=httpx.Request('POST',url))

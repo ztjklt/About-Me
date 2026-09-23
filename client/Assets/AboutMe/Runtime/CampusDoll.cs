@@ -679,7 +679,8 @@ namespace AboutMe
                 physicsPresentation.Apply(this,p,now,ImmediatePhysicsPose);
             }
             if(camera)label.transform.rotation=camera.transform.rotation;
-            if(visual!=p.equippedVisual){if(held)UnityEngine.Object.Destroy(held);visual=p.equippedVisual;if(!string.IsNullOrEmpty(visual)){held=ToyFactory.Item(visual,p.equippedColor,RightHandAttachment);held.transform.localScale=Vector3.one*.60f;}}
+            var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath;
+            if(visual!=equipmentKey){if(held)UnityEngine.Object.Destroy(held);visual=equipmentKey;if(!string.IsNullOrEmpty(p.equippedVisual)){held=ToyFactory.Item(p.equippedVisual,p.equippedColor,RightHandAttachment,p.equippedName,p.equippedEmblemPath,p.equippedEmblemCrop,p.equippedGeneratedBy);held.transform.localScale=Vector3.one*.60f;}}
             if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=Quaternion.identity;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
         }
     }

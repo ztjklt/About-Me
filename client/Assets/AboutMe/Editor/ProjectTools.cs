@@ -148,8 +148,9 @@ namespace AboutMe.Editor
                 effect.position=new Vector3(39.9f,1,0);effect.velocity=Vector3.right*12;Tick(m,.02f);Assert(effect.velocity.x<0&&effect.bounces==1,"ricochet did not reflect once");
             });
             Test("school disc is thrown once, hits once, and remains grounded",()=>{
-                var m=MechanicMatch("Disc","school-disc");m.Players["b"].position=new Vector3(0,1,4.5f);m.Players["b"].stability=20;Heavy(m);
+                var m=MechanicMatch("Disc","school-disc");var source=m.Item(m.Players["a"].equipped).asset;source.emblemPath="/school-emblems/test.png";source.emblemCrop="0.06,0.06,0.88,0.88";source.generatedBy="DeepSeek Flash Vision";m.Players["b"].position=new Vector3(0,1,4.5f);m.Players["b"].stability=20;Heavy(m);
                 var effect=m.Effects.Single();Assert(effect.kind=="ThrownDisc"&&!effect.landed&&effect.velocity.z>0,"school disc did not launch forward");
+                Assert(effect.emblemPath==source.emblemPath&&effect.emblemCrop==source.emblemCrop&&effect.generatedBy==source.generatedBy,"DeepSeek emblem metadata was lost during throw");
                 Tick(m,1.5f);
                 Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f,"thrown school disc missed a clear target");
                 Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f&&m.Items.Any(x=>x.ownerId=="b"&&x.state==ItemState.Ground),"school disc did not use the existing depletion/drop rule");
@@ -162,6 +163,15 @@ namespace AboutMe.Editor
                 Assert(effect.kind=="Disc"&&!effect.landed,"non-school Disc visual changed projectile behavior");
                 effect.remaining=.7f;effect.position=new Vector3(0,1,8);effect.velocity=Vector3.zero;Tick(m,.02f);
                 Assert(effect.velocity.z<0,"non-school Disc no longer returns to its owner");
+            });
+            Test("three school discs show their DeepSeek generation mark",()=>{
+                foreach(var school in new[]{"清华大学","北京大学","中山大学"})
+                {
+                    var disc=ToyFactory.Item("school-disc","#77C8BD",null,school+"校徽圆盘","","","DeepSeek Flash Vision");
+                    var labels=disc.GetComponentsInChildren<TextMesh>(true).Select(x=>x.text).ToArray();
+                    Assert(labels.Contains("DeepSeek 生成")&&labels.Any(x=>x.Contains(school.Substring(0,2))),school+" did not show generated provenance");
+                    UnityEngine.Object.DestroyImmediate(disc);
+                }
             });
             Test("tether pulls only a forward in-range target",()=>{
                 var m=MechanicMatch("Tether","flashlight");Heavy(m);Assert(m.Players["b"].impulse.z<0,"tether did not pull target");

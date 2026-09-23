@@ -156,7 +156,7 @@ namespace AboutMe
             }
         }
         void DisplayProfile()
-        {LoadAppearance();profileText.text=(net.Sample?"[样例测试 · 非 AI 生成]\n":"")+"PERSONA × "+profile.personas.Length+"\n"+string.Join("  /  ",profile.personas.Select(p=>p.name));profileText.rectTransform.sizeDelta=new Vector2(554,Mathf.Max(72,profileText.preferredHeight));CacheProfile();}
+        {LoadAppearance();profileText.text=(net.Sample?"[样例测试 · 非 AI 生成]\n":"")+"PERSONA × "+profile.personas.Length+"\n"+string.Join("  /  ",profile.personas.Select(p=>p.name+(string.IsNullOrEmpty(p.generatedBy)?"":" [DeepSeek 生成]")));profileText.rectTransform.sizeDelta=new Vector2(554,Mathf.Max(72,profileText.preferredHeight));CacheProfile();}
         void LoadPracticePersona()
         {
             net.Sample=true;
@@ -228,7 +228,7 @@ namespace AboutMe
                     {busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
                     net.Token=generationToken;net.Sample=false;profile=generated;DisplayProfile();
                     PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
-                    busy=false;net.Status="你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
+                    busy=false;net.Status=profile.personas.Any(p=>!string.IsNullOrEmpty(p.generatedBy))?"DeepSeek 已完成校徽选择与完整裁切，Persona 已保存。":"你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
                 }
             }
             busy=false;net.Status="角色会话已失效，请重新尝试生成。";
@@ -248,7 +248,7 @@ namespace AboutMe
                 if(req.result==UnityWebRequest.Result.Success)
                 {
                     var health=JsonUtility.FromJson<ServiceHealth>(req.downloadHandler.text);aiCapabilityKnown=true;aiConfigured=health!=null&&health.aiConfigured;
-                    SetAIServiceStatus(aiConfigured?"真实 AI 已连接":"真实 AI 未配置",aiConfigured?UITheme.Mint:UITheme.Yellow);
+                    SetAIServiceStatus(aiConfigured?(health.visionConfigured?"DeepSeek 文本 + Vision 已连接":"真实 AI 已连接，Vision 未配置"):"真实 AI 未配置",aiConfigured&&health.visionConfigured?UITheme.Mint:UITheme.Yellow);
                 }
                 else{aiCapabilityKnown=false;aiConfigured=false;SetAIServiceStatus("AI 服务不可达",UITheme.Red);}
             }
