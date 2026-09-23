@@ -52,6 +52,11 @@ namespace AboutMe.Editor
                 stage.SetExpanded(true);stage.SetExpanded(true);Assert(stage.Expanded,"expanded state did not remain idempotent");
                 title.anchoredPosition+=new Vector2(20,10);stage.SetMotionEnabled(false);
                 Assert(!stage.MotionEnabled&&title.anchoredPosition==new Vector2(12,34),"reduced motion did not restore the rest pose");
+                Assert(Mathf.Abs(Mathf.DeltaAngle(buttons[0].localEulerAngles.z,6.5f))<.01f&&
+                    Mathf.Abs(Mathf.DeltaAngle(buttons[2].localEulerAngles.z,6.5f))<.01f&&
+                    Mathf.Abs(Mathf.DeltaAngle(buttons[1].localEulerAngles.z,-6.5f))<.01f&&
+                    Mathf.Abs(Mathf.DeltaAngle(buttons[3].localEulerAngles.z,-6.5f))<.01f,
+                    "menu labels lost their inward tilt in reduced motion");
                 UnityEngine.Object.DestroyImmediate(root);
             });
             Test("standard schedule and protected reveal",()=>{var m=Make();Assert(m.View("a").handAnimation==0,"hand at reveal");Tick(m,5.02f);Assert(m.Phase==MatchPhase.Battle,"reveal");m.Time=m.BattleStarted+149.9f;Tick(m,.12f);Assert(m.HandEventId==1,"first hand");m.Time=m.BattleStarted+299.9f;Tick(m,.12f);Assert(m.HandEventId==2,"second hand");m.Time=m.BattleStarted+449.9f;Tick(m,.12f);Assert(m.HandEventId==2&&m.Phase==MatchPhase.Finished,"no third hand");Assert(m.Winners.Length==2,"tie");float frozen=m.Time;Tick(m,2);Assert(m.Time==frozen,"frozen result");});

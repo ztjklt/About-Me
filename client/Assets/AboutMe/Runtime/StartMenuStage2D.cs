@@ -11,7 +11,7 @@ namespace AboutMe
         {
             public RectTransform rect;
             public Vector2 rest;
-            public float phase;
+            public float phase,tilt;
         }
 
         struct LayerMotion
@@ -48,7 +48,7 @@ namespace AboutMe
             layers[0]=Motion(titleRoot,8,3,.35f,4.2f,.2f);
             layers[1]=Motion(doodleRoot,10,2,.25f,3.8f,2.4f);
             for(int i=0;i<armRoots.Length;i++)layers[i+2]=Motion(armRoots[i],18,4+i%3*2,1+(i%3)*.45f,3+(i%4)*.55f,i*.73f);
-            // Four entry bubbles are direct children of the opening stage.
+            // Four 3D letter entries are direct children of the opening stage.
             bubbles=new BubbleMotion[buttons.Length];
             string[] labels={"SINGLE\nPLAYER","MULTIPLAYER","INTRO\nPRESETS","SETTINGS"};
             string[] assets={"solo","multi","intro","settings"};
@@ -58,13 +58,13 @@ namespace AboutMe
 
         void StyleBubble(int index,string label,string asset)
         {
-            var rect=buttons[index];rect.SetParent(transform,false);rect.name="Plaque · "+label.Replace('\n',' ');
-            bubbles[index]=new BubbleMotion{rect=rect,phase=index*1.55f};
+            var rect=buttons[index];rect.SetParent(transform,false);rect.name="Menu title · "+label.Replace('\n',' ');
+            bubbles[index]=new BubbleMotion{rect=rect,phase=index*1.55f,tilt=index%2==0?6.5f:-6.5f};
             var style=rect.GetComponent<StickerButton>();
             if(!style)return;
             var surface=style.Surface;
             var sprite=Resources.Load<Sprite>("StartMenu2D/button-"+asset);
-            if(!sprite)throw new InvalidOperationException("Missing menu plaque: "+asset);
+            if(!sprite)throw new InvalidOperationException("Missing menu title: "+asset);
             surface.sprite=sprite;surface.type=Image.Type.Simple;surface.preserveAspect=true;
             surface.color=Color.white;
             // Keep Image's default alpha hit threshold (zero): the full image
@@ -118,7 +118,7 @@ namespace AboutMe
         }
 
         static void Place(RectTransform rect,float x,float y,float width,float height)
-        {rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(0,1);rect.anchoredPosition=new Vector2(x,-y);rect.sizeDelta=new Vector2(width,height);}
+        {rect.anchorMin=rect.anchorMax=new Vector2(0,1);rect.pivot=new Vector2(.5f,.5f);rect.anchoredPosition=new Vector2(x+width*.5f,-y-height*.5f);rect.sizeDelta=new Vector2(width,height);}
 
         void Update()
         {
@@ -142,7 +142,7 @@ namespace AboutMe
             {
                 var bubble=bubbles[i];float wave=Mathf.Sin(time*Mathf.PI*2/3.8f+bubble.phase);
                 bubble.rect.anchoredPosition=bubble.rest+Vector2.up*wave*5;
-                bubble.rect.localRotation=Quaternion.Euler(0,0,wave*.7f);
+                bubble.rect.localRotation=Quaternion.Euler(0,0,bubble.tilt+wave*.7f);
             }
             if(Time.unscaledTime>=nextBlink){blinkUntil=Time.unscaledTime+.12f;nextBlink=blinkUntil+UnityEngine.Random.Range(3f,6f);}
             SetBlink(Time.unscaledTime<blinkUntil);
@@ -153,7 +153,7 @@ namespace AboutMe
             for(int i=0;i<layers.Length;i++)
             {layers[i].rect.anchoredPosition=layers[i].rest;layers[i].rect.localRotation=Quaternion.identity;}
             for(int i=0;i<bubbles.Length;i++)
-            {bubbles[i].rect.anchoredPosition=bubbles[i].rest;bubbles[i].rect.localRotation=Quaternion.identity;}
+            {bubbles[i].rect.anchoredPosition=bubbles[i].rest;bubbles[i].rect.localRotation=Quaternion.Euler(0,0,bubbles[i].tilt);}
             if(hero){hero.anchoredPosition=heroRest;hero.localRotation=heroRestRotation;hero.localScale=heroRestScale;}
         }
 
