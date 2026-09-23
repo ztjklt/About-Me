@@ -23,6 +23,36 @@ CATALOG_BY_PAIR = {(x['templateId'], x['visualId']): x for x in CATALOG}
 MAX_INTRO_CHARS = 1200
 MAX_INTRO_IMAGE_BYTES = 10 * 1024 * 1024
 DEEPSEEK_V4FLASH_VISION_MODEL = 'deepseek-v4-flash-vision-exp'
+ROAST_FALLBACK = '这把武器有点东西，但我一时没想好怎么损它。'
+# 毒舌调侃官：玩家捡到别人掉落的 Persona 时说一句调侃。落点是武器对应的职业/爱好本身，
+# 不针对具体玩家；昵称只在自然时轻量带入，且始终是可选的。
+ROAST_SYSTEM_PROMPT = """你是派对游戏《About Me》里的「毒舌调侃官」。每当有玩家捡起别人掉落的武器，你就负责即兴说一句调侃。
+
+# 第一步：判断属性
+从武器名称推断它最典型对应的属性——某个专业/职业、爱好或特长。只选最典型、大众最认可的那一个，不要罗列多种可能。
+示例映射：锅铲→厨师  手术刀→外科医生  键盘→程序员  算盘→会计  听诊器→医生  猫→养猫的人  篮球→打篮球的人
+
+# 第二步：调侃属性本身
+落点必须是「人」——这类从业者或爱好者的典型特点、习惯、善意刻板印象。不要调侃道具的物理功能或技能。
+反例（禁止这样写）：锅铲的隐藏技能是颠勺，可惜这局的锅，谁也颠不回来。
+正例（要这样写）：当厨师的都靠颠勺救场，这局你颠得再花，也救不回糊掉的局。
+
+# 硬性约束
+- 不针对拾取者或被击败者的具体身份开涮；昵称只在自然时轻量带入，可完全省略。
+- 不涉及外貌、地域、性别、年龄、疾病、职业歧视；不说脏话；不做人身攻击。
+- 武器名有歧义时，只取最典型的那个属性，不要写「可能是…也可能是…」。
+- 输入里若已给出 attribute 或 category，直接据此调侃，不要再自行推断。
+
+# 输出
+只输出一句调侃，15~40 个汉字。不要引号、不要解释、不要前后缀、不要换行。
+
+# 风格示例
+{"weapon_name":"锅铲"} → 当厨师的都靠颠勺救场，这局你颠得再花，也救不回糊掉的局。
+{"weapon_name":"手术刀"} → 拿手术刀的讲究稳准狠，这局你稳是稳，稳输。
+{"weapon_name":"键盘"} → 敲键盘的最爱 Ctrl+Z，可这局的败局删不掉也撤不回。
+{"weapon_name":"算盘"} → 打算盘的最会精打细算，这局你算来算去，算出个一败涂地。
+{"weapon_name":"猫"} → 养猫的都自称铲屎官，这局你铲的不是猫砂，是自己掉的命。
+{"weapon_name":"听诊器"} → 当医生的最会听心跳，这局你该听听自己凉透的那颗。"""
 app = FastAPI(title='About Me', version='0.1.0')
 app.add_middleware(CORSMiddleware, allow_origins=os.getenv('ALLOWED_ORIGINS', 'http://localhost:8080,http://127.0.0.1:8080').split(','),
                    allow_methods=['GET', 'POST'], allow_headers=['Authorization', 'Content-Type'])
@@ -83,6 +113,13 @@ class VerifyRequest(BaseModel):
 
 class WechatSessionRequest(SessionRequest):
     code: str = Field(min_length=1,max_length=256)
+
+class RoastRequest(BaseModel):
+    weapon_name: str = Field(min_length=1, max_length=40)
+    picker_name: str = Field(default='', max_length=24)
+    loser_name: str = Field(default='', max_length=24)
+    attribute: str = Field(default='', max_length=40)
+    category: str = Field(default='', max_length=40)
 
 def wechat_credentials():
     appid, secret = os.getenv('WECHAT_APP_ID',''), os.getenv('WECHAT_APP_SECRET','')
@@ -213,6 +250,46 @@ async def generate_with_provider(introduction):
         raise HTTPException(502, f'AI 服务返回错误（{exc.response.status_code}）') from exc
     except (httpx.HTTPError, KeyError, IndexError, ValueError) as exc:
         raise HTTPException(502, 'AI 生成失败或结果不可用，请稍后重试') from exc
+
+
+def roast_is_bounded(text):
+    """The roast fills a fixed HUD slot, so bound it before it ever reaches the client."""
+    value = re.sub(r'[\s"“”‘’]+', '', str(text or ''))
+    return 15 <= len(value) <= 40
+
+
+async def roast_with_provider(facts):
+    key, model, base = (os.getenv(k, '') for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
+    if not all((key, model, base)):
+        raise HTTPException(503, '尚未配置真实 AI 服务；不会自动替换为预设结果')
+    request = {'model': model, 'messages': [{'role': 'system', 'content': ROAST_SYSTEM_PROMPT},
+               {'role': 'user', 'content': json.dumps(facts, ensure_ascii=False)}],
+               'thinking': {'type': 'disabled'}, 'temperature': 0.9, 'max_tokens': 80}
+    try:
+        async with httpx.AsyncClient(timeout=20) as client:
+            for _ in range(2):
+                response = await client.post(base.rstrip('/') + '/chat/completions',
+                    headers={'Authorization': 'Bearer ' + key}, json=request)
+                response.raise_for_status()
+                line = re.sub(r'[\r\n]+', ' ', response.json()['choices'][0]['message']['content']).strip()
+                if roast_is_bounded(line):
+                    return line
+        # Two misses on a pure length rule is a prompt problem, not a reason to stall the HUD.
+        return ROAST_FALLBACK
+    except HTTPException:
+        raise
+    except httpx.TimeoutException as exc:
+        raise HTTPException(504, '调侃官走神了，请稍后重试') from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(502, f'AI 服务返回错误（{exc.response.status_code}）') from exc
+    except (httpx.HTTPError, KeyError, IndexError, ValueError) as exc:
+        raise HTTPException(502, '调侃官暂时说不出话，请稍后重试') from exc
+
+
+@app.post('/roast')
+async def roast(body: RoastRequest, authorization: str | None = Header(default=None)):
+    authenticate(authorization)
+    return {'roast': await roast_with_provider({k: v for k, v in body.model_dump().items() if v})}
 
 
 def image_mime(data):

@@ -272,6 +272,7 @@ namespace AboutMe
                 if(startStyle)startStyle.SetState(start.interactable?UIVisualState.Selected:UIVisualState.Normal);
                 var me=state.players.FirstOrDefault(p=>p.id==state.you);
                 if(state.events.Length>0&&state.events.Last().id!=lastEvent){lastEvent=state.events.Last().id;eventText.text=state.events.Last().text;toastPulse.Play();}
+                UpdateRoast(state);
                 string inventory=string.Join("|",state.inventory.Select(x=>x.id+":"+x.state));
                 if(inventory!=lastInventory)
                 {

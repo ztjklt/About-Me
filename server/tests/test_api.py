@@ -191,3 +191,45 @@ def test_timeout_result_keeps_co_winners_and_rankings_once(client):
     saved = json.loads(rows[0][0])
     assert saved['winners'] == ['p1', 'p2']
     assert saved['endReason'] == 'timeout' and saved['rankings'] == body['rankings']
+
+
+def roast_provider(monkeypatch, content, url_expected='https://api.deepseek.com/v1/chat/completions'):
+    import httpx
+    for key, value in [('LLM_API_KEY', 'test-key'), ('LLM_MODEL', 'deepseek-flash'), ('LLM_BASE_URL', 'https://api.deepseek.com/v1')]:
+        monkeypatch.setenv(key, value)
+    class Provider:
+        def __init__(self, **kw): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *args): pass
+        async def post(self, url, **kw):
+            assert url == url_expected
+            assert kw['json']['model'] == 'deepseek-flash'
+            assert kw['json']['messages'][0]['content'] == module.ROAST_SYSTEM_PROMPT
+            return httpx.Response(200, json={'choices': [{'message': {'content': content}}]}, request=httpx.Request('POST', url))
+    monkeypatch.setattr(module.httpx, 'AsyncClient', Provider)
+
+
+def test_roast_agent_returns_one_line_and_needs_login(client, monkeypatch):
+    line = '养猫的都自称铲屎官，这局你铲的不是猫砂，是自己掉的命。'
+    roast_provider(monkeypatch, line)
+    assert client.post('/roast', json={'weapon_name': '猫'}).status_code == 401
+    headers, _ = credentials(client)
+    body = {'weapon_name': '猫', 'picker_name': '张三', 'loser_name': '李四'}
+    assert client.post('/roast', headers=headers, json=body).json() == {'roast': line}
+    assert client.post('/roast', headers=headers, json={'weapon_name': ''}).status_code == 422
+
+
+def test_roast_agent_falls_back_when_the_line_breaks_the_length_rule(client, monkeypatch):
+    roast_provider(monkeypatch, '太短')
+    headers, _ = credentials(client)
+    response = client.post('/roast', headers=headers, json={'weapon_name': '猫'})
+    assert response.status_code == 200
+    assert response.json()['roast'] == module.ROAST_FALLBACK
+    assert not module.roast_is_bounded('太短') and not module.roast_is_bounded('长' * 41)
+    assert module.roast_is_bounded('养猫的都自称铲屎官，这局你铲的不是猫砂，是自己掉的命。')
+
+
+def test_roast_agent_needs_real_ai(client, monkeypatch):
+    monkeypatch.delenv('LLM_API_KEY', raising=False)
+    headers, _ = credentials(client)
+    assert client.post('/roast', headers=headers, json={'weapon_name': '猫'}).status_code == 503
