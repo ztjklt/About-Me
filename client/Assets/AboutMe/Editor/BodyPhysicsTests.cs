@@ -11,7 +11,7 @@ namespace AboutMe.Editor
     {
         [InitializeOnLoadMethod] static void Resume()
         {
-            EditorApplication.playModeStateChanged+=state=>{if(state!=PlayModeStateChange.EnteredPlayMode)return;string job=SessionState.GetString("V4Job","");if(job=="")return;SessionState.EraseString("V4Job");EditorApplication.delayCall+=()=>{try{if(job=="review")RenderReview();else if(job=="validate")Validate();else Diagnose();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};};
+            EditorApplication.playModeStateChanged+=state=>{if(state!=PlayModeStateChange.EnteredPlayMode)return;string job=SessionState.GetString("V4Job","");if(job=="")return;SessionState.EraseString("V4Job");EditorApplication.delayCall+=()=>{try{if(job=="review")RenderReview();else if(job=="validate")Validate();else if(job=="feet")ValidateFeet();else if(job=="controls")ValidateLocomotionControls();else Diagnose();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};};
         }
         static bool Enter(string job){if(Application.isPlaying)return false;SessionState.SetString("V4Job",job);EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorApplication.isPlaying=true;return true;}
         static readonly FieldInfo Cache=typeof(CampusGeometry).GetField("solids",BindingFlags.NonPublic|BindingFlags.Static);
@@ -24,6 +24,73 @@ namespace AboutMe.Editor
             match.EnableBodyPhysics();match.Phase=MatchPhase.Reveal;match.Tick(.02f);Check(match.View("p0").players.All(p=>p.bodyPose?.positions?.Length==15),"First battle snapshot missing physics pose");return match;
         }
         static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
+        public static void ValidateLocomotionControls()
+        {
+            if(Enter("controls"))return;
+            var facing=new LocomotionInput();
+            Check(Mathf.DeltaAngle(facing.FacingYaw(20,Vector2.up),20)==0,"Forward facing changed");
+            Check(Mathf.Abs(Mathf.DeltaAngle(facing.FacingYaw(20,Vector2.down),200))<.01f,"S did not face the camera");
+            Check(Mathf.Abs(Mathf.DeltaAngle(facing.FacingYaw(20,Vector2.zero),200))<.01f,"S facing did not persist after release");
+            Check(Mathf.Abs(Mathf.DeltaAngle(facing.FacingYaw(20,Vector2.up),20))<.01f,"Forward input did not restore facing");
+            var old=Cache.GetValue(null);Cache.SetValue(null,Flat);
+            try
+            {
+                using(var m=Create(1))
+                {
+                    var p=m.Players["p0"];
+                    for(int i=0;i<70;i++){m.Receive("p0",new Command{sequence=p.sequence+1,z=1,run=true,yaw=0});m.Tick(.02f);}
+                    Debug.Log("V4_CONTROL_RUN height="+p.position.y+" motor="+p.motorHeight+" floor="+Match.Floor(p.position)+" airborne="+p.airborne+" speed="+p.locomotionSpeed);
+                    Check(p.running&&p.locomotionSpeed>7,"Run fixture did not reach speed");
+                    m.Receive("p0",new Command{sequence=p.sequence+1,z=1,run=true,yaw=0,action="jump"});
+                    Debug.Log("V4_CONTROL_JUMP_ACCEPT vertical="+p.verticalSpeed+" action="+p.actionKind);
+                    Check(p.verticalSpeed==m.Rules.jumpSpeed&&p.actionKind=="jump","Running jump was rejected");
+                    for(int i=0;i<8;i++){m.Receive("p0",new Command{sequence=p.sequence+1,z=1,run=true,yaw=0});m.Tick(.02f);}
+                    Debug.Log("V4_CONTROL_JUMP_FLIGHT height="+p.motorHeight+" airborne="+p.airborne+" speed="+p.locomotionSpeed);
+                    Check(p.airborne&&p.motorHeight>1.25f&&p.locomotionSpeed>5.5f,"Running jump lost forward flight");
+                    float flightSpeed=p.verticalSpeed;
+                    m.Receive("p0",new Command{sequence=p.sequence+1,z=1,run=true,yaw=0,action="jump"});
+                    Check(p.verticalSpeed==flightSpeed,"Midair jump restarted flight");
+                    for(int i=0;i<70;i++){m.Receive("p0",new Command{sequence=p.sequence+1,z=-1,yaw=180});m.Tick(.02f);if(i==4||i==9||i==19)Debug.Log("V4_CONTROL_BACK_TURN tick="+i+" headForward="+(m.BodyWorld.Get(p).Bodies[2].rotation*Vector3.forward));}
+                    var rig=m.BodyWorld.Get(p);
+                    Debug.Log("V4_CONTROL_BACK yaw="+p.yaw+" headForward="+(rig.Bodies[2].rotation*Vector3.forward)+" chestForward="+(rig.Bodies[1].rotation*Vector3.forward)+" pelvisForward="+(rig.Bodies[0].rotation*Vector3.forward)+" velocity="+p.velocity);
+                    Check(Vector3.Dot(rig.Bodies[2].rotation*Vector3.forward,Vector3.back)>.9f,"S physics face did not look toward camera");
+                }
+            }
+            finally{Cache.SetValue(null,old);}
+            Debug.Log("V4_LOCOMOTION_CONTROLS_PASSED");
+        }
+        public static void ValidateFeet()
+        {
+            if(Enter("feet"))return;
+            var old=Cache.GetValue(null);Cache.SetValue(null,Flat);
+            try
+            {
+                using(var m=Create(1))
+                {
+                    var p=m.Players["p0"];
+                    foreach(string phase in new[]{"idle","walk","run","stop","strafe","reverse","turn"})
+                    {
+                        float left=0,right=0,leftContact=0,rightContact=0,leftPlant=0,rightPlant=0,maxSlip=0,minGap=100,maxGap=-100;
+                        for(int frame=0;frame<80;frame++)
+                        {
+                            float x=phase=="strafe"?1:0,z=phase=="walk"||phase=="run"||phase=="turn"?1:phase=="reverse"?-1:0;
+                            m.Receive("p0",new Command{sequence=p.sequence+1,x=x,z=z,run=phase=="run",yaw=phase=="turn"?frame*1.125f:0});m.Tick(.02f);
+                            var rig=m.BodyWorld.Get(p);float a=rig.FootSoleGap(0),b=rig.FootSoleGap(1);
+                            left+=a;right+=b;minGap=Mathf.Min(minGap,a,b);maxGap=Mathf.Max(maxGap,a,b);
+                            if(rig.FootContactAge(0)<.04f)leftContact++;if(rig.FootContactAge(1)<.04f)rightContact++;
+                            if(rig.FootPlanted(0))leftPlant++;if(rig.FootPlanted(1))rightPlant++;
+                            maxSlip=Mathf.Max(maxSlip,rig.FootPlantSlip(0),rig.FootPlantSlip(1));
+                        }
+                        Debug.Log("V4_FEET phase="+phase+" leftGap="+left/80+" rightGap="+right/80+" minGap="+minGap+" maxGap="+maxGap+" leftContact="+leftContact/80+" rightContact="+rightContact/80+" leftPlant="+leftPlant/80+" rightPlant="+rightPlant/80+" maxSlip="+maxSlip+" speed="+p.velocity.magnitude);
+                        Check(left/80<.03f&&right/80<.03f&&maxGap<.08f&&minGap>-.04f,"Shoe lost the floor in "+phase);
+                        Check(maxSlip<.18f,"Stance foot dragged in "+phase+": "+maxSlip);
+                        Check(leftPlant+rightPlant>(phase=="idle"||phase=="stop"?120:12),"No stable foot support in "+phase);
+                    }
+                }
+            }
+            finally{Cache.SetValue(null,old);}
+            Debug.Log("V4_FEET_VALIDATION_PASSED");
+        }
         public static void Diagnose()
         {
             if(Enter("diagnose"))return;
@@ -79,7 +146,7 @@ namespace AboutMe.Editor
                         if(p.bodyMode==BodyMode.GettingUp){getup=true;Check(m.Time-groundAt>=.98f,"Got up before ground timer");}
                         drops=Mathf.Max(drops,Dropped(m,p));
                     }
-                    Check(lay&&minUp<.5f,"Body did not actually lie flat");Check(getup&&p.bodyMode==BodyMode.Standing,"Get-up did not restore control");Check(drops==0,"Non-depleting knockdown dropped persona");
+                    Check(lay&&minUp<.5f,"Body did not actually lie flat");Check(getup&&p.bodyMode==BodyMode.Standing,"Get-up did not restore control: mode="+p.bodyMode+" direction="+direction+" chestUp="+Vector3.Dot(m.BodyWorld.Get(p).Bodies[1].rotation*Vector3.up,Vector3.up)+" footAge="+m.BodyWorld.Get(p).FootContactAge(0)+"/"+m.BodyWorld.Get(p).FootContactAge(1)+" footGap="+m.BodyWorld.Get(p).FootSoleGap(0)+"/"+m.BodyWorld.Get(p).FootSoleGap(1)+" position="+p.position+" goal="+p.getUpPosition);Check(drops==0,"Non-depleting knockdown dropped persona");
                     Debug.Log("V4_FALL_PASS direction="+direction+" minChestUp="+minUp+" displacement="+Vector3.Distance(start,p.position));
                 }
                 using(var m=Create())
@@ -100,6 +167,15 @@ namespace AboutMe.Editor
                         foreach(var p in m.Players.Values)m.Receive(p.profile.playerId,new Command{sequence=p.sequence+1,x=f<100?1:0,z=f<100?.2f:0,run=true,yaw=90});
                         if(f==110)foreach(var p in m.Players.Values)m.Hit(p,m.Players.Values.First(a=>a!=p),1,8,true,true);
                         m.Tick(.02f);foreach(var p in m.Players.Values)AssertRig(m.BodyWorld.Get(p));
+                        if(f%20==0)
+                        {
+                            var snapshot=m.View("p0");Check(snapshot.players.Count()==6,"Six-player snapshot lost a body");
+                            foreach(var visible in snapshot.players)
+                            {
+                                Check(visible.bodyPose?.positions?.Length==15&&visible.bodyPose.rotations?.Length==15,"Six-player snapshot lost physical bones");
+                                Check(visible.bodyPose.positions.All(position=>!float.IsNaN(position.x)&&position.magnitude<200),"Six-player snapshot has invalid foot/body positions");
+                            }
+                        }
                         if(f>20){maximum=Math.Max(maximum,m.BodyWorld.LastStepMs);total+=m.BodyWorld.LastStepMs;}
                     }
                     Debug.Log("V4_SIX_PHYSICS meanMs="+total/199+" maxMs="+maximum);

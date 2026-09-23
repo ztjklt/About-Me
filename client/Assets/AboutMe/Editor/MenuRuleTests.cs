@@ -19,15 +19,14 @@ namespace AboutMe.Editor
                 foreach(var asset in new[]{"background","title","mascot-open","mascot-blink","arm-camera","arm-controller","arm-book","arm-cat","arm-pizza","arm-stylus","arm-clover","arm-photo"})
                     Assert(Resources.Load<Sprite>("StartMenu2D/"+asset)!=null,"missing start-menu sprite "+asset);
             });
-            Test("start-menu expansion and reduced motion are stable",()=>
+            Test("direct start-menu entries and reduced motion are stable",()=>
             {
                 var root=new GameObject("start-menu-test",typeof(RectTransform));
                 RectTransform Rect(string name){var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(root.transform,false);return (RectTransform)go.transform;}
                 var title=Rect("title");title.anchoredPosition=new Vector2(12,34);var hero=Rect("hero");var doodles=Rect("doodles");
                 var open=Rect("open").gameObject.AddComponent<Image>();var blink=Rect("blink").gameObject.AddComponent<Image>();
-                var sheet=Rect("sheet");var sheetGroup=sheet.gameObject.AddComponent<CanvasGroup>();var hint=Rect("hint").gameObject.AddComponent<CanvasGroup>();
-                var dimmer=Rect("dimmer").gameObject.AddComponent<Image>();var buttons=Enumerable.Range(0,4).Select(i=>Rect("button-"+i)).ToArray();
-                var stage=root.AddComponent<StartMenuStage2D>();stage.Configure(title,hero,open,blink,doodles,System.Array.Empty<RectTransform>(),sheet,sheetGroup,hint,dimmer,buttons);
+                var buttons=Enumerable.Range(0,4).Select(i=>Rect("button-"+i)).ToArray();
+                var stage=root.AddComponent<StartMenuStage2D>();stage.Configure(title,hero,open,blink,doodles,System.Array.Empty<RectTransform>(),buttons);
                 stage.SetExpanded(true);stage.SetExpanded(true);Assert(stage.Expanded,"expanded state did not remain idempotent");
                 title.anchoredPosition+=new Vector2(20,10);stage.SetMotionEnabled(false);
                 Assert(!stage.MotionEnabled&&title.anchoredPosition==new Vector2(12,34),"reduced motion did not restore the rest pose");

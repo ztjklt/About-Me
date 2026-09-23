@@ -39,7 +39,7 @@ namespace AboutMe
         public bool MotionEnabled=>motionEnabled;
 
         public void Configure(RectTransform titleRoot,RectTransform heroRoot,Image openEyes,Image closedEyes,RectTransform doodleRoot,RectTransform[] armRoots,
-            RectTransform sheet,CanvasGroup sheetGroup,CanvasGroup enterHint,Image backdropDimmer,RectTransform[] menuButtons)
+            RectTransform[] menuButtons)
         {
             hero=heroRoot;heroOpen=openEyes;heroBlink=closedEyes;buttons=menuButtons;
             heroRest=hero.anchoredPosition;heroRestRotation=hero.localRotation;heroRestScale=hero.localScale;
@@ -49,12 +49,11 @@ namespace AboutMe
             layers[0]=Motion(titleRoot,8,3,.35f,4.2f,.2f);
             layers[1]=Motion(doodleRoot,10,2,.25f,3.8f,2.4f);
             for(int i=0;i<armRoots.Length;i++)layers[i+2]=Motion(armRoots[i],18,4+i%3*2,1+(i%3)*.45f,3+(i%4)*.55f,i*.73f);
-            // Reuse the existing button actions, then remove the extra click-to-enter layer.
+            // Four entry bubbles are direct children of the opening stage.
             bubbles=new BubbleMotion[buttons.Length];bubbleSprites=new Sprite[buttons.Length];
             string[] labels={"SOLO PLAY","MULTIPLAYER","INTRO\nPRESETS","SETTINGS"};
             Color[] colors={UITheme.Mint,UITheme.Yellow,UITheme.Purple,UITheme.Pink};
             for(int i=0;i<buttons.Length;i++)StyleBubble(i,labels[i],colors[i]);
-            sheet.gameObject.SetActive(false);enterHint.gameObject.SetActive(false);backdropDimmer.gameObject.SetActive(false);
             configured=true;SetCompact(false);ResetForInitialDisplay();
         }
 

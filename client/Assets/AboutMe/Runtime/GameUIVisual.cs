@@ -46,17 +46,8 @@ namespace AboutMe
         void BuildHome()
         {
             home=ArtPanel(artboard,"Introduction",0,0,1600,900,Color.clear,false,false);
-            DecorativeDot(home,36,82,112,UITheme.Pink,.12f);DecorativeDot(home,785,52,56,UITheme.Yellow,.14f);DecorativeDot(home,860,426,38,UITheme.Mint,.17f);
-            homeHero=ArtPanel(home,"Brand and toy window",42,32,825,820,Color.clear,false,false);
-            var beta=Tape(homeHero,"LOCAL PARTY BUILD",32,6,205,38,UITheme.Yellow);beta.localRotation=Quaternion.Euler(0,0,-3);
-            var logoShadow=ArtText(homeHero,"ABOUT\nME.",49,64,650,270,112,UITheme.Pink,FontStyle.Bold,TextAnchor.UpperLeft);logoShadow.rectTransform.anchoredPosition+=new Vector2(7,-8);
-            ArtText(homeHero,"ABOUT\nME.",42,56,650,270,112,UITheme.Ink,FontStyle.Bold,TextAnchor.UpperLeft);
-            ArtText(homeHero,"你的「自我」，既是武器，也是生命。",48,323,720,48,28,UITheme.Ink,FontStyle.Bold);
-            ArtText(homeHero,"介绍自己。拿自己打架。小心朋友吃掉你的篮球。",48,373,735,40,21,UITheme.Ink);
-            var line=ArtPanel(homeHero,"Accent line",48,426,236,9,UITheme.Mint,false,false);line.localRotation=Quaternion.Euler(0,0,-1.5f);
-            var frame=ArtFrame(homeHero,"Toy stage sticker frame",12,446,812,344);
-            Tape(frame,"你的派对舞台",26,268,180,36,UITheme.Pink).localRotation=Quaternion.Euler(0,0,2);
-            ArtText(frame,"01  认识自己     02  介绍朋友     03  吃掉对手",235,293,540,31,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleRight);
+            // The old split title/window page is retired. This canvas is now the
+            // introduction editor only; the layered four-bubble stage owns home.
 
             studioCard=ArtPanel(home,"Persona studio",900,34,650,820,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
             Tape(studioCard,"PERSONA WORKSHOP",30,24,216,38,UITheme.Mint);
@@ -78,15 +69,14 @@ namespace AboutMe
             }
             var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
             BuildExpressionChoices(studioCard);
-            imageUpload=ArtButton(studioCard,"上传自我介绍图片并识别",30,526,590,42,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
-            generate=ArtButton(studioCard,"AI 生成 Persona",30,578,590,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            imageUpload=ArtButton(studioCard,"图片识别",30,526,230,42,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
+            generate=ArtButton(studioCard,"AI 生成 Persona",30,578,230,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
             var profileCard=ArtPanel(studioCard,"Persona result",30,638,590,66,UITheme.Field,true,false);
             profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,5,554,56,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
-            join=ArtButton(studioCard,"带上自己，进入房间",30,718,590,56,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
+            join=ArtButton(studioCard,"进入房间",30,718,230,56,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
             ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,()=>{net.Sample=true;net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));PlayerPrefs.SetString("sampleToken",net.Token);profile=GameNetwork.SampleProfile(net.Token,nickname.text);DisplayProfile();net.Status="已载入固定测试资产；它们不是根据介绍生成的。";},UITheme.Yellow,UITheme.Ink,"status");
             var service=ArtPanel(studioCard,"AI service status",306,785,314,37,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,7,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,2,265,32,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            ArtButton(home,"连接设置",1370,848,174,40,()=>{optionsOpen=!optionsOpen;settings.gameObject.SetActive(optionsOpen);},UITheme.Paper,UITheme.Ink,"settings");
             RefreshColorSelection();
         }
 
@@ -101,13 +91,13 @@ namespace AboutMe
             endpoint=ArtField(card,32,174,660,54,"wss://game.example.com",false);endpoint.text=PlayerPrefs.GetString("endpoint",net.Endpoint);
             ArtText(card,"AI / 角色服务 HTTPS 地址",32,250,630,26,16,UITheme.Muted,FontStyle.Bold);
             api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
-            var note=ArtPanel(card,"Secret note",32,360,660,76,UITheme.Yellow,true,false);
-            ArtIcon(note,"status",18,18,38,UITheme.Ink);ArtText(note,"密钥只放在服务端 .env；客户端仅保存公开地址。",68,10,570,56,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            var note=ArtPanel(card,"Secret note",32,360,660,58,UITheme.Yellow,true,false);
+            ArtIcon(note,"status",18,10,38,UITheme.Ink);ArtText(note,"密钥仅保存在服务端",68,3,570,48,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             ArtButton(card,"保存连接设置",32,468,316,58,()=>{net.Endpoint=endpoint.text.Trim();net.ApiUrl=api.text.Trim().TrimEnd('/');PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";StartCoroutine(CheckService());},UITheme.Mint,UITheme.Ink,"ready");
             Place(card,438,54,724,790);
-            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,660,58);
-            var sensitivity=ArtButton(card,"",32,460,660,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
-            var touchButton=ArtButton(card,"",32,534,660,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
+            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,224,58);
+            var sensitivity=ArtButton(card,"",32,460,256,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
+            var touchButton=ArtButton(card,"",32,534,256,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
             var motion=ArtButton(card,"",32,608,322,54,()=>{reduceMotion=!reduceMotion;PlayerPrefs.SetInt("reduceMotion",reduceMotion?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);motionSettingLabel=motion.GetComponentInChildren<Text>();
             var shake=ArtButton(card,"",370,608,322,54,()=>{float v=PlayerPrefs.GetFloat("hitShake",.3f);PlayerPrefs.SetFloat("hitShake",v<.1f?.3f:v<.6f?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);shakeSettingLabel=shake.GetComponentInChildren<Text>();
 
@@ -243,11 +233,11 @@ namespace AboutMe
             if(draftLibrary){draftLibrary.localScale=Vector3.one*(compactLayout?.94f:1);}
             if(compactLayout)
             {
-                Place(homeHero,22,24,800,830);Place(studioCard,830,24,738,832);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
+                if(homeHero)Place(homeHero,22,24,800,830);Place(studioCard,830,24,738,832);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
             }
             else
             {
-                Place(homeHero,42,32,825,820);Place(studioCard,900,34,650,820);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
+                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,34,650,820);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
             }
         }
 
@@ -380,7 +370,7 @@ namespace AboutMe
             var card=ArtPanel(overlay,"Room QR sticker",500,96,600,708,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
             Tape(card,"SCAN TO JOIN",30,24,176,38,UITheme.Pink);ArtText(card,"扫码加入 · "+roomCode,30,76,540,49,29,UITheme.Ink,FontStyle.Bold);
             var qrPaper=ArtPanel(card,"QR paper",54,145,492,492,Color.white,true,false);var qrRect=ArtRect(qrPaper,"QR image",new Vector2(14,-14),new Vector2(464,464));var image=qrRect.gameObject.AddComponent<RawImage>();image.texture=texture;image.raycastTarget=false;
-            ArtButton(card,"关闭二维码",54,650,492,46,()=>{if(destroyTexture)Destroy(texture);Destroy(overlay.gameObject);},UITheme.Ink,UITheme.Paper,"exit");
+            ArtButton(card,"关闭二维码",54,650,188,46,()=>{if(destroyTexture)Destroy(texture);Destroy(overlay.gameObject);},UITheme.Ink,UITheme.Paper,"exit");
         }
 
         Texture2D CreatePreviewQr()

@@ -90,6 +90,8 @@ namespace AboutMe
         Vector3 previousTarget; bool previousTargetValid;
         float latestServerTime=-1,latestServerArrival;
         public float BodyRebound=>combatPose.bodyOffset.magnitude;
+        public float LeftFootContact=>combatPose.leftFootContact;
+        public float RightFootContact=>combatPose.rightFootContact;
         public string LastTripoClip {get;private set;}="";
         DollCombatMotion.Pose combatPose;
         bool holdingContact;
@@ -605,7 +607,7 @@ namespace AboutMe
                 string action=activeAction;
                 var localVelocity=root.transform.InverseTransformDirection(worldVelocity);
                 if(p.stagger>0||p.reveal||eating)localVelocity=Vector3.zero;
-                combatPose=combatMotion.Sample(new DollCombatMotion.Input{dt=dt,time=now,runBlend=runBlend,localVelocity=localVelocity,actionKind=action,actionElapsed=Mathf.Max(0,actionTime-p.actionStartedAt),actionId=p.actionId,actionVariant=p.actionVariant,impactId=p.impactId,localImpact=root.transform.InverseTransformDirection(p.impactImpulse),grabTension=p.grabTension,escapeProgress=p.escapeProgress,airborne=p.airborne,holdingGrab=!string.IsNullOrEmpty(p.grabbing),staggerRemaining=p.stagger});
+                combatPose=combatMotion.Sample(new DollCombatMotion.Input{dt=dt,time=now,runBlend=runBlend,strideMeters=PhysicsTarget?Mathf.Lerp(2.15f,2.55f,runBlend):0,localVelocity=localVelocity,actionKind=action,actionElapsed=Mathf.Max(0,actionTime-p.actionStartedAt),actionId=p.actionId,actionVariant=p.actionVariant,impactId=p.impactId,localImpact=root.transform.InverseTransformDirection(p.impactImpulse),grabTension=p.grabTension,escapeProgress=p.escapeProgress,airborne=p.airborne,holdingGrab=!string.IsNullOrEmpty(p.grabbing),staggerRemaining=p.stagger});
                 fallPivot.localPosition=combatPose.fallOffset;
                 fallPivot.localRotation=Quaternion.Euler(combatPose.fallEuler);
                 LastTripoClip="";

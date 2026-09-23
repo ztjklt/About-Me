@@ -167,8 +167,27 @@ namespace AboutMe.Editor
         public static void BuildMac()
         {
             Generate();TestRules();
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_MAC_OUTPUT")??"../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=BuildOptions.Development});
-            if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Mac build failed: "+result.summary.result);
+            bool isolated=Environment.GetEnvironmentVariable("ABOUTME_QA_ISOLATED")=="1";
+            string originalProduct=PlayerSettings.productName;
+            string originalIdentifier=PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Standalone);
+            try
+            {
+                if(isolated)
+                {
+                    PlayerSettings.productName="About Me Integration QA";
+                    PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone,"com.aboutme.party.integrationqa");
+                }
+                var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_MAC_OUTPUT")??"../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=BuildOptions.Development});
+                if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Mac build failed: "+result.summary.result);
+            }
+            finally
+            {
+                if(isolated)
+                {
+                    PlayerSettings.productName=originalProduct;
+                    PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone,originalIdentifier);
+                }
+            }
             Debug.Log("ABOUTME_MAC_BUILD_OK");
         }
         [MenuItem("About Me/4. Build WebGL demo")]

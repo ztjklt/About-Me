@@ -100,7 +100,19 @@ namespace AboutMe
             DeskBackdrop.ConfigureLight(sun);
             var campus=Resources.Load<GameObject>("CampusV04/Campus");
             if(!campus)throw new InvalidOperationException("Campus V0.4 prefab missing. Run CampusImport.Build.");
-            Instantiate(campus).name="Remember About Me · Campus 80×64m";
+            var campusRoot=Instantiate(campus);campusRoot.name="Remember About Me · Campus 80×64m";
+            // These flush tiled aprons bridge the narrow gaps between each
+            // second-floor wing and the club buildings beside the stair routes.
+            foreach(int side in new[]{-1,1})foreach(float z in new[]{-14f,10f})
+            {
+                var apron=ToyFactory.Shape("Club wing threshold",PrimitiveType.Cube,campusRoot.transform,
+                    new Vector3(side*30.375f,4.25f,z),new Vector3(1f,.5f,8f),"#F5EFE3",true);
+                apron.name=(side<0?"West":"East")+" club wing threshold "+z;
+                ToyFactory.Shape("Threshold mint inlay",PrimitiveType.Cube,campusRoot.transform,
+                    new Vector3(side*30.02f,4.505f,z),new Vector3(.055f,.01f,7.75f),"#79CFC5");
+                ToyFactory.Shape("Threshold gold inlay",PrimitiveType.Cube,campusRoot.transform,
+                    new Vector3(side*30.45f,4.506f,z),new Vector3(.045f,.012f,6.4f),"#FFD773");
+            }
             impactFeedback=gameObject.AddComponent<ImpactFeedback>();
             actorRoot=new GameObject("Actors").transform;objectRoot=new GameObject("Persona & effects").transform;
             hand=new GameObject("The Hand").transform;handPresentation=gameObject.AddComponent<HandPresentation>();

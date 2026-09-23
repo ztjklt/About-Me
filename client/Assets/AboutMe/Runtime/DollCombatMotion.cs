@@ -11,7 +11,7 @@ namespace AboutMe
     {
         public struct Input
         {
-            public float dt, time, runBlend, actionElapsed, grabTension, escapeProgress, staggerRemaining;
+            public float dt, time, runBlend, actionElapsed, grabTension, escapeProgress, staggerRemaining, strideMeters;
             // Local +Z faces the camera's forward heading; +X is character-right.
             public Vector3 localVelocity;
             // A new impactId applies this local-space impulse once. About 6 m/s is strong.
@@ -120,7 +120,10 @@ namespace AboutMe
             motionWeight = Mathf.Lerp(motionWeight, moving, Damping(dt, moving > motionWeight ? .10f : .15f));
             runWeight = Mathf.Lerp(runWeight, Mathf.Clamp01(Finite(input.runBlend)), Damping(dt, .12f));
             if (!input.airborne && speed > .015f)
-                phase = Mathf.Repeat(phase + speed * dt * Mathf.Lerp(2.05f, 1.95f, runWeight), Mathf.PI * 2);
+            {
+                float radiansPerMeter=input.strideMeters>0?2*Mathf.PI/Mathf.Clamp(input.strideMeters,1.5f,3.5f):Mathf.Lerp(2.05f,1.95f,runWeight);
+                phase = Mathf.Repeat(phase + speed * dt * radiansPerMeter, Mathf.PI * 2);
+            }
 
             Pose target = Locomotion(velocity, now, input.airborne);
             ApplyAction(ref target, kind, elapsed, input.actionVariant,

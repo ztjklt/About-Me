@@ -60,7 +60,9 @@ namespace AboutMe
         string selectedColor="#79CFC5";int outfit;
         Vector2 movement;float yaw;TouchPad movePad;
         readonly LocomotionInput locomotionInput=new LocomotionInput(); bool running,hasFocus=true;
-        bool escapeHeld,touchEscapeHeld,cursorReleased,skipMouseFrame;
+        bool escapeHeld,touchEscapeHeld,cursorReleased,skipMouseFrame,webLockAttempted,webDragCamera;
+        Vector3 webDragPosition;
+        float webLockAttemptAt;
         void ResetMovement(){escapeHeld=touchEscapeHeld=false;movement=Vector2.zero;running=false;locomotionInput.Reset();if(movePad)movePad.Reset();}
         void OnApplicationFocus(bool focus){hasFocus=focus;if(!focus){cursorReleased=true;ReleaseCursor();ResetMovement();if(net)Send("cancel");}}
         public void Build(GameNetwork network,ToyWorld toyWorld)
@@ -246,7 +248,30 @@ namespace AboutMe
             if(!allowed||!desktop){ReleaseCursor();return;}
             if(cursorReleased&&Input.GetMouseButtonDown(0)&&!(EventSystem.current&&EventSystem.current.IsPointerOverGameObject()))cursorReleased=false;
             if(cursorReleased){ReleaseCursor();return;}
-            if(Cursor.lockState!=CursorLockMode.Locked){Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;skipMouseFrame=true;}
+            if(Cursor.lockState!=CursorLockMode.Locked)
+            {
+                if(Application.platform!=RuntimePlatform.WebGLPlayer||!webLockAttempted)
+                {
+                    Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;skipMouseFrame=true;
+                    if(Application.platform==RuntimePlatform.WebGLPlayer){webLockAttempted=true;webLockAttemptAt=Time.unscaledTime;}
+                }
+                if(Cursor.lockState!=CursorLockMode.Locked&&Application.platform==RuntimePlatform.WebGLPlayer)
+                {
+                    // Embedded browsers may deny pointer lock. Right drag remains usable
+                    // without repeatedly requesting a permission the browser rejected.
+                    if(Time.unscaledTime-webLockAttemptAt<.4f)return;
+                    Cursor.visible=true;
+                    if(Input.GetMouseButtonDown(1)){webDragCamera=true;webDragPosition=Input.mousePosition;}
+                    if(Input.GetMouseButtonUp(1))webDragCamera=false;
+                    if(webDragCamera&&Input.GetMouseButton(1))
+                    {
+                        var delta=Input.mousePosition-webDragPosition;webDragPosition=Input.mousePosition;
+                        world.CameraYaw+=delta.x*.22f*cameraSensitivity;
+                        world.CameraPitch=Mathf.Clamp(world.CameraPitch-delta.y*.18f*cameraSensitivity,10,65);
+                    }
+                    return;
+                }
+            }
             if(skipMouseFrame){skipMouseFrame=false;return;}
             world.CameraYaw+=Input.GetAxis("Mouse X")*3*cameraSensitivity;
             world.CameraPitch=Mathf.Clamp(world.CameraPitch-Input.GetAxis("Mouse Y")*2*cameraSensitivity,10,65);
@@ -306,11 +331,10 @@ namespace AboutMe
             movement=Vector2.ClampMagnitude(movement,1);
             // Backward keyboard travel uses the forward locomotion clip: keep the
             // world-space route, but turn the character toward that route first.
-            bool walkingBackward=!usingTouch&&Input.GetKey(KeyCode.S)&&!Input.GetKey(KeyCode.W)&&movement.y<-.01f;
             running=locomotionInput.Step(Time.unscaledTime,Time.unscaledDeltaTime,DirectionMask(true),DirectionMask(false),movement,usingTouch,canMove&&!controlled.grabbed&&string.IsNullOrEmpty(controlled.interaction)&&string.IsNullOrEmpty(controlled.grabbing)&&controlled.charge<=0);
             if(movePad){movePad.ShowRun(running);if(!canMove)movePad.Reset();}
+            yaw=locomotionInput.FacingYaw(world.CameraYaw,movement);
             var worldMove=Quaternion.Euler(0,world.CameraYaw,0)*new Vector3(movement.x,0,movement.y);movement=new Vector2(worldMove.x,worldMove.z);
-            yaw=world.CameraYaw+(walkingBackward?180:0);
             if(controls&&Input.GetKeyDown(KeyCode.Q))Send(controlled.grabbed?"escape":"cancel");
             if(Input.GetKeyUp(KeyCode.Q))Send("escape_end");
             if(canAct)

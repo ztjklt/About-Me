@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace AboutMe
@@ -17,7 +18,15 @@ namespace AboutMe
                 {
                     var source=Resources.Load<TextAsset>("CampusV04/Collision");
                     if(!source)throw new InvalidOperationException("Campus V0.4 collision data is missing. Run CampusImport.Build.");
-                    solids=JsonUtility.FromJson<CampusCollisionData>(source.text).solids;
+                    var clubThresholds=(from side in new[]{-1,1} from z in new[]{-14f,10f}
+                        select new CampusSolid
+                        {
+                            name="club_wing_threshold",
+                            center=new Vector3(side*30.375f,4.25f,z),
+                            size=new Vector3(1f,.5f,8f)
+                        }).ToArray();
+                    solids=JsonUtility.FromJson<CampusCollisionData>(source.text).solids
+                        .Concat(clubThresholds).ToArray();
                 }
                 return solids;
             }
