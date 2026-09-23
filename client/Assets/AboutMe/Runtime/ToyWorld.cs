@@ -228,7 +228,8 @@ namespace AboutMe
                 if(!objects.TryGetValue(effect.id,out var go))
                 {go=effect.kind=="Pulse"?ToyFactory.Shape("impact",PrimitiveType.Sphere,objectRoot,effect.position,Vector3.one,effect.color):ToyFactory.Item(effect.visual,effect.color,objectRoot);objects[effect.id]=go;}
                 go.transform.position=effect.position;
-                if(effect.kind=="Pulse")go.transform.localScale=Vector3.one*Mathf.Max(.1f,effect.remaining*3);else go.transform.Rotate(Vector3.up,UnityEngine.Time.deltaTime*200);
+                if(effect.kind=="Pulse")go.transform.localScale=Vector3.one*Mathf.Max(.1f,effect.remaining*3);
+                else go.transform.Rotate(Vector3.up,UnityEngine.Time.deltaTime*(effect.kind=="ThrownDisc"?(effect.landed?32:900):200));
             }
             foreach(var key in objects.Keys.Where(k=>!present.Contains(k)).ToArray()){Destroy(objects[key]);objects.Remove(key);}
             handPresentation.Draw(state,hand,handOpen,handFist,ViewCamera);

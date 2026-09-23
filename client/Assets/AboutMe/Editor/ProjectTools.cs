@@ -147,6 +147,22 @@ namespace AboutMe.Editor
                 var m=MechanicMatch("Ricochet","basketball-cc0");Heavy(m);var effect=m.Effects.Single();Assert(effect.kind=="Ricochet"&&effect.bounces==2,"ricochet did not spawn");
                 effect.position=new Vector3(39.9f,1,0);effect.velocity=Vector3.right*12;Tick(m,.02f);Assert(effect.velocity.x<0&&effect.bounces==1,"ricochet did not reflect once");
             });
+            Test("school disc is thrown once, hits once, and remains grounded",()=>{
+                var m=MechanicMatch("Disc","school-disc");m.Players["b"].position=new Vector3(0,1,4.5f);m.Players["b"].stability=20;Heavy(m);
+                var effect=m.Effects.Single();Assert(effect.kind=="ThrownDisc"&&!effect.landed&&effect.velocity.z>0,"school disc did not launch forward");
+                Tick(m,1.5f);
+                Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f,"thrown school disc missed a clear target");
+                Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f&&m.Items.Any(x=>x.ownerId=="b"&&x.state==ItemState.Ground),"school disc did not use the existing depletion/drop rule");
+                Assert(effect.landed&&effect.velocity.sqrMagnitude<.001f&&effect.remaining>0,"thrown school disc did not settle on the floor");
+                var after=m.Players["b"].stability;Tick(m,.4f);
+                Assert(m.Effects.Contains(effect)&&m.Players["b"].stability==after,"landed school disc hit again or disappeared immediately");
+            });
+            Test("other Disc visuals retain their returning projectile rule",()=>{
+                var m=MechanicMatch("Disc","photo-frame");Heavy(m);var effect=m.Effects.Single();
+                Assert(effect.kind=="Disc"&&!effect.landed,"non-school Disc visual changed projectile behavior");
+                effect.remaining=.7f;effect.position=new Vector3(0,1,8);effect.velocity=Vector3.zero;Tick(m,.02f);
+                Assert(effect.velocity.z<0,"non-school Disc no longer returns to its owner");
+            });
             Test("tether pulls only a forward in-range target",()=>{
                 var m=MechanicMatch("Tether","flashlight");Heavy(m);Assert(m.Players["b"].impulse.z<0,"tether did not pull target");
                 var blocked=MechanicMatch("Tether","flashlight");blocked.Players["b"].position=new Vector3(0,1,-4);Heavy(blocked);Assert(blocked.Players["b"].impulse.sqrMagnitude<.01f,"tether pulled target behind owner");

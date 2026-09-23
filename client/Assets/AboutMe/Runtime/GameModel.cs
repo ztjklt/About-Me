@@ -119,7 +119,7 @@ namespace AboutMe
         public Vector3 position, velocity;
         public float remaining, damage, force, nextHit, radius = .7f;
         public int health, bounces;
-        public bool heavy, knockdown;
+        public bool heavy, knockdown, landed;
         public List<string> hit = new List<string>();
     }
     [Serializable] public class EatRecord { public string eater, owner, persona, visual,eaterId,ownerId,assetId,instanceId; }
@@ -442,9 +442,11 @@ namespace AboutMe
             }
             if(heavy && (template=="Projectile"||template=="Disc"||template=="Deployable"||template=="Summon"||template=="Ricochet"))
             {
-                Effects.Add(new EffectState { id=Guid.NewGuid().ToString("N"), owner=p.profile.playerId, kind=template,
+                bool schoolDisc=equipped!=null&&equipped.asset.visualId=="school-disc";
+                Effects.Add(new EffectState { id=Guid.NewGuid().ToString("N"), owner=p.profile.playerId, kind=schoolDisc?"ThrownDisc":template,
                     visual=equipped.asset.visualId,color=equipped.asset.color,position=p.position+Forward(p),
-                    velocity=Forward(p)*(template=="Disc"?14:12),remaining=template=="Deployable"?8:template=="Summon"?7:template=="Ricochet"?3:2,
+                    velocity=schoolDisc?Forward(p)*18+Vector3.up*2.2f:Forward(p)*(template=="Disc"?14:12),
+                    remaining=schoolDisc?6:template=="Deployable"?8:template=="Summon"?7:template=="Ricochet"?3:2,
                     damage=damage,force=force,heavy=true,knockdown=knockdown,bounces=template=="Ricochet"?2:0 });
                 return;
             }
@@ -519,6 +521,31 @@ namespace AboutMe
                     var target=Players.Values.Where(p=>p!=owner&&!p.eliminated).OrderBy(p=>Vector3.Distance(p.position,e.position)).FirstOrDefault();
                     if(target!=null)e.velocity=(target.position-e.position).normalized*6;
                 }
+                if(e.kind=="ThrownDisc")
+                {
+                    if(e.landed)continue;
+                    var discNext=e.position+e.velocity*dt;
+                    e.velocity+=Vector3.down*Rules.gravity*dt;
+                    var hit=Players.Values.Where(p=>p!=owner&&!p.eliminated)
+                        .FirstOrDefault(p=>Vector3.Distance(discNext,p.position)<1.25f);
+                    if(hit!=null)
+                    {
+                        e.position=discNext;
+                        Hit(hit,owner,e.damage,e.force,e.heavy,e.knockdown);
+                        e.hit.Add(hit.profile.playerId);
+                        LandThrownDisc(e,e.position);
+                        continue;
+                    }
+                    if(CampusGeometry.Outside(discNext)||CampusGeometry.Blocked(discNext,.2f,.25f))
+                    {
+                        LandThrownDisc(e,e.position);
+                        continue;
+                    }
+                    e.position=discNext;
+                    var floor=CampusGeometry.Floor(e.position,.08f)+.08f;
+                    if(e.position.y<=floor)LandThrownDisc(e,e.position);
+                    continue;
+                }
                 if(e.kind=="Disc" && e.remaining<.8f)e.velocity=(owner.position-e.position).normalized*15;
                 if(e.kind=="Deployable") { e.velocity*=Mathf.Max(0,1-dt*5); e.position.y=.5f; }
                 var next=e.position+e.velocity*dt;
@@ -538,6 +565,14 @@ namespace AboutMe
                     }
                 }
             }
+        }
+        static void LandThrownDisc(EffectState effect,Vector3 position)
+        {
+            effect.position=position;
+            effect.position.y=CampusGeometry.Floor(position,.08f)+.08f;
+            effect.velocity=Vector3.zero;
+            effect.landed=true;
+            effect.remaining=6;
         }
         public void Drop(Player p,int count)
         {
