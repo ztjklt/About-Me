@@ -53,7 +53,6 @@ namespace AboutMe
         Text status,profileText,lobbyText,hudText,eventText,resultText,bagText,recordLabel;
         Button generate,ready,start,join,imageUpload;
         readonly List<Button> slots=new List<Button>();
-        readonly List<Button> bagButtons=new List<Button>();
         readonly List<string> favorites=new List<string>();
         Profile profile;string lastInventory="";int lastEvent;
         bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured;float nextSend,nextUI;
@@ -165,8 +164,14 @@ namespace AboutMe
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
             net.Nickname=nickname.text;net.RoomCode=room.text.Trim();net.Endpoint=endpoint.text.Trim();net.Connect();
         }
-        void Leave(){net.Close();lastInventory="";lastEvent=0;lastResultVisual="";inventoryOpen=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
-        void ToggleBag(){inventoryOpen=!inventoryOpen;bag.gameObject.SetActive(inventoryOpen);if(inventoryOpen)Send("cancel");}
+        void Leave(){net.Close();lastInventory="";lastEvent=0;lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
+        void ToggleBag()
+        {
+            inventoryOpen=!inventoryOpen;bag.gameObject.SetActive(inventoryOpen);
+            if(!inventoryOpen)return;
+            if(!inventoryWasOpened&&inventoryScroll){Canvas.ForceUpdateCanvases();inventoryScroll.verticalNormalizedPosition=1;inventoryWasOpened=true;}
+            Send("cancel");
+        }
         public void SetRoom(string value){ShowPage(MenuPage.Multiplayer);room.text=value;pendingRoom=true;TryAutoJoin();}
         void TryAutoJoin(){if(pendingRoom&&profile!=null&&profile.personas.Length>0){pendingRoom=false;Enter();}}
         void ToggleRecording()
@@ -305,7 +310,15 @@ namespace AboutMe
                     var quick=QuickItems(state);
                     for(int i=0;i<slots.Count;i++)
                     {
-                        slots[i].interactable=i<quick.Length;slots[i].GetComponentInChildren<Text>().text=i<quick.Length?(i+1)+"  "+ShortPersonaName(quick[i].asset.name):(i+1)+"  —";
+                        bool filled=i<quick.Length;slots[i].interactable=filled;
+                        slots[i].GetComponentInChildren<Text>().text=filled?(i+1)+"\n"+ShortPersonaName(quick[i].asset.name):(i+1)+"\n—";
+                        if(i<slotThumbnails.Count)
+                        {
+                            var image=slotThumbnails[i];var item=filled?quick[i]:null;
+                            var thumbnail=item!=null?PersonaThumbnail(item.asset.visualId):null;
+                            image.sprite=thumbnail?thumbnail:UITheme.Icon(item!=null?IconForTemplate(item.asset.templateId):"status");
+                            image.color=thumbnail?Color.white:item!=null?ToyFactory.ColorOf(item.asset.color):UITheme.Muted;
+                        }
                         if(i<slotStyles.Count)slotStyles[i].SetState(i<quick.Length&&quick[i].state==ItemState.Equipped?UIVisualState.Selected:UIVisualState.Normal);
                     }
                     BuildInventoryCards(state);

@@ -74,10 +74,10 @@ namespace AboutMe
             Accent(doodles,1090,398,34,9,8,UITheme.Yellow);Accent(doodles,415,545,34,9,-28,UITheme.Yellow);Accent(doodles,1150,548,34,9,28,UITheme.Yellow);
 
             var menuButtons=new[]{
-                ArtButton(mainMenu,"单人游戏",418,306,188,188,()=>ShowPage(MenuPage.Solo),UITheme.Mint,UITheme.Ink,"attack"),
-                ArtButton(mainMenu,"多人游戏",994,306,188,188,()=>ShowPage(MenuPage.Multiplayer),UITheme.Yellow,UITheme.Ink,"share"),
-                ArtButton(mainMenu,"自我介绍预设",418,546,188,188,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink,"bag"),
-                ArtButton(mainMenu,"设置",994,546,188,188,OpenSettings,UITheme.Field,UITheme.Ink,"settings")};
+                ArtButton(mainMenu,"SINGLE PLAYER",418,306,188,188,()=>ShowPage(MenuPage.Solo),UITheme.Mint,UITheme.Ink,"attack"),
+                ArtButton(mainMenu,"MULTIPLAYER",994,306,188,188,()=>ShowPage(MenuPage.Multiplayer),UITheme.Yellow,UITheme.Ink,"share"),
+                ArtButton(mainMenu,"INTRO PRESETS",418,546,188,188,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink,"bag"),
+                ArtButton(mainMenu,"SETTINGS",994,546,188,188,OpenSettings,UITheme.Field,UITheme.Ink,"settings")};
 
             startMenuStage=mainMenu.gameObject.AddComponent<StartMenuStage2D>();
             startMenuStage.Configure(title,hero,heroOpen,heroBlink,doodles,arms.ToArray(),menuButtons.Select(x=>(RectTransform)x.transform).ToArray());

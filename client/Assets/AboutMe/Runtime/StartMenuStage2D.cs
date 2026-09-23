@@ -51,7 +51,7 @@ namespace AboutMe
             for(int i=0;i<armRoots.Length;i++)layers[i+2]=Motion(armRoots[i],18,4+i%3*2,1+(i%3)*.45f,3+(i%4)*.55f,i*.73f);
             // Four entry bubbles are direct children of the opening stage.
             bubbles=new BubbleMotion[buttons.Length];bubbleSprites=new Sprite[buttons.Length];
-            string[] labels={"SOLO PLAY","MULTIPLAYER","INTRO\nPRESETS","SETTINGS"};
+            string[] labels={"SINGLE\nPLAYER","MULTIPLAYER","INTRO\nPRESETS","SETTINGS"};
             Color[] colors={UITheme.Mint,UITheme.Yellow,UITheme.Purple,UITheme.Pink};
             for(int i=0;i<buttons.Length;i++)StyleBubble(i,labels[i],colors[i]);
             configured=true;SetCompact(false);ResetForInitialDisplay();
@@ -75,7 +75,7 @@ namespace AboutMe
             var shineImage=shine.GetComponent<Image>();shineImage.sprite=UITheme.Circle;shineImage.color=new Color(1,1,1,.42f);shineImage.raycastTarget=false;
             shineRect.SetAsFirstSibling();
             var icon=style.Icon;Place(icon.rectTransform,73,43,42,42);icon.color=UITheme.Ink;
-            var text=style.Label;text.text=label;text.fontSize=index==1||index==2?21:23;text.alignment=TextAnchor.MiddleCenter;
+            var text=style.Label;text.text=label;text.fontSize=index==3?23:21;text.alignment=TextAnchor.MiddleCenter;
             Place(text.rectTransform,15,92,158,66);text.color=UITheme.Ink;
         }
 

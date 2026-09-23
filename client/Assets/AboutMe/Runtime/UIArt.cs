@@ -119,21 +119,26 @@ namespace AboutMe
         }
     }
 
-    public class StickerButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler,IPointerUpHandler,IUIStateful
+    public class StickerButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler,IPointerUpHandler,IPointerClickHandler,IUIStateful
     {
         public Image Surface;public Text Label;public Image Icon;public Button Button;public Color BaseColor=UITheme.Paper;
         public UIVisualState State;
-        bool hovered,pressed,lastEnabled=true;Vector3 targetScale=Vector3.one;
+        bool hovered,pressed,lastEnabled=true;Vector3 targetScale=Vector3.one;float rebound,clickFlash;
         public void Configure(Button button,Image surface,Text label,Color color)
         {Button=button;Surface=surface;Label=label;BaseColor=color;button.transition=Selectable.Transition.None;Apply();}
         public void SetState(UIVisualState state){State=state;if(!pressed)targetScale=state==UIVisualState.Selected&&Label==null?Vector3.one*1.12f:Vector3.one;Apply();}
         public void OnPointerEnter(PointerEventData eventData){hovered=true;Apply();}
         public void OnPointerExit(PointerEventData eventData){hovered=false;pressed=false;targetScale=Vector3.one;Apply();}
-        public void OnPointerDown(PointerEventData eventData){if(Button&&Button.interactable){pressed=true;targetScale=Vector3.one*.955f;Apply();}}
+        public void OnPointerDown(PointerEventData eventData){if(Button&&Button.interactable){pressed=true;rebound=0;targetScale=Vector3.one*.94f;Apply();}}
         public void OnPointerUp(PointerEventData eventData){pressed=false;targetScale=Vector3.one;Apply();}
+        public void OnPointerClick(PointerEventData eventData)
+        {if(Button&&Button.interactable){rebound=.09f;clickFlash=1;targetScale=Vector3.one*1.045f;Apply();}}
         void Update()
         {
-            transform.localScale=PlayerPrefs.GetInt("reduceMotion",0)==1?Vector3.one:Vector3.Lerp(transform.localScale,targetScale,1-Mathf.Exp(-Time.unscaledDeltaTime*25));
+            float dt=Time.unscaledDeltaTime;
+            if(rebound>0){rebound-=dt;if(rebound<=0)targetScale=Vector3.one;}
+            if(clickFlash>0){clickFlash=Mathf.Max(0,clickFlash-dt*8);Apply();}
+            transform.localScale=PlayerPrefs.GetInt("reduceMotion",0)==1?Vector3.one:Vector3.Lerp(transform.localScale,targetScale,1-Mathf.Exp(-dt*25));
             bool enabled=Button&&Button.interactable;if(enabled!=lastEnabled){lastEnabled=enabled;Apply();}
         }
         void Apply()
@@ -147,7 +152,7 @@ namespace AboutMe
             else if(State==UIVisualState.Error)color=UITheme.Red;
             else if(pressed)color=Color.Lerp(BaseColor,UITheme.Ink,.15f);
             else if(hovered)color=Color.Lerp(BaseColor,Color.white,.25f);
-            Surface.color=color;
+            Surface.color=Color.Lerp(color,Color.white,clickFlash*.25f);
             if(Label)Label.color=(State==UIVisualState.Error||BaseColor==UITheme.Ink)?UITheme.Paper:UITheme.Ink;
         }
     }
