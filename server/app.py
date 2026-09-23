@@ -603,7 +603,8 @@ def session(body: SessionRequest, request: Request):
 
 @app.get('/profiles/me')
 def profile(authorization: str | None = Header(default=None)):
-    return normalized_profile(json.loads(authenticate(authorization)[1]))
+    _, stored, intro = authenticate(authorization)
+    return normalized_profile(json.loads(stored), intro)
 
 @app.post('/sessions/wechat')
 async def wechat_session(body: WechatSessionRequest, request: Request):
@@ -624,15 +625,16 @@ async def wechat_session(body: WechatSessionRequest, request: Request):
         row = con.execute('SELECT player_id FROM wechat_users WHERE openid_hash=?',(identity,)).fetchone()
         if row:
             player_id=row[0]
-            stored=con.execute('SELECT profile FROM profiles WHERE id=?',(player_id,)).fetchone()[0]
+            stored,intro=con.execute('SELECT profile,intro FROM profiles WHERE id=?',(player_id,)).fetchone()
             profile=json.loads(stored)
             con.execute('UPDATE profiles SET token_hash=? WHERE id=?',(token_hash(token),player_id))
         else:
             player_id=uuid.uuid4().hex
+            intro=''
             profile=dict(playerId=player_id,nickname=plain(body.nickname,24),color='#77C8BD',outfit=0,personas=[],revision=0)
             con.execute('INSERT INTO profiles VALUES (?,?,?,?,?)',(player_id,token_hash(token),json.dumps(profile),'',time.time()))
             con.execute('INSERT INTO wechat_users VALUES (?,?)',(identity,player_id))
-    return {'token':token,'profile':normalized_profile(profile)}
+    return {'token':token,'profile':normalized_profile(profile,intro)}
 
 @app.get('/rooms/{room}/qrcode')
 async def room_qrcode(room: str, authorization: str | None = Header(default=None)):
@@ -665,10 +667,13 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
         raise HTTPException(422, '请填写自我介绍')
     personas = preset_personas(body.introduction) or await generate_with_provider(body.introduction)
     personas = await attach_school_emblems(personas)
+    old_normalized = normalized_profile(old, intro)
     result = dict(playerId=player_id, nickname=plain(body.nickname, 24),
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=personas, revision=old['revision'] + 1,
-                  appearance=normalized_profile(old)['appearance'],appearanceRevision=old.get('appearanceRevision',0))
+                  appearance=old_normalized['appearance'],appearanceRevision=old_normalized['appearanceRevision'],
+                  characterSkin=old_normalized['characterSkin'])
+    result = normalized_profile(result, body.introduction.strip())
     with db() as con:
         # Concurrent regeneration must not overwrite a newer result.
         changed = con.execute('UPDATE profiles SET profile=?,intro=?,updated=? WHERE id=? AND profile=?',
@@ -717,7 +722,8 @@ async def recognize_image(request: Request, file: UploadFile = File(...), author
 @app.post('/internal/verify')
 def verify(body: VerifyRequest, x_game_key: str | None = Header(default=None)):
     require_server(x_game_key)
-    profile = normalized_profile(json.loads(authenticate('Bearer ' + body.token)[1]))
+    _, stored, intro = authenticate('Bearer ' + body.token)
+    profile = normalized_profile(json.loads(stored), intro)
     if any(sensitive_persona_text(item.get('name', '')) or
            not safe_public_text(item.get('name', '')) for item in profile.get('personas', [])):
         raise HTTPException(422, '历史 Persona 含不可公开内容，请重新生成后加入房间')
@@ -746,10 +752,16 @@ async def appearance_recommend(body: RecommendRequest, request: Request, authori
 
 @app.post('/profiles/me/appearance')
 def save_appearance(body: AppearanceSave, authorization: str | None = Header(default=None)):
-    player_id, previous, _ = authenticate(authorization)
-    profile = normalized_profile(json.loads(previous))
+    player_id, previous, intro = authenticate(authorization)
+    profile = normalized_profile(json.loads(previous), intro)
     if body.expectedRevision != profile['appearanceRevision']:
         raise HTTPException(409, '穿搭已更新，请重新载入后保存')
+    if body.characterSkin is not None:
+        if body.characterSkin not in ('normal','ds-girl'):
+            raise HTTPException(422, '未发布的角色外观')
+        if body.characterSkin == 'ds-girl' and not profile['dsGirlUnlocked']:
+            raise HTTPException(422, '该角色外观尚未解锁')
+        profile['characterSkin'] = body.characterSkin
     profile['appearance'] = body.appearance.model_dump()
     profile['appearanceRevision'] += 1
     with db() as con:

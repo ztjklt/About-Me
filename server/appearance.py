@@ -4,6 +4,7 @@ from pathlib import Path
 import httpx
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field,model_validator
+from server.easter_egg import likes_deepseek
 
 CATALOG=json.loads((Path(__file__).resolve().parents[1]/'shared/appearance-catalog.json').read_text())
 OPTIONS={slot['id']:{o['id'] for o in slot['options']} for slot in CATALOG['slots']}
@@ -23,7 +24,7 @@ class Appearance(BaseModel):
             if value not in allowed:raise ValueError('未发布的外观选项：'+slot)
         return self
 
-def normalized_profile(profile):
+def normalized_profile(profile,introduction=None):
     """Old JSON profiles gain deterministic defaults without touching their Personas."""
     profile=dict(profile)
     try:appearance=Appearance.model_validate(profile.get('appearance') or {})
@@ -34,11 +35,16 @@ def normalized_profile(profile):
         if color in OPTIONS['topColor']:appearance.topColor=color
     profile['appearance']=appearance.model_dump()
     profile.setdefault('appearanceRevision',0)
+    unlocked=likes_deepseek(introduction) if introduction is not None else bool(profile.get('dsGirlUnlocked',False))
+    profile['dsGirlUnlocked']=unlocked
+    if profile.get('characterSkin')!='ds-girl' or not unlocked:profile['characterSkin']='normal'
     return profile
 
 class AppearanceSave(BaseModel):
+    model_config=ConfigDict(extra='forbid')
     appearance:Appearance
     expectedRevision:int=Field(ge=0)
+    characterSkin:str|None=None
 
 class RecommendRequest(BaseModel):
     introduction:str=Field(min_length=3,max_length=1200)
