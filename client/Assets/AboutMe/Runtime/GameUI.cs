@@ -76,14 +76,16 @@ namespace AboutMe
             {
                 var webEndpoint=WebGameEndpoint(Application.absoluteURL);
                 if(webEndpoint!=null)sessionEndpoint=webEndpoint;
-                if(Uri.TryCreate(Application.absoluteURL,UriKind.Absolute,out var page)
+                var webApi=WebApiEndpoint(Application.absoluteURL);
+                if(webApi!=null)api.text=webApi;
+                else if(Uri.TryCreate(Application.absoluteURL,UriKind.Absolute,out var page)
                     &&page.Scheme==Uri.UriSchemeHttps
                     &&Uri.TryCreate(api.text,UriKind.Absolute,out var service)
                     &&service.IsLoopback)api.text="";
             }
             if(sessionEndpoint!=null)endpoint.text=sessionEndpoint;
             net.Endpoint=endpoint.text;net.ApiUrl=api.text;
-            net.Token=PlayerPrefs.GetString("token","");if(net.Token!=""&&net.ApiUrl!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
+            net.Token=SavedTokenForApi();if(net.Token!=""&&net.ApiUrl!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
         }
@@ -97,6 +99,28 @@ namespace AboutMe
                 &&(game.Scheme=="wss"||(page.Scheme==Uri.UriSchemeHttp&&game.Scheme=="ws"))
                 &&game.UserInfo==""&&game.Fragment=="")return game.AbsoluteUri;
             return "";
+        }
+        static string WebApiEndpoint(string absoluteUrl)
+        {
+            if(!Uri.TryCreate(absoluteUrl,UriKind.Absolute,out var page))return null;
+            var value=WebQueryValue(page,"api");
+            if(value==null)return null;
+            if(string.IsNullOrWhiteSpace(value)||!Uri.TryCreate(page,value,out var service)
+                ||(service.Scheme!=Uri.UriSchemeHttps&&!(page.Scheme==Uri.UriSchemeHttp&&service.Scheme==Uri.UriSchemeHttp))
+                ||!string.Equals(service.Host,page.Host,StringComparison.OrdinalIgnoreCase)
+                ||service.UserInfo!=""||service.Fragment!="")return "";
+            return service.AbsoluteUri.TrimEnd('/');
+        }
+        string SavedTokenForApi()
+        {
+            var savedApi=PlayerPrefs.GetString("tokenApi",PlayerPrefs.GetString("api","")).TrimEnd('/');
+            return savedApi==net.ApiUrl?PlayerPrefs.GetString("token",""):"";
+        }
+        void SaveTokenForApi(string value)
+        {
+            PlayerPrefs.SetString("token",value);
+            PlayerPrefs.SetString("tokenApi",net.ApiUrl);
+            PlayerPrefs.Save();
         }
         static string WebQueryValue(Uri page,string key)
         {
@@ -158,36 +182,56 @@ namespace AboutMe
         }
         IEnumerator LoadProfile()
         {
-            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me",null,net.Token))
-            {yield return req.SendWebRequest();if(req.result==UnityWebRequest.Result.Success&&!net.Sample&&!busy&&net.State==null){profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);DisplayProfile();TryAutoJoin();}else if(profile==null)net.Status="在线角色暂时无法读取；仍可使用练习道具进行单人游戏。";}
+            var requestedToken=net.Token;
+            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me",null,requestedToken))
+            {
+                yield return req.SendWebRequest();
+                if(req.result==UnityWebRequest.Result.Success&&!net.Sample&&!busy&&net.State==null)
+                {profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);DisplayProfile();TryAutoJoin();}
+                else if(req.responseCode==401&&net.Token==requestedToken)
+                {net.Token="";SaveTokenForApi("");if(profile==null)net.Status="登录已过期，请重新生成 Persona。";}
+                else if(profile==null)net.Status="在线角色暂时无法读取；仍可使用练习道具进行单人游戏。";
+            }
         }
         IEnumerator Generate()
         {
             if(busy)yield break;
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="请先写至少 3 个字的自我介绍。";yield break;}
             if(introduction.text.Length>1200){net.Status="自我介绍最多 1200 字，请精简后再生成。";yield break;}
-            if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 尚未配置；请配置 server/.env，或点击“本地样例（无需 AI）”继续测试。";yield break;}
-            busy=true;SaveDraft(false);net.Status="正在把你变成游戏内容…";
-            string generationToken=PlayerPrefs.GetString("token","");
             net.ApiUrl=api.text.Trim().TrimEnd('/');
-            if(string.IsNullOrEmpty(generationToken))
+            if(net.ApiUrl==""){net.Status="AI 服务尚未开放，请先在连接设置中填写服务地址。";yield break;}
+            if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 暂不可用，请稍后重试，或选择练习道具。";yield break;}
+            busy=true;SaveDraft(false);net.Status="正在把你变成游戏内容…";
+            string generationToken=SavedTokenForApi();
+            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit};
+            for(int attempt=0;attempt<2;attempt++)
             {
-                using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
+                if(string.IsNullOrEmpty(generationToken))
                 {
-                    yield return req.SendWebRequest();
+                    using(var session=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
+                    {
+                        yield return session.SendWebRequest();
+                        if(session.result!=UnityWebRequest.Result.Success){Fail(session);yield break;}
+                        generationToken=JsonUtility.FromJson<SessionResponse>(session.downloadHandler.text)?.token;
+                        if(string.IsNullOrEmpty(generationToken)){busy=false;net.Status="无法建立角色会话，请稍后重试。";yield break;}
+                        SaveTokenForApi(generationToken);
+                    }
+                }
+                using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/personas/generate",JsonUtility.ToJson(body),generationToken))
+                {
+                    req.timeout=100;yield return req.SendWebRequest();
+                    if(req.responseCode==401&&attempt==0)
+                    {generationToken="";SaveTokenForApi("");continue;}
                     if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                    generationToken=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text).token;PlayerPrefs.SetString("token",generationToken);
+                    var generated=JsonUtility.FromJson<Profile>(req.downloadHandler.text);
+                    if(generated?.personas==null||generated.personas.Length==0)
+                    {busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
+                    net.Token=generationToken;net.Sample=false;profile=generated;DisplayProfile();
+                    PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
+                    busy=false;net.Status="你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
                 }
             }
-            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit};
-            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/personas/generate",JsonUtility.ToJson(body),generationToken))
-            {
-                req.timeout=100;yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                net.Token=generationToken;net.Sample=false;profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);DisplayProfile();
-                PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();net.Status="你的 Persona 已保存，下次仍可继续使用。";
-            }
-            busy=false;
-            TryAutoJoin();
+            busy=false;net.Status="角色会话已失效，请重新尝试生成。";
         }
         IEnumerator CheckService()
         {
@@ -210,6 +254,21 @@ namespace AboutMe
             }
         }
         void SetAIServiceStatus(string value,Color color){if(aiServiceText)aiServiceText.text=value;if(aiServiceSurface)aiServiceSurface.color=color;}
+        void SaveConnectionSettings()
+        {
+            var nextApi=api.text.Trim().TrimEnd('/');
+            var apiChanged=net.ApiUrl!=nextApi;
+            net.Endpoint=endpoint.text.Trim();net.ApiUrl=nextApi;
+            if(apiChanged)
+            {
+                aiCapabilityKnown=false;
+                if(!net.Sample){net.Token=SavedTokenForApi();profile=null;RefreshMenuSummary();}
+            }
+            PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);PlayerPrefs.Save();
+            settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";
+            if(apiChanged&&!net.Sample&&net.Token!="")StartCoroutine(LoadProfile());
+            StartCoroutine(CheckService());
+        }
         void Fail(UnityWebRequest request)
         {
             busy=false;string message=request.error;
@@ -378,7 +437,6 @@ namespace AboutMe
                 if(startStyle)startStyle.SetState(start.interactable?UIVisualState.Selected:UIVisualState.Normal);
                 var me=state.players.FirstOrDefault(p=>p.id==state.you);
                 if(state.events.Length>0&&state.events.Last().id!=lastEvent){lastEvent=state.events.Last().id;eventText.text=state.events.Last().text;toastPulse.Play();}
-                UpdateRoast(state);
                 string inventory=string.Join("|",state.inventory.Select(x=>x.id+":"+x.state));
                 if(inventory!=lastInventory)
                 {

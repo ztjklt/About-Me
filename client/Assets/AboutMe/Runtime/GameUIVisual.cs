@@ -98,7 +98,7 @@ namespace AboutMe
             api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
             var note=ArtPanel(card,"Secret note",32,360,660,58,UITheme.Yellow,true,false);
             ArtIcon(note,"status",18,10,38,UITheme.Ink);ArtText(note,"密钥仅保存在服务端",68,3,570,48,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            ArtButton(card,"保存连接设置",32,468,316,58,()=>{net.Endpoint=endpoint.text.Trim();net.ApiUrl=api.text.Trim().TrimEnd('/');PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";StartCoroutine(CheckService());},UITheme.Mint,UITheme.Ink,"ready");
+            ArtButton(card,"保存连接设置",32,468,316,58,SaveConnectionSettings,UITheme.Mint,UITheme.Ink,"ready");
             Place(card,438,54,724,790);
             foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,224,58);
             var sensitivity=ArtButton(card,"",32,460,256,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
