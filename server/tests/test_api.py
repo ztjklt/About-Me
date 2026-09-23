@@ -173,7 +173,7 @@ def test_deepseek_vision_selects_candidate_and_returns_complete_crop():
             return httpx.Response(200, content=png, request=httpx.Request('GET', url))
         async def post(self, url, **kwargs):
             body = kwargs['json']
-            assert body['model'] == 'deepseek-flash'
+            assert body['model'] == 'deepseek-v4-flash-vision-exp'
             assert body['messages'][1]['content'][1]['type'] == 'image_url'
             return httpx.Response(200, json={'choices':[{'message':{'content':json.dumps({
                 'selectedIndex':0,'crop':{'x':.06,'y':.06,'width':.88,'height':.88},
@@ -288,7 +288,7 @@ def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(cl
         async def __aexit__(self,*args):pass
         async def post(self,url,**kw):
             assert url=='https://deepseek.example/v1/chat/completions'
-            assert kw['json']['model']=='deepseek-flash'
+            assert kw['json']['model']=='deepseek-v4-flash-vision-exp'
             content=kw['json']['messages'][1]['content']
             assert content[1]['type']=='image_url' and content[1]['image_url']['url'].startswith('data:image/png;base64,')
             return httpx.Response(200,json={'choices':[{'message':{'content':'{"introduction":"我喜欢篮球和摄影"}'}}]},request=httpx.Request('POST',url))
