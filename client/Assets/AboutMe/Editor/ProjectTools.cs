@@ -26,6 +26,7 @@ namespace AboutMe.Editor
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone,ScriptingImplementation.Mono2x);
             PlayerSettings.allowUnsafeCode=true;
             PlayerSettings.insecureHttpOption=InsecureHttpOption.DevelopmentOnly;
+            StartMenuAssetImporter.ApplyAll();
             const string materialPath="Assets/AboutMe/Resources/ToyBaseMaterial.mat";
             if(!AssetDatabase.LoadAssetAtPath<Material>(materialPath))AssetDatabase.CreateAsset(new Material(Shader.Find("Standard")),materialPath);
             PersonaVisualTools.BuildPrefabs();
@@ -81,7 +82,7 @@ namespace AboutMe.Editor
             Test("out of bounds drops remain ground and accessible",()=>{var m=M();SetGround(m,"a",new Vector3(45,-9,0));Tick(m,.02f);Assert(m.Items.Where(x=>x.ownerId=="a").All(x=>x.state==ItemState.Ground&&Mathf.Abs(x.position.x)<=11&&x.position.y>0),"lost ground item");});
             Test("reconnect does not duplicate persona or revive eliminated player",()=>{var m=M();m.Disconnect("a");Assert(!m.Players["a"].connected,"not disconnected");m.Add(P("a",8));Assert(m.Items.Count==4&&m.Players["a"].connected,"reconnect duplicate");});
             Test("input sequence and finite checks reject stale movement",()=>{var m=M();m.Receive("a",new Command{sequence=5,x=1});m.Receive("a",new Command{sequence=4,x=-1});Assert(m.Players["a"].input.x==1,"stale command");m.Receive("a",new Command{sequence=6,x=float.NaN});Assert(m.Players["a"].sequence==5,"nonfinite accepted");});
-            Test("reveal protected, timeout settles without burst",()=>{var m=M();m.Phase=MatchPhase.Reveal;m.Receive("a",new Command{sequence=0,action="light"});Assert(m.Players["b"].stability==100,"reveal attack");Tick(m,1.2f);Assert(m.Phase==MatchPhase.Finished&&m.EndReason=="timeout","missing timeout");Assert(m.Players.Values.All(x=>!x.eliminated),"timeout eliminated players");});
+            Test("reveal protected, timeout settles without burst",()=>{var m=M();m.Phase=MatchPhase.Reveal;m.Receive("a",new Command{sequence=0,action="use_item"});Assert(m.Players["b"].stability==100,"reveal attack");Tick(m,1.2f);Assert(m.Phase==MatchPhase.Finished&&m.EndReason=="timeout","missing timeout");Assert(m.Players.Values.All(x=>!x.eliminated),"timeout eliminated players");});
             Test("grabbing item is not direct theft",()=>{var m=M();m.Players["b"].position=m.Players["a"].position+Vector3.forward*1.5f;var item=m.Item(m.Players["b"].equipped);m.Receive("a",new Command{sequence=0,action="grab_item"});Assert(item.ownerId=="b"&&item.state==ItemState.Equipped,"grab stole item");});
             Test("host starts with any two players without ready",()=>{var m=new Match("ROOM",new MatchRules());m.Add(P("host"));m.Add(P("guest"));m.Receive("host",new Command{sequence=0,action="start"});Assert(m.Phase==MatchPhase.Reveal,"two-player room did not start");});
             Match CampusMatch()
@@ -139,8 +140,7 @@ namespace AboutMe.Editor
             }
             void Heavy(Match m,string player="a")
             {
-                var p=m.Players[player];int seq=p.sequence+1;m.Receive(player,new Command{sequence=seq,action="charge",yaw=p.yaw});Tick(m,.08f);
-                m.Receive(player,new Command{sequence=seq+1,action="heavy",yaw=p.yaw});Tick(m,.16f);
+                var p=m.Players[player];int seq=p.sequence+1;m.Receive(player,new Command{sequence=seq,action="use_item",yaw=p.yaw});Tick(m,.24f);
             }
             Test("ricochet reflects with a bounded server count",()=>{
                 var m=MechanicMatch("Ricochet","basketball-cc0");Heavy(m);var effect=m.Effects.Single();Assert(effect.kind=="Ricochet"&&effect.bounces==2,"ricochet did not spawn");
