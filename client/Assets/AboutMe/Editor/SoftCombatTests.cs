@@ -274,7 +274,7 @@ namespace AboutMe.Editor
                 });
                 Test("ordinary item templates stagger but do not force a full-stability knockdown",()=>
                 {
-                    foreach(var template in new[]{"Melee","Projectile","Disc","Ricochet","Deployable","Summon","Utility"})
+                    foreach(var template in new[]{"Melee","Disc","Ricochet","Deployable","Summon","Utility"})
                     {
                         var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
                         m.Item(attacker.equipped).asset.templateId=template;
@@ -284,6 +284,47 @@ namespace AboutMe.Editor
                         Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==0,"ordinary hit dropped Persona: "+template);
                         if(new[]{"Disc","Ricochet","Deployable","Summon"}.Contains(template))
                             Check(m.Effects.Any(e=>e.kind==template&&!e.knockdown),"effect carries forced knockdown: "+template);
+                    }
+                });
+                Test("physical throw spends the actual Persona and empties target stability",()=>
+                {
+                    foreach(var visual in new[]{"basketball","bowling-pin","burger","veggie-burger","red-pen","tomato","potato","football-cc0"})
+                    {
+                        var m=Make();var thrower=m.Players["a"];var victim=m.Players["b"];
+                        victim.position=new Vector3(0,1,3);
+                        var item=m.Item(thrower.equipped);item.asset.templateId=visual=="football-cc0"?"Ricochet":"Projectile";item.asset.visualId=visual;
+                        Send(m,"a","use_item");Tick(m,.12f);
+                        Check(item.state==ItemState.Equipped,"throw resolved before contact: "+visual);
+                        Tick(m,.08f);
+                        Check(item.state==ItemState.Thrown&&thrower.equipped=="","throw did not remove the real item: "+visual);
+                        Check(m.View("a").ground.Any(x=>x.id==item.id&&x.state==ItemState.Thrown),"flying model missing from snapshot: "+visual);
+                        Check(m.Remaining("a")==3,"throw consumed its owner's life: "+visual);
+                        Tick(m,.25f);
+                        Check(item.state==ItemState.Ground,"hit did not land the thrown item: "+visual);
+                        Check(victim.bodyMode==BodyMode.Falling&&victim.stability==0,"hit did not empty target stability: "+visual);
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==1,"hit did not drop exactly one target Persona: "+visual);
+                        Check(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==1,"thrown item was lost or copied: "+visual);
+                        Tick(m,2.3f);
+                        Check(victim.bodyMode==BodyMode.Standing&&victim.stability>=65,"throw victim did not regain stability on get-up: "+visual+" body="+victim.bodyMode+" stability="+victim.stability);
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==1,"get-up duplicated victim drop: "+visual);
+                    }
+                });
+                Test("missed throw lands for owner recovery or opponent consumption",()=>
+                {
+                    foreach(var eater in new[]{"a","b"})
+                    {
+                        var m=Make();m.Players["b"].position=new Vector3(10,1,10);
+                        var owner=m.Players["a"];var item=m.Item(owner.equipped);
+                        item.asset.templateId="Projectile";item.asset.visualId="basketball";
+                        Send(m,"a","use_item");Tick(m,1);
+                        Check(item.state==ItemState.Ground&&m.View("a").ground.Count(x=>x.id==item.id)==1,"miss did not leave one ground model");
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==0,"miss hit a distant opponent");
+                        var collector=m.Players[eater];collector.position=new Vector3(item.position.x,1,item.position.z);
+                        Send(m,eater,"interact");
+                        Check(collector.carrying==item.id,"ground throw pickup failed state="+item.state+" body="+collector.bodyMode+" time="+m.Time+" stagger="+collector.staggerUntil);
+                        Tick(m,eater=="a"?1.6f:2.6f);
+                        Check(eater=="a"?item.state==ItemState.Equipped&&owner.equipped==item.id:item.state==ItemState.Consumed&&m.Eaten.Count==1,
+                            "ground throw could not be "+(eater=="a"?"recovered":"consumed")+" state="+item.state+" equipped="+owner.equipped+" carrying="+collector.carrying);
                     }
                 });
                 Test("HeavyWeapon and SpecialAbility retain explicit strong knockdown",()=>

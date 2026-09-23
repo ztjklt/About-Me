@@ -56,6 +56,7 @@ namespace AboutMe
         public void CompleteBodyGetUp(Player p)
         {
             p.motorHeight=p.getUpPosition.y;p.bodyMode=BodyMode.Standing;p.bodyStateAt=Time;p.bodyProtectedUntil=Time+.5f;p.staggerUntil=Time;p.highFall=false;p.droppedThisFall=false;p.impulse=Vector3.zero;p.verticalSpeed=0;
+            if(p.restoreStabilityOnGetUp){p.stability=Rules.maxStability*.65f;p.restoreStabilityOnGetUp=false;}
             SetAction(p,"idle");
         }
         void BodyTickState(Player p)
@@ -72,7 +73,7 @@ namespace AboutMe
         void BodyRespawn(Player p,int index)
         {
             Interrupt(p);ReleaseAllGrabs(p);CancelAction(p);DropBodyOnce(p);p.stability=0;p.lastHit=Time;
-            p.position=Spawn(index);p.motorHeight=p.position.y;p.impulse=Vector3.zero;p.verticalSpeed=0;p.airborne=false;p.fallOriginHeight=0;p.bodyMode=BodyMode.Standing;p.bodyProtectedUntil=Time+.5f;p.staggerUntil=Time+.3f;p.highFall=false;
+            p.position=Spawn(index);p.motorHeight=p.position.y;p.impulse=Vector3.zero;p.verticalSpeed=0;p.airborne=false;p.fallOriginHeight=0;p.bodyMode=BodyMode.Standing;p.bodyProtectedUntil=Time+.5f;p.staggerUntil=Time+.3f;p.highFall=false;p.restoreStabilityOnGetUp=false;
             BodyWorld?.Reset(p);p.droppedThisFall=false;SetAction(p,"idle");
         }
     }

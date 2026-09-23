@@ -33,7 +33,7 @@ namespace AboutMe
     [Serializable] public class CatalogEntry { public string templateId, visualId, label, color; }
     [Serializable] public class Catalog { public CatalogEntry[] items; }
     public enum MatchPhase { Lobby, Reveal, Battle, FinalBurst, Finished }
-    public enum ItemState { Inventory, Equipped, Ground, Carried, Consumed }
+    public enum ItemState { Inventory, Equipped, Ground, Carried, Consumed, Thrown }
 
     [Serializable] public class MatchRules
     {
@@ -56,7 +56,7 @@ namespace AboutMe
     }
     [Serializable] public class PersonaInstance
     {
-        public string id, ownerId, carrierId = "";
+        public string id, ownerId, carrierId = "", thrownBy = "";
         public PersonaAsset asset;
         public ItemState state;
         public Vector3 position, velocity;
@@ -77,7 +77,7 @@ namespace AboutMe
         public BodyMode bodyMode;
         public float bodyStateAt,bodyProtectedUntil,motorHeight;
         public int knockdownId,bodyGrabBone=1;
-        public bool droppedThisFall,highFall,getUpFaceUp;
+        public bool droppedThisFall,highFall,getUpFaceUp,restoreStabilityOnGetUp;
         public Vector3 getUpPosition,impactPoint,bodyGrabAnchor;
         public BodyPose bodyPose;
         public Vector3 position, impulse, velocity, tickOrigin;
@@ -390,6 +390,7 @@ namespace AboutMe
                 if(CampusGeometry.Outside(item.position))
                 { item.position = new Vector3(Mathf.Clamp(item.position.x,-11,11),2,Mathf.Clamp(item.position.z,-11,11)); item.velocity=Vector3.zero; }
             }
+            TickThrownPersonas(dt);
             TickEffects(dt);
             foreach(var prop in Props)
             {
@@ -408,6 +409,8 @@ namespace AboutMe
             foreach(var other in Players.Values.Where(x=>x.grabbing==target.profile.playerId).ToArray())ReleaseGrab(other);
         }
         static Vector3 Forward(Player p) => Quaternion.Euler(0,p.yaw,0)*Vector3.forward;
+        static bool PhysicalThrow(PersonaAsset asset) => asset!=null &&
+            (asset.templateId=="Projectile" || asset.visualId=="football-cc0");
         void ResolveAttack(Player p, bool heavy, float charge)
         {
             var equipped=Item(p.equipped); string template=equipped?.asset.templateId ?? "Unarmed";
@@ -421,6 +424,15 @@ namespace AboutMe
             }
             float damage=(heavy?Rules.heavyDamage*(.65f+.65f*charge):Rules.lightDamage)*(equipped==null?.4f:1);
             float force=heavy?6+charge*3:4.5f;
+            if(heavy && PhysicalThrow(equipped?.asset))
+            {
+                // The equipped instance itself travels and remains a recoverable life.
+                equipped.state=ItemState.Thrown;equipped.thrownBy=p.profile.playerId;
+                equipped.position=p.position+Forward(p)*.8f+Vector3.up*.25f;
+                equipped.velocity=Forward(p)*14+Vector3.up*3.5f;
+                p.equipped="";
+                return;
+            }
             // The single use_item input always supplies full internal charge. Only these
             // two force-focused templates knock down on a non-depleting hit; the rest
             // still knock down and drop one Persona when stability reaches zero.
@@ -475,7 +487,7 @@ namespace AboutMe
                 if(delta.magnitude<=reach && CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,target.position+Vector3.up*.25f) && (template=="SpecialAbility" || Vector3.Dot(Forward(p),delta.normalized)>.1f)) Hit(target,p,damage,force,heavy,knockdown);
             }
         }
-        public void Hit(Player target,Player attacker,float damage,float force,bool heavy,bool knockdown=false)
+        public void Hit(Player target,Player attacker,float damage,float force,bool heavy,bool knockdown=false,bool keepDepletedUntilGetUp=false)
         {
             if(!Active||target.eliminated||target.bodyMode==BodyMode.GettingUp||Time<target.bodyProtectedUntil)return;
             var direction=target.position-attacker.position;direction.y=0;if(direction.sqrMagnitude<.001f)direction=Forward(attacker);direction.Normalize();
@@ -495,7 +507,12 @@ namespace AboutMe
                 target.impactPoint=point;RecordImpact(target,attacker,kick);
                 if(BodyWorld!=null)BodyWorld.Impact(target,kick,point,false);else target.impulse+=kick;
             }
-            if(depleted){DropBodyOnce(target);target.stability=Rules.maxStability*.65f;}
+            if(depleted)
+            {
+                DropBodyOnce(target);
+                target.restoreStabilityOnGetUp=keepDepletedUntilGetUp;
+                target.stability=keepDepletedUntilGetUp?0:Rules.maxStability*.65f;
+            }
             if(falls)CombatEvents.Add(new CombatEvent{id=++combatEventId,tick=serverTick,time=Time,kind="hit",sourceId=attacker.profile.playerId,targetId=target.profile.playerId,point=point,impulse=kick,severity=2,impactId=target.impactId});
             else if(CombatEvents.Count>0){var e=CombatEvents[CombatEvents.Count-1];e.point=point;e.severity=heavy?1:0;}
         }
@@ -507,6 +524,40 @@ namespace AboutMe
             }
         }
         bool BlockedByBarricade(Vector3 point)=>Effects.Any(x=>x.kind=="Barricade"&&Vector3.Distance(x.position,point)<x.radius+.38f);
+        void TickThrownPersonas(float dt)
+        {
+            foreach(var item in Items.Where(x=>x.state==ItemState.Thrown).ToArray())
+            {
+                var from=item.position;
+                var velocity=item.velocity+Vector3.down*Rules.gravity*dt;
+                var wanted=from+velocity*dt;
+                var next=CampusGeometry.Move(from,wanted,.2f,.35f);
+                bool wall=(new Vector2(next.x-wanted.x,next.z-wanted.z)).sqrMagnitude>.0001f;
+                var target=Players.Values.Where(x=>x.profile.playerId!=item.thrownBy&&!x.eliminated)
+                    .Where(x=>DistanceToSegment(x.position,from,next)<1.1f&&CampusGeometry.ClearSegment(from,x.position))
+                    .OrderBy(x=>DistanceToSegment(x.position,from,next)).FirstOrDefault();
+                item.position=next;
+                if(target!=null && Players.TryGetValue(item.thrownBy,out var thrower))
+                {
+                    // Depletion goes through Hit, preserving the existing single-drop and
+                    // get-up protection rules rather than making a second damage path.
+                    Hit(target,thrower,Mathf.Max(Rules.maxStability,target.stability),11,true,false,true);
+                    item.state=ItemState.Ground;item.thrownBy="";
+                    item.velocity=velocity*.18f+Vector3.up*1.2f;
+                    continue;
+                }
+                float floor=CampusGeometry.Floor(next,.35f)+.35f;
+                if(wall||next.y<=floor||CampusGeometry.Outside(next))
+                {
+                    item.state=ItemState.Ground;item.thrownBy="";
+                    if(CampusGeometry.Outside(next))
+                    {item.position=CampusGeometry.SafeDrop(next);item.velocity=Vector3.zero;}
+                    else
+                    {item.position.y=Mathf.Max(next.y,floor);item.velocity=new Vector3(velocity.x*.3f,Mathf.Max(0,-velocity.y)*.2f,velocity.z*.3f);}
+                }
+                else item.velocity=velocity;
+            }
+        }
         void TickEffects(float dt)
         {
             foreach(var e in Effects.ToArray())
@@ -662,7 +713,7 @@ namespace AboutMe
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=p.escapeStartedAt<0?0:Mathf.Clamp01((Time-p.escapeStartedAt)/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
-                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried).Select(x=>x.PublicCopy()).ToArray(),
+                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
                 inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),
                 revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.PublicCopy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PublicPersonaInstance>(),
                 effects=Effects.ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};

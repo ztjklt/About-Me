@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   visualId: football-cc0
-  templateId: Ricochet
+  templateId: Projectile
   source: Poly Haven / football
   license: CC0-1.0
   colliderRadius: 0.42

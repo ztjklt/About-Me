@@ -9,7 +9,7 @@ namespace AboutMe
     {
         static readonly (string template,string visual,string effect)[] Cases =
         {
-            ("Ricochet","football-cc0","Ricochet"),
+            ("Projectile","football-cc0","Thrown"),
             ("Utility","gamepad-cc0","Pulse"),
             ("Melee","ukulele-cc0","Pulse"),
             ("Disc","notebook-cc0","Disc")
@@ -74,7 +74,9 @@ namespace AboutMe
                     var target=combat.Players["other"];
                     attacker.position=new Vector3(0,1,0);attacker.yaw=0;
                     target.position=new Vector3(0,1,item.template=="Melee"?2.2f:4f);
-                    bool HasEffect()=>combat.Effects.Any(x=>x.kind==item.effect&&(item.effect=="Pulse"||x.visual==item.visual));
+                    bool HasEffect()=>item.effect=="Thrown"
+                        ?combat.View("owner").ground.Any(x=>x.id==combat.Items.First(i=>i.ownerId=="owner").id&&x.state==ItemState.Thrown)
+                        :combat.Effects.Any(x=>x.kind==item.effect&&(item.effect=="Pulse"||x.visual==item.visual));
                     combat.Receive("owner",new Command{sequence=1,action="use_item",yaw=0});
                     Tick(combat,.2f);
                     if(!HasEffect())

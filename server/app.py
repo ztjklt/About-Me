@@ -22,8 +22,10 @@ from server.easter_egg import likes_deepseek
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
-ALLOWED = {(x['templateId'], x['visualId']) for x in CATALOG}
 CATALOG_BY_PAIR = {(x['templateId'], x['visualId']): x for x in CATALOG}
+LEGACY_FOOTBALL_PAIR = ('Ricochet', 'football-cc0')
+CATALOG_BY_PAIR[LEGACY_FOOTBALL_PAIR] = CATALOG_BY_PAIR[('Projectile', 'football-cc0')]
+ALLOWED = set(CATALOG_BY_PAIR)
 MAX_INTRO_CHARS = 1200
 MAX_PERSONAS = 12  # Prototype budget: at most 72 assets in a six-player room.
 MAX_INTRO_IMAGE_BYTES = 10 * 1024 * 1024
@@ -246,6 +248,8 @@ def validate_personas(raw, introduction):
         if any(same_fact(source, prior) for prior in seen):
             continue
         template, visual = x['templateId'], x['visualId']
+        if (template, visual) == LEGACY_FOOTBALL_PAIR:
+            template = 'Projectile'
         school = institution_name(source)
         if school:
             template, visual, name = 'Disc', 'school-disc', school + '校徽圆盘'

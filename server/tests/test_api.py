@@ -92,10 +92,11 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     from pathlib import Path
     root = Path(__file__).parents[2]
     expected = {
-        ('Ricochet', 'football-cc0'), ('Utility', 'gamepad-cc0'),
+        ('Projectile', 'football-cc0'), ('Utility', 'gamepad-cc0'),
         ('Melee', 'ukulele-cc0'), ('Disc', 'notebook-cc0'),
     }
     assert expected <= module.ALLOWED
+    assert module.LEGACY_FOOTBALL_PAIR in module.ALLOWED
     assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
     assert len(visuals) == 52
@@ -105,22 +106,26 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     raw = {'personas': [
         dict(name=name, source=source, templateId=template, visualId=visual)
         for (template, visual), name, source in [
-            (('Ricochet', 'football-cc0'), '足球', '踢足球'),
+            (('Projectile', 'football-cc0'), '足球', '踢足球'),
             (('Utility', 'gamepad-cc0'), '手柄', '用手柄玩游戏'),
             (('Melee', 'ukulele-cc0'), '尤克里里', '弹尤克里里'),
             (('Disc', 'notebook-cc0'), '笔记本', '用笔记本记手账'),
         ]
     ]}
     assert len(module.validate_personas(raw, intro)) == 4
+    old_football = {'personas': [dict(name='足球', source='踢足球',
+        templateId='Ricochet', visualId='football-cc0')]}
+    assert module.validate_personas(old_football, '踢足球')[0]['templateId'] == 'Projectile'
+    assert module.profile_follows_generation_rules({'personas': old_football['personas']}, '踢足球')
     mismatched = {'personas': [dict(name='手账本', source='我用笔记本电脑写代码',
         templateId='Disc', visualId='notebook-cc0')]}
     with pytest.raises(ValueError):
         module.validate_personas(mismatched, '我用笔记本电脑写代码')
     for visual, template, accepted, rejected in [
-        ('football-cc0', 'Ricochet', '我踢足球', '我踢美式足球'),
+        ('football-cc0', 'Projectile', '我踢足球', '我踢美式足球'),
         ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用电脑笔记本写代码'),
-        ('football-cc0', 'Ricochet', 'I play soccer', 'I play gridiron football'),
-        ('football-cc0', 'Ricochet', '我每周踢足球', '我踢美式橄榄球'),
+        ('football-cc0', 'Projectile', 'I play soccer', 'I play gridiron football'),
+        ('football-cc0', 'Projectile', '我每周踢足球', '我踢美式橄榄球'),
         ('notebook-cc0', 'Disc', 'I write in a notebook', 'I use a notebook computer'),
         ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用笔记本电脑写代码'),
     ]:
