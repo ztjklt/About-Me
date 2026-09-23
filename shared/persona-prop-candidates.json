@@ -10,7 +10,7 @@
     {"id":"skateboard","name":"滑板","category":"运动与健身","templateId":"HeavyWeapon","assetStatus":"tripo_required"},
 
     {"id":"book","name":"书","category":"学习与职业","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"book_encyclopedia_set_01","url":"https://polyhaven.com/a/book_encyclopedia_set_01","license":"CC0-1.0"}},
-    {"id":"notebook","name":"笔记本","category":"学习与职业","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"binder_notebook","url":"https://polyhaven.com/a/binder_notebook","license":"CC0-1.0"}},
+    {"id":"notebook","name":"纸质笔记本","category":"学习与职业","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"binder_notebook","url":"https://polyhaven.com/a/binder_notebook","license":"CC0-1.0"}},
     {"id":"fountain-pen","name":"钢笔","category":"学习与职业","templateId":"Projectile","assetStatus":"tripo_required"},
     {"id":"laptop","name":"笔记本电脑","category":"学习与职业","templateId":"HeavyWeapon","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"classic_laptop","url":"https://polyhaven.com/a/classic_laptop","license":"CC0-1.0"}},
     {"id":"camera","name":"相机","category":"学习与职业","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"Camera_01","url":"https://polyhaven.com/a/Camera_01","license":"CC0-1.0"}},

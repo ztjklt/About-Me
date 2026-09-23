@@ -90,6 +90,7 @@ def test_new_persona_pairs_have_grounded_server_mapping():
         ('Melee', 'ukulele-cc0'), ('Disc', 'notebook-cc0'),
     }
     assert expected <= module.ALLOWED
+    assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
     assert len(visuals) == 52
     assert len({item['visualId'] for item in visuals}) == 52
@@ -113,7 +114,9 @@ def test_new_persona_pairs_have_grounded_server_mapping():
         ('football-cc0', 'Ricochet', '我踢足球', '我踢美式足球'),
         ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用电脑笔记本写代码'),
         ('football-cc0', 'Ricochet', 'I play soccer', 'I play gridiron football'),
-        ('notebook-cc0', 'Disc', 'I write in my paper notebook', 'I use a notebook computer'),
+        ('football-cc0', 'Ricochet', '我每周踢足球', '我踢美式橄榄球'),
+        ('notebook-cc0', 'Disc', 'I write in a notebook', 'I use a notebook computer'),
+        ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用笔记本电脑写代码'),
     ]:
         accepted_raw = {'personas': [dict(name='道具', source=accepted,
             templateId=template, visualId=visual)]}
