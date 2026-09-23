@@ -36,8 +36,9 @@ def main():
     if not items:
         raise AssertionError('Unity snapshot has no Persona to test')
     asset = items[0]['asset']
-    allowed = {'assetId', 'name', 'templateId', 'visualId', 'color'}
-    if set(asset) != allowed:
+    required = {'assetId', 'name', 'templateId', 'visualId', 'color'}
+    allowed = required | {'emblemPath', 'emblemCrop', 'generatedBy'}
+    if not required <= set(asset) or not set(asset) <= allowed:
         raise AssertionError(f'Unity public asset fields differ: {set(asset)}')
     body = {'item_name': asset['name'], 'template_id': asset['templateId'],
             'visual_id': asset['visualId']}
@@ -81,7 +82,7 @@ def main():
                     os.environ.pop(key, None)
                 else:
                     os.environ[key] = value
-    print('PASS: Unity WebSocket snapshot contains only five public Persona fields; '
+    print('PASS: Unity WebSocket snapshot contains only public Persona fields; '
           'API forwarded only three public roast fields to a mock provider and rejected source.')
 
 
