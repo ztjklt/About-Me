@@ -4,7 +4,7 @@
 
 **当前交付是可运行、可继续开发的本地原型。原始 PRD 仍是目标，尚未完成全量验收。** 用户已确认先完成本地交付；本阶段不等待公网服务器、模型账号或微信 AppID。
 
-本轮整合基线为 `codex/network-deployment-hardening` 的 `8e12edf`：游戏服务、客户端与 API 采用同一份 60 项 Persona 目录和 52 项视觉清单。样例对局仍固定使用八类各一件；真实生成按有效介绍返回可变数量，原型单人上限为 12 件。最终同版构建位于本 worktree 的 `builds/mac`、`builds/web`、`builds/linux`，详细证据见 [联机安全记录](NETWORK_SAFETY.md)与[四件客户端交付](PERSONA_FOUR_CLIENT_DELIVERY.md)。
+本轮整合代码与构建基线为 `codex/network-deployment-hardening` 的 `61470c8`：合入客户端单一 `use_item` 攻击与四入口开场、后端英文误配排除词和“纸质笔记本”名称；游戏服务、客户端与 API 采用同一份 60 项 Persona 目录和 52 项视觉清单。样例对局仍固定使用八类各一件；真实生成按有效介绍返回可变数量，原型单人上限为 12 件。最终同版构建位于本 worktree 的 `builds/mac`、`builds/web`、`builds/linux`，详细证据见 [联机安全记录](NETWORK_SAFETY.md)与[四件客户端交付](PERSONA_FOUR_CLIENT_DELIVERY.md)。
 
 ## V4 主动布娃娃专项基线
 
@@ -24,7 +24,7 @@ V4 专项历史输出为 `builds/v4-mac/About Me.app`、`builds/v4-web`、`build
 
 主界面现在是 About Me 四项菜单；自我介绍移入独立预设页。单人游戏使用本地 Match 加一名 NPC，可在 API 与游戏服务器均关闭时完成一局。多份介绍草稿与一套当前 Persona 分离；提供重玩、镜头灵敏度、触控显示和减少动态效果设置。详见 [菜单与 NPC 验收](MENU_SOLO_DELIVERY.md)。
 
-**本轮调整后的规则覆盖原始 PRD 的旧时间配置：**5 秒展示，战斗第 150 / 300 秒大手，第 450 秒强制结算；取消 Final Burst。到时先比较存活者吞噬数，再比较剩余 Persona，完全相同则并列。提前只剩一名存活者仍直接获胜。
+**本轮调整后的规则覆盖原始 PRD 的旧时间配置：**5 秒展示，战斗第 150 / 300 秒大手，第 450 秒强制结算；取消 Final Burst。到时先比较存活者吞噬数，再比较剩余 Persona，完全相同则并列。提前只剩一名存活者仍直接获胜。客户端键鼠 F 与单个触控按钮、NPC 和自动对局统一发送 `use_item`；空手不攻击，公共道具由同键投出，旧 `light`、`charge`、`heavy` 输入被权威 Match 忽略。
 
 ## 已交付
 
@@ -45,15 +45,17 @@ V4 专项历史输出为 `builds/v4-mac/About Me.app`、`builds/v4-web`、`build
 | 验证项 | 结果 | 可复现证据 |
 |---|---|---|
 | 团结编译和构建 | 最终同版 macOS、WebGL、Linux x86_64 成功；Linux 未运行 | `artifacts/BuildDeliverables.log`；`sh scripts/editor.sh BuildDeliverables` |
-| 权威规则 | 27 项基础规则及菜单 / NPC 套件通过，覆盖快照不含 `source` | `artifacts/TestRules.log`；`sh scripts/editor.sh TestRules` |
+| 权威规则 | 27 项基础规则及菜单 / NPC 套件通过，覆盖快照不含 `source` | `artifacts/BuildDeliverables.log` 中的 `ABOUTME_RULE_TESTS_PASSED`；可单独运行 `sh scripts/editor.sh TestRules` |
 | Python API | 32 项通过，模型成功场景使用 mock | `.venv/bin/python -m pytest server/tests -q` |
-| Persona 资源和样例 | 52 项视觉校验、四件新增道具编辑器/玩家构建审计通过；样例仍为 8 件 | `artifacts/ValidatePersonaVisuals.log`、`PersonaFourClientAudit.log`、`PersonaFourPlayerAudit.log`、`SampleProfileAudit.log` |
-| 2 客户端真实本机连接 | 最终同版完成连接、状态同步及结算 | `artifacts/final-network-2` |
-| 4 客户端真实本机连接 | 最终同版完成连接、状态同步及结算 | `artifacts/final-network-4` |
-| 6 客户端真实本机连接 | 最终同版完成连接、状态同步及结算 | `artifacts/final-network-6` |
-| 100 ms 模拟延迟及重连 | 最终同版，独立代理施加单程 100 ms，房主原身份重连并结算 | `artifacts/final-network-delay-reconnect` |
+| Persona 资源和样例 | 52 项视觉校验、四件新增道具编辑器/玩家构建 `use_item` 审计通过；样例仍为 8 件，纸质笔记本名称一致 | `artifacts/ValidatePersonaVisuals.log`、`IntegratedPersonaFourClientAudit.log`、`IntegratedPersonaFourPlayerAudit.log`、`IntegratedSampleProfileAudit.log` |
+| 2 客户端真实本机连接 | 单键最终同版完成连接、状态同步及结算 | `artifacts/integrated-network-2` |
+| 4 客户端真实本机连接 | 单键最终同版完成连接、状态同步及结算 | `artifacts/integrated-network-4` |
+| 6 客户端真实本机连接 | 单键最终同版完成连接、状态同步及结算 | `artifacts/integrated-network-6` |
+| 100 ms 模拟延迟及重连 | 单键最终同版，独立代理施加单程 100 ms，房主原身份重连并结算 | `artifacts/integrated-network-delay-reconnect` |
 | 全断线房间回收 | 测试宽限 3 秒后释放并可再次建房；正式宽限配置为 120 秒 | `artifacts/room-cleanup`；`python3 scripts/test-room-cleanup.py` |
-| Persona 公开边界与调侃 | Unity WebSocket 快照仅五个公开资产字段；API 仅向 mock 模型传名称/模板/外观，额外 `source` 请求获 422 | `.venv/bin/python scripts/test-roast-contract.py` |
+| Persona 公开边界与调侃 | 新构建 Unity WebSocket 快照仅五个公开资产字段；API 仅向 mock 模型传名称/模板/外观，额外 `source` 请求获 422 | `.venv/bin/python scripts/test-roast-contract.py --snapshot artifacts/integrated-network-2/room.txt.state.json` |
+| 单键攻击权威规则 | 26 项软战斗测试通过，含旧 `light/charge/heavy` 无效、空手不攻击及公共道具同键投出 | `artifacts/IntegratedSoftCombat.log`；`AboutMe.Editor.SoftCombatTests.Run` |
+| 四入口开场动效 | 静态人物与周边图层审计、减少动态效果的菜单规则测试通过；最终整合构建尚未逐项手动点击 | `artifacts/IntegratedStartMenuStaticAudit.log`、`BuildDeliverables.log`；[客户端同代码候选截图](start-menu-bubbles/home-1600x900.png) |
 | 本机反向代理 | Caddy 2.11.4 与 API 在本机运行，两个 TCP 来源额度分离、伪造头不能拆分额度、`/internal/*` 返回 404 | `.venv/bin/python scripts/test-proxy-quota.py`；不代表 Docker/HTTPS 公网验收 |
 | WebGL 与 macOS 协议互通 | 旧构建曾通过浏览器与桌面客户端互通；最终整合 WebGL 本轮只验证构建 | [旧版记录](ACTIVE_RAGDOLL_V4.md)；最终版仍待浏览器交互复核 |
 | 本地启动脚本、界面及响应式布局 | 旧构建曾通过本机入口和多尺寸截图检查；最终整合 UI 本轮未逐尺寸重测 | `artifacts/local`、`artifacts/ui-*.png` 为旧证据；微信真机仍待验收 |
@@ -64,10 +66,10 @@ V4 专项历史输出为 `builds/v4-mac/About Me.app`、`builds/v4-web`、`build
 
 ## 已实现的原型功能
 
-- 文字介绍与账号资产接口、整体重生成校验、长期保存、完整背包与五格快捷栏；12 类受控机制、60 项允许组合，其中四件新增 CC0 道具复用现有模板重击，样例只选八类各一件。
+- 文字介绍与账号资产接口、整体重生成校验、长期保存、完整背包与五格快捷栏；12 类受控机制、60 项允许组合，其中四件新增 CC0 道具复用现有模板效果，样例只选八类各一件。
 - Persona 仅接受介绍原文中可定位的事实，同一事实只生成一个；学校信息统一为带校名的校徽圆盘，人物配色不参与 Persona 推断。介绍限制为 1200 字并提供明确计数与超时提示。
 - 联机资产公开投影只含 `assetId`、`name`、`templateId`、`visualId`、`color`；`source` 留在本人鉴权资料与服务端。调侃请求只传公开道具字段，API 做输入与输出安全检查、会话与 AI 额度限制；本轮为原型边界，仍需正式内容审核。
-- 移动、跳跃、第三人称镜头、轻击、蓄力重击、空手、抓人、拉扯手持 Persona、公共道具、削韧、击飞与简易布娃娃表现。
+- 移动、跳跃、第三人称镜头、单键使用已装备 Persona 或投出公共道具、空手抓人、拉扯手持 Persona、削韧、击飞与简易布娃娃表现。
 - 回收 / 吞噬计时与打断，地面资产保留、边界救回、坠落复活与掉落、只在吞噬完成扣除生命、淘汰观战、幂等结算。
 - 熟人房间、Ready、开局代表 Persona 展示、周期大手、到时排名与并列获胜、断线角色保留和身份重连；开局后全员断线的房间在 120 秒宽限期满后释放容量。
 - 房间支持 2–6 人；达到 2 人后房主可直接开局，Ready 只显示玩家状态，不构成开局门槛。
@@ -86,7 +88,7 @@ V4 专项历史输出为 `builds/v4-mac/About Me.app`、`builds/v4-web`、`build
 | 战斗手感 | 命中与移动采用服务器简化几何；前后摇、强碰撞掉落、抓取稳定性、镜头遮挡、模板差异和数值平衡仍需迭代，不等同完整物理沙盒 |
 | AI 外观表达 | 已限制模型、颜色和模板目录；按语义生成尺寸 / 装饰组合的丰富表达尚未完成 |
 | 单局节奏 | 新版 150 / 300 秒大手与 450 秒到时结算已经标准计时验收；真人对战平衡仍需迭代 |
-| 性能与包体 | 当前为开发构建，WebGL 目录约 75 MB；本轮 60 项目录未重测 FPS、内存或微信包体，不沿用旧专项数值宣称当前桌面 60 FPS / 手机稳定 30 FPS |
+| 性能与包体 | 当前为开发构建，WebGL 目录约 87 MB；本轮整合未重测 FPS、内存或微信包体，不沿用旧专项数值宣称当前桌面 60 FPS / 手机稳定 30 FPS |
 | 容错与运营 | 游戏服务器重启不恢复进行中比赛；无生产级内容审核、流量保护、完整账号恢复或运营后台 |
 | GitHub | 本轮整合分支已在本地提交，尚未推送该分支到远程仓库 |
 
