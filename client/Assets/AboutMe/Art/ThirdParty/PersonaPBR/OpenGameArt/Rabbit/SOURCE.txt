@@ -1,0 +1,6 @@
+Rabbit
+https://opengameart.org/content/rabbit-0
+Authors: CDmir / TinyWorlds
+License: CC0 1.0
+Original archive: rabbit-FBX.7z
+Files retained: rabbit.fbx, diffuse textures, normal map, original License.txt

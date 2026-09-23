@@ -1,0 +1,132 @@
+{
+  "version": "0.4",
+  "status": "planning_only_not_submitted",
+  "selected_size": "A",
+  "size_options": {
+    "A": {
+      "width_m": 80,
+      "depth_m": 64,
+      "plaza_width_m": 36,
+      "plaza_depth_m": 30
+    },
+    "B": {
+      "width_m": 64,
+      "depth_m": 56,
+      "plaza_width_m": 30,
+      "plaza_depth_m": 26
+    },
+    "C": {
+      "width_m": 96,
+      "depth_m": 80,
+      "plaza_width_m": 44,
+      "plaza_depth_m": 36
+    }
+  },
+  "image_model": "seedream_v5",
+  "geometry_model_alias": "tripo-p1",
+  "geometry_model_wire": "P1-20260311",
+  "prompts": [
+    {
+      "id": "01_campus_entrance",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "3072x1728",
+      "references": [
+        "original_campus_perspective",
+        "original_arena_diagram",
+        "current_ui_home",
+        "approved_selected_size_blockout_entrance"
+      ],
+      "purpose": "整体校园入口视角；第四张精确草模尚待制作，不能直接执行",
+      "prompt": "为 Remember About Me 制作完整、宽阔的双层大学社团中庭美术定稿。image[1]提供校园建筑体量，image[2]只提供中央争夺、入口与坠落区域关系，image[3]只提供UI的奶油白、粉彩色块、深蓝灰边框与贴纸层次，忽略UI文字、按钮和旧场景；image[4]是本次准确空间与镜头基准，位置和连通关系以它为准。\n地图外包围{{WIDTH}}×{{DEPTH}}米，中央主战广场{{PLAZA_WIDTH}}×{{PLAZA_DEPTH}}米；尺度由第四张图落实。镜头从校园正门略抬高向内看，完整看见广场、左右楼梯和二层连通走廊，建筑有真实校园尺度与厚度。沿左、后、右形成U形两层校园楼群，二层走廊全线相通，左右各一座宽楼梯连接广场；层高4.5米、走廊净宽4.5米、楼梯宽4米，不随地图档位放大。楼顶简洁，二层临广场侧敞开，给大手动作留空间。\n仅六个社团色块入口：一层左创客暖黄齿轮、右桌游柔绿骰子；二层左音乐珊瑚红音符、摄影蓝紫相机，右动漫淡紫星形、篮球杏橙篮球。位置随草模微调，数量和楼层不变。房间只见门窗框、短侧壁和有纵深的后墙，入口有可见阻隔，无可进入深室。普通校园窗格不增加社团招牌。\n中央留空，地面六边形只是一层薄色标；外围放少量方块、梯形、六边形矮掩体，保留宽直线与绕行路线。前侧坠落缺口、主入口和固定小型几何树都按草模位置，不新增裂缝。动态公共道具仅少量纸箱、垃圾桶。\n主墙奶油白#FFF9EF，地面暖米灰#ECECE5，边框深蓝灰#202A3D，辅色薄荷#79CFC5、粉#F3AFC2、暖黄#FFD773、蓝紫#9FAFF2；主体是方块、梯形和六边形，局部单段倒角。大型社团图标像厚贴纸嵌牌，有清楚轮廓。柔和日光、哑光纯色、轻微面明暗。排除写实纹理、金属高光、复杂PBR、细碎摆件、摊位沙盘、等距玩具盒、深房间、中央树、手模型、人物、文字、HUD和水印。"
+    },
+    {
+      "id": "02_campus_overview",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "3072x1728",
+      "references": [
+        "approved_campus_entrance",
+        "approved_selected_size_blockout_overview",
+        "current_ui_home"
+      ],
+      "purpose": "同一校园的高位总览，检查空间一致性，不作为另一物体的多视角输入",
+      "prompt": "输出与image[1]完全同一座校园的高位斜俯视全景，不重新设计地图。image[2]规定俯视镜头、精确地面轮廓、楼梯和走廊位置；image[3]仅提供UI配色与粗细清楚的轮廓语言，忽略其文字、按钮和旧场景。外包围{{WIDTH}}×{{DEPTH}}米，中央战斗区{{PLAZA_WIDTH}}×{{PLAZA_DEPTH}}米。完整显示左、后、右的两层校园建筑、互通二层走廊和左右两座连接一层的楼梯；前方保留主入口，中心不被屋顶遮盖。\n忠实保持image[1]的六社团楼层、颜色、门窗比例、图标和材质：一层创客与桌游；二层音乐、摄影、动漫、篮球。社团位置以image[2]为准，不新增社团、楼层、深房间或分离阳台。房间只做浅层纵深，可见关闭的门、窗或固定挡栏；不要画成一排独立桌子或展台。楼梯和二层走道必须在图上连续，不悬空、不被装饰堵断。\n清楚显示中央空旷争夺区、外围矮几何掩体和前侧指定坠落开口；六边形预警是地面薄色标，不是高台。少量外围几何树固定在建筑边缘；纸箱、垃圾桶不成堆、不封路。\n使用奶油白#FFF9EF、米灰#ECECE5为大面，深蓝灰#202A3D只用于门窗框与重要轮廓，薄荷#79CFC5、粉#F3AFC2、暖黄#FFD773、蓝紫#9FAFF2作识别色。社团面板像厚贴纸，建筑仍是有体积的方块、梯形、六边形，只有少量单段倒角。柔和日光，纯色哑光，简单面明暗，无写实纹理和复杂PBR。排除文字标注、尺寸线、UI面板、网格线、中央树、手、人物、微缩底座、摄影景深和水印。"
+    },
+    {
+      "id": "03_campus_bay_single",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "2048x2048",
+      "references": [
+        "approved_campus_entrance",
+        "current_ui_home",
+        "approved_bay_blockout"
+      ],
+      "purpose": "给 image-to-model 的单个校园立面参考图，不生成整楼或可行走骨架",
+      "prompt": "从image[1]提取同一校园风格的一个可复用社团房间立面模块，image[2]只控制UI色彩与轮廓层次，image[3]控制模块实际形状与比例。只画一个模块，浅灰纯色背景，三分之四正面视角略俯视，完整轮廓不裁切，模块占画面约80%，无其他物体或文字。\n目标外形宽7米、高4.5米、进深1.2米：两根粗方柱、一条简洁横梁、一个宽门窗开口。开口内保留短侧壁、薄顶面、短地面和后墙，使从外侧明确看出房间深度；前缘用低矮实体挡栏或关闭的门表达不可进入，绝不生成可通行深室。上部留一块宽2米左右的平整色牌安装面，保持空白，六社团图标以后独立安装。左右接缝垂直平整，底部落在同一平面，柱梁厚度一致。\n奶油白#FFF9EF为柱梁主体，暖米灰#ECECE5为后墙和底座，深蓝灰#202A3D只用作门窗内框，空白面板用薄荷#79CFC5。借鉴UI卡片的厚实外轮廓、浅浅叠层和整洁分区，但保持真实三维建筑厚度。结构以立方体、梯形截面为主，仅边角使用单段倒角，不做圆柱、软胶鼓包或复杂圆弧。\n均匀柔光、纯色哑光、轻微面明暗；阴影不能代替真实凹槽。排除楼梯、可行走走廊、整栋楼、其他立面、屋顶平台、树、人、大手、纸箱、垃圾桶、桌椅、灯串、电缆、文字、徽标、贴花花纹、砖纹、木纹、磨损、玻璃反射与金属PBR。这是外观模块，不包含游戏碰撞或动态功能。"
+    },
+    {
+      "id": "04_hand_open",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "2048x2048",
+      "references": [
+        "original_campus_perspective",
+        "current_ui_home",
+        "approved_hand_shape_blockout"
+      ],
+      "purpose": "独立开掌造型参考，用于一层掌拍与后续本地两姿态制作",
+      "prompt": "为 Remember About Me 制作一只独立的几何卡通大手，供游戏中从天空进入并向下掌拍。image[1]只取大手的夸张体量和校园派对气氛，image[2]只取UI暖黄、奶油白、深蓝灰与清晰轮廓，image[3]规定完整手形。不要复制任何建筑、角色、天空、字或UI。\n仅一只完整右手与很短的腕部，三分之四视角展示掌面和侧厚度；掌心朝向镜头下方，便于读清手掌将向下接触角色的姿态。四根粗短手指并排自然展开、彼此留清晰间隙，一根拇指在侧面；总共五指，指节分段清楚但简化，不画指甲、皮纹、血管或真实皮肤。手掌是厚梯形块，手指是可分辨的方形或六边形短节，边角轻微单段倒角。腕部平整截面，便于本地设置支点；无整条胳膊、身体或饰品。\n主体使用UI暖黄#FFD773，暗面为同色系略深色；少量奶油白#FFF9EF用于腕部层次。深蓝灰#202A3D只作必要的结构分界，不能把手画成满布黑线的网格。保持稳定哑光纯色与柔和面明暗。\n浅灰纯色背景，完整居中，轮廓占画面约80%，无遮挡、无裁切、无投影舞台。目标是可用于本地开掌和握拳姿态制作的清晰手部造型。排除附加手指、粘连手指、断指、另一只手、悬浮部件、手套缝线、写实纹理、金属、复杂PBR、闪光、运动拖影、冲击波、文字和水印。"
+    },
+    {
+      "id": "05_hand_fist_optional",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "2048x2048",
+      "references": [
+        "approved_hand_open",
+        "current_ui_home",
+        "approved_fist_shape_blockout"
+      ],
+      "purpose": "仅在本地无法合理变换手姿态时启用的备选，不默认提交",
+      "prompt": "将image[1]同一只右手改为握拳，保留原手的掌部比例、腕部截面、厚度、暖黄配色和几何语言；image[2]只提供UI色彩依据，image[3]提供拳形与视角。只改变姿态，不创造新的角色、不同大小或不同材质的大手。\n四根手指自然弯曲握入掌心，四个指节形成清晰的击打面；拇指自然压在弯曲手指外侧，不穿入掌内。短腕部与拳头完整，三分之四侧前视角清楚显示指节面和侧面厚度，拳头朝向画面斜下前方，供二层走廊外侧的击打动作使用。五指关系合理，几何块面简洁，单段倒角，无真实皮肤细节。\n主体暖黄#FFD773，轻微同色系暗面，奶油白#FFF9EF少量用于腕部，深蓝灰#202A3D只强调必要轮廓。柔和均匀光照、哑光纯色。浅灰背景，完整居中，约80%画幅占比；不包含建筑、人物、天空、运动特效或文字。不要增加手套、指甲、首饰、写实纹理、金属PBR、第二只手、断裂或悬浮部件。"
+    },
+    {
+      "id": "06_style_correction_optional",
+      "endpoint": "/v3/generation/image-to-image",
+      "size": "3072x1728",
+      "references": [
+        "structurally_approved_campus_image",
+        "current_ui_home"
+      ],
+      "purpose": "仅结构已经通过、配色或表面不符时的定向修正，不作为默认多抽一张",
+      "prompt": "只调整image[1]校园的配色、表面与局部边框，使其与image[2]的UI协调。保持image[1]镜头、全部建筑轮廓、两层高度、走廊连通、两座楼梯、六社团楼层与图标、中央空区、坠落缺口和掩体位置完全不变，不增删任何建筑或路线。image[2]只参考卡片本身，忽略文字、按钮、人物和卡片内旧场景。\n将大面积主墙调整为奶油白#FFF9EF、地面为暖米灰#ECECE5，门窗框与重要轮廓为深蓝灰#202A3D。辅色使用薄荷#79CFC5、粉#F3AFC2、暖黄#FFD773、蓝紫#9FAFF2；音乐珊瑚红#E77770、摄影蓝紫#9FAFF2、创客暖黄#FFD773、动漫淡紫#C9AFDA、篮球杏橙#F49A6B、桌游柔绿#78BE8C。图标保持大型几何形状与高对比底板。\n去掉写实砖纹、木纹、脏污、高光和过深阴影，改为哑光纯色、柔和轻微面明暗。保留方块、梯形、六边形主体，不能软化成充气玩具。UI的厚边框感只体现于门窗框和社团牌，不能给每块地砖、每个网格三角面加黑线。不得把UI窗口、文字或贴纸边框整体贴到地面上；不得增加树、人物、手、深房间或水印。"
+    }
+  ],
+  "geometry_jobs": [
+    {
+      "asset": "campus_bay",
+      "input": "approved_03_campus_bay_single",
+      "endpoint": "/v3/generation/image-to-model",
+      "model": "P1-20260311",
+      "face_limit": 6000,
+      "texture": false,
+      "pbr": false
+    },
+    {
+      "asset": "hand_open",
+      "input": "approved_04_hand_open",
+      "endpoint": "/v3/generation/image-to-model",
+      "model": "P1-20260311",
+      "face_limit": 4000,
+      "texture": false,
+      "pbr": false
+    },
+    {
+      "asset": "hand_fist_optional",
+      "input": "approved_05_hand_fist_optional",
+      "endpoint": "/v3/generation/image-to-model",
+      "model": "P1-20260311",
+      "face_limit": 4000,
+      "texture": false,
+      "pbr": false,
+      "optional": true
+    }
+  ]
+}

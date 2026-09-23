@@ -32,6 +32,13 @@ def test_invalid_templates_dedup_and_variable_count():
     with pytest.raises(ValueError): module.validate_personas(raw)
     with pytest.raises(ValueError): module.validate_personas({'personas': []})
 
+def test_cc0_visual_catalog_allows_only_published_template_pairs():
+    assert len(module.CATALOG) == 56
+    result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]})
+    assert result[0]['color'] == '#F5C0CF'
+    with pytest.raises(ValueError):
+        module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Projectile', visualId='pillow-a')]})
+
 def test_generation_is_grounded_and_school_is_one_badge():
     raw = {'personas': [
         dict(name='逸仙精神', source='中山大学', templateId='Projectile', visualId='basketball', color='#FFFFFF'),
@@ -140,3 +147,47 @@ def test_voice_upload_format_is_forwarded(client,monkeypatch):
     headers,_=credentials(client)
     response=client.post('/speech/transcribe',headers=headers,files={'file':('voice.webm',b'audio','audio/webm')})
     assert response.status_code==200 and response.json()['text']=='我喜欢篮球'
+
+
+def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(client,monkeypatch):
+    import httpx
+    monkeypatch.setenv('DEEPSEEK_API_KEY','test-key')
+    monkeypatch.setenv('DEEPSEEK_BASE_URL','https://deepseek.example/v1')
+    class Provider:
+        def __init__(self,**kw):pass
+        async def __aenter__(self):return self
+        async def __aexit__(self,*args):pass
+        async def post(self,url,**kw):
+            assert url=='https://deepseek.example/v1/chat/completions'
+            assert kw['json']['model']=='deepseek-v4-flash-vision-exp'
+            content=kw['json']['messages'][1]['content']
+            assert content[1]['type']=='image_url' and content[1]['image_url']['url'].startswith('data:image/png;base64,')
+            return httpx.Response(200,json={'choices':[{'message':{'content':'{"introduction":"我喜欢篮球和摄影"}'}}]},request=httpx.Request('POST',url))
+    monkeypatch.setattr(module.httpx,'AsyncClient',Provider)
+    headers,_=credentials(client)
+    png=b'\x89PNG\r\n\x1a\n' + b'test image'
+    response=client.post('/introduction/recognize-image',headers=headers,files={'file':('intro.png',png,'image/png')})
+    assert response.status_code==200 and response.json()=={'introduction':'我喜欢篮球和摄影'}
+
+
+def test_intro_image_rejects_non_images(client):
+    headers,_=credentials(client)
+    response=client.post('/introduction/recognize-image',headers=headers,files={'file':('intro.txt',b'not an image','text/plain')})
+    assert response.status_code==415
+
+
+def test_timeout_result_keeps_co_winners_and_rankings_once(client):
+    headers = {'X-Game-Key': 'test-server-key'}
+    body = {'matchId': 'timeout-tie', 'winner': '', 'winners': ['p1', 'p2'],
+            'endReason': 'timeout', 'eaten': [], 'rankings': [
+                {'playerId': p, 'rank': 1, 'eaten': 2, 'remaining': 3, 'eliminated': False}
+                for p in ['p1', 'p2']]}
+    assert client.post('/internal/results', json=body, headers=headers).status_code == 200
+    changed = dict(body, winners=['p3'])
+    assert client.post('/internal/results', json=changed, headers=headers).status_code == 200
+    with module.db() as con:
+        rows = con.execute('SELECT result FROM matches WHERE id=?', ('timeout-tie',)).fetchall()
+    assert len(rows) == 1
+    saved = json.loads(rows[0][0])
+    assert saved['winners'] == ['p1', 'p2']
+    assert saved['endReason'] == 'timeout' and saved['rankings'] == body['rankings']

@@ -1,0 +1,5 @@
+Ultimate Food Pack by Quaternius
+Source: https://quaternius.com/packs/ultimatefood.html
+Mirror: https://opengameart.org/content/low-poly-food-pack
+License: CC0 1.0
+Imported files: Burger.fbx, Pizza.fbx

@@ -1,0 +1,3 @@
+chess_set
+https://polyhaven.com/a/chess_set
+License: CC0 1.0

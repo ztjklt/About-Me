@@ -133,7 +133,7 @@ namespace AboutMe
         public void OnPointerUp(PointerEventData eventData){pressed=false;targetScale=Vector3.one;Apply();}
         void Update()
         {
-            transform.localScale=Vector3.Lerp(transform.localScale,targetScale,1-Mathf.Exp(-Time.unscaledDeltaTime*25));
+            transform.localScale=PlayerPrefs.GetInt("reduceMotion",0)==1?Vector3.one:Vector3.Lerp(transform.localScale,targetScale,1-Mathf.Exp(-Time.unscaledDeltaTime*25));
             bool enabled=Button&&Button.interactable;if(enabled!=lastEnabled){lastEnabled=enabled;Apply();}
         }
         void Apply()
@@ -159,31 +159,31 @@ namespace AboutMe
         void OnEnable(){if(!group)Awake();time=0;running=true;group.alpha=0;transform.localScale=Vector3.one*.94f;}
         void Update()
         {
-            if(!running)return;time+=Time.unscaledDeltaTime;float t=Mathf.Clamp01(time/.28f);float eased=1-Mathf.Pow(1-t,3);group.alpha=eased;transform.localScale=Vector3.one*(.94f+.06f*(eased+Mathf.Sin(t*Mathf.PI)*.08f));if(t>=1){running=false;transform.localScale=Vector3.one;}
+            if(!running)return;if(PlayerPrefs.GetInt("reduceMotion",0)==1){group.alpha=1;transform.localScale=Vector3.one;running=false;return;}time+=Time.unscaledDeltaTime;float t=Mathf.Clamp01(time/.28f);float eased=1-Mathf.Pow(1-t,3);group.alpha=eased;transform.localScale=Vector3.one*(.94f+.06f*(eased+Mathf.Sin(t*Mathf.PI)*.08f));if(t>=1){running=false;transform.localScale=Vector3.one;}
         }
     }
 
     public class UIPulse : MonoBehaviour
     {
         float time;
-        public void Play(){time=.42f;transform.localScale=Vector3.one*.88f;}
+        public void Play(){if(PlayerPrefs.GetInt("reduceMotion",0)==1)return;time=.42f;transform.localScale=Vector3.one*.88f;}
         void Update(){if(time<=0)return;time-=Time.unscaledDeltaTime;float t=1-Mathf.Clamp01(time/.42f);transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.09f);if(time<=0)transform.localScale=Vector3.one;}
     }
 
     public class UISafeArtboard : MonoBehaviour
     {
-        public RectTransform SafeRoot,Artboard;Rect lastSafe;int lastW,lastH;
+        public RectTransform SafeRoot,Artboard;Rect lastSafe;int lastW,lastH;float lastScale;
         void Start(){Apply();}
-        void Update(){if(lastW!=Screen.width||lastH!=Screen.height||lastSafe!=Screen.safeArea)Apply();}
+        void LateUpdate(){var canvas=GetComponent<Canvas>();if(lastW!=Screen.width||lastH!=Screen.height||lastSafe!=Screen.safeArea||!Mathf.Approximately(lastScale,canvas.scaleFactor))Apply();}
         public void Apply()
         {
             if(!SafeRoot||!Artboard||Screen.width<=0||Screen.height<=0)return;
             lastW=Screen.width;lastH=Screen.height;lastSafe=Screen.safeArea;
             SafeRoot.anchorMin=new Vector2(lastSafe.xMin/lastW,lastSafe.yMin/lastH);SafeRoot.anchorMax=new Vector2(lastSafe.xMax/lastW,lastSafe.yMax/lastH);SafeRoot.offsetMin=SafeRoot.offsetMax=Vector2.zero;
-            // CanvasScaler already maps the 1600 x 900 reference canvas to the
-            // current screen. Scaling the artboard again made WebGL render at
-            // roughly half size on 960 x 540 and Retina displays.
-            Artboard.sizeDelta=new Vector2(1600,900);Artboard.localScale=Vector3.one;
+            // Convert safe-area pixels to canvas units once; also letterbox 4:3 / ultrawide.
+            lastScale=GetComponent<Canvas>().scaleFactor;
+            float fit=Mathf.Min(lastSafe.width/(1600*Mathf.Max(.001f,lastScale)),lastSafe.height/(900*Mathf.Max(.001f,lastScale)));
+            Artboard.sizeDelta=new Vector2(1600,900);Artboard.anchoredPosition=Vector2.zero;Artboard.localScale=Vector3.one*fit;
         }
     }
 }

@@ -83,13 +83,14 @@ try:
     else:
         raise RuntimeError('游戏服务器端口未就绪')
     print('本地样例环境已就绪：http://127.0.0.1:8080', flush=True)
-    print('桌面和浏览器各点「样例测试」；桌面房间码留空创建，浏览器填同一码加入。', flush=True)
-    print('房间达到 2 人后房主即可开始，最多 6 人；Ready 仅作状态提示。无需点击「本机测试服务器」。', flush=True)
+    print('一个人体验：主菜单 → 单人游戏 → 使用练习道具开始；NPC 会与你对战。', flush=True)
+    print('多人体验：先在「自我介绍预设」生成或载入样例，再到「多人游戏」创建／加入房间。', flush=True)
+    print('房间达到 2 人后房主即可开始，最多 6 人；Ready 仅作状态提示。', flush=True)
     with urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=2) as response:
         health = json.load(response)
     ai_state = '已连接' if health.get('aiConfigured') else '尚未配置'
     asr_state = '已连接' if health.get('asrConfigured') else '尚未配置'
-    print(f'真实 AI：{ai_state}；语音识别：{asr_state}。普通对局保留 5 分钟大手与 15 分钟终局。', flush=True)
+    print(f'真实 AI：{ai_state}；语音识别：{asr_state}。普通对局 2:30、5:00 大手点名，7:30 到时结算。', flush=True)
     print('保留此终端；按 Ctrl+C 停止本次服务。日志：artifacts/local', flush=True)
     if not args.no_open:
         subprocess.run(['open', '-n', str(root / 'builds/mac/About Me.app')], check=True)

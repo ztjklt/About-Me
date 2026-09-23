@@ -10,6 +10,8 @@ namespace AboutMe.Editor
 {
     public static class ProjectTools
     {
+        public static void BuildPersonaVisuals(){PersonaVisualTools.BuildPrefabs();}
+        public static void ValidatePersonaVisuals(){PersonaVisualTools.Validate();}
         public static void BuildDeliverables(){BuildMac();BuildServer();BuildWeb();Debug.Log("ABOUTME_DELIVERABLES_BUILT");}
         [MenuItem("About Me/1. Generate project scenes")]
         public static void Generate()
@@ -26,6 +28,7 @@ namespace AboutMe.Editor
             PlayerSettings.insecureHttpOption=InsecureHttpOption.DevelopmentOnly;
             const string materialPath="Assets/AboutMe/Resources/ToyBaseMaterial.mat";
             if(!AssetDatabase.LoadAssetAtPath<Material>(materialPath))AssetDatabase.CreateAsset(new Material(Shader.Find("Standard")),materialPath);
+            PersonaVisualTools.BuildPrefabs();
             Directory.CreateDirectory("Assets/AboutMe/Scenes");
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
             new GameObject("About Me Bootstrap").AddComponent<GameBootstrap>();
@@ -60,20 +63,97 @@ namespace AboutMe.Editor
             Test("last consumed persona alone eliminates and settles once",()=>{var m=M(1);SetGround(m,"b",m.Players["a"].position);m.Interact(m.Players["a"]);Tick(m,.2f);Assert(m.Players["b"].eliminated&&m.Winner=="a"&&m.Phase==MatchPhase.Finished,"no correct winner");Tick(m,.3f);Assert(m.Eaten.Count==1,"duplicate result");Assert(m.Players["b"].profile.personas.Length==1,"persistent persona deleted");});
             Test("recover preserves original instance and ownership",()=>{var m=M();SetGround(m,"a",m.Players["a"].position);var id=m.Items[0].id;m.Interact(m.Players["a"]);Tick(m,.14f);Assert(m.Item(id).state==ItemState.Equipped&&m.Remaining("a")==2,"recover failed");});
             Test("equipped item drops before backups",()=>{var m=M();var p=m.Players["a"];string equipped=p.equipped;m.Drop(p,1);Assert(m.Item(equipped).state==ItemState.Ground&&m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Inventory)==1,"wrong drop order");});
-            Test("fall with no carried personas does not delete ground life",()=>{var m=M();SetGround(m,"a",Vector3.zero);m.Players["a"].position=new Vector3(16,-10,0);Tick(m,.04f);Assert(m.Players["a"].position.y>0&&m.Remaining("a")==2,"fall bypasses life rule");});
-            Test("out of bounds drops remain ground and accessible",()=>{var m=M();SetGround(m,"a",new Vector3(30,-9,0));Tick(m,.02f);Assert(m.Items.Where(x=>x.ownerId=="a").All(x=>x.state==ItemState.Ground&&Mathf.Abs(x.position.x)<=11&&x.position.y>0),"lost ground item");});
+            Test("fall with no carried personas does not delete ground life",()=>{var m=M();SetGround(m,"a",Vector3.zero);m.Players["a"].position=new Vector3(45,-10,0);Tick(m,.04f);Assert(m.Players["a"].position.y>0&&m.Remaining("a")==2,"fall bypasses life rule");});
+            Test("out of bounds drops remain ground and accessible",()=>{var m=M();SetGround(m,"a",new Vector3(45,-9,0));Tick(m,.02f);Assert(m.Items.Where(x=>x.ownerId=="a").All(x=>x.state==ItemState.Ground&&Mathf.Abs(x.position.x)<=11&&x.position.y>0),"lost ground item");});
             Test("reconnect does not duplicate persona or revive eliminated player",()=>{var m=M();m.Disconnect("a");Assert(!m.Players["a"].connected,"not disconnected");m.Add(P("a",8));Assert(m.Items.Count==4&&m.Players["a"].connected,"reconnect duplicate");});
             Test("input sequence and finite checks reject stale movement",()=>{var m=M();m.Receive("a",new Command{sequence=5,x=1});m.Receive("a",new Command{sequence=4,x=-1});Assert(m.Players["a"].input.x==1,"stale command");m.Receive("a",new Command{sequence=6,x=float.NaN});Assert(m.Players["a"].sequence==5,"nonfinite accepted");});
-            Test("reveal is protected and final burst keeps ownership",()=>{var m=M();m.Phase=MatchPhase.Reveal;m.Receive("a",new Command{sequence=0,action="light"});Assert(m.Players["b"].stability==100,"reveal attack");Tick(m,1.2f);Assert(m.Phase==MatchPhase.FinalBurst&&m.Items.All(x=>x.state==ItemState.Ground),"missing final burst");Assert(m.Players.Values.All(x=>!x.eliminated),"burst eliminated players");});
+            Test("reveal protected, timeout settles without burst",()=>{var m=M();m.Phase=MatchPhase.Reveal;m.Receive("a",new Command{sequence=0,action="light"});Assert(m.Players["b"].stability==100,"reveal attack");Tick(m,1.2f);Assert(m.Phase==MatchPhase.Finished&&m.EndReason=="timeout","missing timeout");Assert(m.Players.Values.All(x=>!x.eliminated),"timeout eliminated players");});
             Test("grabbing item is not direct theft",()=>{var m=M();m.Players["b"].position=m.Players["a"].position+Vector3.forward*1.5f;var item=m.Item(m.Players["b"].equipped);m.Receive("a",new Command{sequence=0,action="grab_item"});Assert(item.ownerId=="b"&&item.state==ItemState.Equipped,"grab stole item");});
             Test("host starts with any two players without ready",()=>{var m=new Match("ROOM",new MatchRules());m.Add(P("host"));m.Add(P("guest"));m.Receive("host",new Command{sequence=0,action="start"});Assert(m.Phase==MatchPhase.Reveal,"two-player room did not start");});
-            Debug.Log("ABOUTME_RULE_TESTS_PASSED "+passed);
+            Match CampusMatch()
+            {
+                var m=new Match("CAMPUS",new MatchRules{revealDuration=.01f,handInterval=10000,finalTime=20000});
+                m.Add(P("a",4));m.Add(P("b",4));m.Phase=MatchPhase.Reveal;m.Tick(.02f);return m;
+            }
+            Test("campus stairs reach the connected upper deck",()=>{
+                var m=CampusMatch();var p=m.Players["a"];p.position=new Vector3(-21,1,-19);
+                for(int i=0;i<110;i++){p.input.z=1;p.lastInput=m.Time;m.Tick(.02f);}
+                Assert(p.position.z> -10&&Mathf.Abs(p.position.y-5.5f)<.1f,"stairs not walkable: "+p.position);
+                Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==0,"stairs caused fall drop");
+                Assert(Mathf.Abs(Match.Floor(new Vector3(-27.75f,5.5f,23))-4.5f)<.01f&&Mathf.Abs(Match.Floor(new Vector3(0,5.5f,22))-4.5f)<.01f&&Mathf.Abs(Match.Floor(new Vector3(27.75f,5.5f,23))-4.5f)<.01f,"upper U is disconnected");
+            });
+            Test("upper fall clears stability and drops exactly one without teleport",()=>{
+                var m=CampusMatch();var p=m.Players["a"];p.position=new Vector3(-25.6f,5.5f,3);p.input.x=1;p.lastInput=m.Time;
+                Tick(m,.85f);
+                Assert(p.position.x< -20&&Mathf.Abs(p.position.z-3)<.1f&&Mathf.Abs(p.position.y-1)<.05f,"fall teleported or failed to land: "+p.position);
+                Assert(p.stability==0,"fall retained stability");
+                Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==1,"fall did not drop exactly one");
+                Tick(m,.25f);Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==1,"landing repeated drop");
+            });
+            Test("walking downstairs and normal jumps do not trigger upper fall",()=>{
+                var m=CampusMatch();var p=m.Players["a"];p.position=new Vector3(21,5.5f,-9);p.fallOriginHeight=4.5f;
+                for(int i=0;i<100;i++){p.input.z=-1;p.lastInput=m.Time;m.Tick(.02f);}
+                Assert(p.position.y<1.1f&&p.stability==100,"stairs descent counted as fall");
+                p.input.z=0;p.verticalSpeed=m.Rules.jumpSpeed;Tick(m,1);
+                Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==0,"normal jump dropped persona");
+            });
+            Test("upper gallery does not snap ground players upwards",()=>{
+                Assert(Match.Floor(new Vector3(-27.75f,1,3))==0,"ground actor snapped onto deck");
+                Assert(CampusGeometry.Blocked(new Vector3(-31.4f,5.5f,10)),"closed club room can be entered");
+                Assert(CampusGeometry.Blocked(new Vector3(-25.45f,5.5f,9)),"rail does not block");
+                Assert(!CampusGeometry.Blocked(new Vector3(-25.45f,5.5f,3)),"designated upper fall opening blocked");
+            });
+            Test("public dynamic props are only boxes and bins",()=>Assert(CampusMatch().Props.All(x=>x.visual=="box"||x.visual=="trash"),"unexpected public prop"));
+            PersonaVisualTools.Validate();
+            Test("hand telegraphs upstairs fist and applies contact damage once",()=>{
+                var m=CampusMatch();m.Rules.handInterval=1;
+                // Enter a fresh reveal so the interval is scheduled from the chosen rule.
+                m.Phase=MatchPhase.Reveal;m.Tick(.02f);var p=m.Players["a"];p.position=new Vector3(-27.75f,5.5f,3);
+                Tick(m,1.02f);Assert(m.View("a").handFist,"upper hand did not select fist");
+                Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==0,"hand damaged before contact");
+                Tick(m,.7f);Assert(m.Items.Count(x=>x.ownerId=="a"&&x.state==ItemState.Ground)==1,"hand contact did not drop one");
+            });
+            Test("moving out of telegraphed hand contact avoids the strike",()=>{
+                var m=CampusMatch();m.Rules.handInterval=1;m.Phase=MatchPhase.Reveal;m.Tick(.02f);Tick(m,1.02f);
+                m.Players["a"].position=new Vector3(0,1,0);Tick(m,.7f);
+                Assert(m.Items.All(x=>x.state!=ItemState.Ground),"hand hit outside its contact area");
+            });
+            Match MechanicMatch(string template,string visual)
+            {
+                var m=CampusMatch();var item=m.Item(m.Players["a"].equipped);item.asset.templateId=template;item.asset.visualId=visual;
+                m.Players["a"].position=new Vector3(0,1,0);m.Players["a"].yaw=0;m.Players["b"].position=new Vector3(0,1,4);return m;
+            }
+            void Heavy(Match m,string player="a")
+            {
+                var p=m.Players[player];int seq=p.sequence+1;m.Receive(player,new Command{sequence=seq,action="charge",yaw=p.yaw});Tick(m,.08f);
+                m.Receive(player,new Command{sequence=seq+1,action="heavy",yaw=p.yaw});Tick(m,.16f);
+            }
+            Test("ricochet reflects with a bounded server count",()=>{
+                var m=MechanicMatch("Ricochet","basketball-cc0");Heavy(m);var effect=m.Effects.Single();Assert(effect.kind=="Ricochet"&&effect.bounces==2,"ricochet did not spawn");
+                effect.position=new Vector3(39.9f,1,0);effect.velocity=Vector3.right*12;Tick(m,.02f);Assert(effect.velocity.x<0&&effect.bounces==1,"ricochet did not reflect once");
+            });
+            Test("tether pulls only a forward in-range target",()=>{
+                var m=MechanicMatch("Tether","flashlight");Heavy(m);Assert(m.Players["b"].impulse.z<0,"tether did not pull target");
+                var blocked=MechanicMatch("Tether","flashlight");blocked.Players["b"].position=new Vector3(0,1,-4);Heavy(blocked);Assert(blocked.Players["b"].impulse.sqrMagnitude<.01f,"tether pulled target behind owner");
+            });
+            Test("cushion consumes one heavy hit and rebounds attacker",()=>{
+                var m=MechanicMatch("Cushion","pillow-a");m.Players["b"].position=new Vector3(0,1,-2);Heavy(m);var before=m.Players["a"].stability;m.Hit(m.Players["a"],m.Players["b"],80,8,true);
+                Assert(m.Players["a"].stability==before&&m.Players["a"].cushionUntil==0&&m.Players["b"].impulse.z<0,"cushion did not absorb and rebound");
+            });
+            Test("barricade blocks movement and breaks after two heavy strikes",()=>{
+                var m=MechanicMatch("Barricade","book-stack");Heavy(m);var barrier=m.Effects.Single(x=>x.kind=="Barricade");var p=m.Players["b"];p.position=barrier.position+Vector3.back*1.5f;p.position.y=1;p.input.z=1;p.input.yaw=0;p.lastInput=m.Time;Tick(m,.25f);
+                Assert(Vector3.Distance(p.position,barrier.position)>=barrier.radius+.3f,"barricade did not block movement");
+                p.position=barrier.position+Vector3.back*1.2f;p.position.y=1;p.input=new Command();p.yaw=0;p.nextAttack=0;m.Item(p.equipped).asset.templateId="HeavyWeapon";Heavy(m,"b");Assert(barrier.health==1,"first heavy did not damage barricade");
+                p.nextAttack=0;p.chargingSince=-1;Heavy(m,"b");Assert(!m.Effects.Contains(barrier),"barricade did not break after two heavy strikes health="+barrier.health+" pending="+p.pendingAction+" kind="+p.actionKind+" stagger="+p.staggerUntil+" time="+m.Time+" charging="+p.chargingSince);
+            });
+            MenuRuleTests.Run();
+            Debug.Log("ABOUTME_RULE_TESTS_PASSED "+passed+" + menu/NPC suite");
         }
         [MenuItem("About Me/3. Build macOS demo")]
         public static void BuildMac()
         {
             Generate();TestRules();
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName="../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=BuildOptions.Development});
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_MAC_OUTPUT")??"../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Mac build failed: "+result.summary.result);
             Debug.Log("ABOUTME_MAC_BUILD_OK");
         }
@@ -81,7 +161,7 @@ namespace AboutMe.Editor
         public static void BuildWeb()
         {
             Generate();PlayerSettings.WebGL.template="PROJECT:AboutMe";PlayerSettings.WebGL.compressionFormat=WebGLCompressionFormat.Disabled;
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName="../builds/web",target=BuildTarget.WebGL,options=BuildOptions.Development});
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_WEB_OUTPUT")??"../builds/web",target=BuildTarget.WebGL,options=BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Web build failed");
             Debug.Log("ABOUTME_WEB_BUILD_OK");
         }
@@ -89,7 +169,7 @@ namespace AboutMe.Editor
         public static void BuildServer()
         {
             Generate();
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName="../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=BuildOptions.Development});
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_SERVER_OUTPUT")??"../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Linux server build failed; install Linux Dedicated Server module");
             Debug.Log("ABOUTME_SERVER_BUILD_OK");
         }

@@ -11,20 +11,41 @@ using UnityEngine.Networking;
 
 namespace AboutMe
 {
-    public struct HelloMessage : NetworkMessage { public string token, room, nickname; public bool sample; }
+    [Serializable] class HelloVersion { public int protocol; }
+    public struct HelloMessage : NetworkMessage { public string token, room, nickname, appearanceJson; public bool sample; }
     public struct CommandMessage : NetworkMessage { public string json; }
     public struct StateMessage : NetworkMessage { public int frame;public bool last;public byte[] data; }
     public struct NoticeMessage : NetworkMessage { public string text; }
     [Serializable] public class TokenRequest { public string token; }
-    [Serializable] public class ResultPayload { public string matchId, winner; public EatRecord[] eaten; }
+    [Serializable] public class ResultPayload { public string matchId, winner, endReason; public string[] winners; public MatchRank[] rankings; public EatRecord[] eaten; }
 
-    public class GameNetwork : NetworkManager
+    public class GameNetwork : NetworkManager, IMatchSession
     {
         public static GameNetwork Game;
         public string ApiUrl = "http://127.0.0.1:8081";
         public string Endpoint = "ws://127.0.0.1:7777", RoomCode = "", Token = "", Nickname = "玩家";
         public bool Sample, AllowSamples;
+        public AppearanceData SampleAppearance;
         public Snapshot State;
+        LocalMatchSession localSession;
+        bool localResultSaved;
+        public bool IsSolo => localSession!=null;
+        public Snapshot Current => State;
+        public void StartSolo(Profile profile)
+        {
+            Close();localSession=new LocalMatchSession(profile);sequence=0;localResultSaved=false;State=localSession.Current;Status="离线对战 · 陪练 NPC";
+        }
+        public void Submit(Command command)
+        {
+            command.sequence=++sequence;
+            if(localSession!=null){localSession.Submit(command);return;}
+            if(NetworkClient.isConnected&&State!=null)NetworkClient.Send(new CommandMessage{json=JsonUtility.ToJson(command)});
+        }
+        public void Close()
+        {
+            localSession?.Close();localSession=null;
+            if(NetworkClient.active)StopClient();State=null;sequence=0;
+        }
         public string Status = "";
         public MatchRules Rules = new MatchRules();
         readonly Dictionary<string, Match> rooms = new Dictionary<string, Match>();
@@ -41,7 +62,7 @@ namespace AboutMe
         {
             autoCreatePlayer=false; dontDestroyOnLoad=true; runInBackground=true; maxConnections=64;
             Game=this; transport=GetComponent<SimpleWebTransport>();
-            var sw=(SimpleWebTransport)transport;sw.port=7777;sw.maxMessageSize=256*1024;
+            var sw=(SimpleWebTransport)transport;sw.port=ushort.TryParse(Environment.GetEnvironmentVariable("ABOUTME_GAME_PORT"),out var configuredPort)&&configuredPort>0?configuredPort:(ushort)7777;sw.maxMessageSize=256*1024;
             base.Awake();
         }
         public override void Start()
@@ -51,10 +72,11 @@ namespace AboutMe
             var args=Environment.GetCommandLineArgs();
             AllowSamples=args.Contains("--allow-samples");
             if(args.Contains("--accelerated"))Rules=new MatchRules{revealDuration=2,handInterval=4,finalTime=8,eatDuration=.2f,recoverDuration=.15f};
-            if(args.Contains("--aboutme-server")) { Application.targetFrameRate=50;StartServer();Status="Server listening :7777"; }
+            if(args.Contains("--aboutme-server")) { Application.targetFrameRate=50;StartServer();Status="Server listening :"+((SimpleWebTransport)transport).port; }
         }
         public void Connect()
         {
+            if(localSession!=null){localSession.Close();localSession=null;}
             if(NetworkClient.active)return;
             try { State=null;sequence=0;Status="正在连接…";StartClient(new Uri(Endpoint)); }
             catch(Exception e) { Status="连接地址无效："+e.Message; }
@@ -75,26 +97,31 @@ namespace AboutMe
             NetworkClient.RegisterHandler<StateMessage>(msg=>{
                 if(msg.frame!=receivingFrame){receivingFrame=msg.frame;receiveBuffer.SetLength(0);}
                 receiveBuffer.Write(msg.data,0,msg.data.Length);
-                if(msg.last){bool first=State==null;State=JsonUtility.FromJson<Snapshot>(Encoding.UTF8.GetString(receiveBuffer.ToArray()));RoomCode=State.room;receiveBuffer.SetLength(0);if(first)Status="已连接 · 房间 "+State.room;}
+                if(msg.last){bool first=State==null;var json=Encoding.UTF8.GetString(receiveBuffer.ToArray());var incoming=JsonUtility.FromJson<Snapshot>(json);if(incoming.protocolVersion!=3){Status="游戏版本不一致，请更新客户端和服务器";StopClient();return;}State=incoming;RoomCode=State.room;receiveBuffer.SetLength(0);if(first)Status="已连接 · 房间 "+State.room;}
             });
             NetworkClient.RegisterHandler<NoticeMessage>(msg=>{Status=msg.text;Debug.Log("ABOUTME_NOTICE "+msg.text);});
         }
         public override void OnClientConnect()
         {
             NetworkClient.Ready();
-            NetworkClient.Send(new HelloMessage{token=Token,room=RoomCode,nickname=Nickname,sample=Sample});
+            NetworkClient.Send(new HelloMessage{token=Token,room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":3,"+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
         }
         public override void OnClientDisconnect() { if(State!=null)Status="连接已断开，可使用原凭据重连"; base.OnClientDisconnect(); }
         void Hello(NetworkConnectionToClient conn,HelloMessage hello)
         {
             if(pending.Contains(conn.connectionId)||seats.ContainsKey(conn.connectionId))return;
-            if((hello.room??"").Length>12||(hello.token??"").Length>256||(hello.nickname??"").Length>24) { Reject(conn,"加入信息过长");return; }
+            if((hello.room??"").Length>12||(hello.token??"").Length>256||(hello.nickname??"").Length>24||(hello.appearanceJson??"").Length>2048) { Reject(conn,"加入信息过长");return; }
+            try { if(string.IsNullOrEmpty(hello.appearanceJson)||JsonUtility.FromJson<HelloVersion>(hello.appearanceJson)?.protocol!=3){Reject(conn,"游戏版本不一致，请更新客户端和服务器后重连");return;} }
+            catch(Exception){Reject(conn,"加入信息格式错误");return;}
             pending.Add(conn.connectionId);
             if(hello.sample)
             {
                 if(!AllowSamples) { Reject(conn,"此服务器未开启样例测试模式，请先生成真实 Persona");return; }
                 if(string.IsNullOrEmpty(hello.token)) { Reject(conn,"缺少样例身份");return; }
-                Accept(conn,hello,SampleProfile(hello.token,hello.nickname));
+                var sample=SampleProfile(hello.token,hello.nickname);
+                try{sample.appearance=AppearanceData.Resolve(string.IsNullOrEmpty(hello.appearanceJson)?null:JsonUtility.FromJson<AppearanceData>(hello.appearanceJson));}
+                catch(Exception){Reject(conn,"样例外观数据无效");return;}
+                Accept(conn,hello,sample);
             }
             else StartCoroutine(Verify(conn,hello));
         }
@@ -137,15 +164,21 @@ namespace AboutMe
             if(seats.TryGetValue(conn.connectionId,out var seat))
             {
                 seat.match.Disconnect(seat.player);seats.Remove(conn.connectionId);
-                if(seat.match.Players.Count==0||(seat.match.Phase==MatchPhase.Finished&&!seats.Values.Any(x=>x.match==seat.match)))rooms.Remove(seat.match.Room);
+                if(seat.match.Players.Count==0||(seat.match.Phase==MatchPhase.Finished&&!seats.Values.Any(x=>x.match==seat.match))){seat.match.Dispose();rooms.Remove(seat.match.Room);}
             }
             base.OnServerDisconnect(conn);
         }
-        public override void OnStopServer(){rooms.Clear();seats.Clear();pending.Clear();joins.Clear();saved.Clear();}
+        public override void OnStopServer(){foreach(var room in rooms.Values)room.Dispose();rooms.Clear();seats.Clear();pending.Clear();joins.Clear();saved.Clear();}
         void FixedUpdate()
         {
+            if(localSession!=null)
+            {
+                localSession.Tick(UnityEngine.Time.fixedDeltaTime);State=localSession.Current;
+                if(State.phase==MatchPhase.Finished&&!localResultSaved)
+                {localResultSaved=true;PlayerPrefs.SetString("lastSoloResult",JsonUtility.ToJson(State));PlayerPrefs.Save();}
+            }
             if(!NetworkServer.active)return;
-            foreach(var room in rooms.Values)room.Tick(UnityEngine.Time.fixedDeltaTime);
+            foreach(var room in rooms.Values){room.EnableBodyPhysics();room.Tick(UnityEngine.Time.fixedDeltaTime);}
             float now=UnityEngine.Time.realtimeSinceStartup;
             foreach(var entry in joins.ToArray())if(now-entry.Value>20&&NetworkServer.connections.TryGetValue(entry.Key,out var conn))conn.Disconnect();
             if(now<nextSnapshot)return;nextSnapshot=now+.05f;
@@ -164,7 +197,7 @@ namespace AboutMe
         IEnumerator SaveResult(Match room)
         {
             string key=Environment.GetEnvironmentVariable("GAME_SERVER_KEY");
-            var payload=new ResultPayload{matchId=room.MatchId,winner=room.Winner,eaten=room.Eaten.ToArray()};
+            var payload=new ResultPayload{matchId=room.MatchId,winner=room.Winner,winners=room.Winners,rankings=room.Rankings,endReason=room.EndReason,eaten=room.Eaten.ToArray()};
             if(string.IsNullOrEmpty(key)){Debug.Log("ABOUTME_RESULT_LOCAL "+JsonUtility.ToJson(payload));yield break;}
             for(int attempt=0;attempt<3;attempt++)
             {
@@ -174,10 +207,10 @@ namespace AboutMe
             }
             Debug.LogError("ABOUTME_RESULT_NOT_PERSISTED "+room.MatchId);
         }
-        public void Send(string action="",string item="",Vector2 movement=default,float yaw=0)
+        public void Send(string action="",string item="",Vector2 movement=default,float yaw=0,bool running=false,bool escapeHeld=false)
         {
-            if(!NetworkClient.isConnected||State==null)return;
-            NetworkClient.Send(new CommandMessage{json=JsonUtility.ToJson(new Command{sequence=++sequence,x=movement.x,z=movement.y,yaw=yaw,action=action,itemId=item})});
+            if(State==null)return;
+            Submit(new Command{x=movement.x,z=movement.y,yaw=yaw,action=action,itemId=item,run=running,escapeHeld=escapeHeld});
         }
         public static UnityWebRequest ApiRequest(string url,string json=null,string token="")
         {

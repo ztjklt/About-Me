@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "slots": [
+    {
+      "id": "expression",
+      "options": [
+        {
+          "id": "friendly",
+          "label": "友好微笑"
+        },
+        {
+          "id": "joy",
+          "label": "开心大笑"
+        },
+        {
+          "id": "confident",
+          "label": "自信挑眉"
+        },
+        {
+          "id": "sleepy",
+          "label": "慵懒半眯"
+        },
+        {
+          "id": "surprised",
+          "label": "惊讶睁眼"
+        },
+        {
+          "id": "determined",
+          "label": "认真坚定"
+        }
+      ]
+    },
+    {
+      "id": "hair",
+      "options": [
+        {
+          "id": "short",
+          "label": "短碎发"
+        },
+        {
+          "id": "curly",
+          "label": "蓬松卷发"
+        },
+        {
+          "id": "bob",
+          "label": "齐耳短发"
+        },
+        {
+          "id": "tied",
+          "label": "扎发"
+        }
+      ]
+    },
+    {
+      "id": "top",
+      "options": [
+        {
+          "id": "hoodie",
+          "label": "连帽卫衣"
+        },
+        {
+          "id": "varsity",
+          "label": "棒球外套"
+        },
+        {
+          "id": "shirt",
+          "label": "宽松衬衫"
+        },
+        {
+          "id": "sport",
+          "label": "运动上衣"
+        }
+      ]
+    },
+    {
+      "id": "bottom",
+      "options": [
+        {
+          "id": "trousers",
+          "label": "直筒长裤"
+        },
+        {
+          "id": "shorts",
+          "label": "短裤"
+        },
+        {
+          "id": "skirt",
+          "label": "裙装"
+        }
+      ]
+    },
+    {
+      "id": "shoes",
+      "options": [
+        {
+          "id": "canvas",
+          "label": "板鞋"
+        },
+        {
+          "id": "sneakers",
+          "label": "运动鞋"
+        },
+        {
+          "id": "boots",
+          "label": "厚底短靴"
+        }
+      ]
+    },
+    {
+      "id": "headAccessory",
+      "options": [
+        {
+          "id": "none",
+          "label": "无"
+        },
+        {
+          "id": "cap",
+          "label": "棒球帽"
+        },
+        {
+          "id": "headphones",
+          "label": "耳机"
+        }
+      ]
+    },
+    {
+      "id": "bag",
+      "options": [
+        {
+          "id": "none",
+          "label": "无"
+        },
+        {
+          "id": "backpack",
+          "label": "双肩包"
+        },
+        {
+          "id": "sling",
+          "label": "斜挎包"
+        }
+      ]
+    },
+    {
+      "id": "skinColor",
+      "options": [
+        {
+          "id": "#F3CDA9",
+          "label": "浅暖肤色"
+        },
+        {
+          "id": "#DDA77B",
+          "label": "暖肤色"
+        },
+        {
+          "id": "#B77955",
+          "label": "棕肤色"
+        },
+        {
+          "id": "#80513D",
+          "label": "深肤色"
+        }
+      ]
+    },
+    {
+      "id": "hairColor",
+      "options": [
+        {
+          "id": "#493A36",
+          "label": "深棕"
+        },
+        {
+          "id": "#202A3D",
+          "label": "墨黑"
+        },
+        {
+          "id": "#B38155",
+          "label": "浅棕"
+        },
+        {
+          "id": "#E4CF9E",
+          "label": "亚麻"
+        }
+      ]
+    },
+    {
+      "id": "topColor",
+      "options": [
+        {
+          "id": "#79CFC5",
+          "label": "薄荷"
+        },
+        {
+          "id": "#F3AFC2",
+          "label": "粉"
+        },
+        {
+          "id": "#FFD773",
+          "label": "黄"
+        },
+        {
+          "id": "#9FAFF2",
+          "label": "蓝紫"
+        },
+        {
+          "id": "#FFF9EF",
+          "label": "奶油白"
+        },
+        {
+          "id": "#202A3D",
+          "label": "深蓝灰"
+        }
+      ]
+    },
+    {
+      "id": "bottomColor",
+      "options": [
+        {
+          "id": "#202A3D",
+          "label": "深蓝灰"
+        },
+        {
+          "id": "#8B9CAA",
+          "label": "灰蓝"
+        },
+        {
+          "id": "#CAB79E",
+          "label": "卡其"
+        }
+      ]
+    },
+    {
+      "id": "shoeColor",
+      "options": [
+        {
+          "id": "#FFF9EF",
+          "label": "奶油白"
+        },
+        {
+          "id": "#202A3D",
+          "label": "深蓝灰"
+        },
+        {
+          "id": "#9FAFF2",
+          "label": "蓝紫"
+        }
+      ]
+    },
+    {
+      "id": "accessoryColor",
+      "options": [
+        {
+          "id": "#FFD773",
+          "label": "黄"
+        },
+        {
+          "id": "#9FAFF2",
+          "label": "蓝紫"
+        },
+        {
+          "id": "#F3AFC2",
+          "label": "粉"
+        },
+        {
+          "id": "#202A3D",
+          "label": "深蓝灰"
+        }
+      ]
+    }
+  ]
+}

@@ -132,7 +132,9 @@ namespace Mirror.SimpleWeb
         byte[] CreateHash(byte[] keyBuffer)
         {
             Log.Verbose("[SWT-ServerHandshake]: Handshake Hashing {0}", Encoding.ASCII.GetString(keyBuffer, 0, MergedKeyLength));
-            return sha1.ComputeHash(keyBuffer, 0, MergedKeyLength);
+            // Connection receive threads share this handshake instance. SHA1 is stateful.
+            lock (sha1)
+                return sha1.ComputeHash(keyBuffer, 0, MergedKeyLength);
         }
 
         static void CreateResponse(byte[] keyHash, byte[] responseBuffer)

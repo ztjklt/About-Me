@@ -1,0 +1,3 @@
+gamepad
+https://polyhaven.com/a/gamepad
+License: CC0 1.0

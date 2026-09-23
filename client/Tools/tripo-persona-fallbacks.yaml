@@ -1,0 +1,69 @@
+concurrency: 3
+defaults:
+  for: game-mobile
+  then: "convert:format=FBX,texture_size=1024,texture_format=PNG,pack_uv=true,pivot_to_center_bottom=true"
+  out: ./client/Assets/AboutMe/Art/ThirdParty/PersonaPBR/Tripo
+  params:
+    face_limit: 6000
+    texture_quality: detailed
+jobs:
+  - name: basketball
+    input: "stylized basketball game prop, rich hand-painted PBR texture, orange pebbled leather, black recessed seams, colorful toy-party style, clean silhouette, isolated single object, no text, no logo, low-poly game-ready"
+  - name: tennis-racket
+    input: "stylized tennis racket game prop, rich hand-painted PBR texture, wrapped grip, woven strings and painted frame details, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: badminton-racket
+    input: "stylized badminton racket game prop, rich hand-painted PBR texture, wrapped grip, fine string pattern and colored frame, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: table-tennis-paddle
+    input: "stylized table tennis paddle game prop, rich hand-painted PBR texture, red dimpled rubber face and layered wooden handle, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: skateboard
+    input: "stylized skateboard game prop, rich hand-painted PBR texture, scratched graphic deck, colorful wheels, trucks and grip tape, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: fountain-pen
+    input: "stylized fountain pen game prop, rich hand-painted PBR texture, glossy colored barrel, engraved metal nib and small wear details, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: stethoscope
+    input: "stylized medical stethoscope game prop, rich hand-painted PBR texture, colored flexible tube, metallic chestpiece and soft ear tips, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: guitar
+    input: "stylized acoustic guitar game prop, rich hand-painted PBR texture, visible wood grain, painted rosette, metal strings and worn edges, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: violin
+    input: "stylized violin game prop with bow, rich hand-painted PBR texture, warm varnished wood grain, strings and carved details, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: microphone
+    input: "stylized handheld microphone game prop, rich hand-painted PBR texture, metallic mesh grille, colored body and small switches, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: headphones
+    input: "stylized over-ear headphones game prop, rich hand-painted PBR texture, padded fabric ear cups, colored plastic and metal hinges, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: vinyl-record
+    input: "stylized vinyl record game prop in a colorful sleeve, rich hand-painted PBR texture, visible grooves, paper wear and generic center label, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: keyboard
+    input: "stylized compact mechanical keyboard game prop, rich hand-painted PBR texture, multicolor keycaps, subtle plastic roughness and metal plate, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: mouse
+    input: "stylized wired computer mouse game prop, rich hand-painted PBR texture, braided cable, colored buttons and subtle plastic wear, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: handheld-console
+    input: "stylized generic handheld game console prop, rich hand-painted PBR texture, colorful controls, glass screen and plastic surface detail, toy-party style, isolated single object, no text, no brand, no logo, low-poly game-ready"
+  - name: vr-headset
+    input: "stylized generic VR headset game prop, rich hand-painted PBR texture, padded face cushion, adjustable fabric straps and glossy lenses, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: robot
+    input: "cute compact personal companion robot game prop, rich hand-painted PBR texture, colorful painted panels, small scratches, glowing face display, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: cat
+    input: "cute stylized house cat companion, neutral standing pose, rich hand-painted fur texture with clear markings, colorful toy-party game style, isolated single animal, no collar text, low-poly game-ready"
+  - name: dog
+    input: "cute stylized friendly dog companion, neutral standing pose, rich hand-painted fur texture with clear markings, colorful toy-party game style, isolated single animal, no collar text, low-poly game-ready"
+  - name: goldfish
+    input: "cute stylized goldfish in a small round portable fishbowl, rich hand-painted PBR texture, colorful scales, glass and water details, toy-party game style, isolated single object, no text, low-poly game-ready"
+  - name: coffee-cup
+    input: "stylized reusable coffee cup with lid game prop, rich hand-painted PBR texture, colorful printed pattern, paper and plastic surface details, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: bubble-tea
+    input: "stylized bubble tea cup game prop, rich hand-painted PBR texture, translucent cup, visible tapioca pearls, colorful drink layers and wide straw, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: burger
+    input: "stylized gourmet burger game prop, rich hand-painted PBR texture, toasted sesame bun, grilled patty, cheese, lettuce and tomato surface details, colorful toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: pizza
+    input: "stylized whole pizza game prop, rich hand-painted PBR texture, baked crust, melted cheese, tomato sauce and colorful toppings, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: backpack
+    input: "stylized travel backpack game prop, rich hand-painted PBR texture, woven fabric, straps, buckles, pockets and stitched patches without text, colorful toy-party style, isolated single object, low-poly game-ready"
+  - name: tent
+    input: "stylized compact camping tent game prop, rich hand-painted PBR texture, colorful fabric panels, seams, poles and entrance flap, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: school-badge
+    input: "stylized blank enamel school badge medallion game prop, rich hand-painted PBR texture, polished metal rim, colored enamel and empty central decal area, toy-party style, isolated single object, no letters, no logo, low-poly game-ready"
+  - name: plush-toy
+    input: "cute generic plush bear game prop, rich hand-painted PBR texture, visible soft fabric fibers, stitched seams and colorful patches, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: rubiks-cube
+    input: "stylized generic 3x3 twisty puzzle cube game prop, rich hand-painted PBR texture, multicolor inset tiles, beveled plastic and light wear, toy-party style, isolated single object, no text, no logo, low-poly game-ready"
+  - name: toy-airplane
+    input: "stylized toy airplane model game prop, rich hand-painted PBR texture, colorful painted metal, small decals without text and subtle edge wear, toy-party style, isolated single object, no logo, low-poly game-ready"

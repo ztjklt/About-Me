@@ -1,0 +1,7 @@
+Basketball lowpoly
+Author: NephthysGameDev
+Source: https://opengameart.org/content/basketball-lowpoly
+License: CC0 1.0 Universal / Public Domain Dedication
+
+The source page states that credits are not required. This copy contains the
+original basketball_fbx.zip export, imported as basketball.fbx.

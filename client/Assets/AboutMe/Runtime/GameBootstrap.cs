@@ -13,11 +13,18 @@ namespace AboutMe
             Application.runInBackground=true;Application.targetFrameRate=60;UnityEngine.Time.fixedDeltaTime=.02f;
             var go=new GameObject("AboutMe Network");go.AddComponent<SimpleWebTransport>();var network=go.AddComponent<GameNetwork>();
             var args=Environment.GetCommandLineArgs();
+            if(args.Contains("--character-motion-probe")){go.AddComponent<CharacterMotionProbe>();return;}
             if(args.Contains("--bot")){go.AddComponent<NetworkProbe>();return;}
             if(args.Contains("--aboutme-server"))return;
             var world=new GameObject("Toy World").AddComponent<ToyWorld>();world.Build();
+            if(args.Contains("--body-physics-probe")){go.AddComponent<BodyPhysicsRuntimeProbe>();return;}
             world.gameObject.AddComponent<Diagnostics>();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if(args.Contains("--input-audit"))world.gameObject.AddComponent<CombatInputAudit>();
+#endif
             var ui=new GameObject("Game UI").AddComponent<GameUI>();ui.Build(network,world);
+            if(DeskBackdropAudit.Requested){go.AddComponent<DeskBackdropAudit>();return;}
+            if(args.Contains("--schedule-audit"))go.AddComponent<ScheduleAudit>();
             int captureSize=Array.IndexOf(args,"--capture-size");
             if(captureSize>=0&&captureSize+1<args.Length)
             {

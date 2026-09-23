@@ -38,6 +38,16 @@ mergeInto(LibraryManager.library, {
     }).catch(fail);
   },
   AM_RecordStop: function(){if(globalThis.aboutMeRecorder)globalThis.aboutMeRecorder.stop();},
+  AM_PickIntroductionImage: function(receiver) {
+    var target=UTF8ToString(receiver), fail=function(){SendMessage(target,'OnPlatformError','无法读取所选图片');};
+    if(typeof wx!=='undefined'&&wx.chooseMedia){
+      wx.chooseMedia({count:1,mediaType:['image'],sourceType:['album','camera'],success:function(result){var file=result.tempFiles&&result.tempFiles[0];if(!file){fail();return;}wx.getFileSystemManager().readFile({filePath:file.tempFilePath,encoding:'base64',success:function(data){SendMessage(target,'OnIntroductionImage',(file.fileType==='png'?'image/png':'image/jpeg')+':'+data.data);},fail:fail});},fail:function(){}});
+      return;
+    }
+    var input=document.createElement('input');input.type='file';input.accept='image/jpeg,image/png,image/gif,image/webp';input.style.display='none';
+    input.onchange=function(){var file=input.files&&input.files[0];input.remove();if(!file)return;if(file.size>10*1024*1024){SendMessage(target,'OnPlatformError','图片不能超过 10 MB');return;}var reader=new FileReader();reader.onload=function(){var value=String(reader.result),split=value.indexOf(',');if(split<0){fail();return;}SendMessage(target,'OnIntroductionImage',(file.type||'image/jpeg')+':'+value.substring(split+1));};reader.onerror=fail;reader.readAsDataURL(file);};
+    document.body.appendChild(input);input.click();
+  },
   AM_Screenshot: function(){
     var canvas=Module.canvas;
     if(typeof wx!=='undefined'&&canvas.toTempFilePath){canvas.toTempFilePath({success:function(result){wx.saveImageToPhotosAlbum({filePath:result.tempFilePath});}});return;}

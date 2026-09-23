@@ -1,0 +1,43 @@
+{
+  "validation": "local_characters_and_substitution_only",
+  "selected_size": "A",
+  "submitted": false,
+  "prompts": [
+    {
+      "id": "01_campus_entrance",
+      "characters": 756,
+      "max_characters": 1024,
+      "valid": true
+    },
+    {
+      "id": "02_campus_overview",
+      "characters": 606,
+      "max_characters": 1024,
+      "valid": true
+    },
+    {
+      "id": "03_campus_bay_single",
+      "characters": 562,
+      "max_characters": 1024,
+      "valid": true
+    },
+    {
+      "id": "04_hand_open",
+      "characters": 533,
+      "max_characters": 1024,
+      "valid": true
+    },
+    {
+      "id": "05_hand_fist_optional",
+      "characters": 381,
+      "max_characters": 1024,
+      "valid": true
+    },
+    {
+      "id": "06_style_correction_optional",
+      "characters": 478,
+      "max_characters": 1024,
+      "valid": true
+    }
+  ]
+}

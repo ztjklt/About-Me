@@ -1,0 +1,3 @@
+medical_box
+https://polyhaven.com/a/medical_box
+License: CC0 1.0

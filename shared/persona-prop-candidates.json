@@ -1,0 +1,102 @@
+{
+  "version": 3,
+  "rule": "Only instantiate an item when its evidence is a direct quote from the player's introduction and the item semantically represents that quote.",
+  "items": [
+    {"id":"basketball","name":"篮球","category":"运动与健身","templateId":"Projectile","modifier":"Ricochet","assetStatus":"tripo_required"},
+    {"id":"football","name":"足球","category":"运动与健身","templateId":"Projectile","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"football","url":"https://polyhaven.com/a/football","license":"CC0-1.0"}},
+    {"id":"tennis-racket","name":"网球拍","category":"运动与健身","templateId":"Melee","assetStatus":"tripo_required"},
+    {"id":"badminton-racket","name":"羽毛球拍","category":"运动与健身","templateId":"Melee","assetStatus":"tripo_required"},
+    {"id":"table-tennis-paddle","name":"乒乓球拍","category":"运动与健身","templateId":"Melee","assetStatus":"tripo_required"},
+    {"id":"skateboard","name":"滑板","category":"运动与健身","templateId":"HeavyWeapon","assetStatus":"tripo_required"},
+
+    {"id":"book","name":"书","category":"学习与职业","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"book_encyclopedia_set_01","url":"https://polyhaven.com/a/book_encyclopedia_set_01","license":"CC0-1.0"}},
+    {"id":"notebook","name":"笔记本","category":"学习与职业","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"binder_notebook","url":"https://polyhaven.com/a/binder_notebook","license":"CC0-1.0"}},
+    {"id":"fountain-pen","name":"钢笔","category":"学习与职业","templateId":"Projectile","assetStatus":"tripo_required"},
+    {"id":"laptop","name":"笔记本电脑","category":"学习与职业","templateId":"HeavyWeapon","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"classic_laptop","url":"https://polyhaven.com/a/classic_laptop","license":"CC0-1.0"}},
+    {"id":"camera","name":"相机","category":"学习与职业","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"Camera_01","url":"https://polyhaven.com/a/Camera_01","license":"CC0-1.0"}},
+    {"id":"stethoscope","name":"听诊器","category":"学习与职业","templateId":"Utility","modifier":"Tether","assetStatus":"tripo_required"},
+
+    {"id":"guitar","name":"吉他","category":"音乐与创作","templateId":"HeavyWeapon","assetStatus":"tripo_required"},
+    {"id":"ukulele","name":"尤克里里","category":"音乐与创作","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"Ukulele_01","url":"https://polyhaven.com/a/Ukulele_01","license":"CC0-1.0"}},
+    {"id":"violin","name":"小提琴","category":"音乐与创作","templateId":"Melee","assetStatus":"tripo_required"},
+    {"id":"microphone","name":"麦克风","category":"音乐与创作","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"headphones","name":"头戴式耳机","category":"音乐与创作","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"vinyl-record","name":"黑胶唱片","category":"音乐与创作","templateId":"Disc","assetStatus":"tripo_required"},
+
+    {"id":"gamepad","name":"游戏手柄","category":"科技与游戏","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"gamepad","url":"https://polyhaven.com/a/gamepad","license":"CC0-1.0"}},
+    {"id":"keyboard","name":"机械键盘","category":"科技与游戏","templateId":"HeavyWeapon","assetStatus":"tripo_required"},
+    {"id":"mouse","name":"电脑鼠标","category":"科技与游戏","templateId":"Projectile","modifier":"Tether","assetStatus":"tripo_required"},
+    {"id":"handheld-console","name":"掌上游戏机","category":"科技与游戏","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"vr-headset","name":"VR 头显","category":"科技与游戏","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"robot","name":"机器人","category":"科技与游戏","templateId":"Summon","assetStatus":"tripo_required"},
+
+    {"id":"cat","name":"猫","category":"宠物与自然","templateId":"Summon","assetStatus":"tripo_required"},
+    {"id":"dog","name":"狗","category":"宠物与自然","templateId":"Summon","assetStatus":"tripo_required"},
+    {"id":"rabbit","name":"兔子","category":"宠物与自然","templateId":"Summon","assetStatus":"cc0_selected","source":{"provider":"OpenGameArt","assetId":"rabbit-FBX.7z","url":"https://opengameart.org/content/rabbit-0","license":"CC0-1.0","author":"CDmir / TinyWorlds"}},
+    {"id":"goldfish","name":"金鱼","category":"宠物与自然","templateId":"Summon","assetStatus":"tripo_required"},
+    {"id":"potted-plant","name":"盆栽植物","category":"宠物与自然","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"potted_plant_01","url":"https://polyhaven.com/a/potted_plant_01","license":"CC0-1.0"}},
+    {"id":"watering-can","name":"浇水壶","category":"宠物与自然","templateId":"Utility","modifier":"Tether","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"watering_can_metal_01","url":"https://polyhaven.com/a/watering_can_metal_01","license":"CC0-1.0"}},
+
+    {"id":"coffee-cup","name":"咖啡杯","category":"食物与生活方式","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"bubble-tea","name":"珍珠奶茶","category":"食物与生活方式","templateId":"Utility","assetStatus":"tripo_required"},
+    {"id":"burger","name":"汉堡","category":"食物与生活方式","templateId":"Projectile","assetStatus":"tripo_required","rejectedSource":{"provider":"Quaternius Ultimate Food Pack","assetId":"Burger.fbx","reason":"彩色材质完整，但没有达到本轮要求的细节贴图标准"}},
+    {"id":"pizza","name":"披萨","category":"食物与生活方式","templateId":"Disc","assetStatus":"tripo_required","rejectedSource":{"provider":"Quaternius Ultimate Food Pack","assetId":"Pizza.fbx","reason":"彩色材质完整，但没有达到本轮要求的细节贴图标准"}},
+    {"id":"cake","name":"蛋糕","category":"食物与生活方式","templateId":"HeavyWeapon","modifier":"Cushion","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"strawberry_chocolate_cake","url":"https://polyhaven.com/a/strawberry_chocolate_cake","license":"CC0-1.0"}},
+    {"id":"frying-pan","name":"平底锅","category":"食物与生活方式","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"brass_pan_01","url":"https://polyhaven.com/a/brass_pan_01","license":"CC0-1.0"}},
+
+    {"id":"backpack","name":"旅行背包","category":"旅行与户外","templateId":"Utility","modifier":"Cushion","assetStatus":"tripo_required"},
+    {"id":"suitcase","name":"旅行箱","category":"旅行与户外","templateId":"HeavyWeapon","modifier":"Barricade","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"vintage_suitcase","url":"https://polyhaven.com/a/vintage_suitcase","license":"CC0-1.0"}},
+    {"id":"compass","name":"指南针","category":"旅行与户外","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"seadogs_compass","url":"https://polyhaven.com/a/seadogs_compass","license":"CC0-1.0"}},
+    {"id":"binoculars","name":"双筒望远镜","category":"旅行与户外","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"binoculars","url":"https://polyhaven.com/a/binoculars","license":"CC0-1.0"}},
+    {"id":"flashlight","name":"手电筒","category":"旅行与户外","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"vintage_flashlight","url":"https://polyhaven.com/a/vintage_flashlight","license":"CC0-1.0"}},
+    {"id":"tent","name":"露营帐篷","category":"旅行与户外","templateId":"Deployable","modifier":"Barricade","assetStatus":"tripo_required"},
+
+    {"id":"school-badge","name":"学校徽章","category":"收藏与身份","templateId":"Disc","assetStatus":"tripo_required"},
+    {"id":"photo-frame","name":"照片框","category":"收藏与身份","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"standing_picture_frame_01","url":"https://polyhaven.com/a/standing_picture_frame_01","license":"CC0-1.0"}},
+    {"id":"plush-toy","name":"毛绒玩具","category":"收藏与身份","templateId":"Utility","modifier":"Cushion","assetStatus":"tripo_required"},
+    {"id":"rubiks-cube","name":"魔方","category":"收藏与身份","templateId":"Projectile","modifier":"Ricochet","assetStatus":"tripo_required"},
+    {"id":"chess-set","name":"国际象棋","category":"收藏与身份","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"chess_set","url":"https://polyhaven.com/a/chess_set","license":"CC0-1.0"}},
+    {"id":"toy-airplane","name":"飞机模型","category":"收藏与身份","templateId":"Projectile","modifier":"Ricochet","assetStatus":"tripo_required"},
+
+    {"id":"american-football","name":"美式橄榄球","category":"运动与健身","templateId":"Projectile","modifier":"Ricochet","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"american_football","url":"https://polyhaven.com/a/american_football","license":"CC0-1.0"}},
+    {"id":"baseball","name":"棒球","category":"运动与健身","templateId":"Projectile","modifier":"Ricochet","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"baseball_01","url":"https://polyhaven.com/a/baseball_01","license":"CC0-1.0"}},
+    {"id":"baseball-bat","name":"棒球棒","category":"运动与健身","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"baseball_bat","url":"https://polyhaven.com/a/baseball_bat","license":"CC0-1.0"}},
+    {"id":"dartboard","name":"飞镖盘","category":"运动与健身","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"dartboard","url":"https://polyhaven.com/a/dartboard","license":"CC0-1.0"}},
+
+    {"id":"cordless-drill","name":"电钻","category":"手工与维修","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"Drill_01","url":"https://polyhaven.com/a/Drill_01","license":"CC0-1.0"}},
+    {"id":"adjustable-wrench","name":"活动扳手","category":"手工与维修","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"adjustable_wrench","url":"https://polyhaven.com/a/adjustable_wrench","license":"CC0-1.0"}},
+    {"id":"screwdriver","name":"螺丝刀","category":"手工与维修","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"screwdriver","url":"https://polyhaven.com/a/screwdriver","license":"CC0-1.0"}},
+    {"id":"cross-pein-hammer","name":"十字锤","category":"手工与维修","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"cross_pein_hammer","url":"https://polyhaven.com/a/cross_pein_hammer","license":"CC0-1.0"}},
+    {"id":"measuring-tape","name":"卷尺","category":"手工与维修","templateId":"Utility","modifier":"Tether","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"measuring_tape_01","url":"https://polyhaven.com/a/measuring_tape_01","license":"CC0-1.0"}},
+
+    {"id":"chemistry-set","name":"化学实验套装","category":"科学与医疗","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"chemistry_set","url":"https://polyhaven.com/a/chemistry_set","license":"CC0-1.0"}},
+    {"id":"bunsen-burner","name":"本生灯","category":"科学与医疗","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"bunsen_burner","url":"https://polyhaven.com/a/bunsen_burner","license":"CC0-1.0"}},
+    {"id":"magnifying-glass","name":"放大镜","category":"科学与医疗","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"magnifying_glass_01","url":"https://polyhaven.com/a/magnifying_glass_01","license":"CC0-1.0"}},
+    {"id":"medical-box","name":"医疗箱","category":"科学与医疗","templateId":"Deployable","modifier":"Barricade","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"medical_box","url":"https://polyhaven.com/a/medical_box","license":"CC0-1.0"}},
+
+    {"id":"portable-cassette-player","name":"随身听","category":"音乐与创作","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"portable_cassette_player","url":"https://polyhaven.com/a/portable_cassette_player","license":"CC0-1.0"}},
+    {"id":"megaphone","name":"扩音器","category":"音乐与创作","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"Megaphone_01","url":"https://polyhaven.com/a/Megaphone_01","license":"CC0-1.0"}},
+    {"id":"spray-paint","name":"喷漆罐","category":"音乐与创作","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"spray_paint_bottles","url":"https://polyhaven.com/a/spray_paint_bottles","license":"CC0-1.0"}},
+
+    {"id":"croissant","name":"可颂","category":"食物与生活方式","templateId":"Projectile","modifier":"Ricochet","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"croissant","url":"https://polyhaven.com/a/croissant","license":"CC0-1.0"}},
+    {"id":"tea-set","name":"茶具","category":"食物与生活方式","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"tea_set_01","url":"https://polyhaven.com/a/tea_set_01","license":"CC0-1.0"}},
+    {"id":"cutting-board","name":"切菜板","category":"食物与生活方式","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"wooden_cutting_board","url":"https://polyhaven.com/a/wooden_cutting_board","license":"CC0-1.0"}},
+    {"id":"wooden-spoon","name":"木勺","category":"食物与生活方式","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"wooden_spoon","url":"https://polyhaven.com/a/wooden_spoon","license":"CC0-1.0"}},
+    {"id":"lemon","name":"柠檬","category":"食物与生活方式","templateId":"Projectile","modifier":"Ricochet","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"lemon","url":"https://polyhaven.com/a/lemon","license":"CC0-1.0"}},
+
+    {"id":"life-jacket","name":"救生衣","category":"旅行与户外","templateId":"Utility","modifier":"Cushion","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"life_jacket","url":"https://polyhaven.com/a/life_jacket","license":"CC0-1.0"}},
+    {"id":"thermos","name":"保温杯","category":"旅行与户外","templateId":"Projectile","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"modified_thermos","url":"https://polyhaven.com/a/modified_thermos","license":"CC0-1.0"}},
+    {"id":"garden-gloves","name":"园艺手套","category":"旅行与户外","templateId":"SpecialAbility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"garden_gloves_01","url":"https://polyhaven.com/a/garden_gloves_01","license":"CC0-1.0"}},
+    {"id":"garden-trowel","name":"园艺小铲","category":"旅行与户外","templateId":"Melee","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"trowel_01","url":"https://polyhaven.com/a/trowel_01","license":"CC0-1.0"}},
+    {"id":"rubber-boots","name":"雨靴","category":"旅行与户外","templateId":"SpecialAbility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"rubber_boots","url":"https://polyhaven.com/a/rubber_boots","license":"CC0-1.0"}},
+
+    {"id":"digital-watch","name":"电子手表","category":"收藏与身份","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"digital_wrist_watch","url":"https://polyhaven.com/a/digital_wrist_watch","license":"CC0-1.0"}},
+    {"id":"pocket-watch","name":"怀表","category":"收藏与身份","templateId":"Utility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"vintage_pocket_watch","url":"https://polyhaven.com/a/vintage_pocket_watch","license":"CC0-1.0"}},
+    {"id":"round-spectacles","name":"圆框眼镜","category":"收藏与身份","templateId":"SpecialAbility","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"round_spectacles","url":"https://polyhaven.com/a/round_spectacles","license":"CC0-1.0"}},
+    {"id":"postcards","name":"明信片套装","category":"收藏与身份","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"postcard_set_01","url":"https://polyhaven.com/a/postcard_set_01","license":"CC0-1.0"}},
+    {"id":"rubber-duck","name":"橡皮鸭","category":"收藏与身份","templateId":"Projectile","modifier":"Cushion","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"rubber_duck_toy","url":"https://polyhaven.com/a/rubber_duck_toy","license":"CC0-1.0"}},
+
+    {"id":"clipboard","name":"写字板","category":"学习与职业","templateId":"Disc","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"clipboard","url":"https://polyhaven.com/a/clipboard","license":"CC0-1.0"}},
+    {"id":"stationery-set","name":"文具套装","category":"学习与职业","templateId":"Deployable","assetStatus":"cc0_selected","source":{"provider":"Poly Haven","assetId":"stationery_supplies","url":"https://polyhaven.com/a/stationery_supplies","license":"CC0-1.0"}}
+  ]
+}

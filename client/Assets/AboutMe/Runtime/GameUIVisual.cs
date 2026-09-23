@@ -16,9 +16,10 @@ namespace AboutMe
         Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText,aiServiceText,introCounter;
         Image stabilityFill,progressFill,statusSurface,aiServiceSurface;
         RectTransform statusPill;
-        StickerButton generateStyle,recordStyle,readyStyle,startStyle;
+        StickerButton generateStyle,recordStyle,imageUploadStyle,readyStyle,startStyle;
         readonly List<StickerButton> slotStyles=new List<StickerButton>(),colorStyles=new List<StickerButton>();
         UIPulse toastPulse;
+        Button reconnectButton;
         string lastStatus="",lastLobbyVisual="",lastResultVisual="",previewKind="";
         int lastScreenWidth,lastScreenHeight;
         bool compactLayout;
@@ -73,13 +74,16 @@ namespace AboutMe
             string[] colors={"#79CFC5","#F3AFC2","#FFD773","#9FAFF2"};
             for(int i=0;i<colors.Length;i++)
             {
-                string choice=colors[i];var chip=ColorChip(studioCard,choice,222+i*53,473,42,()=>{selectedColor=choice;RefreshColorSelection();});colorStyles.Add(chip);
+                string choice=colors[i];var chip=ColorChip(studioCard,choice,222+i*53,473,42,()=>{SetDraftColor(choice);});colorStyles.Add(chip);
             }
-            var outfitButton=ArtButton(studioCard,"换装 · 1",451,470,169,48,()=>{outfit=(outfit+1)%3;outfitText.text="换装 · "+(outfit+1);net.Status="外观方案 "+(outfit+1);},UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
-            generate=ArtButton(studioCard,"AI 生成 Persona",30,536,590,56,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
-            var profileCard=ArtPanel(studioCard,"Persona result",30,610,590,91,UITheme.Field,true,false);
-            profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,9,554,72,17,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
-            join=ArtButton(studioCard,"带上自己，进入房间",30,718,590,56,Enter,UITheme.Mint,UITheme.Ink,"ready");
+            var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
+            BuildExpressionChoices(studioCard);
+            imageUpload=ArtButton(studioCard,"上传自我介绍图片并识别",30,526,590,42,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
+            generate=ArtButton(studioCard,"AI 生成 Persona",30,578,590,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            var profileCard=ArtPanel(studioCard,"Persona result",30,638,590,66,UITheme.Field,true,false);
+            profileText=ArtText(profileCard,"AI 会把你的介绍变成可战斗的道具。\n结果由真实服务生成，不固定数量。",18,5,554,56,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
+            profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
+            join=ArtButton(studioCard,"带上自己，进入房间",30,718,590,56,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
             ArtButton(studioCard,"本地样例（无需 AI）",30,785,260,37,()=>{net.Sample=true;net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));PlayerPrefs.SetString("sampleToken",net.Token);profile=GameNetwork.SampleProfile(net.Token,nickname.text);DisplayProfile();net.Status="已载入固定测试资产；它们不是根据介绍生成的。";},UITheme.Yellow,UITheme.Ink,"status");
             var service=ArtPanel(studioCard,"AI service status",306,785,314,37,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,7,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,2,265,32,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             ArtButton(home,"连接设置",1370,848,174,40,()=>{optionsOpen=!optionsOpen;settings.gameObject.SetActive(optionsOpen);},UITheme.Paper,UITheme.Ink,"settings");
@@ -100,10 +104,18 @@ namespace AboutMe
             var note=ArtPanel(card,"Secret note",32,360,660,76,UITheme.Yellow,true,false);
             ArtIcon(note,"status",18,18,38,UITheme.Ink);ArtText(note,"密钥只放在服务端 .env；客户端仅保存公开地址。",68,10,570,56,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             ArtButton(card,"保存连接设置",32,468,316,58,()=>{net.Endpoint=endpoint.text.Trim();net.ApiUrl=api.text.Trim().TrimEnd('/');PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";StartCoroutine(CheckService());},UITheme.Mint,UITheme.Ink,"ready");
-            var local=ArtButton(card,"本机测试服务器",376,468,316,58,()=>{net.AllowSamples=true;if(!Mirror.NetworkServer.active)net.StartServer();net.Status="本机样例服务器已启动，端口 7777";},UITheme.Field,UITheme.Ink,"settings");
-            local.gameObject.SetActive(Application.platform==RuntimePlatform.OSXPlayer||Application.platform==RuntimePlatform.WindowsPlayer||Application.isEditor);
+            Place(card,438,54,724,790);
+            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,660,58);
+            var sensitivity=ArtButton(card,"",32,460,660,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
+            var touchButton=ArtButton(card,"",32,534,660,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
+            var motion=ArtButton(card,"",32,608,322,54,()=>{reduceMotion=!reduceMotion;PlayerPrefs.SetInt("reduceMotion",reduceMotion?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);motionSettingLabel=motion.GetComponentInChildren<Text>();
+            var shake=ArtButton(card,"",370,608,322,54,()=>{float v=PlayerPrefs.GetFloat("hitShake",.3f);PlayerPrefs.SetFloat("hitShake",v<.1f?.3f:v<.6f?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);shakeSettingLabel=shake.GetComponentInChildren<Text>();
+
         }
 
+        Text sensitivityLabel,touchSettingLabel,motionSettingLabel,shakeSettingLabel;
+        void RefreshSettingLabels()
+        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");}
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);
@@ -148,15 +160,15 @@ namespace AboutMe
             var progressTrack=ArtPanel(hudProgress,"Progress track",18,42,474,18,UITheme.Field,true,false);progressFill=ArtPanel(progressTrack,"Progress fill",3,3,468,12,UITheme.Pink,false,false).GetComponent<Image>();progressFill.rectTransform.anchorMin=new Vector2(0,0);progressFill.rectTransform.anchorMax=new Vector2(1,1);progressFill.rectTransform.offsetMin=new Vector2(3,3);progressFill.rectTransform.offsetMax=new Vector2(-3,-3);hudProgress.gameObject.SetActive(false);
             keyboardHint=ArtPanel(hud,"Keyboard help",34,700,382,157,new Color(1,1,1,.84f),true,false);
             ArtText(keyboardHint,"KEYBOARD KIT",16,9,330,25,14,UITheme.Muted,FontStyle.Bold);
-            ArtText(keyboardHint,"WASD 移动  ·  右键视角  ·  SPACE 跳跃\nJ 轻击  ·  K 蓄力重击  ·  G 抓人\nH 抓道具  ·  E 吞噬/回收  ·  B 背包",16,37,348,107,15,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
+            ArtText(keyboardHint,"WASD 行走 · 双击 WASD 奔跑 · SPACE 跳跃\nJ 轻击  ·  K 蓄力重击  ·  G 抓人\nH 抓道具 · E 吞噬/回收 · B 背包\n鼠标转视角 · Q 挣脱 · Esc 光标",16,37,348,107,15,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             hotbar=ArtPanel(hud,"Persona hotbar",380,795,840,84,UITheme.Paper,true,true);
             for(int i=0;i<5;i++)
             {
-                int slot=i;var button=ArtButton(hotbar,(i+1)+"  —",12+i*139,12,129,60,()=>{var state=net.State;if(state!=null&&slot<QuickItems(state).Length)Send("equip",QuickItems(state)[slot].id);},UITheme.Field,UITheme.Ink,"status");slots.Add(button);slotStyles.Add(button.GetComponent<StickerButton>());
+                int slot=i;var button=ArtButton(hotbar,(i+1)+"  —",12+i*139,12,129,60,()=>{var state=net.State;if(state!=null&&slot<QuickItems(state).Length)Send("equip",QuickItems(state)[slot].id);},UITheme.Field,UITheme.Ink);button.GetComponentInChildren<Text>().fontSize=18;slots.Add(button);slotStyles.Add(button.GetComponent<StickerButton>());
             }
             ArtButton(hotbar,"背包",714,12,114,60,ToggleBag,UITheme.Purple,UITheme.Ink,"bag");
             ArtButton(hud,"退出",1440,28,126,46,Leave,UITheme.Paper,UITheme.Ink,"exit");
-            ArtButton(hud,"重连",1440,86,126,42,()=>{if(!Mirror.NetworkClient.active)net.Connect();},UITheme.Field,UITheme.Ink,"status");
+            reconnectButton=ArtButton(hud,"重连",1440,86,126,42,()=>{if(!Mirror.NetworkClient.active)net.Connect();},UITheme.Field,UITheme.Ink,"status");
         }
 
         void BuildBag()
@@ -187,8 +199,9 @@ namespace AboutMe
             var fitter=resultContent.gameObject.AddComponent<ContentSizeFitter>();fitter.verticalFit=ContentSizeFitter.FitMode.PreferredSize;
             var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=resultContent;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=32;
             resultText=ArtText(card,"",34,640,1030,1,1,Color.clear);
-            ArtButton(card,"保存结算截图",34,672,520,58,()=>platform.Screenshot(),UITheme.Yellow,UITheme.Ink,"camera");
-            ArtButton(card,"再认识一次",594,672,520,58,Leave,UITheme.Ink,UITheme.Paper,"ready");
+            ArtButton(card,"保存结算截图",34,672,350,58,()=>platform.Screenshot(),UITheme.Yellow,UITheme.Ink,"camera");
+            ArtButton(card,"返回主菜单",776,672,338,58,Leave,UITheme.Ink,UITheme.Paper,"ready");
+            replay=ArtButton(card,"再来一局",412,672,338,58,ReplaySolo,UITheme.Mint,UITheme.Ink,"ready");
         }
 
         void BuildStatus()
@@ -201,20 +214,24 @@ namespace AboutMe
         {
             touch=ArtPanel(hud,"Touch controls",0,0,1600,900,Color.clear,false,false);
             var pad=ArtPanel(touch,"Move joystick",54,592,224,224,new Color(1,1,1,.52f),true,true);movePad=pad.gameObject.AddComponent<TouchPad>();
-            ArtPanel(pad,"Joystick center",66,66,92,92,new Color(UITheme.Mint.r,UITheme.Mint.g,UITheme.Mint.b,.78f),true,false);ArtText(pad,"移动",62,154,100,34,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
-            var look=ArtPanel(touch,"Camera zone",850,180,690,300,new Color(1,1,1,.01f),false,false);var lookPad=look.gameObject.AddComponent<TouchPad>();lookPad.CameraPad=true;lookPad.OnLook=d=>{world.CameraYaw+=d.x*.12f;world.CameraPitch=Mathf.Clamp(world.CameraPitch-d.y*.1f,10,65);};
+            movePad.Knob=ArtPanel(pad,"Joystick center",66,66,92,92,new Color(UITheme.Mint.r,UITheme.Mint.g,UITheme.Mint.b,.78f),true,false);movePad.Hint=ArtText(pad,"向前推满奔跑",20,154,184,34,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
+            var look=ArtPanel(touch,"Camera zone",850,180,690,300,new Color(1,1,1,.01f),false,false);look.GetComponent<Image>().raycastTarget=true;var lookPad=look.gameObject.AddComponent<TouchPad>();lookPad.CameraPad=true;lookPad.OnLook=d=>{world.CameraYaw+=d.x*.12f*cameraSensitivity;world.CameraPitch=Mathf.Clamp(world.CameraPitch-d.y*.1f*cameraSensitivity,10,65);};
             var light=ArtButton(touch,"轻击",1188,578,132,70,()=>Send("light"),UITheme.Yellow,UITheme.Ink,"attack");
             var heavyButton=ArtButton(touch,"按住重击",1334,542,178,106,()=>{},UITheme.Pink,UITheme.Ink,"attack");var heavy=heavyButton.gameObject.AddComponent<PressButton>();heavy.Down=()=>{heavyButton.GetComponent<StickerButton>().SetState(UIVisualState.Recording);Send("charge");};heavy.Up=()=>{heavyButton.GetComponent<StickerButton>().SetState(UIVisualState.Normal);Send("heavy");};
             ArtButton(touch,"跳跃",1362,670,150,66,()=>Send("jump"),UITheme.Purple,UITheme.Ink,"jump");
             ArtButton(touch,"抓人",1035,578,132,70,()=>Send("grab"),UITheme.Mint,UITheme.Ink,"grab");
             ArtButton(touch,"抓道具",1035,665,132,66,()=>Send("grab_item"),UITheme.Field,UITheme.Ink,"grab");
             ArtButton(touch,"吃 / 回收",1188,667,153,70,()=>Send("interact"),UITheme.Orange,UITheme.Ink,"status");
+            var escape=ArtButton(touch,"按住挣脱 / 取消",1040,490,230,65,()=>{},UITheme.Orange,UITheme.Ink,"grab");
+            var escapePress=escape.gameObject.AddComponent<PressButton>();
+            escapePress.Down=()=>{touchEscapeHeld=escapeHeld=true;var me=net.State?.players.FirstOrDefault(p=>p.id==net.State.you);Send(me!=null&&me.grabbed?"escape":"cancel");};
+            escapePress.Up=()=>{touchEscapeHeld=escapeHeld=false;Send("escape_end");};
             touch.gameObject.SetActive(false);
         }
 
         void RefreshTouchVisibility()
         {
-            bool force=previewKind=="touch";bool visible=force||Application.isMobilePlatform||platform.IsWeChat;touch.gameObject.SetActive(visible);if(keyboardHint)keyboardHint.gameObject.SetActive(!visible);
+            bool force=previewKind=="touch";bool visible=force||touchMode==1||(touchMode==0&&(Application.isMobilePlatform||platform.IsWeChat));touch.gameObject.SetActive(visible);if(keyboardHint)keyboardHint.gameObject.SetActive(!visible);
         }
 
         void ApplyAdaptiveLayout(bool force=false)
@@ -223,6 +240,7 @@ namespace AboutMe
             lastScreenWidth=Screen.width;lastScreenHeight=Screen.height;
             bool next=Application.isMobilePlatform||platform.IsWeChat||Screen.height<=600||Screen.width/(float)Mathf.Max(1,Screen.height)<1.48f;
             if(!force&&next==compactLayout)return;compactLayout=next;
+            if(draftLibrary){draftLibrary.localScale=Vector3.one*(compactLayout?.94f:1);}
             if(compactLayout)
             {
                 Place(homeHero,22,24,800,830);Place(studioCard,830,24,738,832);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
@@ -239,14 +257,15 @@ namespace AboutMe
             if(state==null)return;
             UpdateLobbyCards(state);
             string phase=state.phase==MatchPhase.Reveal?"PERSONA REVEAL":state.phase==MatchPhase.FinalBurst?"FINAL BURST":state.phase==MatchPhase.Finished?"RESULT":"BATTLE";
-            phaseText.text=phase;timerText.text=Mathf.FloorToInt(state.time/60).ToString("00")+":"+Mathf.FloorToInt(state.time%60).ToString("00");
+            phaseText.text=phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
             if(me!=null)
             {
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
-                personaCountText.text="PERSONA × "+me.remaining;stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
+                personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;
-                bool interacting=!string.IsNullOrEmpty(me.interaction);hudProgress.gameObject.SetActive(interacting);
-                if(interacting){progressText.text=(me.interaction=="eat"?"正在吞噬":"正在回收")+"  "+Mathf.RoundToInt(me.progress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.progress),1);}
+                bool interacting=!string.IsNullOrEmpty(me.interaction);hudProgress.gameObject.SetActive(interacting||me.grabbed);
+                if(me.grabbed){progressText.text="按住 Q / 挣脱按钮  "+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
+                else if(interacting){progressText.text=(me.interaction=="eat"?"正在吞噬":"正在回收")+"  "+Mathf.RoundToInt(me.progress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.progress),1);}
             }
             UpdateResultCards(state);
         }
@@ -271,9 +290,16 @@ namespace AboutMe
         void UpdateResultCards(Snapshot state)
         {
             if(state.phase!=MatchPhase.Finished)return;
-            string signature=state.winner+"|"+string.Join("|",state.eaten.Select(e=>e.instanceId));if(signature==lastResultVisual)return;lastResultVisual=signature;
-            var winner=state.players.FirstOrDefault(p=>p.id==state.winner);winnerText.text=(winner?.nickname??"玩家")+" 保住了最后的自我";
+            string signature=state.matchId+"|"+state.winner+"|"+string.Join("|",state.eaten.Select(e=>e.instanceId));if(signature==lastResultVisual)return;lastResultVisual=signature;
+            var ids=state.winners!=null&&state.winners.Length>0?state.winners:new[]{state.winner};
+            var names=state.players.Where(p=>ids.Contains(p.id)).Select(p=>p.nickname);
+            winnerText.text=string.Join("、",names)+(ids.Length>1?" · 并列获胜":" · 获胜")+"\n"+(state.endReason=="timeout"?"时间到 · 吞噬数优先，同分比较剩余":"最后一名存活者");winnerText.fontSize=22;
             foreach(Transform child in resultContent)Destroy(child.gameObject);
+            if(state.rankings!=null)foreach(var rank in state.rankings)
+            {
+                var row=ArtPanel(resultContent,"Rank "+rank.rank,0,0,1040,60,rank.eliminated?UITheme.Field:UITheme.Mint,true,false);
+                ArtText(row,rank.rank+"  "+rank.nickname+"   吞噬 "+rank.eaten+"   剩余 "+rank.remaining+(rank.eliminated?" · 已淘汰":""),18,6,1000,48,20,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);AddLayoutHeight(row,60);
+            }
             if(state.eaten.Length==0)
             {
                 var empty=ArtPanel(resultContent,"Empty receipt",0,0,1040,68,UITheme.Field,true,false);ArtText(empty,"这局没有吞噬记录。",20,8,1000,50,18,UITheme.Muted,FontStyle.Bold,TextAnchor.MiddleCenter);AddLayoutHeight(empty,68);return;
@@ -304,6 +330,7 @@ namespace AboutMe
         {
             if(generateStyle)generateStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
             if(recordStyle)recordStyle.SetState(recording?UIVisualState.Recording:UIVisualState.Normal);
+            if(imageUploadStyle)imageUploadStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
             if(recordLabel)recordLabel.text=recording?"停止录音":"录音介绍";
         }
 
@@ -335,13 +362,15 @@ namespace AboutMe
         void ConfigureUIPreview()
         {
             var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--ui-preview");if(index<0||index+1>=args.Length)return;previewKind=args[index+1].ToLowerInvariant();
-            if(previewKind=="home"){RefreshTouchVisibility();return;}
-            if(previewKind=="settings"){optionsOpen=true;settings.gameObject.SetActive(true);net.Status="连接设置预览";RefreshTouchVisibility();return;}
+            if(previewKind=="wardrobe"){appearanceDraft=AppearanceData.Demo(0);OpenWardrobe();net.Status="衣橱预览";return;}
+            if(previewKind=="home"){ShowPage(MenuPage.Main);RefreshTouchVisibility();return;}
+            if(previewKind=="presets"||previewKind=="solo"||previewKind=="multiplayer"){ShowPage(previewKind=="presets"?MenuPage.Presets:previewKind=="solo"?MenuPage.Solo:MenuPage.Multiplayer);return;}
+            if(previewKind=="settings"){OpenSettings();net.Status="连接设置预览";RefreshTouchVisibility();return;}
             bool lobbyPreview=previewKind=="lobby"||previewKind=="qr";
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);var players=Enumerable.Range(0,lobbyPreview?6:3).Select(i=>new PublicPlayer{id="preview-"+i,nickname=new[]{"小宇宙","海盐汽水","凌晨三点","社团王牌","猫派代表","最后一页"}[i],color=catalog.items[i].color,remaining=Mathf.Max(1,8-i),position=Match.Spawn(i),yaw=i*55,stability=100-i*17,ready=i!=4,connected=i!=5,equippedName=catalog.items[i].label,equippedVisual=catalog.items[i].visualId,equippedColor=catalog.items[i].color,interaction=i==0&&previewKind=="hud"?"eat":"",progress=.62f}).ToArray();
             var inventory=catalog.items.Select((x,i)=>new PersonaInstance{id="preview-item-"+i,ownerId="preview-0",asset=new PersonaAsset{assetId="asset-"+i,name=x.label,templateId=x.templateId,visualId=x.visualId,color=x.color},state=i==0?ItemState.Equipped:ItemState.Inventory}).ToArray();
             var phase=lobbyPreview?MatchPhase.Lobby:previewKind=="results"?MatchPhase.Finished:MatchPhase.Battle;
-            net.State=new Snapshot{room="PARTY",matchId="preview",you="preview-0",host="preview-0",winner="preview-1",phase=phase,time=196,players=players,inventory=inventory,ground=Array.Empty<PersonaInstance>(),revealed=Array.Empty<PersonaInstance>(),effects=Array.Empty<EffectState>(),props=Array.Empty<PublicProp>(),events=new[]{new MatchEvent{id=1,text="海盐汽水吃掉了小宇宙的「篮球」！"}},eaten=new[]{new EatRecord{instanceId="eat-1",eater="海盐汽水",owner="小宇宙",persona="篮球"},new EatRecord{instanceId="eat-2",eater="凌晨三点",owner="猫派代表",persona="相机"}}};
+            net.State=new Snapshot{room="PARTY",matchId="preview",you="preview-0",host="preview-0",winner="preview-1",phase=phase,time=196,finalAt=450,players=players,inventory=inventory,ground=Array.Empty<PersonaInstance>(),revealed=Array.Empty<PersonaInstance>(),effects=Array.Empty<EffectState>(),props=Array.Empty<PublicProp>(),events=new[]{new MatchEvent{id=1,text="海盐汽水吃掉了小宇宙的「篮球」！"}},eaten=new[]{new EatRecord{instanceId="eat-1",eater="海盐汽水",owner="小宇宙",persona="篮球"},new EatRecord{instanceId="eat-2",eater="凌晨三点",owner="猫派代表",persona="相机"}}};
             net.Status="UI 预览 · 不连接服务器";if(previewKind=="bag"){inventoryOpen=true;bag.gameObject.SetActive(true);}if(previewKind=="qr")OpenQrOverlay(CreatePreviewQr(),"PARTY",true);RefreshTouchVisibility();
         }
 
