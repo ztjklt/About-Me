@@ -13,6 +13,18 @@
 <body>
   <main><canvas id="game" tabindex="0" aria-label="About Me 游戏画面"></canvas><section id="loading"><h1>ABOUT ME.</h1><div>把自己，变成游戏。</div><progress max="1" value="0"></progress><div id="error" role="status"></div></section></main>
   <script>
+    const practiceKey='aboutme-practice-tab';
+    const navigation=performance.getEntriesByType('navigation')[0];
+    let practiceToken='';
+    try{if(navigation&&navigation.type==='reload')practiceToken=sessionStorage.getItem(practiceKey)||'';}catch(e){}
+    if(!/^[0-9a-f]{32}$/i.test(practiceToken)){
+      const bytes=new Uint8Array(16);crypto.getRandomValues(bytes);
+      practiceToken=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+    }
+    try{sessionStorage.setItem(practiceKey,practiceToken);}catch(e){}
+    const launchUrl=new URL(location.href);
+    launchUrl.searchParams.set('practiceSession',practiceToken);
+    history.replaceState(history.state,'',launchUrl);
     const canvas=document.getElementById('game'),loading=document.getElementById('loading');
     const config={dataUrl:'Build/{{{ DATA_FILENAME }}}',frameworkUrl:'Build/{{{ FRAMEWORK_FILENAME }}}',codeUrl:'Build/{{{ CODE_FILENAME }}}',streamingAssetsUrl:'StreamingAssets',companyName:'About Me Studio',productName:'About Me',productVersion:'0.1.0',autoSyncPersistentDataPath:true,devicePixelRatio:Math.min(devicePixelRatio,1.5),showBanner:(message,type)=>{if(type==='error')document.getElementById('error').textContent=message;}};
     const loader=document.createElement('script');loader.src='Build/{{{ LOADER_FILENAME }}}';

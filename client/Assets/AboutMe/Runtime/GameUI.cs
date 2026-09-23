@@ -55,6 +55,7 @@ namespace AboutMe
         readonly List<Button> slots=new List<Button>();
         readonly List<string> favorites=new List<string>();
         Profile profile;string lastInventory="";int lastEvent;
+        string webPracticeToken;
         bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured;float nextSend,nextUI;
         string selectedColor="#79CFC5";int outfit;
         Vector2 movement;float yaw;TouchPad movePad;
@@ -90,15 +91,19 @@ namespace AboutMe
         static string WebGameEndpoint(string absoluteUrl)
         {
             if(!Uri.TryCreate(absoluteUrl,UriKind.Absolute,out var page))return null;
+            var value=WebQueryValue(page,"game");
+            if(value==null)return null;
+            if(Uri.TryCreate(value,UriKind.Absolute,out var game)
+                &&(game.Scheme=="wss"||(page.Scheme==Uri.UriSchemeHttp&&game.Scheme=="ws"))
+                &&game.UserInfo==""&&game.Fragment=="")return game.AbsoluteUri;
+            return "";
+        }
+        static string WebQueryValue(Uri page,string key)
+        {
             foreach(var part in page.Query.TrimStart('?').Split('&'))
             {
                 var pair=part.Split(new[]{'='},2);
-                if(pair.Length==0||pair[0]!="game")continue;
-                var value=pair.Length==2?Uri.UnescapeDataString(pair[1]):"";
-                if(Uri.TryCreate(value,UriKind.Absolute,out var game)
-                    &&(game.Scheme=="wss"||(page.Scheme==Uri.UriSchemeHttp&&game.Scheme=="ws"))
-                    &&game.UserInfo==""&&game.Fragment=="")return game.AbsoluteUri;
-                return "";
+                if(pair[0]==key)return pair.Length==2?Uri.UnescapeDataString(pair[1]):"";
             }
             return null;
         }
@@ -131,8 +136,21 @@ namespace AboutMe
         void LoadPracticePersona()
         {
             net.Sample=true;
-            net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));
-            PlayerPrefs.SetString("sampleToken",net.Token);
+            if(Application.platform==RuntimePlatform.WebGLPlayer)
+            {
+                if(webPracticeToken==null)
+                {
+                    string provided=null;
+                    if(Uri.TryCreate(Application.absoluteURL,UriKind.Absolute,out var page))provided=WebQueryValue(page,"practiceSession");
+                    webPracticeToken=Guid.TryParseExact(provided,"N",out var parsed)?parsed.ToString("N"):Guid.NewGuid().ToString("N");
+                }
+                net.Token=webPracticeToken;
+            }
+            else
+            {
+                net.Token=PlayerPrefs.GetString("sampleToken",Guid.NewGuid().ToString("N"));
+                PlayerPrefs.SetString("sampleToken",net.Token);
+            }
             profile=GameNetwork.SampleProfile(net.Token,nickname.text);
             DisplayProfile();
             net.Status="已载入练习道具（非 AI）";
@@ -202,7 +220,7 @@ namespace AboutMe
         {
             if(busy)return;
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
-            net.Nickname=nickname.text;net.RoomCode=room.text.Trim();net.Endpoint=endpoint.text.Trim();net.Connect();
+            net.Nickname=nickname.text;net.RoomCode=room.text.Trim().ToUpperInvariant();room.text=net.RoomCode;net.Endpoint=endpoint.text.Trim();net.Connect();
         }
         void Leave(){net.Close();lastInventory="";lastEvent=0;lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
         void ToggleBag()
