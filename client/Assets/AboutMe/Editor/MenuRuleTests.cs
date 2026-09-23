@@ -16,8 +16,30 @@ namespace AboutMe.Editor
             void Tick(Match m,float seconds){for(int i=0;i<Mathf.CeilToInt(seconds/.02f);i++)m.Tick(.02f);}
             Test("2.5D start-menu sprites are imported",()=>
             {
-                foreach(var asset in new[]{"background","title","mascot-open","mascot-blink","arm-camera","arm-controller","arm-book","arm-cat","arm-pizza","arm-stylus","arm-clover","arm-photo"})
+                foreach(var asset in new[]{"background","title","mascot-open","mascot-blink","arm-camera","arm-controller","arm-book","arm-cat","arm-pizza","arm-stylus","arm-clover","arm-photo","button-solo","button-multi","button-intro","button-settings"})
                     Assert(Resources.Load<Sprite>("StartMenu2D/"+asset)!=null,"missing start-menu sprite "+asset);
+            });
+            Test("upper classroom facade seams are sealed",()=>
+            {
+                foreach(int side in new[]{-1,1})
+                {
+                    for(float z=-18;z<=22;z+=2)
+                    {
+                        Assert(CampusGeometry.Floor(new Vector3(side*30.8f,5.5f,z))>=4.59f,"wing floor gap "+side+":"+z);
+                        Assert(CampusGeometry.Blocked(new Vector3(side*31.45f,5.5f,z)),"wing sill gap "+side+":"+z);
+                    }
+                    foreach(float z in new[]{-18f,-10f,-2f,6f,14f,22f})
+                        Assert(CampusGeometry.Blocked(new Vector3(side*33.1f,5.5f,z)),"wing side gap "+side+":"+z);
+                }
+                for(float x=-32;x<=32;x+=2)
+                    Assert(CampusGeometry.Floor(new Vector3(x,5.5f,24.65f))>=4.59f,"rear floor gap "+x);
+                foreach(int side in new[]{-1,1})
+                {
+                    for(float x=8;x<=32;x+=2)
+                        Assert(CampusGeometry.Blocked(new Vector3(side*x,5.5f,24.9f)),"rear sill gap "+side+":"+x);
+                    foreach(float x in new[]{8f,16f,24f,32f})
+                        Assert(CampusGeometry.Blocked(new Vector3(side*x,5.5f,26.3f)),"rear side gap "+side+":"+x);
+                }
             });
             Test("direct start-menu entries and reduced motion are stable",()=>
             {

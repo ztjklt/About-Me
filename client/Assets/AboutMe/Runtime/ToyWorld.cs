@@ -101,6 +101,15 @@ namespace AboutMe
             var campus=Resources.Load<GameObject>("CampusV04/Campus");
             if(!campus)throw new InvalidOperationException("Campus V0.4 prefab missing. Run CampusImport.Build.");
             var campusRoot=Instantiate(campus);campusRoot.name="Remember About Me · Campus 80×64m";
+            // One set of boxes drives the visible closure and the authoritative
+            // collision representation of every upper classroom seam.
+            foreach(var seal in CampusFacadeSeals.Solids)
+            {
+                var color=seal.name.EndsWith("cheek")?"#FFF9EF":"#F5EFE3";
+                var shape=ToyFactory.Shape(seal.name,PrimitiveType.Cube,campusRoot.transform,
+                    seal.center,seal.size,color,true);
+                shape.isStatic=true;
+            }
             // These flush tiled aprons bridge the narrow gaps between each
             // second-floor wing and the club buildings beside the stair routes.
             foreach(int side in new[]{-1,1})foreach(float z in new[]{-14f,10f})

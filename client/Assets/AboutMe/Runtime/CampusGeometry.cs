@@ -26,7 +26,7 @@ namespace AboutMe
                             size=new Vector3(1f,.5f,8f)
                         }).ToArray();
                     solids=JsonUtility.FromJson<CampusCollisionData>(source.text).solids
-                        .Concat(clubThresholds).ToArray();
+                        .Concat(clubThresholds).Concat(CampusFacadeSeals.Solids).ToArray();
                 }
                 return solids;
             }

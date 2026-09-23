@@ -121,22 +121,22 @@ namespace AboutMe
 
     public class StickerButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler,IPointerUpHandler,IPointerClickHandler,IUIStateful
     {
-        public Image Surface;public Text Label;public Image Icon;public Button Button;public Color BaseColor=UITheme.Paper;
+        public Image Surface;public Text Label;public Image Icon;public Button Button;public Color BaseColor=UITheme.Paper;public float HoverScale=1;
         public UIVisualState State;
         bool hovered,pressed,lastEnabled=true;Vector3 targetScale=Vector3.one;float rebound,clickFlash;
         public void Configure(Button button,Image surface,Text label,Color color)
         {Button=button;Surface=surface;Label=label;BaseColor=color;button.transition=Selectable.Transition.None;Apply();}
         public void SetState(UIVisualState state){State=state;if(!pressed)targetScale=state==UIVisualState.Selected&&Label==null?Vector3.one*1.12f:Vector3.one;Apply();}
-        public void OnPointerEnter(PointerEventData eventData){hovered=true;Apply();}
+        public void OnPointerEnter(PointerEventData eventData){hovered=true;if(!pressed&&rebound<=0)targetScale=Vector3.one*HoverScale;Apply();}
         public void OnPointerExit(PointerEventData eventData){hovered=false;pressed=false;targetScale=Vector3.one;Apply();}
         public void OnPointerDown(PointerEventData eventData){if(Button&&Button.interactable){pressed=true;rebound=0;targetScale=Vector3.one*.94f;Apply();}}
-        public void OnPointerUp(PointerEventData eventData){pressed=false;targetScale=Vector3.one;Apply();}
+        public void OnPointerUp(PointerEventData eventData){pressed=false;targetScale=Vector3.one*(hovered?HoverScale:1);Apply();}
         public void OnPointerClick(PointerEventData eventData)
         {if(Button&&Button.interactable){rebound=.09f;clickFlash=1;targetScale=Vector3.one*1.045f;Apply();}}
         void Update()
         {
             float dt=Time.unscaledDeltaTime;
-            if(rebound>0){rebound-=dt;if(rebound<=0)targetScale=Vector3.one;}
+            if(rebound>0){rebound-=dt;if(rebound<=0)targetScale=Vector3.one*(hovered?HoverScale:1);}
             if(clickFlash>0){clickFlash=Mathf.Max(0,clickFlash-dt*8);Apply();}
             transform.localScale=PlayerPrefs.GetInt("reduceMotion",0)==1?Vector3.one:Vector3.Lerp(transform.localScale,targetScale,1-Mathf.Exp(-dt*25));
             bool enabled=Button&&Button.interactable;if(enabled!=lastEnabled){lastEnabled=enabled;Apply();}
