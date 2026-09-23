@@ -37,10 +37,10 @@ namespace AboutMe
             ArtButton(soloMenu,"编辑自我介绍",356,574,242,58,()=>ShowPage(MenuPage.Presets),UITheme.Field,UITheme.Ink);
             multiplayerMenu=MenuCard("多人游戏","PLAY WITH FRIENDS");
             multiSummary=ArtText(multiplayerMenu,"",40,170,900,98,23,UITheme.Ink,FontStyle.Bold);
-            ArtButton(multiplayerMenu,"创建房间",40,294,245,67,()=>{room.text="";Enter();},UITheme.Mint,UITheme.Ink,"share");
+            ArtButton(multiplayerMenu,"创建房间",40,294,245,67,CreateRoom,UITheme.Mint,UITheme.Ink,"share");
             room.transform.SetParent(multiplayerMenu,false);Place((RectTransform)room.transform,40,402,550,64);
             room.characterLimit=6;room.contentType=InputField.ContentType.Alphanumeric;
-            ArtButton(multiplayerMenu,"加入房间",615,402,325,64,()=>{if(room.text.Trim().Length!=6){net.Status="请输入 6 位房间码";return;}Enter();},UITheme.Yellow,UITheme.Ink,"ready");
+            ArtButton(multiplayerMenu,"加入房间",615,402,325,64,JoinRoom,UITheme.Yellow,UITheme.Ink,"ready");
             ArtText(multiplayerMenu,"2–6 人 · 两人即可开局",40,496,650,40,20,UITheme.Muted);
             ArtButton(multiplayerMenu,"练习道具（非 AI）",40,600,230,56,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
             ArtButton(multiplayerMenu,"自我介绍",292,600,210,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);

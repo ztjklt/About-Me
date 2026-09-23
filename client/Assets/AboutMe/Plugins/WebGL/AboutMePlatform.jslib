@@ -53,31 +53,64 @@ mergeInto(LibraryManager.library, {
     if(typeof wx!=='undefined'&&canvas.toTempFilePath){canvas.toTempFilePath({success:function(result){wx.saveImageToPhotosAlbum({filePath:result.tempFilePath});}});return;}
     var a=document.createElement('a');a.download='AboutMe-result.png';a.href=canvas.toDataURL('image/png');a.click();
   },
-  AM_InputOpen: function(receiver,value,multiline,maxLength,x,y,width,height){
-    var target=UTF8ToString(receiver),initial=UTF8ToString(value);
+  AM_InputOpen: function(receiver,value,placeholder,multiline,maxLength,x,y,width,height){
+    var target=UTF8ToString(receiver),initial=UTF8ToString(value),hint=UTF8ToString(placeholder);
+    var values=globalThis.aboutMeTextValues||(globalThis.aboutMeTextValues=Object.create(null));
+    values[target]=initial;
     if(typeof wx!=='undefined'&&wx.showKeyboard){
       if(globalThis.aboutMeKeyboardInput&&wx.offKeyboardInput)wx.offKeyboardInput(globalThis.aboutMeKeyboardInput);
       globalThis.aboutMeKeyboardTarget=target;
-      globalThis.aboutMeKeyboardInput=function(event){SendMessage(target,'OnBrowserInput',event.value||'');};
+      globalThis.aboutMeKeyboardInput=function(event){values[target]=event.value||'';SendMessage(target,'OnBrowserInput',values[target]);};
       wx.onKeyboardInput(globalThis.aboutMeKeyboardInput);
       wx.showKeyboard({defaultValue:initial,maxLength:maxLength,multiple:!!multiline,confirmHold:!!multiline,success:function(){}});return;
     }
     if(typeof document==='undefined')return;
-    if(globalThis.aboutMeTextInput)globalThis.aboutMeTextInput.remove();
+    if(globalThis.aboutMeTextInput)globalThis.aboutMeTextInput.__aboutMeFinish(false);
     var canvas=Module.canvas,bounds=canvas.getBoundingClientRect();
     var input=document.createElement(multiline?'textarea':'input');globalThis.aboutMeTextInput=input;globalThis.aboutMeTextTarget=target;
-    input.value=initial;input.maxLength=maxLength;input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
+    input.value=initial;input.placeholder=hint;input.setAttribute('aria-label',hint);input.maxLength=maxLength;input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
     var style=input.style;style.position='fixed';style.zIndex='2147483647';style.left=(bounds.left+x*bounds.width)+'px';style.top=(bounds.top+(1-y-height)*bounds.height)+'px';
-    style.width=Math.max(48,width*bounds.width)+'px';style.height=Math.max(28,height*bounds.height)+'px';style.opacity='0.02';style.background='transparent';style.border='0';style.outline='0';style.resize='none';style.fontSize='18px';
-    var update=function(){SendMessage(target,'OnBrowserInput',input.value);};input.addEventListener('input',update);input.addEventListener('compositionupdate',update);
+    style.width=Math.max(48,width*bounds.width)+'px';style.height=Math.max(28,height*bounds.height)+'px';style.boxSizing='border-box';style.opacity='1';style.background='#f5f7f4';style.color='#222c3c';style.border='2px solid #222c3c';style.borderRadius='8px';style.outline='0';style.padding='0 12px';style.resize='none';style.fontSize='18px';style.fontFamily='system-ui,sans-serif';
+    var closed=false;
+    var finish=function(blurred){
+      if(closed)return;
+      closed=true;
+      var finalValue=input.value;
+      values[target]=finalValue;
+      if(globalThis.aboutMeTextInput===input)globalThis.aboutMeTextInput=null;
+      // Removing a focused input can synchronously fire blur in WebKit. Mark it
+      // closed first so the blur handler cannot remove the same node again.
+      if(input.parentNode)input.parentNode.removeChild(input);
+      SendMessage(target,blurred?'OnBrowserBlur':'OnBrowserInput',finalValue);
+    };
+    input.__aboutMeFinish=finish;
+    var update=function(){if(!closed){values[target]=input.value;SendMessage(target,'OnBrowserInput',input.value);}};
+    input.addEventListener('input',update);input.addEventListener('compositionupdate',update);input.addEventListener('compositionend',update);input.addEventListener('change',update);
     input.addEventListener('keydown',function(event){event.stopPropagation();if(!multiline&&event.key==='Enter'){event.preventDefault();input.blur();}});
     input.addEventListener('keyup',function(event){event.stopPropagation();});input.addEventListener('keypress',function(event){event.stopPropagation();});
-    input.addEventListener('blur',function(){var finalValue=input.value;input.remove();if(globalThis.aboutMeTextInput===input)globalThis.aboutMeTextInput=null;SendMessage(target,'OnBrowserBlur',finalValue);});
-    document.body.appendChild(input);setTimeout(function(){input.focus();input.setSelectionRange(input.value.length,input.value.length);},0);
+    input.addEventListener('blur',function(){finish(true);});
+    document.body.appendChild(input);
+    // Safari needs the focus attempt in the original pointer gesture. If it declines,
+    // the visible HTML field remains tappable so the player can focus it directly.
+    input.focus();try{input.setSelectionRange(input.value.length,input.value.length);}catch(error){}
   },
   AM_InputClose: function(receiver){
     var target=UTF8ToString(receiver);
     if(typeof wx!=='undefined'&&wx.hideKeyboard){wx.hideKeyboard();if(globalThis.aboutMeKeyboardInput&&wx.offKeyboardInput)wx.offKeyboardInput(globalThis.aboutMeKeyboardInput);globalThis.aboutMeKeyboardInput=null;return;}
-    var input=globalThis.aboutMeTextInput;if(input&&globalThis.aboutMeTextTarget===target){globalThis.aboutMeTextInput=null;input.remove();}
+    var input=globalThis.aboutMeTextInput;
+    if(input&&globalThis.aboutMeTextTarget===target)input.__aboutMeFinish(false);
+  },
+  AM_InputValue: function(receiver,fallback){
+    var target=UTF8ToString(receiver),defaultValue=UTF8ToString(fallback);
+    var input=globalThis.aboutMeTextInput;
+    if(input&&globalThis.aboutMeTextTarget===target)return stringToNewUTF8(input.value);
+    var values=globalThis.aboutMeTextValues;
+    return stringToNewUTF8(values&&Object.prototype.hasOwnProperty.call(values,target)?values[target]:defaultValue);
+  },
+  AM_InputStore: function(receiver,value){
+    var target=UTF8ToString(receiver),text=UTF8ToString(value);
+    var values=globalThis.aboutMeTextValues||(globalThis.aboutMeTextValues=Object.create(null));
+    values[target]=text;
+    var input=globalThis.aboutMeTextInput;if(input&&globalThis.aboutMeTextTarget===target)input.value=text;
   }
 });

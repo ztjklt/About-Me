@@ -12,14 +12,35 @@ namespace AboutMe
         bool selected, closing;
 
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
-        [DllImport("__Internal")] static extern void AM_InputOpen(string receiver,string value,int multiline,int maxLength,float x,float y,float width,float height);
+        [DllImport("__Internal")] static extern void AM_InputOpen(string receiver,string value,string placeholder,int multiline,int maxLength,float x,float y,float width,float height);
         [DllImport("__Internal")] static extern void AM_InputClose(string receiver);
+        [DllImport("__Internal")] static extern string AM_InputValue(string receiver,string fallback);
+        [DllImport("__Internal")] static extern void AM_InputStore(string receiver,string value);
 #endif
 
         public void Configure(InputField field)
         {
             Field=field;
             gameObject.name="AboutMeInput-"+GetInstanceID();
+        }
+
+        public string CurrentText()
+        {
+            if(Field==null)return "";
+#if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
+            return AM_InputValue(gameObject.name,Field.text);
+#else
+            return Field.text;
+#endif
+        }
+
+        public void SetText(string value)
+        {
+            if(Field==null)return;
+            Field.text=value??"";
+#if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
+            AM_InputStore(gameObject.name,Field.text);
+#endif
         }
 
         public void OnSelect(BaseEventData eventData)
@@ -31,7 +52,8 @@ namespace AboutMe
             var corners=new Vector3[4];((RectTransform)transform).GetWorldCorners(corners);
             var lower=RectTransformUtility.WorldToScreenPoint(null,corners[0]);
             var upper=RectTransformUtility.WorldToScreenPoint(null,corners[2]);
-            AM_InputOpen(gameObject.name,Field.text,Field.lineType==InputField.LineType.SingleLine?0:1,Field.characterLimit,
+            var hint=Field.placeholder as Text;
+            AM_InputOpen(gameObject.name,Field.text,hint?hint.text:"输入",Field.lineType==InputField.LineType.SingleLine?0:1,Field.characterLimit,
                 lower.x/Screen.width,lower.y/Screen.height,(upper.x-lower.x)/Screen.width,(upper.y-lower.y)/Screen.height);
 #endif
         }

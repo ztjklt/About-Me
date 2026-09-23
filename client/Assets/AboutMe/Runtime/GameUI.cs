@@ -154,6 +154,7 @@ namespace AboutMe
             profile=GameNetwork.SampleProfile(net.Token,nickname.text);
             DisplayProfile();
             net.Status="已载入练习道具（非 AI）";
+            TryAutoJoin();
         }
         IEnumerator LoadProfile()
         {
@@ -216,11 +217,28 @@ namespace AboutMe
             {try{var parsed=JsonUtility.FromJson<ErrorDetail>(request.downloadHandler.text);message=string.IsNullOrWhiteSpace(parsed?.detail)?request.downloadHandler.text:parsed.detail;}catch(Exception){message=request.downloadHandler.text;}}
             net.Status="服务请求失败："+message;
         }
-        void Enter()
+        string CurrentRoomCode()
+        {
+            var bridge=room.GetComponent<IMEInputBridge>();
+            return bridge?bridge.CurrentText():room.text;
+        }
+        void SetRoomCode(string value)
+        {
+            var bridge=room.GetComponent<IMEInputBridge>();
+            if(bridge)bridge.SetText(value);else room.text=value;
+        }
+        void CreateRoom(){Enter("");}
+        void JoinRoom()
+        {
+            var code=(CurrentRoomCode()??"").Trim().ToUpperInvariant();
+            if(code.Length!=6){net.Status="请输入 6 位房间码（当前 "+code.Length+" 位）";return;}
+            Enter(code);
+        }
+        void Enter(string requestedRoom=null)
         {
             if(busy)return;
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
-            net.Nickname=nickname.text;net.RoomCode=room.text.Trim().ToUpperInvariant();room.text=net.RoomCode;net.Endpoint=endpoint.text.Trim();net.Connect();
+            net.Nickname=nickname.text;net.RoomCode=(requestedRoom??CurrentRoomCode()).Trim().ToUpperInvariant();SetRoomCode(net.RoomCode);net.Endpoint=endpoint.text.Trim();net.Connect();
         }
         void Leave(){net.Close();lastInventory="";lastEvent=0;lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
         void ToggleBag()
@@ -230,7 +248,7 @@ namespace AboutMe
             if(!inventoryWasOpened&&inventoryScroll){Canvas.ForceUpdateCanvases();inventoryScroll.verticalNormalizedPosition=1;inventoryWasOpened=true;}
             Send("cancel");
         }
-        public void SetRoom(string value){ShowPage(MenuPage.Multiplayer);room.text=value;pendingRoom=true;TryAutoJoin();}
+        public void SetRoom(string value){ShowPage(MenuPage.Multiplayer);SetRoomCode(value);pendingRoom=true;TryAutoJoin();}
         void TryAutoJoin(){if(pendingRoom&&profile!=null&&profile.personas.Length>0){pendingRoom=false;Enter();}}
         void ToggleRecording()
         {
