@@ -80,7 +80,7 @@ namespace AboutMe
         public void Connect()
         {
             if(localSession!=null){localSession.Close();localSession=null;}
-            if(NetworkClient.active)return;
+            if(NetworkClient.active){Status="正在连接或已在房间，请先离开再重试";return;}
             try { State=null;sequence=0;Status="正在连接…";StartClient(new Uri(Endpoint)); }
             catch(Exception e) { Status="连接地址无效："+e.Message; }
         }
