@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
+from server.easter_egg import likes_deepseek
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
@@ -672,7 +673,8 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=personas, revision=old['revision'] + 1,
                   appearance=old_normalized['appearance'],appearanceRevision=old_normalized['appearanceRevision'],
-                  characterSkin=old_normalized['characterSkin'])
+                  characterSkin=old_normalized['characterSkin'],
+                  dsGirlUnlocked=likes_deepseek(body.introduction.strip()))
     result = normalized_profile(result, body.introduction.strip())
     with db() as con:
         # Concurrent regeneration must not overwrite a newer result.
@@ -756,6 +758,10 @@ def save_appearance(body: AppearanceSave, authorization: str | None = Header(def
     profile = normalized_profile(json.loads(previous), intro)
     if body.expectedRevision != profile['appearanceRevision']:
         raise HTTPException(409, '穿搭已更新，请重新载入后保存')
+    if body.introduction is not None:
+        profile['dsGirlUnlocked'] = likes_deepseek(body.introduction)
+        if not profile['dsGirlUnlocked']:
+            profile['characterSkin'] = 'normal'
     if body.characterSkin is not None:
         if body.characterSkin not in ('normal','ds-girl'):
             raise HTTPException(422, '未发布的角色外观')

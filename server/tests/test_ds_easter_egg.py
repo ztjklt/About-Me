@@ -85,11 +85,33 @@ def test_existing_intro_is_rechecked_without_model_call(client):
     selected = client.post('/profiles/me/appearance', headers=headers,
         json={'appearance': {}, 'expectedRevision': 0, 'characterSkin': 'ds-girl'})
     assert selected.status_code == 200
-    with module.db() as con:
-        con.execute('UPDATE profiles SET intro=? WHERE id=?',
-                    ('我不喜欢DeepSeek', session['profile']['playerId']))
+    revoked = client.post('/profiles/me/appearance', headers=headers,
+        json={'appearance': {}, 'expectedRevision': 1, 'introduction': '我不喜欢DeepSeek'})
+    assert revoked.status_code == 200
     current = client.get('/profiles/me', headers=headers).json()
     assert current['dsGirlUnlocked'] is False
     assert current['characterSkin'] == 'normal'
     assert client.post('/internal/verify', headers={'X-Game-Key': 'test-server-key'},
         json={'token': session['token']}).json()['characterSkin'] == 'normal'
+
+
+def test_intro_only_deepseek_like_unlocks_without_persona_or_model(client, monkeypatch):
+    async def unexpected(_):
+        raise AssertionError('cosmetic save called model')
+    monkeypatch.setattr(module, 'generate_with_provider', unexpected)
+    headers, session = credentials(client)
+    selected = client.post('/profiles/me/appearance', headers=headers,
+        json={'appearance': {}, 'expectedRevision': 0,
+              'introduction': '我喜欢 Deep Seek', 'characterSkin': 'ds-girl'})
+    assert selected.status_code == 200
+    assert selected.json()['dsGirlUnlocked'] is True
+    assert selected.json()['characterSkin'] == 'ds-girl'
+    assert selected.json()['personas'] == []
+    verified = client.post('/internal/verify', headers={'X-Game-Key': 'test-server-key'},
+        json={'token': session['token']})
+    assert verified.status_code == 200
+    assert verified.json()['characterSkin'] == 'ds-girl'
+    assert client.post('/profiles/me/appearance', headers=headers,
+        json={'appearance': {}, 'expectedRevision': 1,
+              'introduction': '我不喜欢DeepSeek', 'characterSkin': 'ds-girl'}).status_code == 422
+    assert client.get('/profiles/me', headers=headers).json()['characterSkin'] == 'ds-girl'

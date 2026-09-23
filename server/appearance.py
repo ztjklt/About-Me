@@ -35,7 +35,8 @@ def normalized_profile(profile,introduction=None):
         if color in OPTIONS['topColor']:appearance.topColor=color
     profile['appearance']=appearance.model_dump()
     profile.setdefault('appearanceRevision',0)
-    unlocked=likes_deepseek(introduction) if introduction is not None else bool(profile.get('dsGirlUnlocked',False))
+    unlocked=(bool(profile['dsGirlUnlocked']) if 'dsGirlUnlocked' in profile else
+              likes_deepseek(introduction) if introduction is not None else False)
     profile['dsGirlUnlocked']=unlocked
     if profile.get('characterSkin')!='ds-girl' or not unlocked:profile['characterSkin']='normal'
     return profile
@@ -45,6 +46,7 @@ class AppearanceSave(BaseModel):
     appearance:Appearance
     expectedRevision:int=Field(ge=0)
     characterSkin:str|None=None
+    introduction:str|None=Field(default=None,min_length=3,max_length=1200)
 
 class RecommendRequest(BaseModel):
     introduction:str=Field(min_length=3,max_length=1200)
