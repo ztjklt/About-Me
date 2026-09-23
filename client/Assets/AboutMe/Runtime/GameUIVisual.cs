@@ -75,7 +75,7 @@ namespace AboutMe
             }
             var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
             BuildExpressionChoices(studioCard);
-            imageUpload=ArtButton(studioCard,"图片识别",30,526,230,42,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
+            imageUpload=ArtButton(studioCard,"图片识别",274,250,150,32,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
             generate=ArtButton(studioCard,"AI 生成 Persona",30,578,230,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
             ArtButton(studioCard,"免费解锁 DS 娘",278,578,342,48,()=>StartCoroutine(UnlockDSGirl()),UITheme.Mint,UITheme.Ink,"status");
             var profileCard=ArtPanel(studioCard,"Persona result",30,638,590,66,UITheme.Field,true,false);
