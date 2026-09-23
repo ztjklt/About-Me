@@ -10,8 +10,9 @@
 
 ## 验证
 
-- `AboutMe.Editor.BodyPhysicsTests.ValidateFeet`：静止、前进、跑动、急停、侧移、后退和转向的鞋底高度、接触率、支撑时长和滑移；日志为 `artifacts/feet-grounding-verified.log`。
-- `AboutMe.Editor.BodyPhysicsTests.Validate`：双人和六人骨骼快照与物理、四向倒地与起身、楼梯、跳跃、拖拽、外观蒙皮和性能；日志为 `artifacts/feet-physics-verified-final.log`。
-- `AboutMe.Editor.BodyPhysicsTests.RenderReview`：正侧视角画面位于 `artifacts/feet-grounding-review/`；本次从修正前的跑动悬空画面复核到鞋底贴近地面。
+- `AboutMe.Editor.BodyPhysicsTests.ValidateFeet`：静止、前进、跑动、急停、侧移、后退和转向的鞋底高度、接触率、支撑时长和滑移；本整合树重跑日志为 `artifacts/ValidateFeet.log`。
+- `AboutMe.Editor.BodyPhysicsTests.ValidateLocomotionControls`：跑步起跳、空中拒绝二次起跳、后退转身朝向；本整合树日志为 `artifacts/ValidateLocomotionControls.log`。
+- `AboutMe.Editor.BodyPhysicsTests.Validate`：双人和六人骨骼快照与物理、四向倒地与起身、楼梯、跳跃、拖拽、外观蒙皮和性能；本整合树日志为 `artifacts/ValidateBody.log`。
+- 旧角色工作树的 `RenderReview` 正侧视角图在其 `artifacts/feet-grounding-review/`；本整合树尚未重做该画面采样，不将旧截图冒充当前构建截图。
 
-最终专项采样中，七种移动阶段的鞋底平均离地约 0–1 cm，静止时约 0–0.2 cm；跑动阶段最远离地约 4.7 cm。高速移动时支撑脚仍可产生约 15 cm 的短时滑移，这是当前玩偶短腿与原有高移动速度共同造成的表现边界，不代表完全无脚滑。
+本整合树专项采样中，七种移动阶段的鞋底平均离地约 0–1 cm，静止时约 0–0.2 cm；跑动阶段最远离地约 4.7 cm。高速移动时支撑脚最大短时滑移 15.6 cm，这是当前玩偶短腿与原有高移动速度共同造成的表现边界，不代表完全无脚滑。
