@@ -75,11 +75,51 @@ def test_private_and_abusive_facts_do_not_become_personas():
         module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
-    assert len(module.CATALOG) == 56
+    assert len(module.CATALOG) == 60
     result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):
         module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Projectile', visualId='pillow-a')]}, '抱枕')
+
+
+def test_new_persona_pairs_have_grounded_server_mapping():
+    from pathlib import Path
+    root = Path(__file__).parents[2]
+    expected = {
+        ('Ricochet', 'football-cc0'), ('Utility', 'gamepad-cc0'),
+        ('Melee', 'ukulele-cc0'), ('Disc', 'notebook-cc0'),
+    }
+    assert expected <= module.ALLOWED
+    visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
+    assert len(visuals) == 52
+    assert len({item['visualId'] for item in visuals}) == 52
+    assert all((item['templateId'], item['visualId']) in module.ALLOWED for item in visuals)
+    intro = '我每周踢足球，也喜欢用手柄玩游戏，会弹尤克里里，还用笔记本记手账。'
+    raw = {'personas': [
+        dict(name=name, source=source, templateId=template, visualId=visual)
+        for (template, visual), name, source in [
+            (('Ricochet', 'football-cc0'), '足球', '踢足球'),
+            (('Utility', 'gamepad-cc0'), '手柄', '用手柄玩游戏'),
+            (('Melee', 'ukulele-cc0'), '尤克里里', '弹尤克里里'),
+            (('Disc', 'notebook-cc0'), '笔记本', '用笔记本记手账'),
+        ]
+    ]}
+    assert len(module.validate_personas(raw, intro)) == 4
+    mismatched = {'personas': [dict(name='手账本', source='我用笔记本电脑写代码',
+        templateId='Disc', visualId='notebook-cc0')]}
+    with pytest.raises(ValueError):
+        module.validate_personas(mismatched, '我用笔记本电脑写代码')
+    for visual, template, accepted, rejected in [
+        ('football-cc0', 'Ricochet', '我踢足球', '我踢美式足球'),
+        ('notebook-cc0', 'Disc', '我用纸质笔记本记手账', '我用电脑笔记本写代码'),
+    ]:
+        accepted_raw = {'personas': [dict(name='道具', source=accepted,
+            templateId=template, visualId=visual)]}
+        rejected_raw = {'personas': [dict(name='道具', source=rejected,
+            templateId=template, visualId=visual)]}
+        assert len(module.validate_personas(accepted_raw, accepted)) == 1
+        with pytest.raises(ValueError):
+            module.validate_personas(rejected_raw, rejected)
 
 def test_generation_is_grounded_and_school_is_one_badge():
     raw = {'personas': [

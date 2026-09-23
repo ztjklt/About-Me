@@ -17,6 +17,7 @@ namespace AboutMe
         RectTransform wardrobe;Camera wardrobeCamera;ToyActor wardrobeActor;RenderTexture wardrobeTexture;
         GameObject wardrobeLight;Text wardrobeNote;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
         readonly List<Button> wardrobeButtons=new List<Button>();
+        UILiquidTabIndicator wardrobeViewIndicator;readonly Text[] wardrobeViewLabels=new Text[3];
         public AppearanceData CurrentAppearance=>appearanceDraft.Copy();
         void BuildWardrobe()
         {
@@ -29,7 +30,18 @@ namespace AboutMe
             wardrobeTexture=new RenderTexture(640,740,24){antiAliasing=4};raw.texture=wardrobeTexture;raw.raycastTarget=false;
             var cameraObject=new GameObject("Wardrobe camera");wardrobeCamera=cameraObject.AddComponent<Camera>();wardrobeCamera.orthographic=true;wardrobeCamera.orthographicSize=1.5f;wardrobeCamera.clearFlags=CameraClearFlags.SolidColor;wardrobeCamera.backgroundColor=UITheme.Field;wardrobeCamera.cullingMask=1<<30;wardrobeCamera.targetTexture=wardrobeTexture;wardrobeCamera.enabled=false;
             wardrobeLight=new GameObject("Wardrobe light");var light=wardrobeLight.AddComponent<Light>();light.type=LightType.Directional;light.intensity=2;light.cullingMask=1<<30;light.transform.rotation=Quaternion.Euler(35,155,0);
-            for(int i=0;i<3;i++){int view=i;wardrobeButtons.Add(ArtButton(card,new[]{"正面","侧面","背面"}[i],32+i*149,640,137,45,()=>SetWardrobeView(view),UITheme.Field,UITheme.Ink));}
+            var viewTabs=ArtRect(card,"Wardrobe preview views",new Vector2(32,-640),new Vector2(435,45));
+            ArtPanel(viewTabs,"View tab track",0,0,435,45,UITheme.Field,true,false).GetComponent<Image>().raycastTarget=false;
+            var activeView=ArtPanel(viewTabs,"Active view indicator",0,0,137,45,UITheme.Mint,true,false);activeView.GetComponent<Image>().raycastTarget=false;
+            var tabRects=new RectTransform[3];
+            for(int i=0;i<3;i++)
+            {
+                int view=i;var tab=tabRects[i]=ArtRect(viewTabs,"View · "+new[]{"正面","侧面","背面"}[i],new Vector2(i*149,0),new Vector2(137,45));
+                var hit=tab.gameObject.AddComponent<Image>();hit.color=Color.clear;hit.raycastTarget=true;
+                var button=tab.gameObject.AddComponent<Button>();button.transition=Selectable.Transition.None;button.onClick.AddListener(()=>SetWardrobeView(view));wardrobeButtons.Add(button);
+                wardrobeViewLabels[i]=ArtText(tab,new[]{"正面","侧面","背面"}[i],0,0,137,45,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
+            }
+            wardrobeViewIndicator=viewTabs.gameObject.AddComponent<UILiquidTabIndicator>();wardrobeViewIndicator.Configure(activeView,tabRects);
             wardrobeNote=ArtText(card,"根据介绍推荐一套，再按你的喜好调整。",32,706,435,83,18,UITheme.Ink);
             var labels=new Dictionary<string,string>{{"expression","表情"},{"hair","发型"},{"top","上衣"},{"bottom","下装"},{"shoes","鞋子"},{"headAccessory","头部配饰"},{"bag","包"},{"skinColor","肤色"},{"hairColor","发色"},{"topColor","上衣配色"},{"bottomColor","下装配色"},{"shoeColor","鞋子配色"},{"accessoryColor","配饰配色"}};
             int row=0;foreach(var slot in AppearanceCatalog.Data.slots)
@@ -49,11 +61,13 @@ namespace AboutMe
         }
         void OpenWardrobe()
         {
-            if(busy)return;if(!wardrobe)BuildWardrobe();wardrobe.gameObject.SetActive(true);wardrobe.SetAsLastSibling();RefreshAppearancePreview();SetWardrobeView(0);wardrobeCamera.enabled=true;
+            if(busy)return;if(!wardrobe)BuildWardrobe();wardrobe.gameObject.SetActive(true);wardrobe.SetAsLastSibling();RefreshAppearancePreview();SetWardrobeView(0,true);wardrobeCamera.enabled=true;
         }
         void CloseWardrobe(){wardrobe.gameObject.SetActive(false);wardrobeCamera.enabled=false;}
-        void SetWardrobeView(int view)
+        void SetWardrobeView(int view,bool immediate=false)
         {
+            wardrobeViewIndicator.SetSelected(view,immediate);
+            for(int i=0;i<wardrobeViewLabels.Length;i++)wardrobeViewLabels[i].color=i==view?UITheme.Ink:UITheme.Muted;
             var origin=new Vector3(1000,1.2f,0);wardrobeCamera.transform.position=origin+new[]{new Vector3(0,.1f,5),new Vector3(5,.1f,0),new Vector3(0,.1f,-5)}[view];wardrobeCamera.transform.LookAt(origin);
         }
         void CycleAppearance(string id,int step)

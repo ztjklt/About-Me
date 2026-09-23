@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AboutMe;
@@ -37,12 +38,16 @@ namespace AboutMe.Editor
         public static void Validate()
         {
             var definitions=PersonaVisualCatalog.All.Where(x=>!string.IsNullOrWhiteSpace(x.sourceAssetPath)).ToArray();
-            if(definitions.Length!=48)throw new Exception("PERSONA_VISUAL_COUNT expected 48, got "+definitions.Length);
+            var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);
+            if(definitions.Length==0||catalog?.items==null)throw new Exception("PERSONA_VISUAL_CATALOG_EMPTY");
+            var published=new HashSet<string>(catalog.items.Select(x=>x.templateId+"/"+x.visualId));
             foreach(var definition in definitions)
             {
+                if(!published.Contains(definition.templateId+"/"+definition.visualId))throw new Exception("PERSONA_VISUAL_UNPUBLISHED "+definition.visualId);
                 if(!File.Exists(definition.sourceAssetPath))throw new Exception("PERSONA_FILE_MISSING "+definition.sourceAssetPath);
                 var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(PrefabFolder+"/"+definition.visualId+".prefab");
                 if(!prefab)throw new Exception("PERSONA_PREFAB_MISSING "+definition.visualId);
+                if(Resources.Load<GameObject>(definition.resourcePath)!=prefab)throw new Exception("PERSONA_RESOURCE_PATH_INVALID "+definition.visualId);
                 var meta=prefab.GetComponent<PersonaVisualMeta>();
                 if(!meta||meta.visualId!=definition.visualId||!meta.Grip)throw new Exception("PERSONA_META_INVALID "+definition.visualId);
                 if(!prefab.GetComponent<BoxCollider>())throw new Exception("PERSONA_COLLIDER_MISSING "+definition.visualId);

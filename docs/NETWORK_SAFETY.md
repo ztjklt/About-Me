@@ -14,13 +14,14 @@
 
 ## 本轮可复现的本地证据（2026-09-23）
 
-- `.venv/bin/python -m pytest server/tests -q`：31 项通过；覆盖 API 鉴权、生成边界、调侃输入/输出审核、可信代理来源、跨身份与跨来源额度。外部模型响应使用 mock。
+- `.venv/bin/python -m pytest server/tests -q`：32 项通过；覆盖 API 鉴权、60 项 Persona 目录的生成边界、调侃输入/输出审核、可信代理来源、跨身份与跨来源额度。外部模型响应使用 mock。
 - `sh scripts/editor.sh TestRules`：27 项规则及菜单/NPC 套件通过；Reveal、Ground、Carried 与本人 Inventory 的序列化 JSON 不含 `source` 字段，权威原件仍保留来源。
-- `sh scripts/editor.sh BuildMac`、`BuildServer`、`BuildWeb`：macOS 客户端、Linux x86_64 专用服务端和浏览器包成功生成。Linux 文件尚未在 Linux 主机运行，浏览器包尚未做本轮人工交互验收。
-- `python3 scripts/test-network.py --players 2 --port 7780 --output artifacts/network-integrated-2` 与 6 人版本：本机真实 WebSocket 自动对局通过；探针检查公开快照结构。
-- `python3 scripts/test-network.py --players 2 --port 7790 --output artifacts/network-integrated-delay-reconnect --delay-ms 100 --reconnect`：独立代理施加单程 100 ms 延迟，房主断线后用原身份重连通过。
+- `sh scripts/editor.sh BuildDeliverables`：包含 60 项 Persona 目录、52 件可加载视觉资源及衣橱动效的 macOS 客户端、Linux x86_64 专用服务端和浏览器包成功生成。Linux 文件尚未在 Linux 主机运行，浏览器包尚未做本轮人工交互验收。
+- `python3 scripts/test-network.py --players 2 --port 7820 --output artifacts/final-network-2` 与 6 人版本（端口 7825、`artifacts/final-network-6`）：最终同版构建的本机真实 WebSocket 自动对局通过；探针检查公开快照结构。脚本等待服务端实际监听，避免冷启动竞态。
+- `python3 scripts/test-network.py --players 2 --port 7830 --output artifacts/final-network-delay-reconnect --delay-ms 100 --reconnect`：最终同版构建经独立代理施加单程 100 ms 延迟，房主断线后用原身份重连通过。
 - `python3 scripts/test-room-cleanup.py`：本机真实 WebSocket 房间开局、全部断线、3 秒测试宽限到期释放容量、再次建房通过；正式宽限为 120 秒。
 - `.venv/bin/python scripts/test-roast-contract.py`：读取这轮 Unity WebSocket 客户端保存的真实快照，核对 Persona 只有五个公开字段，再经 API 把公开道具字段发送到 mock 模型；模型只收到名称、模板和外观 ID，额外 `source` 请求获 422。此项是本地跨端契约验收，不是交互 UI 或真实外部模型测试。
+- 团结 `AboutMe.Editor.PersonaFourClientAudit.Run` 与 macOS 开发构建 `--persona-four-audit`：四件新增道具逐件检查装备、掉落、回收、吞噬和受控模板重击；审计按真实 `charge`→`heavy` 输入执行，样例仍为八件。此项是离线权威规则/资源验收。
 - `API_DOMAIN=api.example.com GAME_DOMAIN=game.example.com PLAY_DOMAIN=play.example.com ABOUTME_PROXY_KEY=local-validation-only caddy validate --config deploy/Caddyfile --adapter caddyfile`：用测试域名和测试密钥解析生产 Caddyfile，配置有效。
 - `.venv/bin/python scripts/test-proxy-quota.py`：本机运行 Caddy 2.11.4 与 Uvicorn，复用生产 API 反代块，以回环和本机局域网 IP 两个真实 TCP 来源各创建 10 个会话；两组额度分开，第 11 次分别返回 429。客户端伪造来源和代理密钥仍返回 429，直连 API 使用错误密钥不能绕过额度，`/internal/*` 经代理返回 404。脚本只测试本机 HTTP 反代；部署镜像固定 Caddy 2.10.0，尚未在 Docker/HTTPS/公网环境运行。
 

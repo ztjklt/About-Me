@@ -28,7 +28,7 @@ def reject_private_fields(value):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--snapshot', default='artifacts/network-integrated-2/room.txt.state.json')
+    parser.add_argument('--snapshot', default='artifacts/final-network-2/room.txt.state.json')
     args = parser.parse_args()
     snapshot = json.loads((ROOT / args.snapshot).read_text())
     reject_private_fields(snapshot)

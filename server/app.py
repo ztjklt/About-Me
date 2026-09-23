@@ -198,6 +198,13 @@ def institution_name(source):
     return match.group(1) if match else ''
 
 
+def catalog_supports_fact(catalog, source):
+    evidence = normalized_fact(source)
+    return (not catalog.get('evidenceTerms')
+            or any(normalized_fact(term) in evidence for term in catalog['evidenceTerms'])) and not any(
+                normalized_fact(term) in evidence for term in catalog.get('excludeTerms', []))
+
+
 def validate_personas(raw, introduction):
     if not isinstance(raw, dict) or not isinstance(raw.get('personas'), list):
         raise ValueError('AI 输出必须包含 personas 列表')
@@ -219,12 +226,14 @@ def validate_personas(raw, introduction):
             continue
         if any(same_fact(source, prior) for prior in seen):
             continue
-        seen.append(source)
         template, visual = x['templateId'], x['visualId']
         school = institution_name(source)
         if school:
             template, visual, name = 'Disc', 'school-disc', school + '校徽圆盘'
         catalog = CATALOG_BY_PAIR[(template, visual)]
+        if not catalog_supports_fact(catalog, source):
+            continue
+        seen.append(source)
         color = catalog['color']
         result.append(dict(assetId=uuid.uuid4().hex, name=name, templateId=template,
                            visualId=visual, color=color, source=source))
@@ -249,6 +258,9 @@ def profile_follows_generation_rules(profile, introduction):
         seen.append(source)
         school = institution_name(source)
         if school and (item.get('templateId'), item.get('visualId')) != ('Disc', 'school-disc'):
+            return False
+        catalog = CATALOG_BY_PAIR.get((item.get('templateId'), item.get('visualId')))
+        if catalog is None or not catalog_supports_fact(catalog, source):
             return False
     return True
 
@@ -278,6 +290,8 @@ async def generate_with_provider(introduction):
               '同一事实最多一个 Persona；仅有一个可游戏化事实时最多返回一个。'
               'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。'
               '大学、学院或学校信息统一只生成一个 Disc/school-disc 校徽圆盘。Persona 颜色使用目录默认值，不根据人物配色推断。'
+              '优先选择目录里语义最具体、与 source 直接对应的外观；evidenceTerms 是新道具的来源词线索，excludeTerms 表示不能选它的语境。'
+              '足球、游戏手柄、尤克里里、纸质笔记本分别选同名外观；“笔记本电脑”不是纸质笔记本。没有合适外观的事实跳过。'
               '联系方式、账号、证件、精确住址、医疗诊断、性取向、宗教信仰和攻击性内容不成为 Persona，也不写入名称。'
               'source 仅用于服务端核对，名称会被其他玩家看到；不要把介绍原句或个人隐私写入名称。不能游戏化的信息跳过。'
               '只输出 JSON 对象 {"personas":[{"name":"中文名称","source":"关联事实",'

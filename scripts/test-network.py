@@ -32,8 +32,14 @@ def start(name, extra):
     return p, log
 
 try:
-    server,_=start('server',['--aboutme-server','--allow-samples','--accelerated'])
-    time.sleep(3)
+    server,server_log=start('server',['--aboutme-server','--allow-samples','--accelerated'])
+    ready=f'Server listening on port {args.port}'
+    deadline=time.monotonic()+30
+    while time.monotonic()<deadline:
+        if server.poll() is not None: raise RuntimeError(f'Server exited before listening: {server_log}')
+        if server_log.exists() and ready in server_log.read_text(errors='replace'): break
+        time.sleep(.2)
+    else: raise RuntimeError(f'Server did not listen on {args.port}: {server_log}')
     if args.delay_ms:
         proxy=subprocess.Popen([sys.executable,str(root/'scripts/network-delay-proxy.py'),'--listen',str(client_port),'--target',str(args.port),'--delay-ms',str(args.delay_ms)])
         processes.append(proxy)
