@@ -2,6 +2,12 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
+## 2026-09-23 普通角色与界面整合试玩
+
+当前整合源码为 `codex/unity-default-menu-integration` 的 `52ff497`。从同一次构建得到的试玩包位于 `builds/final-windowed-mac/About Me QA.app`、`builds/final-windowed-web` 与 `builds/final-windowed-linux/AboutMeServer`。Mac 包采用独立 QA 存储域，默认 1280×720 窗口；它不会覆盖旧版游戏。首次启动直接进入暖色教室四气泡菜单。普通布娃娃的脚部接地、移动与单键道具规则以及 Persona 背包和触控按钮已整合；DS 娘、GPT 娘仍保持暂停状态。
+
+Mac 试玩可打开上述 QA app；需要固定普通默认角色时，使用 `--qa-default-actor` 启动参数。浏览器版需通过 HTTP 服务打开，例如 `python3 -m http.server 8197 --bind 127.0.0.1 --directory builds/final-windowed-web`，然后访问 `http://127.0.0.1:8197/?qa-default-actor`。窗口化启动与测试详情、验收范围和余项见 [本轮整合交付](docs/TUANJIE_CHARACTER_UI_INTEGRATION.md)。下文 `builds/mac` 等路径属于之前的交付基线。
+
 V4 主动布娃娃新版在 `builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
 
 这是可以编译运行的开发工程。**样例测试、真实 AI 生成、本机联机验证、异地联机验证是不同状态，请勿混用。** 验证结果与尚未完成的工作见 [开发状态](docs/STATUS.md)。

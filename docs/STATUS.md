@@ -4,6 +4,12 @@
 
 **当前交付是可运行、可继续开发的本地原型。原始 PRD 仍是目标，尚未完成全量验收。** 用户已确认先完成本地交付；本阶段不等待公网服务器、模型账号或微信 AppID。
 
+## 2026-09-23 普通角色与 UI 最终整合
+
+当前源码为 `codex/unity-default-menu-integration` 的 `52ff497`，最终同版产物为 `builds/final-windowed-mac/About Me QA.app`、`builds/final-windowed-web`、`builds/final-windowed-linux/AboutMeServer`。三平台在同一次 `BuildDeliverables` 运行中构建成功；Mac 包为独立 QA 存储域，默认 1280×720 窗口。原试玩包及旧构建没有被替换。首次启动、返回和重开使用暖色教室四气泡首页；普通角色脚底、转身、单键道具平衡、背包/快捷栏与触控界面已整合。DS 娘和 GPT 娘未在本轮修复。
+
+最终 Mac 包的本机 2/4/6 客户端 WebSocket 自动对局均完成结算；这是同机自动化证据。编辑器脚部、身体、移动和开场静态审计，以及桌面 1600×900 美术截图属于专项证据；最终 QA 的真实操作范围和未完成项见 [整合交付记录](TUANJIE_CHARACTER_UI_INTEGRATION.md)。以下章节记录旧 `61470c8` 基线及历史专项，不能将其中的构建路径和测试数字误作本轮最终包结果。
+
 本轮整合代码与构建基线为 `codex/network-deployment-hardening` 的 `61470c8`：合入客户端单一 `use_item` 攻击与四入口开场、后端英文误配排除词和“纸质笔记本”名称；游戏服务、客户端与 API 采用同一份 60 项 Persona 目录和 52 项视觉清单。样例对局仍固定使用八类各一件；真实生成按有效介绍返回可变数量，原型单人上限为 12 件。最终同版构建位于本 worktree 的 `builds/mac`、`builds/web`、`builds/linux`，详细证据见 [联机安全记录](NETWORK_SAFETY.md)与[四件客户端交付](PERSONA_FOUR_CLIENT_DELIVERY.md)。
 
 ## V4 主动布娃娃专项基线
