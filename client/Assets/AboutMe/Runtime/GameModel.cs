@@ -12,12 +12,14 @@ namespace AboutMe
         public float generationConfidence;
         public PersonaAsset Copy() => (PersonaAsset)MemberwiseClone();
         public PublicPersonaAsset PublicCopy() => new PublicPersonaAsset
-        { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color };
+        { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color,
+          emblemPath=emblemPath, emblemCrop=emblemCrop, generatedBy=generatedBy };
     }
     // A separate wire type prevents private profile fields from being serialized.
     [Serializable] public class PublicPersonaAsset
     {
         public string assetId, name, templateId, visualId, color;
+        public string emblemPath, emblemCrop, generatedBy;
     }
     [Serializable] public class Profile
     {
