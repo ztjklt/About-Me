@@ -249,6 +249,10 @@ def catalog_supports_fact(catalog, source):
                 normalized_fact(term) in evidence for term in catalog.get('excludeTerms', []))
 
 
+class NoUsablePersonaError(ValueError):
+    """The provider responded, but no candidate matched a published, grounded prop."""
+
+
 def validate_personas(raw, introduction):
     if not isinstance(raw, dict) or not isinstance(raw.get('personas'), list):
         raise ValueError('AI 输出必须包含 personas 列表')
@@ -286,7 +290,7 @@ def validate_personas(raw, introduction):
         if len(result) >= MAX_PERSONAS:
             break
     if not result:
-        raise ValueError('介绍中未找到适合游戏化的信息，请补充兴趣或经历')
+        raise NoUsablePersonaError('介绍中未找到适合游戏化的信息，请补充兴趣或经历')
     return result
 
 
@@ -479,6 +483,8 @@ async def generate_with_provider(introduction):
         raise HTTPException(504, 'AI 生成超时，请缩短介绍或稍后重试') from exc
     except httpx.HTTPStatusError as exc:
         raise HTTPException(502, f'AI 服务返回错误（{exc.response.status_code}）') from exc
+    except NoUsablePersonaError as exc:
+        raise HTTPException(422, '这段介绍暂未匹配到已上线道具，请补充其他具体兴趣或经历') from exc
     except (httpx.HTTPError, KeyError, IndexError, ValueError) as exc:
         raise HTTPException(502, 'AI 生成失败或结果不可用，请稍后重试') from exc
 

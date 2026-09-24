@@ -1,4 +1,5 @@
 import json
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 from server import app as module
@@ -64,6 +65,30 @@ def test_source_must_be_a_nonempty_exact_intro_span_and_repeated_fact_collapses(
         module.validate_personas({'personas': [dict(name='篮球三号', source='',
             templateId=pair[0], visualId=pair[1])]}, intro)
     assert not module.profile_follows_generation_rules({'personas': [dict(result[0], source='')]}, intro)
+
+
+def test_unsupported_music_props_return_actionable_error_without_saving(client, monkeypatch):
+    introduction = '我喜欢Claude，也喜欢音乐、吉他和做游戏。平时会弹吉他、写旋律，还常和朋友玩合作游戏。'
+    observed = {'personas': [
+        dict(name='吉他', source='平时会弹吉他', templateId='Melee', visualId='ukulele-cc0'),
+        dict(name='合作游戏手柄', source='常和朋友玩合作游戏', templateId='Utility', visualId='gamepad-cc0'),
+    ]}
+    class Provider:
+        def __init__(self, **kwargs): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *args): pass
+        async def post(self, url, **kwargs):
+            return httpx.Response(200, json={'choices': [{'message': {'content': json.dumps(observed)}}]},
+                                  request=httpx.Request('POST', url))
+    monkeypatch.setattr(module.httpx, 'AsyncClient', Provider)
+    for key in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'):
+        monkeypatch.setenv(key, 'test')
+    headers, _ = credentials(client)
+    response = client.post('/personas/generate', headers=headers,
+        json={'nickname': '玩家', 'introduction': introduction})
+    assert response.status_code == 422
+    assert '暂未匹配到已上线道具' in response.json()['detail']
+    assert client.get('/profiles/me', headers=headers).json()['personas'] == []
 
 
 def test_private_and_abusive_facts_do_not_become_personas():
