@@ -20,6 +20,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_brands
+from server.persona_attribution import source_is_own_positive_fact
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
@@ -268,7 +269,7 @@ def validate_personas(raw, introduction):
             raise ValueError('Persona 名称或关联信息为空')
         # Every Persona must point to one contiguous fact the player actually typed.
         # This rejects model knowledge such as a university's history, campuses or culture.
-        if source not in introduction:
+        if not source_is_own_positive_fact(introduction, source):
             continue
         if sensitive_persona_text(source) or sensitive_persona_text(name):
             continue
@@ -301,7 +302,7 @@ def profile_follows_generation_rules(profile, introduction):
     seen = []
     for item in personas:
         source = plain(item.get('source', ''), 160)
-        if (not source or source not in introduction or sensitive_persona_text(source)
+        if (not source or not source_is_own_positive_fact(introduction, source) or sensitive_persona_text(source)
                 or sensitive_persona_text(item.get('name', ''))
                 or any(same_fact(source, prior) for prior in seen)):
             return False
@@ -475,7 +476,10 @@ async def generate_with_provider(introduction):
                       {'role': 'user', 'content': introduction}], 'response_format': {'type': 'json_object'},
                       'thinking': {'type': 'disabled'}, 'temperature': 0.2, 'max_tokens': 2400})
             response.raise_for_status()
-            data = json.loads(response.json()['choices'][0]['message']['content'])
+            content = response.json()['choices'][0]['message']['content']
+            if not isinstance(content, str):
+                raise ValueError('AI 未返回文本 JSON')
+            data = json.loads(content)
         return validate_personas(data, introduction)
     except HTTPException:
         raise
@@ -485,7 +489,7 @@ async def generate_with_provider(introduction):
         raise HTTPException(502, f'AI 服务返回错误（{exc.response.status_code}）') from exc
     except NoUsablePersonaError as exc:
         raise HTTPException(422, '这段介绍暂未匹配到已上线道具，请补充其他具体兴趣或经历') from exc
-    except (httpx.HTTPError, KeyError, IndexError, ValueError) as exc:
+    except (httpx.HTTPError, KeyError, IndexError, TypeError, AttributeError, ValueError) as exc:
         raise HTTPException(502, 'AI 生成失败或结果不可用，请稍后重试') from exc
 
 
@@ -797,6 +801,10 @@ def verify(body: VerifyRequest, x_game_key: str | None = Header(default=None)):
     require_server(x_game_key)
     _, stored, intro = authenticate('Bearer ' + body.token)
     profile = normalized_profile(json.loads(stored), intro)
+    if any(not isinstance(item, dict) or
+           not source_is_own_positive_fact(intro, item.get('source', ''))
+           for item in profile.get('personas', [])):
+        raise HTTPException(422, '历史 Persona 含非本人肯定事实，请用原介绍重新生成后加入房间')
     if any(sensitive_persona_text(item.get('name', '')) or
            not safe_public_text(item.get('name', '')) for item in profile.get('personas', [])):
         raise HTTPException(422, '历史 Persona 含不可公开内容，请重新生成后加入房间')
