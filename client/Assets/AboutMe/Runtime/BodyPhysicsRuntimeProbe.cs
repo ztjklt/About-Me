@@ -8,14 +8,14 @@ namespace AboutMe
     // Opt-in diagnostic build mode: actual Match physics and ordinary ToyWorld rendering.
     public sealed class BodyPhysicsRuntimeProbe : MonoBehaviour
     {
-        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record;
+        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record,dsProbe,dsAll,claudeProbe,claudeAll;
         readonly List<float> frames=new List<float>();readonly List<double> physics=new List<double>();
         void Start()
         {
-            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");
+            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");dsProbe=args.Contains("--probe-ds");dsAll=args.Contains("--probe-ds-all");claudeProbe=args.Contains("--probe-claude");claudeAll=args.Contains("--probe-claude-all");
             Screen.SetResolution(1280,720,false);QualitySettings.vSyncCount=0;Application.targetFrameRate=60;
             network=GetComponent<GameNetwork>();match=new Match("V4-RUNTIME",new MatchRules{revealDuration=.01f,handInterval=999,finalTime=999});
-            for(int i=0;i<6;i++){var p=GameNetwork.SampleProfile("v4-"+i,"V4 "+(i+1));p.appearance=AppearanceData.Demo(i);match.Add(p);match.Players[p.playerId].position=new Vector3((i%3-1)*2.8f,1,-4-(i/3)*3.2f);}
+            for(int i=0;i<6;i++){var p=GameNetwork.SampleProfile("v4-"+i,"V4 "+(i+1));p.appearance=AppearanceData.Demo(i);if(dsAll||dsProbe&&i==0){p.appearance.character="ds";p.dsGirlUnlocked=true;p.characterSkin="ds-girl";}if(claudeAll||claudeProbe&&i==0){p.appearance.character="claude";p.claudeGirlUnlocked=true;p.characterSkin="claude-girl";}match.Add(p);match.Players[p.playerId].position=new Vector3((i%3-1)*2.8f,1,-4-(i/3)*3.2f);}
             match.EnableBodyPhysics();match.Phase=MatchPhase.Reveal;started=Time.unscaledTime;
         }
         void FixedUpdate()
@@ -28,6 +28,7 @@ namespace AboutMe
         void Update()
         {
             if(match==null)return;float t=Time.unscaledTime-started;
+            if((dsProbe||claudeProbe)&&Camera.main)Camera.main.fieldOfView=22;
             if(t>3)frames.Add(Time.unscaledDeltaTime*1000);
             if(record&&t>=nextCapture){nextCapture=t+.1f;ScreenCapture.CaptureScreenshot(Path.Combine(output,(capture++).ToString("D4")+".png"));}
             if(t<14)return;

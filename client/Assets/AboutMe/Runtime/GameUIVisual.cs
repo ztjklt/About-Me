@@ -82,9 +82,8 @@ namespace AboutMe
             var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
             BuildExpressionChoices(studioCard);
             imageUpload=ArtButton(studioCard,"图片识别",274,250,150,32,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
-            generate=ArtButton(studioCard,"生成 Persona",30,578,200,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
-            ArtButton(studioCard,"解锁 DS",246,578,168,48,()=>StartCoroutine(UnlockCosmetic("ds-girl")),UITheme.Mint,UITheme.Ink);
-            ArtButton(studioCard,"解锁 Claude",430,578,190,48,()=>StartCoroutine(UnlockCosmetic("claude-girl")),UITheme.Yellow,UITheme.Ink);
+            generate=ArtButton(studioCard,"生成 Persona",30,578,270,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
+            ArtButton(studioCard,"解锁彩蛋",316,578,304,48,()=>StartCoroutine(UnlockCosmetics()),UITheme.Mint,UITheme.Ink,"status");
             var profileCard=ArtPanel(studioCard,"Persona result",30,642,590,60,UITheme.Field,true,false);
             profileText=ArtText(profileCard,"Persona 尚未生成。",18,3,554,54,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
             profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
@@ -364,7 +363,7 @@ namespace AboutMe
             if(generateStyle)generateStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
             if(recordStyle)recordStyle.SetState(recording?UIVisualState.Recording:UIVisualState.Normal);
             if(imageUploadStyle)imageUploadStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
-            if(recordLabel)recordLabel.text=recording?"停止录音":"录音介绍";
+            if(recordLabel)recordLabel.text=recording?"停止录音":asrCapabilityKnown&&!asrConfigured?"语音未配置":"录音介绍";
         }
 
         void UpdateStatusVisual()
@@ -396,8 +395,8 @@ namespace AboutMe
         void ConfigureUIPreview()
         {
             var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--ui-preview");if(index<0||index+1>=args.Length)return;previewKind=args[index+1].ToLowerInvariant();
-            if(previewKind=="wardrobe"||previewKind=="wardrobe-ds")
-            {profile=new Profile{playerId="preview",nickname="预览玩家",appearance=AppearanceData.Demo(0),dsGirlUnlocked=previewKind=="wardrobe-ds",characterSkin=previewKind=="wardrobe-ds"?"ds-girl":"normal"};appearanceDirty=false;LoadAppearance();OpenWardrobe();net.Status="衣橱预览 · 不连接服务器";return;}
+            if(previewKind=="wardrobe"||previewKind=="wardrobe-ds"||previewKind=="wardrobe-claude")
+            {profile=new Profile{playerId="preview",nickname="预览玩家",appearance=AppearanceData.Demo(0),dsGirlUnlocked=true,claudeGirlUnlocked=true,characterSkin=previewKind=="wardrobe-ds"?"ds-girl":previewKind=="wardrobe-claude"?"claude-girl":"normal"};appearanceDirty=false;LoadAppearance();OpenWardrobe();net.Status="衣橱预览 · 不连接服务器";return;}
             if(previewKind=="home"||previewKind=="home-expanded"){ShowPage(MenuPage.Main);startMenuStage.SetExpanded(previewKind=="home-expanded",true);RefreshTouchVisibility();return;}
             if(previewKind=="presets"||previewKind=="solo"||previewKind=="multiplayer"){ShowPage(previewKind=="presets"?MenuPage.Presets:previewKind=="solo"?MenuPage.Solo:MenuPage.Multiplayer);return;}
             if(previewKind=="settings"){OpenSettings();net.Status="连接设置预览";RefreshTouchVisibility();return;}

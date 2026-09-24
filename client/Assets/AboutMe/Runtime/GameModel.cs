@@ -26,7 +26,7 @@ namespace AboutMe
         public string playerId, nickname, color = "#77C8BD";
         public int outfit, revision, appearanceRevision;
         public AppearanceData appearance;
-        public bool dsGirlUnlocked;
+        public bool dsGirlUnlocked,claudeGirlUnlocked;
         public string characterSkin = "normal";
         public PersonaAsset[] personas = Array.Empty<PersonaAsset>();
     }
@@ -184,12 +184,12 @@ namespace AboutMe
             for(int i=0;i<positions.Length;i++)Props.Add(new PublicProp{id="prop-"+i,visual=i<4?"box":"trash",position=positions[i]});
         }
         public static Vector3 Spawn(int index) => new Vector3((index%3-1)*6,1,-22+(index/3)*4);
-        static string VerifiedCharacterSkin(Profile profile) => profile!=null&&profile.dsGirlUnlocked&&profile.characterSkin=="ds-girl"?"ds-girl":"normal";
+        static string VerifiedCharacterSkin(Profile profile) => profile!=null&&profile.dsGirlUnlocked&&profile.characterSkin=="ds-girl"?"ds-girl":profile!=null&&profile.claudeGirlUnlocked&&profile.characterSkin=="claude-girl"?"claude-girl":"normal";
         public bool Add(Profile profile)
         {
             if (Players.TryGetValue(profile.playerId, out var existing))
             { if(Phase==MatchPhase.Lobby)
-                {existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);existing.profile.dsGirlUnlocked=profile.dsGirlUnlocked;existing.profile.characterSkin=VerifiedCharacterSkin(profile);}
+                {existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);existing.profile.dsGirlUnlocked=profile.dsGirlUnlocked;existing.profile.claudeGirlUnlocked=profile.claudeGirlUnlocked;existing.profile.characterSkin=VerifiedCharacterSkin(profile);}
                 existing.connected = true; existing.lastInput = Time; existing.sequence = -1; return true; }
             if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0) return false;
             if (Host == null) Host = profile.playerId;

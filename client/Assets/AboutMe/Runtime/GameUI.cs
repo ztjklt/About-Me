@@ -56,7 +56,7 @@ namespace AboutMe
         readonly List<string> favorites=new List<string>();
         Profile profile;string lastInventory="",lastEventMatch="";int lastEvent;
         string webPracticeToken;
-        bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured;float nextSend,nextUI;
+        bool busy,inventoryOpen,recording,optionsOpen,pendingRoom,aiCapabilityKnown,aiConfigured,asrCapabilityKnown,asrConfigured;float nextSend,nextUI;
         string selectedColor="#79CFC5";int outfit;
         Vector2 movement;float yaw;TouchPad movePad;
         readonly LocomotionInput locomotionInput=new LocomotionInput(); bool running,hasFocus=true;
@@ -240,7 +240,7 @@ namespace AboutMe
             net.ApiUrl=api.text.Trim().TrimEnd('/');
             if(net.ApiUrl=="")
             {
-                aiCapabilityKnown=true;aiConfigured=false;
+                aiCapabilityKnown=true;aiConfigured=false;asrCapabilityKnown=true;asrConfigured=false;
                 SetAIServiceStatus("AI / 角色服务本次试玩未开放",UITheme.Yellow);
                 yield break;
             }
@@ -249,10 +249,10 @@ namespace AboutMe
                 req.timeout=4;yield return req.SendWebRequest();
                 if(req.result==UnityWebRequest.Result.Success)
                 {
-                    var health=JsonUtility.FromJson<ServiceHealth>(req.downloadHandler.text);aiCapabilityKnown=true;aiConfigured=health!=null&&health.aiConfigured;
+                    var health=JsonUtility.FromJson<ServiceHealth>(req.downloadHandler.text);aiCapabilityKnown=true;aiConfigured=health!=null&&health.aiConfigured;asrCapabilityKnown=true;asrConfigured=health!=null&&health.asrConfigured;
                     SetAIServiceStatus(aiConfigured?(health.visionConfigured?"DeepSeek 文本 + Vision 已连接":"真实 AI 已连接，Vision 未配置"):"真实 AI 未配置",aiConfigured&&health.visionConfigured?UITheme.Mint:UITheme.Yellow);
                 }
-                else{aiCapabilityKnown=false;aiConfigured=false;SetAIServiceStatus("AI 服务不可达",UITheme.Red);}
+                else{aiCapabilityKnown=false;aiConfigured=false;asrCapabilityKnown=false;asrConfigured=false;SetAIServiceStatus("AI 服务不可达",UITheme.Red);}
             }
         }
         void SetAIServiceStatus(string value,Color color){if(aiServiceText)aiServiceText.text=value;if(aiServiceSurface)aiServiceSurface.color=color;}
@@ -263,7 +263,7 @@ namespace AboutMe
             net.Endpoint=endpoint.text.Trim();net.ApiUrl=nextApi;
             if(apiChanged)
             {
-                aiCapabilityKnown=false;
+                aiCapabilityKnown=false;asrCapabilityKnown=false;asrConfigured=false;
                 if(!net.Sample){net.Token=SavedTokenForApi();profile=null;RefreshMenuSummary();}
             }
             PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);PlayerPrefs.Save();
@@ -323,18 +323,20 @@ namespace AboutMe
         void ToggleRecording()
         {
             if(recording){platform.StopRecording();recording=false;recordLabel.text="录音介绍";return;}
+            if(!asrCapabilityKnown||!asrConfigured){net.Status="语音识别尚未配置，请使用文字或图片介绍。";return;}
             StartCoroutine(PrepareRecording());
         }
         IEnumerator PrepareRecording()
         {
             if(busy)yield break;
+            if(!asrCapabilityKnown||!asrConfigured){net.Status="语音识别尚未配置，请使用文字或图片介绍。";yield break;}
             if(net.Token==""||net.Sample)
             {
                 busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');
                 using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
                 {
                     yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                    net.Token=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text).token;net.Sample=false;profile=null;PlayerPrefs.SetString("token",net.Token);
+                    net.Token=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text).token;net.Sample=false;profile=null;SaveTokenForApi(net.Token);
                 }
                 busy=false;
             }
@@ -367,7 +369,7 @@ namespace AboutMe
                 using(var session=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
                 {
                     yield return session.SendWebRequest();if(session.result!=UnityWebRequest.Result.Success){Fail(session);yield break;}
-                    net.Token=JsonUtility.FromJson<SessionResponse>(session.downloadHandler.text).token;net.Sample=false;profile=null;PlayerPrefs.SetString("token",net.Token);
+                    net.Token=JsonUtility.FromJson<SessionResponse>(session.downloadHandler.text).token;net.Sample=false;profile=null;SaveTokenForApi(net.Token);
                 }
             }
             var form=new WWWForm();form.AddBinaryData("file",data,"introduction-image"+ImageExtension(mime),mime);

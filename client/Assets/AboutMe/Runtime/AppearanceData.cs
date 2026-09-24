@@ -24,7 +24,7 @@ namespace AboutMe
             var defaults=new AppearanceData();
             foreach(var slot in AppearanceCatalog.Data.slots)
             {var value=result.Get(slot.id);if(!slot.options.Any(x=>x.id==value))result.Set(slot.id,defaults.Get(slot.id));}
-            result.version=1;result.character=result.character=="ds"?"ds":"normal";return result;
+            result.version=1;result.character=result.character=="ds"||result.character=="claude"?result.character:"normal";return result;
         }
         public static AppearanceData Demo(int i)
         {

@@ -15,7 +15,7 @@ namespace AboutMe
     {
         AppearanceData appearanceDraft=new AppearanceData();bool appearanceDirty;string skinDraft="normal";
         RectTransform wardrobe;Camera wardrobeCamera;ToyActor wardrobeActor;RenderTexture wardrobeTexture;
-        GameObject wardrobeLight;Text wardrobeNote,skinButtonLabel;Button skinButton,recommendButton;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
+        GameObject wardrobeLight;Text wardrobeNote;Button normalSkinButton,dsSkinButton,claudeSkinButton,recommendButton;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
         readonly List<Button> wardrobeButtons=new List<Button>();
         UILiquidTabIndicator wardrobeViewIndicator;readonly Text[] wardrobeViewLabels=new Text[3];
         public AppearanceData CurrentAppearance=>appearanceDraft.Copy();
@@ -26,8 +26,10 @@ namespace AboutMe
             ArtText(card,"我的校园穿搭",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
             ArtText(card,"自由搭配 · 不影响战斗属性或 Persona",34,84,810,32,18,UITheme.Muted);
             wardrobeButtons.Add(ArtButton(card,"关闭",1220,28,116,46,CloseWardrobe,UITheme.Field,UITheme.Ink));
-            skinButton=ArtButton(card,"DS 娘 · 未解锁",965,82,371,42,ToggleCharacterSkin,UITheme.Mint,UITheme.Ink);
-            skinButtonLabel=skinButton.GetComponentInChildren<Text>();wardrobeButtons.Add(skinButton);
+            normalSkinButton=ArtButton(card,"普通",800,82,160,42,()=>SetCharacterSkin("normal"),UITheme.Field,UITheme.Ink);
+            dsSkinButton=ArtButton(card,"DS · 锁定",972,82,168,42,()=>SetCharacterSkin("ds-girl"),UITheme.Mint,UITheme.Ink);
+            claudeSkinButton=ArtButton(card,"Claude · 锁定",1152,82,184,42,()=>SetCharacterSkin("claude-girl"),UITheme.Yellow,UITheme.Ink);
+            wardrobeButtons.Add(normalSkinButton);wardrobeButtons.Add(dsSkinButton);wardrobeButtons.Add(claudeSkinButton);
             var preview=ArtPanel(card,"Doll preview",32,137,435,484,UITheme.Field,true,false);var viewport=ArtRect(preview,"Preview image",new Vector2(5,-5),new Vector2(425,474));var raw=viewport.gameObject.AddComponent<RawImage>();
             wardrobeTexture=new RenderTexture(640,740,24){antiAliasing=4};raw.texture=wardrobeTexture;raw.raycastTarget=false;
             var cameraObject=new GameObject("Wardrobe camera");wardrobeCamera=cameraObject.AddComponent<Camera>();wardrobeCamera.orthographic=true;wardrobeCamera.orthographicSize=1.5f;wardrobeCamera.clearFlags=CameraClearFlags.SolidColor;wardrobeCamera.backgroundColor=UITheme.Field;wardrobeCamera.cullingMask=1<<30;wardrobeCamera.targetTexture=wardrobeTexture;wardrobeCamera.enabled=false;
@@ -64,8 +66,7 @@ namespace AboutMe
         void OpenWardrobe()
         {
             if(busy)return;if(!wardrobe)BuildWardrobe();wardrobe.gameObject.SetActive(true);wardrobe.SetAsLastSibling();RefreshAppearancePreview();SetWardrobeView(0,true);wardrobeCamera.enabled=true;
-            if(profile==null||!profile.dsGirlUnlocked)wardrobeNote.text="介绍里写喜欢 DeepSeek，保存穿搭后可解锁 DS 娘。";
-            else if(skinDraft=="ds-girl")wardrobeNote.text="DS 娘使用固定套装；原校园穿搭仍保留。";
+            wardrobeNote.text=skinDraft=="normal"?"普通穿搭可自由搭配。喜欢 DeepSeek / Claude 可解锁彩蛋。":"彩蛋套装固定；普通穿搭仍保留。";
         }
         void CloseWardrobe(){wardrobe.gameObject.SetActive(false);wardrobeCamera.enabled=false;}
         void SetWardrobeView(int view,bool immediate=false)
@@ -79,17 +80,19 @@ namespace AboutMe
             if(busy)return;var slot=AppearanceCatalog.Data.slots.First(x=>x.id==id);int index=Array.FindIndex(slot.options,x=>x.id==appearanceDraft.Get(id));appearanceDraft.Set(id,slot.options[(index+step+slot.options.Length)%slot.options.Length].id);appearanceDirty=true;RefreshAppearancePreview();
         }
         void SetDraftColor(string color){appearanceDraft.topColor=color;appearanceDirty=true;RefreshAppearancePreview();}
-        void ToggleCharacterSkin()
+        bool CanUseSkin(string skin)=>skin=="normal"||profile!=null&&(skin=="ds-girl"&&profile.dsGirlUnlocked||skin=="claude-girl"&&profile.claudeGirlUnlocked);
+        void SetCharacterSkin(string skin)
         {
-            if(busy||profile==null||!profile.dsGirlUnlocked)return;
-            skinDraft=skinDraft=="ds-girl"?"normal":"ds-girl";appearanceDirty=true;
-            wardrobeNote.text=skinDraft=="ds-girl"?"DS 娘使用固定套装；原穿搭保留。保存后生效。":"已切回校园玩偶；保存后生效。";RefreshAppearancePreview();
+            if(busy)return;
+            if(!CanUseSkin(skin)){wardrobeNote.text=skin=="ds-girl"?"介绍写明喜欢 DeepSeek 后解锁。":"介绍写明喜欢 Claude 后解锁。";return;}
+            skinDraft=skin;appearanceDirty=true;
+            wardrobeNote.text=skin=="normal"?"普通穿搭；保存后生效。":"彩蛋套装；保存后生效。";RefreshAppearancePreview();
         }
         void LoadAppearance()
         {
             if(appearanceDirty)
-            {if(profile==null||!profile.dsGirlUnlocked)skinDraft="normal";RefreshAppearancePreview();return;}
-            skinDraft=profile!=null&&profile.dsGirlUnlocked&&profile.characterSkin=="ds-girl"?"ds-girl":"normal";
+            {if(!CanUseSkin(skinDraft))skinDraft="normal";RefreshAppearancePreview();return;}
+            skinDraft=profile!=null&&CanUseSkin(profile.characterSkin)?profile.characterSkin:"normal";
             if(net.Sample)
             {
                 var saved=PlayerPrefs.GetString("sampleAppearance","");appearanceDraft=AppearanceData.Resolve(saved==""?profile?.appearance:JsonUtility.FromJson<AppearanceData>(saved));
@@ -100,12 +103,15 @@ namespace AboutMe
         }
         void RefreshAppearancePreview()
         {
-            appearanceDraft=AppearanceData.Resolve(appearanceDraft);appearanceDraft.character=profile!=null&&profile.dsGirlUnlocked&&skinDraft=="ds-girl"?"ds":"normal";
+            appearanceDraft=AppearanceData.Resolve(appearanceDraft);appearanceDraft.character=CanUseSkin(skinDraft)?skinDraft=="ds-girl"?"ds":skinDraft=="claude-girl"?"claude":"normal":"normal";
             selectedColor=appearanceDraft.topColor;world.PreviewAppearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();RefreshColorSelection();RefreshExpressionChoices();
             if(!wardrobe)return;
-            skinButton.interactable=profile!=null&&profile.dsGirlUnlocked&&!busy;
-            skinButtonLabel.text=profile!=null&&profile.dsGirlUnlocked?(skinDraft=="ds-girl"?"切换为校园玩偶":"切换为 DS 娘"):"DS 娘 · 未解锁";
-            recommendButton.interactable=skinDraft!="ds-girl"&&!busy;
+            dsSkinButton.GetComponentInChildren<Text>().text=profile!=null&&profile.dsGirlUnlocked?"DS 娘":"DS · 锁定";
+            claudeSkinButton.GetComponentInChildren<Text>().text=profile!=null&&profile.claudeGirlUnlocked?"Claude 娘":"Claude · 锁定";
+            normalSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="normal"?UIVisualState.Selected:UIVisualState.Normal);
+            dsSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="ds-girl"?UIVisualState.Selected:UIVisualState.Normal);
+            claudeSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="claude-girl"?UIVisualState.Selected:UIVisualState.Normal);
+            recommendButton.interactable=skinDraft=="normal"&&!busy;
             foreach(var slot in AppearanceCatalog.Data.slots)
             {
                 wardrobeValues[slot.id].text=slot.options.First(x=>x.id==appearanceDraft.Get(slot.id)).label;
@@ -150,18 +156,18 @@ namespace AboutMe
                 var response=JsonUtility.FromJson<SessionResponse>(req.downloadHandler.text);net.Token=response.token;profile=response.profile;SaveTokenForApi(net.Token);
             }
         }
-        IEnumerator UnlockDSGirl()
+        IEnumerator UnlockCosmetics()
         {
             if(busy)yield break;
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3)
-            {net.Status="先写至少 3 个字的介绍，例如“我喜欢 DeepSeek”。";yield break;}
+            {net.Status="先写介绍，例如“我喜欢 DeepSeek 和 Claude”。";yield break;}
             if(net.Sample){net.Sample=false;net.Token="";profile=null;}
             yield return SaveAppearance(true);
         }
         IEnumerator RecommendAppearance()
         {
             if(busy)yield break;
-            if(skinDraft=="ds-girl"){wardrobeNote.text="DS 娘套装固定；切回校园玩偶后可推荐穿搭。";yield break;}
+            if(skinDraft!="normal"){wardrobeNote.text="彩蛋套装固定；切回普通穿搭后可推荐。";yield break;}
             if(net.Sample){net.Status="样例模式可手动搭配；真实 AI 推荐请使用真实角色。";yield break;}
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="先写一段介绍，再让 AI 推荐穿搭。";yield break;}
             busy=true;wardrobeNote.text="正在根据你的介绍推荐穿搭…";yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
@@ -183,25 +189,25 @@ namespace AboutMe
             string intro=string.IsNullOrWhiteSpace(introduction.text)?null:introduction.text.Trim();
             for(int attempt=0;attempt<2;attempt++)
             {
-                using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0,characterSkin=skinDraft,introduction=intro!=null&&intro.Length>=3?intro:null}),net.Token))
+                using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/profiles/me/appearance",JsonUtility.ToJson(new AppearanceSaveRequest{appearance=appearanceDraft,expectedRevision=profile?.appearanceRevision??0,characterSkin=openWardrobeOnUnlock?null:skinDraft,introduction=intro!=null&&intro.Length>=3?intro:null}),net.Token))
                 {
                     yield return req.SendWebRequest();
                     if(req.responseCode==401&&attempt==0)
                     {net.Token="";SaveTokenForApi("");yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;continue;}
-                    if(req.result!=UnityWebRequest.Result.Success){Fail(req,"保存穿搭与 DS 娘解锁");if(wardrobeNote)wardrobeNote.text=net.Status;yield break;}
-                    bool wasUnlocked=profile!=null&&profile.dsGirlUnlocked;
+                    if(req.result!=UnityWebRequest.Result.Success){Fail(req,"保存穿搭与彩蛋解锁");if(wardrobeNote)wardrobeNote.text=net.Status;yield break;}
+                    bool wasDsUnlocked=profile!=null&&profile.dsGirlUnlocked,wasClaudeUnlocked=profile!=null&&profile.claudeGirlUnlocked;
                     profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();
                     PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
                     busy=false;
                     if(openWardrobeOnUnlock)
                     {
-                        if(profile.dsGirlUnlocked){OpenWardrobe();net.Status="DS 娘已解锁。请在衣橱中切换并保存。";wardrobeNote.text="已解锁 DS 娘。点击右上角切换，再保存即可使用。";}
-                        else net.Status="尚未解锁：请在介绍中写明你喜欢 DeepSeek，然后重试。";
+                        if(profile.dsGirlUnlocked||profile.claudeGirlUnlocked){OpenWardrobe();net.Status="彩蛋资格已更新，请在衣橱中选择并保存。";wardrobeNote.text="DS 与 Claude 可分别选择；保存后生效。";}
+                        else net.Status="未解锁：介绍需写明本人喜欢 DeepSeek 或 Claude。";
                     }
                     else
                     {
                         net.Status="穿搭已保存，Persona 没有改变。";
-                        if(wardrobeNote)wardrobeNote.text=!wasUnlocked&&profile.dsGirlUnlocked?"已解锁 DS 娘。点击右上角切换，再保存即可使用。":"已保存。你可以直接带着这套穿搭进入房间。";
+                        if(wardrobeNote)wardrobeNote.text=(!wasDsUnlocked&&profile.dsGirlUnlocked)||(!wasClaudeUnlocked&&profile.claudeGirlUnlocked)?"新彩蛋已解锁；选择外观并保存。":"已保存。";
                     }
                     yield break;
                 }
