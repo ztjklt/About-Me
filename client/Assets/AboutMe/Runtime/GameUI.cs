@@ -457,6 +457,7 @@ namespace AboutMe
             if(net==null)return;
             generate.interactable=!busy;join.interactable=!busy;if(imageUpload)imageUpload.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
             var state=net.State;
+            UpdateSelectionBackground(state);
             if(battleMusic)battleMusic.Sync(state,net.IsSolo||Mirror.NetworkClient.isConnected);
             UpdateMenuVisibility();
             if(Input.GetKeyDown(KeyCode.Escape)){if(inventoryOpen)ToggleBag();else if(optionsOpen){optionsOpen=false;settings.gameObject.SetActive(false);}else if(wardrobe&&wardrobe.gameObject.activeSelf)CloseWardrobe();else if(state==null)ShowPage(MenuPage.Main);else {cursorReleased=!cursorReleased;if(cursorReleased){ResetMovement();Send("cancel");}}}

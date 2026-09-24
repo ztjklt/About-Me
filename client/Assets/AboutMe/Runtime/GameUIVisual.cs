@@ -11,7 +11,10 @@ namespace AboutMe
 {
     public partial class GameUI
     {
-        RectTransform safeRoot,artboard,studioCard,homeHero,lobbyCard,lobbyGrid,hudCard,hudToast,hudProgress,hotbar,resultContent,resultEventLine,keyboardHint;
+        RectTransform safeRoot,artboard,selectionBleed,studioCard,homeHero,lobbyCard,lobbyGrid,hudCard,hudToast,hudProgress,hotbar,resultContent,resultEventLine,keyboardHint;
+        Image selectionBleedImage;
+        AspectRatioFitter selectionBleedFit;
+        Sprite selectionCampusSprite,selectionStudioSprite;
         ScrollRect inventoryScroll;
         Button keyboardHelpButton;
         readonly List<RectTransform> inventoryCards=new List<RectTransform>();
@@ -41,6 +44,20 @@ namespace AboutMe
             if(!FindObjectOfType<EventSystem>())new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));
 
             var backdrop=ArtRect(canvas,"Camera passthrough",Vector2.zero,Vector2.zero);Stretch(backdrop);var backdropImage=backdrop.gameObject.AddComponent<Image>();backdropImage.color=Color.clear;backdropImage.raycastTarget=false;
+            selectionBleed=ArtRect(canvas,"Selection background outside safe artboard",Vector2.zero,Vector2.zero);Stretch(selectionBleed);
+            selectionBleed.gameObject.AddComponent<RectMask2D>();
+            var bleedRect=ArtRect(selectionBleed,"Campus background · full screen",Vector2.zero,new Vector2(1600,900));
+            bleedRect.anchorMin=bleedRect.anchorMax=bleedRect.pivot=new Vector2(.5f,.5f);
+            selectionBleedImage=bleedRect.gameObject.AddComponent<Image>();
+            selectionCampusSprite=Resources.Load<Sprite>("StartMenu2D/background");
+            if(!selectionCampusSprite)throw new InvalidOperationException("Missing selection background");
+            selectionStudioSprite=Resources.Load<Sprite>("SelectionBackgrounds/studio-wardrobe");
+            if(!selectionStudioSprite)throw new InvalidOperationException("Missing studio selection background");
+            selectionBleedImage.sprite=selectionCampusSprite;
+            selectionBleedImage.raycastTarget=false;
+            selectionBleedFit=selectionBleedImage.gameObject.AddComponent<AspectRatioFitter>();
+            selectionBleedFit.aspectMode=AspectRatioFitter.AspectMode.EnvelopeParent;
+            selectionBleedFit.aspectRatio=selectionCampusSprite.rect.width/selectionCampusSprite.rect.height;
             safeRoot=ArtRect(canvas,"Safe area",Vector2.zero,Vector2.zero);Stretch(safeRoot);
             artboard=ArtRect(safeRoot,"1600 × 900 artboard",Vector2.zero,new Vector2(1600,900));artboard.anchorMin=artboard.anchorMax=artboard.pivot=new Vector2(.5f,.5f);
             var safe=canvasObject.AddComponent<UISafeArtboard>();safe.SafeRoot=safeRoot;safe.Artboard=artboard;
@@ -48,6 +65,18 @@ namespace AboutMe
             BuildHome();BuildSettings();BuildLobby();BuildHud();BuildBag();BuildResults();BuildArtTouch();BuildStatus();
             home.gameObject.SetActive(true);lobby.gameObject.SetActive(false);hud.gameObject.SetActive(false);results.gameObject.SetActive(false);settings.gameObject.SetActive(false);bag.gameObject.SetActive(false);
             ApplyAdaptiveLayout(true);
+        }
+
+        void UpdateSelectionBackground(Snapshot state)
+        {
+            bool wardrobeOpen=wardrobe&&wardrobe.gameObject.activeSelf;
+            bool visible=state==null||state.phase==MatchPhase.Lobby||state.phase==MatchPhase.Finished||optionsOpen||wardrobeOpen;
+            if(selectionBleed.gameObject.activeSelf!=visible)selectionBleed.gameObject.SetActive(visible);
+            if(!visible)return;
+            var sprite=optionsOpen||wardrobeOpen?selectionStudioSprite:selectionCampusSprite;
+            if(selectionBleedImage.sprite==sprite)return;
+            selectionBleedImage.sprite=sprite;
+            selectionBleedFit.aspectRatio=sprite.rect.width/sprite.rect.height;
         }
 
         void BuildHome()

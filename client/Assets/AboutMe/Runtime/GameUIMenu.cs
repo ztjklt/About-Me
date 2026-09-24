@@ -114,7 +114,7 @@ namespace AboutMe
             soloMenu.gameObject.SetActive(show&&page==MenuPage.Solo);
             multiplayerMenu.gameObject.SetActive(show&&page==MenuPage.Multiplayer);
             home.gameObject.SetActive(show&&page==MenuPage.Presets);
-            if(world)world.SetMenuPreviewVisible(!(show&&page==MenuPage.Main));
+            if(world)world.SetMenuPreviewVisible(!show);
         }
         void RefreshMenuSummary()
         {
