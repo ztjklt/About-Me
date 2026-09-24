@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -163,7 +164,7 @@ namespace AboutMe
             hudProgress=ArtPanel(hud,"Interaction progress",545,690,510,74,UITheme.Paper,true,true);progressText=ArtText(hudProgress,"吞噬 0%",18,8,474,25,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             var progressTrack=ArtPanel(hudProgress,"Progress track",18,42,474,18,UITheme.Field,true,false);progressFill=ArtPanel(progressTrack,"Progress fill",3,3,468,12,UITheme.Pink,false,false).GetComponent<Image>();progressFill.rectTransform.anchorMin=new Vector2(0,0);progressFill.rectTransform.anchorMax=new Vector2(1,1);progressFill.rectTransform.offsetMin=new Vector2(3,3);progressFill.rectTransform.offsetMax=new Vector2(-3,-3);hudProgress.gameObject.SetActive(false);
             keyboardHint=ArtPanel(hud,"Keyboard help",34,202,382,142,new Color(1,1,1,.94f),true,true);
-            ArtText(keyboardHint,"WASD 移动  ·  鼠标镜头  ·  空格跳跃\n锁鼠失败时按住右键拖镜头\nF 使用  ·  G/H 抓取  ·  E 吃/收\n1–5 切换  ·  B 背包  ·  Q 挣脱",16,10,350,125,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            ArtText(keyboardHint,"WASD 移动  ·  点击场地锁定鼠标\n移动鼠标转镜头；失败时按住右键拖动\nF 使用  ·  G/H 抓取  ·  E 吃/收\n1–5 切换  ·  B 背包  ·  Q 挣脱",16,10,350,125,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             keyboardHint.gameObject.SetActive(false);
             keyboardHelpButton=ArtButton(hud,"操作",34,807,96,48,()=>keyboardHint.gameObject.SetActive(!keyboardHint.gameObject.activeSelf),UITheme.Paper,UITheme.Ink,"status");
             hotbar=ArtPanel(hud,"Persona hotbar",380,795,840,84,UITheme.Paper,true,true);
@@ -395,6 +396,7 @@ namespace AboutMe
         void ConfigureUIPreview()
         {
             var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--ui-preview");if(index<0||index+1>=args.Length)return;previewKind=args[index+1].ToLowerInvariant();
+            int capture=Array.IndexOf(args,"--ui-screenshot");if(capture>=0&&capture+1<args.Length)StartCoroutine(CaptureUIPreview(args[capture+1]));
             if(previewKind=="wardrobe"||previewKind=="wardrobe-ds"||previewKind=="wardrobe-claude")
             {profile=new Profile{playerId="preview",nickname="预览玩家",appearance=AppearanceData.Demo(0),dsGirlUnlocked=true,claudeGirlUnlocked=true,characterSkin=previewKind=="wardrobe-ds"?"ds-girl":previewKind=="wardrobe-claude"?"claude-girl":"normal"};appearanceDirty=false;LoadAppearance();OpenWardrobe();net.Status="衣橱预览 · 不连接服务器";return;}
             if(previewKind=="home"||previewKind=="home-expanded"){ShowPage(MenuPage.Main);startMenuStage.SetExpanded(previewKind=="home-expanded",true);RefreshTouchVisibility();return;}
@@ -406,6 +408,13 @@ namespace AboutMe
             var phase=lobbyPreview?MatchPhase.Lobby:previewKind=="results"||previewKind=="results-late-event"?MatchPhase.Finished:MatchPhase.Battle;
             net.State=new Snapshot{room="PARTY",matchId="preview",you="preview-0",host="preview-0",winner="preview-1",phase=phase,time=196,finalAt=450,players=players,inventory=inventory,ground=Array.Empty<PublicPersonaInstance>(),revealed=Array.Empty<PublicPersonaInstance>(),effects=Array.Empty<EffectState>(),props=Array.Empty<PublicProp>(),events=new[]{new MatchEvent{id=1,text="海盐汽水吃掉了小宇宙的「篮球」！"}},eaten=new[]{new EatRecord{instanceId="eat-1",eater="海盐汽水",owner="小宇宙",persona="篮球"},new EatRecord{instanceId="eat-2",eater="凌晨三点",owner="猫派代表",persona="相机"}}};
             net.Status="UI 预览 · 不连接服务器";if(previewKind=="bag"){inventoryOpen=true;bag.gameObject.SetActive(true);}if(previewKind=="qr")OpenQrOverlay(CreatePreviewQr(),"PARTY",true);if(previewKind=="results-late-event")StartCoroutine(PreviewLateResultEvent());RefreshTouchVisibility();
+        }
+
+        IEnumerator CaptureUIPreview(string path)
+        {
+            yield return new WaitForEndOfFrame();yield return new WaitForEndOfFrame();
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
+            ScreenCapture.CaptureScreenshot(path);
         }
 
         IEnumerator PreviewLateResultEvent()

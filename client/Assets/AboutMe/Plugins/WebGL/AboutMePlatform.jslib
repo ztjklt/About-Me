@@ -1,4 +1,5 @@
 mergeInto(LibraryManager.library, {
+  AM_PointerLocked: function(){return typeof document!=='undefined'&&document.pointerLockElement===Module.canvas?1:0;},
   AM_Init: function(receiver) {
     var target=UTF8ToString(receiver);globalThis.aboutMeReceiver=target;
     if(typeof wx!=='undefined'&&wx.getLaunchOptionsSync){

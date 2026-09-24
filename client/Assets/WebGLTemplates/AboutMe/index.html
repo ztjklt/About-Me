@@ -26,6 +26,8 @@
     launchUrl.searchParams.set('practiceSession',practiceToken);
     history.replaceState(history.state,'',launchUrl);
     const canvas=document.getElementById('game'),loading=document.getElementById('loading');
+    canvas.addEventListener('pointerdown',()=>canvas.focus());
+    canvas.addEventListener('contextmenu',event=>event.preventDefault());
     const config={dataUrl:'Build/{{{ DATA_FILENAME }}}',frameworkUrl:'Build/{{{ FRAMEWORK_FILENAME }}}',codeUrl:'Build/{{{ CODE_FILENAME }}}',streamingAssetsUrl:'StreamingAssets',companyName:'About Me Studio',productName:'About Me',productVersion:'0.1.0',autoSyncPersistentDataPath:true,devicePixelRatio:Math.min(devicePixelRatio,1.5),showBanner:(message,type)=>{if(type==='error')document.getElementById('error').textContent=message;}};
     const loader=document.createElement('script');loader.src='Build/{{{ LOADER_FILENAME }}}';
     loader.onload=()=>createTuanjieInstance(canvas,config,p=>document.querySelector('progress').value=p).then(()=>{loading.style.display='none';canvas.focus();}).catch(e=>document.getElementById('error').textContent='加载失败，请刷新重试。\n'+String(e));

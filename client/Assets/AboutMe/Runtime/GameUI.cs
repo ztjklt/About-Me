@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -60,9 +61,12 @@ namespace AboutMe
         string selectedColor="#79CFC5";int outfit;
         Vector2 movement;float yaw;TouchPad movePad;
         readonly LocomotionInput locomotionInput=new LocomotionInput(); bool running,hasFocus=true;
-        bool escapeHeld,touchEscapeHeld,cursorReleased,skipMouseFrame,webLockAttempted,webDragCamera;
+        bool escapeHeld,touchEscapeHeld,cursorReleased,skipMouseFrame,webLockAttempted,webPointerLocked,webDragCamera,webCameraHintShown;
         Vector3 webDragPosition;
         float webLockAttemptAt;
+#if UNITY_WEBGL && !UNITY_EDITOR
+        [DllImport("__Internal")] static extern int AM_PointerLocked();
+#endif
         void ResetMovement(){escapeHeld=touchEscapeHeld=false;movement=Vector2.zero;running=false;locomotionInput.Reset();if(movePad)movePad.Reset();}
         void OnApplicationFocus(bool focus){hasFocus=focus;if(!focus){cursorReleased=true;ReleaseCursor();ResetMovement();if(net)Send("cancel");}}
         public void Build(GameNetwork network,ToyWorld toyWorld)
@@ -391,7 +395,7 @@ namespace AboutMe
             switch(mime){case "image/jpeg":return ".jpg";case "image/png":return ".png";case "image/gif":return ".gif";case "image/webp":return ".webp";default:return ".img";}
         }
         void Send(string action,string item=""){if(CombatInputAudit.Enabled&&action!="")Debug.Log("COMBAT_INPUT_ACTION "+action);net.Send(action,item,movement,yaw,running,escapeHeld);}
-        void ReleaseCursor(){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;skipMouseFrame=true;webDragCamera=false;}
+        void ReleaseCursor(){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;skipMouseFrame=true;webLockAttempted=false;webPointerLocked=false;webDragCamera=false;webCameraHintShown=false;}
         static readonly KeyCode[] directionKeys={KeyCode.W,KeyCode.A,KeyCode.S,KeyCode.D};
         static int DirectionMask(bool down)
         {
@@ -403,20 +407,30 @@ namespace AboutMe
         {
             bool desktop=!(touch&&touch.gameObject.activeSelf);
             if(!allowed||!desktop){ReleaseCursor();return;}
-            if(cursorReleased&&Input.GetMouseButtonDown(0)&&!(EventSystem.current&&EventSystem.current.IsPointerOverGameObject()))cursorReleased=false;
+            bool scenePointer=!(EventSystem.current&&EventSystem.current.IsPointerOverGameObject());
+            bool sceneClick=Input.GetMouseButtonDown(0)&&scenePointer;
+            if(cursorReleased&&scenePointer&&(Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1)))cursorReleased=false;
             if(cursorReleased){ReleaseCursor();return;}
-            if(Cursor.lockState!=CursorLockMode.Locked)
+            if(Application.platform==RuntimePlatform.WebGLPlayer)
             {
-                if(Application.platform!=RuntimePlatform.WebGLPlayer||!webLockAttempted)
+                bool locked=false;
+#if UNITY_WEBGL && !UNITY_EDITOR
+                locked=AM_PointerLocked()!=0;
+#endif
+                if(webPointerLocked&&!locked)
                 {
-                    Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;skipMouseFrame=true;
-                    if(Application.platform==RuntimePlatform.WebGLPlayer){webLockAttempted=true;webLockAttemptAt=Time.unscaledTime;}
+                    // Esc, tab switching and browser UI can release pointer lock without a Unity key event.
+                    cursorReleased=true;ResetMovement();Send("cancel");ReleaseCursor();net.Status="视角已释放，点击战斗画面恢复；也可按住右键拖动。";return;
                 }
-                if(Cursor.lockState!=CursorLockMode.Locked&&Application.platform==RuntimePlatform.WebGLPlayer)
+                webPointerLocked=locked;
+                if(!locked)
                 {
-                    // Embedded browsers may deny pointer lock. Right drag remains usable
-                    // without repeatedly requesting a permission the browser rejected.
-                    if(Time.unscaledTime-webLockAttemptAt<.4f)return;
+                    if(!webCameraHintShown){net.Status="点击战斗画面控制视角；浏览器拒绝时可按住右键拖动。";webCameraHintShown=true;}
+                    if(webLockAttempted&&Time.unscaledTime-webLockAttemptAt>.4f)
+                    {Cursor.lockState=CursorLockMode.None;webLockAttempted=false;net.Status="视角未锁定，按住右键拖动，或再次点击战斗画面。";}
+                    if(sceneClick&&!webLockAttempted)
+                    {Cursor.lockState=CursorLockMode.Locked;webLockAttempted=true;webLockAttemptAt=Time.unscaledTime;skipMouseFrame=true;}
+                    // The browser may decline pointer lock. Right drag stays available after a click.
                     Cursor.visible=true;
                     if(Input.GetMouseButtonDown(1)){webDragCamera=true;webDragPosition=Input.mousePosition;}
                     if(Input.GetMouseButtonUp(1))webDragCamera=false;
@@ -428,6 +442,11 @@ namespace AboutMe
                     }
                     return;
                 }
+                webLockAttempted=false;webDragCamera=false;webCameraHintShown=false;
+            }
+            if(Cursor.lockState!=CursorLockMode.Locked)
+            {
+                Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;skipMouseFrame=true;
             }
             if(skipMouseFrame){skipMouseFrame=false;return;}
             world.CameraYaw+=Input.GetAxis("Mouse X")*3*cameraSensitivity;
