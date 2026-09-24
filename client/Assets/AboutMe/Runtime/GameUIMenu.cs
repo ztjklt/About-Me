@@ -51,7 +51,6 @@ namespace AboutMe
         void BuildStartMenuStage()
         {
             mainMenu=ArtPanel(artboard,"Main menu · 2.5D stage",0,0,1600,900,Color.clear,false,false);
-            MenuSprite(mainMenu,"Warm campus background","StartMenu2D/background",0,0,1600,900,false);
             var title=MenuSprite(mainMenu,"About Me clay title","StartMenu2D/title",400,24,800,267);
 
             var arms=new List<RectTransform>();
@@ -94,7 +93,7 @@ namespace AboutMe
         {var mark=ArtPanel(parent,"Clay accent",x,y,width,height,color,false,false);mark.GetComponent<Image>().sprite=UITheme.Rounded;mark.localRotation=Quaternion.Euler(0,0,rotation);}
         RectTransform MenuCard(string title,string tape)
         {
-            var stage=SelectionStage(title+" selection stage",CampusSelectionArt,new Color(1f,.985f,.95f,.18f));
+            var stage=SelectionStage(title+" selection stage");
             var panel=ArtPanel(stage,title,310,66,980,720,UITheme.Paper,true,true);
             Tape(panel,tape,40,30,260,36,UITheme.Pink);ArtText(panel,title,40,82,750,90,38,UITheme.Ink,FontStyle.Bold);
             ArtButton(panel,"返回",812,34,126,52,()=>ShowPage(MenuPage.Main),UITheme.Field,UITheme.Ink,"exit");return panel;
@@ -111,10 +110,11 @@ namespace AboutMe
         void UpdateMenuVisibility()
         {
             if(!mainMenu)return;bool show=net.State==null;
-            mainMenu.gameObject.SetActive(show&&page==MenuPage.Main);
-            soloMenu.gameObject.SetActive(show&&page==MenuPage.Solo);
-            multiplayerMenu.gameObject.SetActive(show&&page==MenuPage.Multiplayer);
-            home.gameObject.SetActive(show&&page==MenuPage.Presets);
+            bool covered=optionsOpen||(wardrobe&&wardrobe.gameObject.activeSelf);
+            mainMenu.gameObject.SetActive(show&&!covered&&page==MenuPage.Main);
+            soloMenu.gameObject.SetActive(show&&!covered&&page==MenuPage.Solo);
+            multiplayerMenu.gameObject.SetActive(show&&!covered&&page==MenuPage.Multiplayer);
+            home.gameObject.SetActive(show&&!covered&&page==MenuPage.Presets);
             if(world)world.SetMenuPreviewVisible(!show);
         }
         void RefreshMenuSummary()

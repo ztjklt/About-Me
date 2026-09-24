@@ -21,8 +21,8 @@ namespace AboutMe
         public AppearanceData CurrentAppearance=>appearanceDraft.Copy();
         void BuildWardrobe()
         {
-            wardrobe=ArtPanel(artboard,"Wardrobe",0,0,1600,900,new Color(.08f,.10f,.15f,.84f),false,false);
-            AddSelectionBackground(wardrobe,StudioSelectionArt,new Color(1f,.985f,.95f,.22f));
+            wardrobe=ArtPanel(artboard,"Wardrobe",0,0,1600,900,Color.clear,false,false);
+            wardrobe.GetComponent<Image>().raycastTarget=true;
             var card=ArtPanel(wardrobe,"Campus wardrobe",115,28,1370,836,UITheme.Paper,true,true);
             ArtText(card,"我的校园穿搭",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
             ArtText(card,"自由搭配 · 不影响战斗属性或 Persona",34,84,810,32,18,UITheme.Muted);

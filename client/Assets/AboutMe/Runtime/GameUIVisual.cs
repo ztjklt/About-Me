@@ -12,7 +12,7 @@ namespace AboutMe
     public partial class GameUI
     {
         RectTransform safeRoot,artboard,selectionBleed,studioCard,homeHero,lobbyCard,lobbyGrid,hudCard,hudToast,hudProgress,hotbar,resultContent,resultEventLine,keyboardHint;
-        Image selectionBleedImage;
+        Image selectionBleedImage,selectionBleedWash;
         AspectRatioFitter selectionBleedFit;
         Sprite selectionCampusSprite,selectionStudioSprite;
         ScrollRect inventoryScroll;
@@ -44,22 +44,25 @@ namespace AboutMe
             if(!FindObjectOfType<EventSystem>())new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));
 
             var backdrop=ArtRect(canvas,"Camera passthrough",Vector2.zero,Vector2.zero);Stretch(backdrop);var backdropImage=backdrop.gameObject.AddComponent<Image>();backdropImage.color=Color.clear;backdropImage.raycastTarget=false;
-            selectionBleed=ArtRect(canvas,"Selection background outside safe artboard",Vector2.zero,Vector2.zero);Stretch(selectionBleed);
+            selectionBleed=ArtRect(canvas,"Selection background · full screen",Vector2.zero,Vector2.zero);Stretch(selectionBleed);
             selectionBleed.gameObject.AddComponent<RectMask2D>();
             var bleedRect=ArtRect(selectionBleed,"Campus background · full screen",Vector2.zero,new Vector2(1600,900));
             bleedRect.anchorMin=bleedRect.anchorMax=bleedRect.pivot=new Vector2(.5f,.5f);
             selectionBleedImage=bleedRect.gameObject.AddComponent<Image>();
-            selectionCampusSprite=Resources.Load<Sprite>("StartMenu2D/background");
+            selectionCampusSprite=Resources.Load<Sprite>(CampusSelectionArt);
             if(!selectionCampusSprite)throw new InvalidOperationException("Missing selection background");
-            selectionStudioSprite=Resources.Load<Sprite>("SelectionBackgrounds/studio-wardrobe");
+            selectionStudioSprite=Resources.Load<Sprite>(StudioSelectionArt);
             if(!selectionStudioSprite)throw new InvalidOperationException("Missing studio selection background");
             selectionBleedImage.sprite=selectionCampusSprite;
             selectionBleedImage.raycastTarget=false;
             selectionBleedFit=selectionBleedImage.gameObject.AddComponent<AspectRatioFitter>();
             selectionBleedFit.aspectMode=AspectRatioFitter.AspectMode.EnvelopeParent;
             selectionBleedFit.aspectRatio=selectionCampusSprite.rect.width/selectionCampusSprite.rect.height;
+            var washRect=ArtRect(selectionBleed,"Selection paper wash · full screen",Vector2.zero,Vector2.zero);Stretch(washRect);
+            selectionBleedWash=washRect.gameObject.AddComponent<Image>();selectionBleedWash.raycastTarget=false;
             safeRoot=ArtRect(canvas,"Safe area",Vector2.zero,Vector2.zero);Stretch(safeRoot);
             artboard=ArtRect(safeRoot,"1600 × 900 artboard",Vector2.zero,new Vector2(1600,900));artboard.anchorMin=artboard.anchorMax=artboard.pivot=new Vector2(.5f,.5f);
+            artboard.gameObject.AddComponent<RectMask2D>();
             var safe=canvasObject.AddComponent<UISafeArtboard>();safe.SafeRoot=safeRoot;safe.Artboard=artboard;
 
             BuildHome();BuildSettings();BuildLobby();BuildHud();BuildBag();BuildResults();BuildArtTouch();BuildStatus();
@@ -74,17 +77,21 @@ namespace AboutMe
             if(selectionBleed.gameObject.activeSelf!=visible)selectionBleed.gameObject.SetActive(visible);
             if(!visible)return;
             var sprite=optionsOpen||wardrobeOpen?selectionStudioSprite:selectionCampusSprite;
-            if(selectionBleedImage.sprite==sprite)return;
-            selectionBleedImage.sprite=sprite;
-            selectionBleedFit.aspectRatio=sprite.rect.width/sprite.rect.height;
+            if(selectionBleedImage.sprite!=sprite)
+            {
+                selectionBleedImage.sprite=sprite;
+                selectionBleedFit.aspectRatio=sprite.rect.width/sprite.rect.height;
+            }
+            selectionBleedWash.color=wardrobeOpen?new Color(1f,.985f,.95f,.22f):
+                optionsOpen?new Color(1f,.985f,.95f,.27f):
+                state==null&&page==MenuPage.Presets?new Color(1f,.98f,.93f,.55f):
+                state==null&&page!=MenuPage.Main?new Color(1f,.985f,.95f,.18f):
+                state!=null&&state.phase==MatchPhase.Lobby?new Color(.96f,.99f,1f,.24f):Color.clear;
         }
 
         void BuildHome()
         {
             home=ArtPanel(artboard,"Introduction",0,0,1600,900,Color.clear,false,false);
-            MenuSprite(home,"Campus workshop background","StartMenu2D/background",0,0,1600,900,false);
-            var backdropWash=ArtPanel(home,"Warm paper backdrop",0,0,1600,900,new Color(1f,.98f,.93f,.55f),false,false);
-            backdropWash.GetComponent<Image>().raycastTarget=false;
 
             studioCard=ArtPanel(home,"Persona studio",900,34,650,836,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
             var mascotFrame=ArtPanel(studioCard,"Clay mascot cameo",486,22,134,143,UITheme.Mint,false,false);
@@ -125,8 +132,7 @@ namespace AboutMe
 
         void BuildSettings()
         {
-            settings=ArtPanel(artboard,"Settings modal",0,0,1600,900,new Color(.05f,.07f,.12f,.52f),false,false);Stretch(settings);settings.GetComponent<Image>().raycastTarget=true;
-            AddSelectionBackground(settings,StudioSelectionArt,new Color(1f,.985f,.95f,.27f));
+            settings=ArtPanel(artboard,"Settings modal",0,0,1600,900,Color.clear,false,false);Stretch(settings);settings.GetComponent<Image>().raycastTarget=true;
             var card=ArtPanel(settings,"Connection settings card",438,154,724,592,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
             Tape(card,"CONNECTION KIT",32,26,204,38,UITheme.Purple);
             ArtText(card,"连接与服务",32,74,560,49,33,UITheme.Ink,FontStyle.Bold);
@@ -137,9 +143,9 @@ namespace AboutMe
             api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
             var note=ArtPanel(card,"Secret note",32,360,660,58,UITheme.Yellow,true,false);
             ArtIcon(note,"status",18,10,38,UITheme.Ink);ArtText(note,"密钥仅保存在服务端",68,3,570,48,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            ArtButton(card,"保存连接设置",32,468,316,58,SaveConnectionSettings,UITheme.Mint,UITheme.Ink,"ready");
+            ArtButton(card,"保存设置",32,468,316,58,SaveConnectionSettings,UITheme.Mint,UITheme.Ink,"ready");
             Place(card,438,54,724,790);
-            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存连接设置")Place((RectTransform)button.transform,32,698,224,58);
+            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存设置")Place((RectTransform)button.transform,32,698,224,58);
             var sensitivity=ArtButton(card,"",32,460,256,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
             var touchButton=ArtButton(card,"",32,534,256,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
             var music=ArtButton(card,"",370,534,322,54,()=>{float volume=BattleMusic.SavedVolume;PlayerPrefs.SetFloat("battleMusicVolume",volume<.05f?.16f:volume<.22f?.30f:volume<.4f?.50f:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);musicSettingLabel=music.GetComponentInChildren<Text>();
@@ -154,7 +160,6 @@ namespace AboutMe
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);
-            AddSelectionBackground(lobby,CampusSelectionArt,new Color(.96f,.99f,1f,.24f));
             lobbyCard=ArtPanel(lobby,"Room ticket",44,42,676,816,UITheme.Paper,true,true);lobbyCard.gameObject.AddComponent<UIReveal>();
             Tape(lobbyCard,"MEET YOUR FRIENDS",28,24,232,38,UITheme.Pink);
             roomTitle=ArtText(lobbyCard,"房间 ------",28,76,420,47,31,UITheme.Ink,FontStyle.Bold);

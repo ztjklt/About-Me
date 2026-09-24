@@ -461,9 +461,11 @@ namespace AboutMe
             if(battleMusic)battleMusic.Sync(state,net.IsSolo||Mirror.NetworkClient.isConnected);
             UpdateMenuVisibility();
             if(Input.GetKeyDown(KeyCode.Escape)){if(inventoryOpen)ToggleBag();else if(optionsOpen){optionsOpen=false;settings.gameObject.SetActive(false);}else if(wardrobe&&wardrobe.gameObject.activeSelf)CloseWardrobe();else if(state==null)ShowPage(MenuPage.Main);else {cursorReleased=!cursorReleased;if(cursorReleased){ResetMovement();Send("cancel");}}}
-            lobby.gameObject.SetActive(state!=null&&state.phase==MatchPhase.Lobby);
-            hud.gameObject.SetActive(state!=null&&state.phase!=MatchPhase.Lobby&&state.phase!=MatchPhase.Finished);
-            results.gameObject.SetActive(state!=null&&state.phase==MatchPhase.Finished);
+            bool covered=optionsOpen||(wardrobe&&wardrobe.gameObject.activeSelf);
+            lobby.gameObject.SetActive(state!=null&&!covered&&state.phase==MatchPhase.Lobby);
+            hud.gameObject.SetActive(state!=null&&!covered&&state.phase!=MatchPhase.Lobby&&state.phase!=MatchPhase.Finished);
+            results.gameObject.SetActive(state!=null&&!covered&&state.phase==MatchPhase.Finished);
+            bag.gameObject.SetActive(inventoryOpen&&!covered);
             if(state==null){ResetMovement();ReleaseCursor();cursorReleased=false;PositionStatus(null);return;}
             if(replay)replay.gameObject.SetActive(net.IsSolo);
             if(reconnectButton)reconnectButton.gameObject.SetActive(!net.IsSolo);
