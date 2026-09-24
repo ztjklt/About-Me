@@ -123,7 +123,7 @@ namespace AboutMe.Editor
         static AppearanceData DS()=>new AppearanceData{character="claude"};
         static PublicPlayer View(string action,float t,int id)
         {
-            bool motion=action=="walk"||action=="run";return new PublicPlayer{id="review",nickname="",appearance=DS(),position=motion?new Vector3(0,0,t*(action=="run"?7:3)):Vector3.zero,
+            bool motion=action=="walk"||action=="run";return new PublicPlayer{id="review",nickname="",appearance=DS(),characterSkin="claude-girl",position=motion?new Vector3(0,0,t*(action=="run"?7:3)):Vector3.zero,
                 connected=true,stability=100,simulationTime=id*3+t,actionId=id+1,actionStartedAt=id*3,actionKind=motion||action=="jump"||action=="eat"?"idle":action,
                 running=action=="run",airborne=action=="jump",velocity=motion?Vector3.forward*(action=="run"?7:3):Vector3.zero,locomotionSpeed=7,
                 grabbing=action=="grab"?"target":"",grabAnchor=new Vector3(0,.28f,.6f),interaction=action=="eat"?"eat":"",progress=action=="eat"?.9f:0,stagger=action=="fall"?1:0};
@@ -157,7 +157,7 @@ float maxPosition=0,maxAngle=0,maxGrip=0;int frames=0;
                 var ds=new ToyActor("DS", "#79CFC5",0,null,DS());var original=new ToyActor("Original", "#79CFC5",0,null,new AppearanceData());
                 for(int f=0;f<60;f++)
                 {
-                    float t=f/60f;var p=View(actions[a],t,a);ds.DrawAt(p,camera,1/60f,p.simulationTime);p.appearance=new AppearanceData();original.DrawAt(p,camera,1/60f,p.simulationTime);
+                    float t=f/60f;var p=View(actions[a],t,a);ds.DrawAt(p,camera,1/60f,p.simulationTime);p.appearance=new AppearanceData();p.characterSkin="normal";original.DrawAt(p,camera,1/60f,p.simulationTime);
                     for(int b=0;b<ds.Skin.bones.Length;b++){maxPosition=Mathf.Max(maxPosition,Vector3.Distance(ds.Skin.bones[b].position,original.Skin.bones[b].position));maxAngle=Mathf.Max(maxAngle,Quaternion.Angle(ds.Skin.bones[b].rotation,original.Skin.bones[b].rotation));}
                     maxGrip=Mathf.Max(maxGrip,Vector3.Distance(ds.RightHandAttachment.position,original.RightHandAttachment.position));frames++;
                     int peak=actions[a]=="light"?8:actions[a]=="heavy"?14:actions[a]=="hurt"?8:actions[a]=="fall"?22:45;

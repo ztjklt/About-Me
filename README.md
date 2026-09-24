@@ -6,7 +6,7 @@
 
 当前候选以 `codex/ds-local-current` 的 `git rev-parse HEAD` 为唯一源码版本。它保留新版四气泡首页、战斗音乐、校徽飞盘与 DeepSeek Vision 校徽裁切，加入 DS 娘免费解锁与选装、八件 Persona 实体投掷，以及真实 Persona 生成和由游戏服务器异步请求、向同房广播的 DeepSeek 吞噬调侃。结算页可接收晚到事件，网页房间码输入修复也已包含。此处说明源码范围；可运行包的构建 SHA 和验收范围以 [当前整合交付](docs/CURRENT_DS_INTEGRATION.md) 为准。
 
-本机窗口试玩双击 `scripts/start-local-ds-windowed.command`：它先启动当前分支的 Persona API，再打开独立的 `builds/ds-local-current-qa/About Me Integration QA.app`。旧版游戏窗口及其存储域不受影响。角色介绍页可用“免费解锁 DS 娘”，随后在衣橱显式切换并保存；“AI 生成 Persona”才会调用真实文本模型。若 API 端口 8081 已被别的服务占用，启动器会提示维护者切换，不会悄悄使用旧服务。
+本机窗口试玩双击 `scripts/start-local-unified-windowed.command`：它先启动当前分支的 Persona API，再打开独立的 `builds/unified-qa/About Me Integration QA.app`。角色介绍页可用“解锁彩蛋”更新 DeepSeek 娘和 Claude 娘的独立资格；随后在衣橱中显式选择普通、DS 或 Claude 并保存。生成 Persona 才会调用真实文本模型；语音识别未配置时入口会立即提示改用文字或图片。若 API 端口 8081 已被别的服务占用，启动器会提示维护者切换。
 
 GitHub 与微信发布必须取同一已验收源码提交重新构建。微信导出还需要正确的 AppID、CDN 地址和微信真机验收；本机 macOS 或浏览器运行不能替代微信真机结论。下方 2026-09-23 试玩记录保留为历史交付，不代表当前候选。
 

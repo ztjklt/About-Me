@@ -46,8 +46,8 @@ namespace AboutMe.Editor
             ds.ApplyAppearance(new AppearanceData{character="claude"});
             for(int frame=0;frame<120;frame++)
             {
-                float time=frame/60f;var player=new PublicPlayer{id="face",nickname="",position=Vector3.zero,appearance=new AppearanceData{character="claude"},connected=true,stability=100,interaction="eat",progress=.9f,simulationTime=time,actionKind="idle"};
-                ds.DrawAt(player,camera,1/60f,time);player.appearance=new AppearanceData();plain.DrawAt(player,camera,1/60f,time);plain.root.SetActive(false);
+                float time=frame/60f;var player=new PublicPlayer{id="face",nickname="",position=Vector3.zero,appearance=new AppearanceData{character="claude"},characterSkin="claude-girl",connected=true,stability=100,interaction="eat",progress=.9f,simulationTime=time,actionKind="idle"};
+                ds.DrawAt(player,camera,1/60f,time);player.appearance=new AppearanceData();player.characterSkin="normal";plain.DrawAt(player,camera,1/60f,time);plain.root.SetActive(false);
                 report.maxFeedingHandDelta=Mathf.Max(report.maxFeedingHandDelta,Vector3.Distance(ds.RightHandAttachment.position,plain.RightHandAttachment.position));
             }
             report.fullyOpenMouthDelta=Vector3.Distance(ds.mouth.localPosition,plain.mouth.localPosition);
