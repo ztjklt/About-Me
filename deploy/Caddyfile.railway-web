@@ -18,6 +18,11 @@
 		}
 	}
 	handle {
+		header / Cache-Control "no-store, max-age=0"
+		header /index.html Cache-Control "no-store, max-age=0"
+		header /version.json Cache-Control "no-store, max-age=0"
+		header /Build/* Cache-Control "no-cache, must-revalidate"
+		header /StreamingAssets/* Cache-Control "no-cache, must-revalidate"
 		root * /srv
 		file_server {
 			precompressed gzip
