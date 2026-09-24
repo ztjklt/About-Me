@@ -29,22 +29,22 @@ namespace AboutMe
             cameraSensitivity=PlayerPrefs.GetFloat("cameraSensitivity",1);touchMode=PlayerPrefs.GetInt("touchMode",0);reduceMotion=PlayerPrefs.GetInt("reduceMotion",0)==1;
             RefreshSettingLabels();
             BuildStartMenuStage();
-            soloMenu=MenuCard("单人游戏","OFFLINE PRACTICE");
-            soloSummary=ArtText(soloMenu,"",40,170,900,135,24,UITheme.Ink,FontStyle.Bold);
-            ArtText(soloMenu,"陪练 NPC · 离线可玩",40,320,600,48,22,UITheme.Muted);
-            soloStart=ArtButton(soloMenu,"当前角色开始",40,487,294,66,()=>StartSolo(false),UITheme.Mint,UITheme.Ink,"attack");
-            ArtButton(soloMenu,"练习道具（非 AI）",40,574,294,58,()=>StartSolo(true),UITheme.Yellow,UITheme.Ink);
-            ArtButton(soloMenu,"编辑自我介绍",356,574,242,58,()=>ShowPage(MenuPage.Presets),UITheme.Field,UITheme.Ink);
-            multiplayerMenu=MenuCard("多人游戏","PLAY WITH FRIENDS");
-            multiSummary=ArtText(multiplayerMenu,"",40,170,900,98,23,UITheme.Ink,FontStyle.Bold);
-            ArtButton(multiplayerMenu,"创建房间",40,294,245,67,CreateRoom,UITheme.Mint,UITheme.Ink,"share");
-            room.transform.SetParent(multiplayerMenu,false);Place((RectTransform)room.transform,40,402,550,64);
+            var soloCard=MenuCard("单人游戏","OFFLINE PRACTICE");soloMenu=(RectTransform)soloCard.parent;
+            soloSummary=ArtText(soloCard,"",40,170,900,135,24,UITheme.Ink,FontStyle.Bold);
+            ArtText(soloCard,"陪练 NPC · 离线可玩",40,320,600,48,22,UITheme.Muted);
+            soloStart=ArtButton(soloCard,"当前角色开始",40,487,294,66,()=>StartSolo(false),UITheme.Mint,UITheme.Ink,"attack");
+            ArtButton(soloCard,"练习道具（非 AI）",40,574,294,58,()=>StartSolo(true),UITheme.Yellow,UITheme.Ink);
+            ArtButton(soloCard,"编辑自我介绍",356,574,242,58,()=>ShowPage(MenuPage.Presets),UITheme.Field,UITheme.Ink);
+            var multiplayerCard=MenuCard("多人游戏","PLAY WITH FRIENDS");multiplayerMenu=(RectTransform)multiplayerCard.parent;
+            multiSummary=ArtText(multiplayerCard,"",40,170,900,98,23,UITheme.Ink,FontStyle.Bold);
+            ArtButton(multiplayerCard,"创建房间",40,294,245,67,CreateRoom,UITheme.Mint,UITheme.Ink,"share");
+            room.transform.SetParent(multiplayerCard,false);Place((RectTransform)room.transform,40,402,550,64);
             room.characterLimit=6;room.contentType=InputField.ContentType.Alphanumeric;
-            ArtButton(multiplayerMenu,"加入房间",615,402,325,64,JoinRoom,UITheme.Yellow,UITheme.Ink,"ready");
-            ArtText(multiplayerMenu,"2–6 人 · 两人即可开局",40,496,650,40,20,UITheme.Muted);
-            ArtButton(multiplayerMenu,"练习道具（非 AI）",40,600,230,56,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
-            ArtButton(multiplayerMenu,"自我介绍",292,600,210,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);
-            ArtButton(multiplayerMenu,"连接设置",524,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
+            ArtButton(multiplayerCard,"加入房间",615,402,325,64,JoinRoom,UITheme.Yellow,UITheme.Ink,"ready");
+            ArtText(multiplayerCard,"2–6 人 · 两人即可开局",40,496,650,40,20,UITheme.Muted);
+            ArtButton(multiplayerCard,"练习道具（非 AI）",40,600,230,56,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
+            ArtButton(multiplayerCard,"自我介绍",292,600,210,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);
+            ArtButton(multiplayerCard,"连接设置",524,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
             BuildDraftLibrary();ApplyAdaptiveLayout(true);
             LoadCachedProfile();ShowPage(MenuPage.Main);statusPill.SetAsLastSibling();
         }
@@ -86,7 +86,7 @@ namespace AboutMe
         }
         RectTransform MenuSprite(Transform parent,string name,string resource,float x,float y,float width,float height,bool preserve=true)
         {
-            var sprite=Resources.Load<Sprite>(resource);if(!sprite)throw new InvalidOperationException("Missing start-menu sprite: "+resource);
+            var sprite=Resources.Load<Sprite>(resource);if(!sprite)throw new InvalidOperationException("Missing UI sprite: "+resource);
             var rect=ArtRect(parent,name,new Vector2(x,-y),new Vector2(width,height));var image=rect.gameObject.AddComponent<Image>();
             image.sprite=sprite;image.type=Image.Type.Simple;image.preserveAspect=preserve;image.raycastTarget=false;return rect;
         }
@@ -94,7 +94,8 @@ namespace AboutMe
         {var mark=ArtPanel(parent,"Clay accent",x,y,width,height,color,false,false);mark.GetComponent<Image>().sprite=UITheme.Rounded;mark.localRotation=Quaternion.Euler(0,0,rotation);}
         RectTransform MenuCard(string title,string tape)
         {
-            var panel=ArtPanel(artboard,title,310,66,980,720,UITheme.Paper,true,true);
+            var stage=SelectionStage(title+" selection stage",CampusSelectionArt,new Color(1f,.985f,.95f,.18f));
+            var panel=ArtPanel(stage,title,310,66,980,720,UITheme.Paper,true,true);
             Tape(panel,tape,40,30,260,36,UITheme.Pink);ArtText(panel,title,40,82,750,90,38,UITheme.Ink,FontStyle.Bold);
             ArtButton(panel,"返回",812,34,126,52,()=>ShowPage(MenuPage.Main),UITheme.Field,UITheme.Ink,"exit");return panel;
         }

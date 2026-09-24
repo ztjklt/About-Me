@@ -126,6 +126,7 @@ namespace AboutMe
         void BuildSettings()
         {
             settings=ArtPanel(artboard,"Settings modal",0,0,1600,900,new Color(.05f,.07f,.12f,.52f),false,false);Stretch(settings);settings.GetComponent<Image>().raycastTarget=true;
+            AddSelectionBackground(settings,StudioSelectionArt,new Color(1f,.985f,.95f,.27f));
             var card=ArtPanel(settings,"Connection settings card",438,154,724,592,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
             Tape(card,"CONNECTION KIT",32,26,204,38,UITheme.Purple);
             ArtText(card,"连接与服务",32,74,560,49,33,UITheme.Ink,FontStyle.Bold);
@@ -153,6 +154,7 @@ namespace AboutMe
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);
+            AddSelectionBackground(lobby,CampusSelectionArt,new Color(.96f,.99f,1f,.24f));
             lobbyCard=ArtPanel(lobby,"Room ticket",44,42,676,816,UITheme.Paper,true,true);lobbyCard.gameObject.AddComponent<UIReveal>();
             Tape(lobbyCard,"MEET YOUR FRIENDS",28,24,232,38,UITheme.Pink);
             roomTitle=ArtText(lobbyCard,"房间 ------",28,76,420,47,31,UITheme.Ink,FontStyle.Bold);
