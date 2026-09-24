@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libglib2.0-0 libstdc++6 && rm -rf /var/lib/apt/lists/* && useradd -m -u 10001 aboutme
 WORKDIR /game
-COPY builds/linux/ /game/
+ADD builds/linux.tar.gz /game/
 COPY deploy/railway-game-entrypoint.sh /usr/local/bin/aboutme-game-entrypoint
 RUN chmod +x /game/AboutMeServer
 USER aboutme
