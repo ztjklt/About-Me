@@ -210,7 +210,7 @@ namespace AboutMe.Editor
                     PlayerSettings.productName="About Me Integration QA";
                     PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone,"com.aboutme.party.integrationqa");
                 }
-                var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_MAC_OUTPUT")??"../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=BuildOptions.Development});
+                var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_MAC_OUTPUT")??"../builds/mac/About Me.app",target=BuildTarget.StandaloneOSX,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
                 if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Mac build failed: "+result.summary.result);
             }
             finally
@@ -227,7 +227,7 @@ namespace AboutMe.Editor
         public static void BuildWeb()
         {
             Generate();PlayerSettings.WebGL.template="PROJECT:AboutMe";PlayerSettings.WebGL.compressionFormat=WebGLCompressionFormat.Disabled;
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_WEB_OUTPUT")??"../builds/web",target=BuildTarget.WebGL,options=BuildOptions.Development});
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_WEB_OUTPUT")??"../builds/web",target=BuildTarget.WebGL,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Web build failed");
             Debug.Log("ABOUTME_WEB_BUILD_OK");
         }

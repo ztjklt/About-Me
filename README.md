@@ -110,6 +110,8 @@ sh scripts/editor.sh BuildWeb
 sh scripts/editor.sh BuildServer
 ```
 
+正式交付的 macOS/WebGL 包在同一源码上设置 `ABOUTME_RELEASE_BUILD=1` 后运行 `BuildMac` / `BuildWeb`；默认命令仍生成带调试水印的开发包。
+
 游戏服务器启动参数是 **`--aboutme-server`**，不要用引擎占用的 `--server`。
 
 ```sh
