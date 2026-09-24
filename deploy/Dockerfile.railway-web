@@ -1,0 +1,5 @@
+FROM caddy:2.10.0
+COPY deploy/Caddyfile.railway-web /etc/caddy/Caddyfile
+COPY builds/web/ /srv/
+RUN for asset in /srv/Build/*.gz; do [ -e "$asset" ] || continue; gzip -dc "$asset" > "${asset%.gz}"; done
+EXPOSE 3000

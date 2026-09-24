@@ -1,0 +1,7 @@
+.git
+.venv
+client
+artifacts
+**/.env*
+**/*.sqlite3*
+**/*.db

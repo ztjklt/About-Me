@@ -1,0 +1,26 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:3000} {
+	header Cross-Origin-Opener-Policy same-origin
+	header Cross-Origin-Embedder-Policy require-corp
+	handle /health {
+		respond 200
+	}
+	handle_path /api/* {
+		@internal path /internal /internal/*
+		respond @internal 404
+		reverse_proxy api.railway.internal:8081 {
+			header_up X-AboutMe-Client-IP {remote_host}
+			header_up X-AboutMe-Proxy-Key {$ABOUTME_PROXY_KEY}
+		}
+	}
+	handle {
+		root * /srv
+		file_server {
+			precompressed gzip
+		}
+	}
+}
