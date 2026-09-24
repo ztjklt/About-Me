@@ -161,6 +161,8 @@ namespace AboutMe
         {LoadAppearance();profileText.text=(net.Sample?"[样例测试 · 非 AI 生成]\n":"")+"PERSONA × "+profile.personas.Length+"\n"+string.Join("  /  ",profile.personas.Select(p=>p.name+(string.IsNullOrEmpty(p.generatedBy)?"":" [DeepSeek 生成]")));profileText.rectTransform.sizeDelta=new Vector2(554,Mathf.Max(72,profileText.preferredHeight));CacheProfile();}
         void LoadPracticePersona()
         {
+            var savedSkin=profile!=null&&!net.Sample?profile:null;
+            net.CosmeticToken=SavedTokenForApi();
             net.Sample=true;
             if(Application.platform==RuntimePlatform.WebGLPlayer)
             {
@@ -178,6 +180,8 @@ namespace AboutMe
                 PlayerPrefs.SetString("sampleToken",net.Token);
             }
             profile=GameNetwork.SampleProfile(net.Token,nickname.text);
+            if(savedSkin!=null&&net.CosmeticToken!="")
+            {profile.dsGirlUnlocked=savedSkin.dsGirlUnlocked;profile.claudeGirlUnlocked=savedSkin.claudeGirlUnlocked;profile.characterSkin=savedSkin.characterSkin;}
             DisplayProfile();
             net.Status="已载入练习道具（非 AI）";
             TryAutoJoin();

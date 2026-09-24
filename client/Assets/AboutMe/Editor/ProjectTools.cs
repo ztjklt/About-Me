@@ -58,6 +58,12 @@ namespace AboutMe.Editor
             void Tick(Match m,float seconds){for(int i=0;i<Mathf.CeilToInt(seconds/.02f);i++)m.Tick(.02f);}
             void SetGround(Match m,string owner,Vector3 at){m.Drop(m.Players[owner],99);foreach(var x in m.Items.Where(x=>x.ownerId==owner)){x.position=at;x.velocity=Vector3.zero;}}
             Test("variable inventory and maximum players",()=>{var m=M(9);Assert(m.Remaining("a")==9,"fixed persona count");for(int i=0;i<4;i++)Assert(m.Add(P("c"+i))==false,"mid-match join");m.Phase=MatchPhase.Lobby;for(int i=0;i<4;i++)Assert(m.Add(P("c"+i)),"six players");Assert(!m.Add(P("overflow")),"seventh player allowed");});
+            Test("sample items retain only a verified selected skin",()=>{
+                var sample=P("cosmetic-sample",1);sample.characterSkin="claude-girl";
+                var locked=new Match("LOCKED",new MatchRules());Assert(locked.Add(sample),"sample join failed");Assert(locked.View(sample.playerId).players.Single().characterSkin=="normal","unverified Claude skin shown");
+                sample=P("trusted-sample",1);sample.dsGirlUnlocked=true;sample.claudeGirlUnlocked=true;sample.characterSkin="claude-girl";
+                var trusted=new Match("TRUSTED",new MatchRules());Assert(trusted.Add(sample),"trusted sample join failed");Assert(trusted.View(sample.playerId).players.Single().characterSkin=="claude-girl","verified Claude skin lost");
+            });
             Test("dropped and carried items still count as life",()=>{var m=M();SetGround(m,"b",m.Players["a"].position);m.Interact(m.Players["a"]);Assert(m.Remaining("b")==2&&!m.Players["b"].eliminated,"premature death");});
             Test("public snapshot does not reveal opponent inventory",()=>{var m=M(8);var v=m.View("a");Assert(v.inventory.Length==8&&v.inventory.All(x=>x.ownerId=="a"),"private inventory leaked");Assert(v.ground.Length==0,"inventory exposed as ground");});
             Test("snapshots never expose introduction source",()=>{

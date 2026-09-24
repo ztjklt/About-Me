@@ -129,6 +129,8 @@ namespace AboutMe
             if(chosen?.personas?.Length>0)
             {
                 lastSoloProfile=JsonUtility.FromJson<Profile>(JsonUtility.ToJson(chosen));
+                if(practice&&profile!=null&&!net.Sample&&SavedTokenForApi()!="")
+                {lastSoloProfile.dsGirlUnlocked=profile.dsGirlUnlocked;lastSoloProfile.claudeGirlUnlocked=profile.claudeGirlUnlocked;lastSoloProfile.characterSkin=profile.characterSkin;}
                 lastSoloProfile.appearance=SessionDefaultActor?new AppearanceData():CurrentAppearance;lastInventory="";lastResultVisual="";lastEvent=0;
                 net.StartSolo(lastSoloProfile);RefreshTouchVisibility();
             }

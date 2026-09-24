@@ -84,6 +84,7 @@ namespace AboutMe
         void SetCharacterSkin(string skin)
         {
             if(busy)return;
+            if(net.Sample){wardrobeNote.text="请在真实角色衣橱保存彩蛋选择，再载入练习道具。";return;}
             if(!CanUseSkin(skin)){wardrobeNote.text=skin=="ds-girl"?"介绍写明喜欢 DeepSeek 后解锁。":"介绍写明喜欢 Claude 后解锁。";return;}
             skinDraft=skin;appearanceDirty=true;
             wardrobeNote.text=skin=="normal"?"普通穿搭；保存后生效。":"彩蛋套装；保存后生效。";RefreshAppearancePreview();

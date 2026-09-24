@@ -12,7 +12,7 @@ using UnityEngine.Networking;
 namespace AboutMe
 {
     [Serializable] class HelloVersion { public int protocol; }
-    public struct HelloMessage : NetworkMessage { public string token, room, nickname, appearanceJson; public bool sample; }
+    public struct HelloMessage : NetworkMessage { public string token, cosmeticToken, room, nickname, appearanceJson; public bool sample; }
     public struct CommandMessage : NetworkMessage { public string json; }
     public struct StateMessage : NetworkMessage { public int frame;public bool last;public byte[] data; }
     public struct NoticeMessage : NetworkMessage { public string text; }
@@ -25,7 +25,7 @@ namespace AboutMe
     {
         public static GameNetwork Game;
         public string ApiUrl = "http://127.0.0.1:8081";
-        public string Endpoint = "ws://127.0.0.1:7777", RoomCode = "", Token = "", Nickname = "玩家";
+        public string Endpoint = "ws://127.0.0.1:7777", RoomCode = "", Token = "", CosmeticToken = "", Nickname = "玩家";
         public bool Sample, AllowSamples;
         public AppearanceData SampleAppearance;
         public Snapshot State;
@@ -110,13 +110,13 @@ namespace AboutMe
         public override void OnClientConnect()
         {
             NetworkClient.Ready();
-            NetworkClient.Send(new HelloMessage{token=Token,room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":3,"+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
+            NetworkClient.Send(new HelloMessage{token=Token,cosmeticToken=Sample?CosmeticToken:"",room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":3,"+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
         }
         public override void OnClientDisconnect() { if(State!=null)Status="连接已断开，可使用原凭据重连"; base.OnClientDisconnect(); }
         void Hello(NetworkConnectionToClient conn,HelloMessage hello)
         {
             if(pending.Contains(conn.connectionId)||seats.ContainsKey(conn.connectionId))return;
-            if((hello.room??"").Length>12||(hello.token??"").Length>256||(hello.nickname??"").Length>24||(hello.appearanceJson??"").Length>2048) { Reject(conn,"加入信息过长");return; }
+            if((hello.room??"").Length>12||(hello.token??"").Length>256||(hello.cosmeticToken??"").Length>256||(hello.nickname??"").Length>24||(hello.appearanceJson??"").Length>2048) { Reject(conn,"加入信息过长");return; }
             try { if(string.IsNullOrEmpty(hello.appearanceJson)||JsonUtility.FromJson<HelloVersion>(hello.appearanceJson)?.protocol!=3){Reject(conn,"游戏版本不一致，请更新客户端和服务器后重连");return;} }
             catch(Exception){Reject(conn,"加入信息格式错误");return;}
             pending.Add(conn.connectionId);
@@ -127,9 +127,29 @@ namespace AboutMe
                 var sample=SampleProfile(hello.token,hello.nickname);
                 try{sample.appearance=AppearanceData.Resolve(string.IsNullOrEmpty(hello.appearanceJson)?null:JsonUtility.FromJson<AppearanceData>(hello.appearanceJson));}
                 catch(Exception){Reject(conn,"样例外观数据无效");return;}
-                Accept(conn,hello,sample);
+                if(string.IsNullOrEmpty(hello.cosmeticToken))Accept(conn,hello,sample);
+                else StartCoroutine(VerifySampleCosmetic(conn,hello,sample));
             }
             else StartCoroutine(Verify(conn,hello));
+        }
+        IEnumerator VerifySampleCosmetic(NetworkConnectionToClient conn,HelloMessage hello,Profile sample)
+        {
+            string key=Environment.GetEnvironmentVariable("GAME_SERVER_KEY");
+            if(!string.IsNullOrEmpty(key))
+            {
+                using(var req=ApiRequest(ApiUrl+"/internal/verify",JsonUtility.ToJson(new TokenRequest{token=hello.cosmeticToken})))
+                {
+                    req.timeout=10;req.SetRequestHeader("X-Game-Key",key);yield return req.SendWebRequest();
+                    if(!NetworkServer.connections.ContainsKey(conn.connectionId))yield break;
+                    if(req.result==UnityWebRequest.Result.Success)
+                    {
+                        Profile verified=null;try{verified=JsonUtility.FromJson<Profile>(req.downloadHandler.text);}catch(Exception){}
+                        if(verified!=null)
+                        {sample.dsGirlUnlocked=verified.dsGirlUnlocked;sample.claudeGirlUnlocked=verified.claudeGirlUnlocked;sample.characterSkin=verified.characterSkin;}
+                    }
+                }
+            }
+            Accept(conn,hello,sample);
         }
         IEnumerator Verify(NetworkConnectionToClient conn,HelloMessage hello)
         {
