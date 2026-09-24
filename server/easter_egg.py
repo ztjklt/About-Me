@@ -2,7 +2,9 @@
 import re
 
 
-DEEPSEEK_LIKE = re.compile(r'(?:喜欢|喜歡)\s*deep\s*seek(?![A-Za-z])', re.I)
+LIKE_BRANDS = re.compile(
+    r'(?:喜欢|喜歡)\s*(?P<first>deep\s*seek|claude)(?![A-Za-z])'
+    r'(?:\s*(?:和|跟|与|及|、)\s*(?P<second>deep\s*seek|claude)(?![A-Za-z]))?', re.I)
 CLAUSE_BREAK = re.compile(r'[，,。；;！!？?\n]|但是|不过|然而|可是|却|但')
 NEGATIVE_PREFIX = re.compile(r'(?:不|没|未|无|别|讨厌|反感|拒绝|假装|并非|不是|谈不上).{0,4}$')
 UNCERTAIN_PREFIX = re.compile(r'(?:如果|假如|可能|也许|或许|据说|听说|假设).{0,8}$')
@@ -11,12 +13,12 @@ SELF_SUBJECT = re.compile(r'(?:我|本人|自己)')
 SHARED_SUBJECT = re.compile(r'(?:我|本人|自己)(?:和|跟|与)(?:朋友|同学|室友|别人)')
 
 
-def likes_deepseek(introduction: str) -> bool:
-    """Accept an explicit positive like; the latest first-person mention wins."""
+def liked_brands(introduction: str) -> dict[str, bool]:
+    """Accept explicit positive likes; each brand's latest mention wins."""
+    stance = {'deepseek': False, 'claude': False}
     if not isinstance(introduction, str):
-        return False
-    stance = False
-    for match in DEEPSEEK_LIKE.finditer(introduction):
+        return stance
+    for match in LIKE_BRANDS.finditer(introduction):
         clause = CLAUSE_BREAK.split(introduction[:match.start()])[-1]
         suffix = introduction[match.end():]
         tail = re.split(r'[，,。；;！!？?\n]', suffix, maxsplit=1)[0]
@@ -28,5 +30,16 @@ def likes_deepseek(introduction: str) -> bool:
         if (UNCERTAIN_PREFIX.search(clause) or re.match(r'\s*(?:吗|麼|么|是不是|是否)', tail)
                 or re.match(r'\s*[？?]', suffix)):
             continue
-        stance = not bool(NEGATIVE_PREFIX.search(clause))
+        positive = not bool(NEGATIVE_PREFIX.search(clause))
+        for brand in (match.group('first'), match.group('second')):
+            if brand:
+                stance[re.sub(r'\s+', '', brand).lower()] = positive
     return stance
+
+
+def likes_deepseek(introduction: str) -> bool:
+    return liked_brands(introduction)['deepseek']
+
+
+def likes_claude(introduction: str) -> bool:
+    return liked_brands(introduction)['claude']

@@ -4,7 +4,7 @@ from pathlib import Path
 import httpx
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field,model_validator
-from server.easter_egg import likes_deepseek
+from server.easter_egg import liked_brands
 
 CATALOG=json.loads((Path(__file__).resolve().parents[1]/'shared/appearance-catalog.json').read_text())
 OPTIONS={slot['id']:{o['id'] for o in slot['options']} for slot in CATALOG['slots']}
@@ -35,10 +35,14 @@ def normalized_profile(profile,introduction=None):
         if color in OPTIONS['topColor']:appearance.topColor=color
     profile['appearance']=appearance.model_dump()
     profile.setdefault('appearanceRevision',0)
-    unlocked=(bool(profile['dsGirlUnlocked']) if 'dsGirlUnlocked' in profile else
-              likes_deepseek(introduction) if introduction is not None else False)
-    profile['dsGirlUnlocked']=unlocked
-    if profile.get('characterSkin')!='ds-girl' or not unlocked:profile['characterSkin']='normal'
+    likes=liked_brands(introduction)
+    profile['dsGirlUnlocked']=(bool(profile['dsGirlUnlocked']) if 'dsGirlUnlocked' in profile else likes['deepseek'])
+    profile['claudeGirlUnlocked']=(bool(profile['claudeGirlUnlocked']) if 'claudeGirlUnlocked' in profile else likes['claude'])
+    skin=profile.get('characterSkin')
+    if (skin not in ('ds-girl','claude-girl') or
+        (skin=='ds-girl' and not profile['dsGirlUnlocked']) or
+        (skin=='claude-girl' and not profile['claudeGirlUnlocked'])):
+        profile['characterSkin']='normal'
     return profile
 
 class AppearanceSave(BaseModel):
