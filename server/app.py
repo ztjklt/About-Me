@@ -22,7 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_brands
 from server.university_crests import resolve_crest, cache_dir
-from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets
+from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
@@ -313,12 +313,14 @@ def validate_personas(raw, introduction):
                 continue
             schools_seen.add(normalized_fact(school))
             template, visual, name = 'Disc', 'school-disc', school + '校徽圆盘'
-        if not school and any(same_fact(source, prior) for prior in seen):
-            continue
         catalog = CATALOG_BY_PAIR[(template, visual)]
         if not catalog_supports_fact(catalog, source):
             continue
-        seen.append(source)
+        keyword = plain(x.get('term', ''), 80)
+        identity = fact_identity(source, keyword, (template, visual), CATALOG_BY_PAIR)
+        if not school and any(same_fact(identity, prior) for prior in seen):
+            continue
+        seen.append(identity)
         color = catalog['color']
         result.append(dict(assetId=uuid.uuid4().hex, name=name, templateId=template,
                            visualId=visual, color=color, source=source))
@@ -344,11 +346,12 @@ def profile_follows_generation_rules(profile, introduction):
     seen = []
     for item in personas:
         source = plain(item.get('source', ''), 160)
+        identity = fact_identity(source, item.get('generationTerm', ''), (item.get('templateId'), item.get('visualId')), CATALOG_BY_PAIR)
         if (not source or source not in introduction or sensitive_persona_text(source)
                 or sensitive_persona_text(item.get('name', ''))
-                or any(same_fact(source, prior) for prior in seen)):
+                or any(same_fact(identity, prior) for prior in seen)):
             return False
-        seen.append(source)
+        seen.append(identity)
         school = item.get('institutionName') or institution_name(source)
         if school and (item.get('templateId'), item.get('visualId')) != ('Disc', 'school-disc'):
             return False
@@ -518,7 +521,7 @@ async def generate_with_provider(introduction):
               '只能使用用户明确写出的第一人称事实，绝对不能补充常识、联想、学校历史、校区、文化或其他外部知识。'
               f'按辨识度、可视化与游戏化价值选择事实，数量随内容变化，不为凑数而生成；原型性能上限 {MAX_PERSONAS} 件。'
               '同一事实最多一个 Persona；仅有一个可游戏化事实时最多返回一个。'
-              'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。'
+              'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。同一句中的不同具体道具必须分别生成，例如“游泳浮板和游泳脚蹼”是两件，不能合并成一个游泳道具。'
               '每个 personas 项的 term 必须逐字复制 terms 数组中与该道具直接对应的一个关键词，不能用同一句中其他兴趣的成功代替。'
               '提取学校、兴趣、职业和特别经历的关键词，放在 terms 数组，每项含 term 原文关键词和 source 连续原文；无法匹配道具的词也要保留，供显示失败结果。联系方式、诊断等敏感内容不列。'
               '大学不限知名度、国家或官网域名；学校简称也识别为大学，universities.name 必须是用户实际写的简称或校名，不得偷偷改成原文没有的名称。'
@@ -667,7 +670,7 @@ def health():
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
             'visionConfigured': bool(deepseek_vision_credentials()[0]),
-            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': 10}
+            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': len(json.loads((Path(__file__).resolve().parents[1] / 'shared/persona-mechanics.json').read_text())['items'])}
 
 
 @app.get('/school-emblems/{filename}')

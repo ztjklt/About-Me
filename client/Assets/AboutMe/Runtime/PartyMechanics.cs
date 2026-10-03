@@ -7,7 +7,7 @@ namespace AboutMe
 {
     [Serializable] public class PartyMechanic
     {
-        public string id,visualId,label,hint;
+        public string id,visualId,label,hint,family;
         public float cooldown,windup,lifetime,radius,damage,force;
     }
     [Serializable] public class PartyMechanics {public int version;public PartyMechanic[] items;}
@@ -34,6 +34,7 @@ namespace AboutMe
         {
             var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
+            if(definition.id=="paired-teleport"&&active.Length==1&&active[0].stage=="portal_wait")return true;
             if(definition.id=="remote-burst"&&active.Length>0)return true;
             if(definition.id=="relay-burst"&&active.Length>0&&active.Length<3&&active.All(e=>e.stage=="waiting"))return true;
             return active.Length==0&&(!partyCooldowns.TryGetValue(item.id,out var until)||Time>=until);
@@ -48,10 +49,11 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
+            if(d.family=="movement")return TryMovementMechanic(p,item,d);
             var previous=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
             if(d.id=="remote-burst"&&previous.Length>0)
-            {BurstParty(previous[0],p,d);p.nextAttack=Time+d.cooldown;partyCooldowns[item.id]=p.nextAttack;return true;}
-            partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+d.cooldown;
+            {BurstParty(previous[0],p,d);p.nextAttack=Time+.45f;partyCooldowns[item.id]=Time+d.cooldown;return true;}
+            partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+Rules.heavyInterval;
             var forward=Forward(p);
             EffectState New(Vector3 position,string stage)=>new EffectState {
                 id=Guid.NewGuid().ToString("N"),owner=p.profile.playerId,kind="PartyMechanic",mechanicId=d.id,sourceInstance=item.id,
@@ -107,6 +109,10 @@ namespace AboutMe
                 if(prop!=null&&Players.TryGetValue(prop.holder,out var holder)&&holder.publicProp==prop.id){holder.publicProp="";SetAction(holder,"release");}
                 Props.RemoveAll(x=>x.id==e.targetId);
             }
+            foreach(var p in Players.Values)if(p.portalEntry==e.id)p.portalEntry="";
+            if(e.mechanicId=="paired-teleport")
+                foreach(var other in Effects.Where(x=>x!=e&&x.sourceInstance==e.sourceInstance&&x.mechanicId==e.mechanicId).ToArray())
+                {Effects.Remove(other);foreach(var p in Players.Values)if(p.portalEntry==other.id)p.portalEntry="";}
             Effects.Remove(e);
         }
         void BurstParty(EffectState e,Player owner,PartyMechanic d)
@@ -143,6 +149,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="movement"){TickMovement(e,owner,d,dt);return;}
             e.remaining=Mathf.Max(0,e.deadline-Time);
             if(e.stage=="burst"){if(Time>=e.deadline)RemovePartyEffect(e);return;}
             var prop=Props.Find(x=>x.id==e.targetId);
@@ -204,7 +211,7 @@ namespace AboutMe
         }
         void DamagePartyDevices(Player attacker,Vector3 point,float reach)
         {
-            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&(e.mechanicId=="remote-burst"||e.mechanicId=="vacuum-burst")&&Vector3.Distance(e.position,point)<=reach&&PartyClear(attacker.position,e.position)).ToArray())
+            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&(e.mechanicId=="remote-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport")&&Vector3.Distance(e.position,point)<=reach&&PartyClear(attacker.position,e.position)).ToArray())
             {if(--e.health<=0){RemovePartyEffect(e);Say(attacker.profile.nickname+" 拆掉了爆风装置！");}}
         }
     }

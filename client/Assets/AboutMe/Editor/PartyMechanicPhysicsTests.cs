@@ -20,7 +20,7 @@ namespace AboutMe.Editor
             int passed=0;
             try
             {
-                foreach(bool depleted in new[]{false,true})foreach(var d in PartyMechanicRegistry.All)using(var m=new Match("PARTY-PHYSICS",new MatchRules{revealDuration=.01f,handInterval=9999,finalTime=9999}))
+                foreach(bool depleted in new[]{false,true})foreach(var d in PartyMechanicRegistry.All.Where(x=>x.family=="blast"))using(var m=new Match("PARTY-PHYSICS",new MatchRules{revealDuration=.01f,handInterval=9999,finalTime=9999}))
                 {
                     for(int i=0;i<3;i++)m.Add(new Profile{playerId="p"+i,nickname="p"+i,appearance=AppearanceData.Demo(i),personas=Enumerable.Range(0,4).Select(n=>new PersonaAsset{assetId="p"+i+n,name=d.label,templateId="SpecialAbility",visualId=i==0?d.visualId:"book",color="#F49A6B"}).ToArray()});
                     m.Props.Clear();m.EnableBodyPhysics();m.Phase=MatchPhase.Reveal;m.Tick(.02f);var a=m.Players["p0"];var b=m.Players["p1"];var c=m.Players["p2"];

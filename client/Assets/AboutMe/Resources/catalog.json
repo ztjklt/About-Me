@@ -1264,6 +1264,806 @@
         "讨厌锥形瓶",
         "不擅长锥形瓶"
       ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "swim-cap",
+      "label": "泳帽",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "泳帽",
+        "泳池"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢泳帽",
+        "不会泳帽",
+        "讨厌泳帽",
+        "不擅长泳帽",
+        "不喜欢泳池",
+        "不会泳池",
+        "讨厌泳池",
+        "不擅长泳池"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "swim-pull-buoy",
+      "label": "夹腿浮漂",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "游泳训练",
+        "夹腿浮漂"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳训练",
+        "不会游泳训练",
+        "讨厌游泳训练",
+        "不擅长游泳训练",
+        "不喜欢夹腿浮漂",
+        "不会夹腿浮漂",
+        "讨厌夹腿浮漂",
+        "不擅长夹腿浮漂"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "swim-hand-paddles",
+      "label": "游泳划水掌",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳训练",
+        "划水掌",
+        "游泳划水掌"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳训练",
+        "不会游泳训练",
+        "讨厌游泳训练",
+        "不擅长游泳训练",
+        "不喜欢划水掌",
+        "不会划水掌",
+        "讨厌划水掌",
+        "不擅长划水掌",
+        "不喜欢游泳划水掌",
+        "不会游泳划水掌",
+        "讨厌游泳划水掌",
+        "不擅长游泳划水掌"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "swim-lane-rope",
+      "label": "泳池分道浮绳",
+      "color": "#263248",
+      "evidenceTerms": [
+        "游泳",
+        "泳道",
+        "泳池",
+        "泳池分道浮绳"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢泳道",
+        "不会泳道",
+        "讨厌泳道",
+        "不擅长泳道",
+        "不喜欢泳池",
+        "不会泳池",
+        "讨厌泳池",
+        "不擅长泳池",
+        "不喜欢泳池分道浮绳",
+        "不会泳池分道浮绳",
+        "讨厌泳池分道浮绳",
+        "不擅长泳池分道浮绳"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "pool-start-block",
+      "label": "游泳出发台",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳比赛",
+        "跳水",
+        "游泳出发台"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳比赛",
+        "不会游泳比赛",
+        "讨厌游泳比赛",
+        "不擅长游泳比赛",
+        "不喜欢跳水",
+        "不会跳水",
+        "讨厌跳水",
+        "不擅长跳水",
+        "不喜欢游泳出发台",
+        "不会游泳出发台",
+        "讨厌游泳出发台",
+        "不擅长游泳出发台"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "dive-float-marker",
+      "label": "潜水浮标",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "潜水",
+        "水下摄影",
+        "潜水浮标"
+      ],
+      "excludeTerms": [
+        "不喜欢潜水",
+        "不会潜水",
+        "讨厌潜水",
+        "不擅长潜水",
+        "不喜欢水下摄影",
+        "不会水下摄影",
+        "讨厌水下摄影",
+        "不擅长水下摄影",
+        "不喜欢潜水浮标",
+        "不会潜水浮标",
+        "讨厌潜水浮标",
+        "不擅长潜水浮标"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "water-polo-goal",
+      "label": "水球球门",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "水球",
+        "水球比赛",
+        "水球球门"
+      ],
+      "excludeTerms": [
+        "不喜欢水球",
+        "不会水球",
+        "讨厌水球",
+        "不擅长水球",
+        "不喜欢水球比赛",
+        "不会水球比赛",
+        "讨厌水球比赛",
+        "不擅长水球比赛",
+        "不喜欢水球球门",
+        "不会水球球门",
+        "讨厌水球球门",
+        "不擅长水球球门"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "pool-scoop-net",
+      "label": "泳池捞网",
+      "color": "#77C8BD",
+      "evidenceTerms": [
+        "游泳",
+        "泳池保养",
+        "泳池捞网"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢泳池保养",
+        "不会泳池保养",
+        "讨厌泳池保养",
+        "不擅长泳池保养",
+        "不喜欢泳池捞网",
+        "不会泳池捞网",
+        "讨厌泳池捞网",
+        "不擅长泳池捞网"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "surf-board",
+      "label": "冲浪板",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "冲浪",
+        "surfing",
+        "冲浪板"
+      ],
+      "excludeTerms": [
+        "不喜欢冲浪",
+        "不会冲浪",
+        "讨厌冲浪",
+        "不擅长冲浪",
+        "不喜欢surfing",
+        "不会surfing",
+        "讨厌surfing",
+        "不擅长surfing",
+        "不喜欢冲浪板",
+        "不会冲浪板",
+        "讨厌冲浪板",
+        "不擅长冲浪板"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "kayak-paddle",
+      "label": "皮划艇桨",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "皮划艇",
+        "划艇",
+        "kayaking",
+        "皮划艇桨"
+      ],
+      "excludeTerms": [
+        "不喜欢皮划艇",
+        "不会皮划艇",
+        "讨厌皮划艇",
+        "不擅长皮划艇",
+        "不喜欢划艇",
+        "不会划艇",
+        "讨厌划艇",
+        "不擅长划艇",
+        "不喜欢kayaking",
+        "不会kayaking",
+        "讨厌kayaking",
+        "不擅长kayaking",
+        "不喜欢皮划艇桨",
+        "不会皮划艇桨",
+        "讨厌皮划艇桨",
+        "不擅长皮划艇桨"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "mini-kayak",
+      "label": "皮划艇模型",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "皮划艇",
+        "独木舟",
+        "皮划艇模型"
+      ],
+      "excludeTerms": [
+        "不喜欢皮划艇",
+        "不会皮划艇",
+        "讨厌皮划艇",
+        "不擅长皮划艇",
+        "不喜欢独木舟",
+        "不会独木舟",
+        "讨厌独木舟",
+        "不擅长独木舟",
+        "不喜欢皮划艇模型",
+        "不会皮划艇模型",
+        "讨厌皮划艇模型",
+        "不擅长皮划艇模型"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "rescue-buoy",
+      "label": "救生浮筒",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "救生员",
+        "水上救援",
+        "救生浮筒"
+      ],
+      "excludeTerms": [
+        "不喜欢救生员",
+        "不会救生员",
+        "讨厌救生员",
+        "不擅长救生员",
+        "不喜欢水上救援",
+        "不会水上救援",
+        "讨厌水上救援",
+        "不擅长水上救援",
+        "不喜欢救生浮筒",
+        "不会救生浮筒",
+        "讨厌救生浮筒",
+        "不擅长救生浮筒"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "pool-ladder",
+      "label": "泳池梯",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "游泳",
+        "泳池",
+        "泳池梯"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢泳池",
+        "不会泳池",
+        "讨厌泳池",
+        "不擅长泳池",
+        "不喜欢泳池梯",
+        "不会泳池梯",
+        "讨厌泳池梯",
+        "不擅长泳池梯"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "waterproof-pouch",
+      "label": "防水袋",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "漂流",
+        "防水包",
+        "防水袋"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢漂流",
+        "不会漂流",
+        "讨厌漂流",
+        "不擅长漂流",
+        "不喜欢防水包",
+        "不会防水包",
+        "讨厌防水包",
+        "不擅长防水包",
+        "不喜欢防水袋",
+        "不会防水袋",
+        "讨厌防水袋",
+        "不擅长防水袋"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "water-slide-tube",
+      "label": "滑水管筒",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "水上乐园",
+        "水滑梯",
+        "滑水管筒"
+      ],
+      "excludeTerms": [
+        "不喜欢水上乐园",
+        "不会水上乐园",
+        "讨厌水上乐园",
+        "不擅长水上乐园",
+        "不喜欢水滑梯",
+        "不会水滑梯",
+        "讨厌水滑梯",
+        "不擅长水滑梯",
+        "不喜欢滑水管筒",
+        "不会滑水管筒",
+        "讨厌滑水管筒",
+        "不擅长滑水管筒"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "handball",
+      "label": "手球",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "手球",
+        "handball"
+      ],
+      "excludeTerms": [
+        "不喜欢手球",
+        "不会手球",
+        "讨厌手球",
+        "不擅长手球",
+        "不喜欢handball",
+        "不会handball",
+        "讨厌handball",
+        "不擅长handball"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "hockey-stick",
+      "label": "曲棍球杆",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "曲棍球",
+        "hockey",
+        "曲棍球杆"
+      ],
+      "excludeTerms": [
+        "不喜欢曲棍球",
+        "不会曲棍球",
+        "讨厌曲棍球",
+        "不擅长曲棍球",
+        "不喜欢hockey",
+        "不会hockey",
+        "讨厌hockey",
+        "不擅长hockey",
+        "不喜欢曲棍球杆",
+        "不会曲棍球杆",
+        "讨厌曲棍球杆",
+        "不擅长曲棍球杆"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "lacrosse-stick",
+      "label": "袋棍球网杆",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "袋棍球",
+        "lacrosse",
+        "袋棍球网杆"
+      ],
+      "excludeTerms": [
+        "不喜欢袋棍球",
+        "不会袋棍球",
+        "讨厌袋棍球",
+        "不擅长袋棍球",
+        "不喜欢lacrosse",
+        "不会lacrosse",
+        "讨厌lacrosse",
+        "不擅长lacrosse",
+        "不喜欢袋棍球网杆",
+        "不会袋棍球网杆",
+        "讨厌袋棍球网杆",
+        "不擅长袋棍球网杆"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "golf-putter",
+      "label": "高尔夫推杆",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "高尔夫",
+        "推杆",
+        "golf",
+        "高尔夫推杆"
+      ],
+      "excludeTerms": [
+        "不喜欢高尔夫",
+        "不会高尔夫",
+        "讨厌高尔夫",
+        "不擅长高尔夫",
+        "不喜欢推杆",
+        "不会推杆",
+        "讨厌推杆",
+        "不擅长推杆",
+        "不喜欢golf",
+        "不会golf",
+        "讨厌golf",
+        "不擅长golf",
+        "不喜欢高尔夫推杆",
+        "不会高尔夫推杆",
+        "讨厌高尔夫推杆",
+        "不擅长高尔夫推杆"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "curling-stone",
+      "label": "冰壶",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "冰壶",
+        "curling"
+      ],
+      "excludeTerms": [
+        "不喜欢冰壶",
+        "不会冰壶",
+        "讨厌冰壶",
+        "不擅长冰壶",
+        "不喜欢curling",
+        "不会curling",
+        "讨厌curling",
+        "不擅长curling"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "curling-broom",
+      "label": "冰壶刷",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "冰壶",
+        "冰壶刷"
+      ],
+      "excludeTerms": [
+        "不喜欢冰壶",
+        "不会冰壶",
+        "讨厌冰壶",
+        "不擅长冰壶",
+        "不喜欢冰壶刷",
+        "不会冰壶刷",
+        "讨厌冰壶刷",
+        "不擅长冰壶刷"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "fencing-mask",
+      "label": "击剑面罩",
+      "color": "#263248",
+      "evidenceTerms": [
+        "击剑",
+        "fencing",
+        "击剑面罩"
+      ],
+      "excludeTerms": [
+        "不喜欢击剑",
+        "不会击剑",
+        "讨厌击剑",
+        "不擅长击剑",
+        "不喜欢fencing",
+        "不会fencing",
+        "讨厌fencing",
+        "不擅长fencing",
+        "不喜欢击剑面罩",
+        "不会击剑面罩",
+        "讨厌击剑面罩",
+        "不擅长击剑面罩"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "fencing-foil",
+      "label": "击剑花剑",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "击剑",
+        "花剑",
+        "击剑花剑"
+      ],
+      "excludeTerms": [
+        "不喜欢击剑",
+        "不会击剑",
+        "讨厌击剑",
+        "不擅长击剑",
+        "不喜欢花剑",
+        "不会花剑",
+        "讨厌花剑",
+        "不擅长花剑",
+        "不喜欢击剑花剑",
+        "不会击剑花剑",
+        "讨厌击剑花剑",
+        "不擅长击剑花剑"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "softball-glove",
+      "label": "垒球手套",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "垒球",
+        "棒球手套",
+        "垒球手套"
+      ],
+      "excludeTerms": [
+        "不喜欢垒球",
+        "不会垒球",
+        "讨厌垒球",
+        "不擅长垒球",
+        "不喜欢棒球手套",
+        "不会棒球手套",
+        "讨厌棒球手套",
+        "不擅长棒球手套",
+        "不喜欢垒球手套",
+        "不会垒球手套",
+        "讨厌垒球手套",
+        "不擅长垒球手套"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "goalkeeper-glove",
+      "label": "守门员手套",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "守门员",
+        "门将",
+        "守门员手套"
+      ],
+      "excludeTerms": [
+        "不喜欢守门员",
+        "不会守门员",
+        "讨厌守门员",
+        "不擅长守门员",
+        "不喜欢门将",
+        "不会门将",
+        "讨厌门将",
+        "不擅长门将",
+        "不喜欢守门员手套",
+        "不会守门员手套",
+        "讨厌守门员手套",
+        "不擅长守门员手套"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "wrestling-belt",
+      "label": "摔跤腰带",
+      "color": "#263248",
+      "evidenceTerms": [
+        "摔跤",
+        "wrestling",
+        "摔跤腰带"
+      ],
+      "excludeTerms": [
+        "不喜欢摔跤",
+        "不会摔跤",
+        "讨厌摔跤",
+        "不擅长摔跤",
+        "不喜欢wrestling",
+        "不会wrestling",
+        "讨厌wrestling",
+        "不擅长wrestling",
+        "不喜欢摔跤腰带",
+        "不会摔跤腰带",
+        "讨厌摔跤腰带",
+        "不擅长摔跤腰带"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "martial-pads",
+      "label": "跆拳道脚靶",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "跆拳道",
+        "腿法",
+        "跆拳道脚靶"
+      ],
+      "excludeTerms": [
+        "不喜欢跆拳道",
+        "不会跆拳道",
+        "讨厌跆拳道",
+        "不擅长跆拳道",
+        "不喜欢腿法",
+        "不会腿法",
+        "讨厌腿法",
+        "不擅长腿法",
+        "不喜欢跆拳道脚靶",
+        "不会跆拳道脚靶",
+        "讨厌跆拳道脚靶",
+        "不擅长跆拳道脚靶"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "kettlebell",
+      "label": "壶铃",
+      "color": "#263248",
+      "evidenceTerms": [
+        "壶铃",
+        "力量训练",
+        "kettlebell"
+      ],
+      "excludeTerms": [
+        "不喜欢壶铃",
+        "不会壶铃",
+        "讨厌壶铃",
+        "不擅长壶铃",
+        "不喜欢力量训练",
+        "不会力量训练",
+        "讨厌力量训练",
+        "不擅长力量训练",
+        "不喜欢kettlebell",
+        "不会kettlebell",
+        "讨厌kettlebell",
+        "不擅长kettlebell"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "dumbbell",
+      "label": "哑铃",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "健身",
+        "举铁",
+        "哑铃"
+      ],
+      "excludeTerms": [
+        "不喜欢健身",
+        "不会健身",
+        "讨厌健身",
+        "不擅长健身",
+        "不喜欢举铁",
+        "不会举铁",
+        "讨厌举铁",
+        "不擅长举铁",
+        "不喜欢哑铃",
+        "不会哑铃",
+        "讨厌哑铃",
+        "不擅长哑铃"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "resistance-band",
+      "label": "弹力带",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "健身",
+        "康复训练",
+        "弹力带"
+      ],
+      "excludeTerms": [
+        "不喜欢健身",
+        "不会健身",
+        "讨厌健身",
+        "不擅长健身",
+        "不喜欢康复训练",
+        "不会康复训练",
+        "讨厌康复训练",
+        "不擅长康复训练",
+        "不喜欢弹力带",
+        "不会弹力带",
+        "讨厌弹力带",
+        "不擅长弹力带"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "djembe",
+      "label": "非洲手鼓",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "手鼓",
+        "djembe",
+        "非洲手鼓"
+      ],
+      "excludeTerms": [
+        "不喜欢手鼓",
+        "不会手鼓",
+        "讨厌手鼓",
+        "不擅长手鼓",
+        "不喜欢djembe",
+        "不会djembe",
+        "讨厌djembe",
+        "不擅长djembe",
+        "不喜欢非洲手鼓",
+        "不会非洲手鼓",
+        "讨厌非洲手鼓",
+        "不擅长非洲手鼓"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "fold-light-gate",
+      "label": "折叠光门",
+      "color": "#263248",
+      "evidenceTerms": [
+        "科幻",
+        "空间门",
+        "折叠光门"
+      ],
+      "excludeTerms": [
+        "不喜欢科幻",
+        "不会科幻",
+        "讨厌科幻",
+        "不擅长科幻",
+        "不喜欢空间门",
+        "不会空间门",
+        "讨厌空间门",
+        "不擅长空间门",
+        "不喜欢折叠光门",
+        "不会折叠光门",
+        "讨厌折叠光门",
+        "不擅长折叠光门"
+      ]
     }
   ]
 }

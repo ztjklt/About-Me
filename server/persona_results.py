@@ -36,12 +36,37 @@ def fallback_term(asset, catalog):
     return re.sub(r'^(?:我|本人|喜欢|热爱|擅长|会|是|在|就读于|毕业于)+', '', source)[:80] or asset['name']
 
 
+def specific_catalog_pairs(word, catalogs):
+    """The most specific published name wins over a shared hobby like swimming."""
+    normalize = lambda value: re.sub(r'[^0-9A-Za-z\u4e00-\u9fff]', '', value).casefold()
+    word = normalize(word)
+    found = []
+    for pair, catalog in catalogs.items():
+        for label in [catalog.get('label', ''), *catalog.get('evidenceTerms', [])]:
+            label = normalize(label)
+            if label and label in word:
+                found.append((len(label), pair))
+    if not found:
+        return set()
+    length = max(length for length, pair in found)
+    return {pair for size, pair in found if size == length}
+
+
+def fact_identity(source, keyword, pair, catalogs):
+    # Separate explicitly named props in a shared sentence, without inventing many props for one hobby.
+    pairs = specific_catalog_pairs(keyword, catalogs) if keyword and keyword in source else set()
+    return keyword if pairs == {pair} else source
+
+
 def generation_terms(assets, terms, catalogs, pending=False):
     terms = [dict(x) for x in terms]
     def matches(asset, term):
         if asset.get('institutionName'):
             return asset['institutionName'] == term['term']
         if term['term'] not in asset.get('source', ''):
+            return False
+        known = specific_catalog_pairs(term['term'], catalogs)
+        if known and (asset['templateId'], asset['visualId']) not in known:
             return False
         if asset.get('generationTerm') == term['term']:
             return True

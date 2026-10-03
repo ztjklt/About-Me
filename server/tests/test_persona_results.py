@@ -308,3 +308,38 @@ def test_saved_alias_red_is_corrected_on_read_and_cached_generate(client,monkeyp
     with api.db() as con:
         stored=json.loads(con.execute('SELECT profile FROM profiles WHERE id=?',(session['profile']['playerId'],)).fetchone()[0])
     assert all(t['status']=='ready' for t in stored['generationTerms'])
+
+
+def test_specific_swimming_prop_cannot_be_greened_by_another_swimming_prop():
+    from server.persona_results import generation_terms
+    intro='我喜欢游泳浮板和游泳脚蹼'
+    raw={'personas':[{'name':'浮板','term':'游泳浮板','source':intro,'templateId':'Cushion','visualId':'swim-kickboard'}],
+         'terms':[{'term':word,'source':intro} for word in ('游泳浮板','游泳脚蹼')]}
+    assets=api.validate_personas(raw,intro)
+    rows=generation_terms(assets,assets.terms,api.CATALOG_BY_PAIR)
+    assert {r['term']:r['status'] for r in rows}=={'游泳浮板':'ready','游泳脚蹼':'failed'}
+    raw['personas'][0]['term']='游泳脚蹼'
+    assets=api.validate_personas(raw,intro)
+    assert next(r for r in generation_terms(assets,assets.terms,api.CATALOG_BY_PAIR) if r['term']=='游泳脚蹼')['status']=='failed'
+
+
+def test_different_explicit_props_in_one_sentence_survive_deduplication_and_cache_rules():
+    intro='我喜欢用游泳浮板和游泳脚蹼训练'
+    raw={'personas':[{'name':word,'term':word,'source':intro,'templateId':template,'visualId':visual}
+         for word,template,visual in [('游泳浮板','Cushion','swim-kickboard'),('游泳脚蹼','Utility','swim-fins')]],
+         'terms':[{'term':word,'source':intro} for word in ('游泳浮板','游泳脚蹼')]}
+    assets=api.validate_personas(raw,intro)
+    assert len(assets)==2
+    assert api.profile_follows_generation_rules({'personas':assets},intro)
+    # A single broad hobby still cannot spawn multiple near-identical facts.
+    raw['terms']=[{'term':'游泳','source':intro}]
+    for p in raw['personas']:p['term']='游泳'
+    assert len(api.validate_personas(raw,intro))==1
+
+
+def test_specific_fact_deduplication_keeps_negative_context():
+    intro='我不喜欢游泳浮板和游泳脚蹼'
+    raw={'personas':[{'name':word,'term':word,'source':intro,'templateId':template,'visualId':visual}
+         for word,template,visual in [('游泳浮板','Cushion','swim-kickboard'),('游泳脚蹼','Utility','swim-fins')]],
+         'terms':[{'term':word,'source':intro} for word in ('游泳浮板','游泳脚蹼')]}
+    assert not api.validate_personas(raw,intro)

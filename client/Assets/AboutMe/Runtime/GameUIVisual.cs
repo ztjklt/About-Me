@@ -311,12 +311,13 @@ namespace AboutMe
             phaseText.text=phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
             if(me!=null)
             {
-                var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":mechanic.label+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
+                var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;
-                bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||me.sticky||dragging);
-                if(me.grabbed||me.sticky){progressText.text=(me.sticky?"按住 Q 撕掉黏附爆风  ":"按住 Q / 挣脱按钮  ")+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
+                bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||me.sticky||dragging||me.portalProgress>0);
+                if(me.portalProgress>0){progressText.text="传送准备  "+Mathf.RoundToInt(me.portalProgress*100)+"% · Q 取消";progressFill.rectTransform.anchorMax=new Vector2(me.portalProgress,1);}
+                else if(me.grabbed||me.sticky){progressText.text=(me.sticky?"按住 Q 撕掉黏附爆风  ":"按住 Q / 挣脱按钮  ")+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
                 else if(interacting){progressText.text=(me.interaction=="eat"?"正在吞噬":"正在回收")+"  "+Mathf.RoundToInt(me.progress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.progress),1);}
                 else if(dragging){progressText.text="拖拽中 · G / 抓取按钮松手";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.grabTension),1);}
             }

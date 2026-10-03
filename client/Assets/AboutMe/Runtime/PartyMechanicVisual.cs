@@ -6,7 +6,7 @@ namespace AboutMe
     public sealed class PartyMechanicVisual : MonoBehaviour
     {
         static Material warningMaterial;
-        GameObject model;LineRenderer ring;TextMesh label;ParticleSystem burst;string phase="";
+        GameObject model;LineRenderer ring,rope;GameObject[] arrows;TextMesh label;ParticleSystem burst;string phase="";
         public static GameObject Create(EffectState e,Transform parent)
         {
             var root=new GameObject("Party warning "+e.mechanicId);root.transform.SetParent(parent,false);var v=root.AddComponent<PartyMechanicVisual>();
@@ -18,10 +18,49 @@ namespace AboutMe
             if(v.label.font)v.label.GetComponent<MeshRenderer>().sharedMaterial=v.label.font.material;
             return root;
         }
-        public void Present(EffectState e,float now,Camera camera)
+        void PresentMovement(EffectState e,PartyMechanic d,float now,Camera camera,Snapshot state)
+        {
+            float left=Mathf.Max(0,e.deadline-now);bool ended=e.stage=="ended"||e.stage=="burst";
+            var color=d.id=="paired-teleport"?(e.stage=="portal_out"?new Color(.67f,.34f,1):new Color(.15f,.7f,1)):new Color(.1f,.72f,.63f);
+            color.a=ended?Mathf.Clamp01(left*3):.95f;ring.startColor=ring.endColor=color;
+            float y=CampusGeometry.Floor(e.position,.1f)+.06f-e.position.y;
+            ring.positionCount=64;
+            for(int i=0;i<64;i++)
+            {
+                float angle=i*Mathf.PI*2/64;var point=new Vector3(Mathf.Cos(angle)*e.radius,y,Mathf.Sin(angle)*e.radius);
+                if(d.id=="belt-floor")
+                {
+                    float t=i/16f;int side=i/16;float f=t-side;
+                    point=side==0?new Vector3(Mathf.Lerp(-.9f,.9f,f),y,-2):side==1?new Vector3(.9f,y,Mathf.Lerp(-2,2,f)):side==2?new Vector3(Mathf.Lerp(.9f,-.9f,f),y,2):new Vector3(-.9f,y,Mathf.Lerp(2,-2,f));
+                    point=Quaternion.LookRotation(e.velocity)*point;
+                }
+                ring.SetPosition(i,point);
+            }
+            ring.gameObject.SetActive(d.id!="grapple-anchor"&&d.id!="glide-open"&&d.id!="uppercut-piston");
+            model.SetActive(!ended);model.transform.localPosition=Vector3.zero;model.transform.localScale=Vector3.one;
+            if(d.id=="glide-open"){model.transform.localPosition=Vector3.up*1.2f;model.transform.localScale=Vector3.one*2;}
+            if(d.id=="inflate-shove")model.transform.localScale=Vector3.one*Mathf.Lerp(1,3,Mathf.Clamp01((now-e.createdAt)/d.lifetime));
+            if(d.id=="spring-pad"){model.transform.localRotation=Quaternion.Euler(90,0,0);model.transform.localScale=new Vector3(2,2,1);model.transform.localPosition=Vector3.up*(.06f+Mathf.Sin(now*8)*.035f);}
+            if(d.id=="belt-floor")
+            {
+                model.SetActive(false);
+                if(arrows==null){arrows=new GameObject[3];for(int i=0;i<3;i++)arrows[i]=ToyFactory.Shape("Conveyor direction",PrimitiveType.Cube,transform,Vector3.zero,new Vector3(.25f,.04f,.5f),"#39BCAA");}
+                for(int i=0;i<3;i++){arrows[i].transform.localPosition=e.velocity*(-1.7f+Mathf.Repeat(now*2.8f+i*1.2f,3.4f))+Vector3.up*y;arrows[i].transform.rotation=Quaternion.LookRotation(e.velocity);}
+            }
+            if(d.id=="grapple-anchor")
+            {
+                if(!rope){var obj=new GameObject("Visible grapple rope");obj.transform.SetParent(transform,false);rope=obj.AddComponent<LineRenderer>();rope.sharedMaterial=warningMaterial;rope.startWidth=rope.endWidth=.07f;rope.positionCount=2;rope.useWorldSpace=true;rope.startColor=rope.endColor=color;}
+                var anchor=System.Array.Find(state.props,x=>x.id==e.targetId);rope.gameObject.SetActive(anchor!=null&&!ended);if(anchor!=null){rope.SetPosition(0,e.position+Vector3.up*.4f);rope.SetPosition(1,anchor.position+Vector3.up*.3f);}
+            }
+            label.gameObject.SetActive(!ended);label.transform.localPosition=Vector3.up*(d.id=="glide-open"?2:1.25f);if(camera)label.transform.rotation=camera.transform.rotation;
+            string help=d.id=="spring-pad"?"走上去弹跳 · 可拆":d.id=="uppercut-piston"?"向上挑起":d.id=="pogo-hop"?"连续弹跳 · Q 停止":d.id=="inflate-shove"?"膨胀推开 · Q 停止":d.id=="stomp-pulse"?"落地震荡 · 跳起躲避":d.id=="short-dash"?"滑冲 · 碰撞停止":d.id=="grapple-anchor"?"锚点牵引 · Q 松开":d.id=="glide-open"?"滑翔 · Q 收伞":d.id=="belt-floor"?"传送带 · 跳起 / 拆除":e.stage=="portal_wait"?"入口 · 等待放出口":e.stage=="portal_out"?"出口 · 紫色": "入口 · 走入停留 0.6s";
+            label.text=help+"\n"+left.ToString("0.0")+"s";phase=e.stage;
+        }
+        public void Present(EffectState e,float now,Camera camera,Snapshot state)
         {
             var d=PartyMechanicRegistry.Find(e.mechanicId);if(d==null)return;
             transform.position=e.position;
+            if(d.family=="movement"){PresentMovement(e,d,now,camera,state);return;}
             bool exploding=e.stage=="burst",isRing=e.stage=="ring";
             model.SetActive(!exploding&&!isRing&&!e.targetId.StartsWith("device-"));
             if(e.stage=="flying")model.transform.Rotate(Vector3.up,280*Time.deltaTime);

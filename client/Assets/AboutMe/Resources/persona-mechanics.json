@@ -11,7 +11,8 @@
       "radius": 3,
       "damage": 32,
       "force": 8,
-      "hint": "碰到人或地面爆开；自己也会被波及"
+      "hint": "碰到人或地面爆开；自己也会被波及",
+      "family": "blast"
     },
     {
       "id": "fuse-burst",
@@ -23,7 +24,8 @@
       "radius": 3,
       "damage": 32,
       "force": 8,
-      "hint": "2.4 秒后爆开；G 捡起，使用键扔回去"
+      "hint": "2.4 秒后爆开；G 捡起，使用键扔回去",
+      "family": "blast"
     },
     {
       "id": "remote-burst",
@@ -35,7 +37,8 @@
       "radius": 3,
       "damage": 32,
       "force": 8,
-      "hint": "再按使用键引爆；捡走或击打两次可拆除"
+      "hint": "再按使用键引爆；捡走或击打两次可拆除",
+      "family": "blast"
     },
     {
       "id": "proximity-burst",
@@ -47,7 +50,8 @@
       "radius": 2.4,
       "damage": 28,
       "force": 7,
-      "hint": "地面进入警戒圈 0.6 秒后爆开；离开或跳过可躲避"
+      "hint": "地面进入警戒圈 0.6 秒后爆开；离开或跳过可躲避",
+      "family": "blast"
     },
     {
       "id": "cone-burst",
@@ -59,7 +63,8 @@
       "radius": 4.5,
       "damage": 30,
       "force": 8,
-      "hint": "向前 60° 冲击；侧后方安全，使用者会后退"
+      "hint": "向前 60° 冲击；侧后方安全，使用者会后退",
+      "family": "blast"
     },
     {
       "id": "sticky-burst",
@@ -71,7 +76,8 @@
       "radius": 2.5,
       "damage": 28,
       "force": 7,
-      "hint": "命中后黏住；按住 Q 0.7 秒可撕掉"
+      "hint": "命中后黏住；按住 Q 0.7 秒可撕掉",
+      "family": "blast"
     },
     {
       "id": "vacuum-burst",
@@ -83,7 +89,8 @@
       "radius": 3.2,
       "damage": 30,
       "force": 7,
-      "hint": "落地先吸入 0.5 秒再爆开；移动离开或击打拆除"
+      "hint": "落地先吸入 0.5 秒再爆开；移动离开或击打拆除",
+      "family": "blast"
     },
     {
       "id": "relay-burst",
@@ -95,7 +102,8 @@
       "radius": 2.4,
       "damage": 24,
       "force": 6,
-      "hint": "连放最多 3 个；只在相邻 4 米内接力，可搬走中间节点"
+      "hint": "连放最多 3 个；只在相邻 4 米内接力，可搬走中间节点",
+      "family": "blast"
     },
     {
       "id": "cluster-burst",
@@ -107,7 +115,8 @@
       "radius": 1.65,
       "damage": 12,
       "force": 2.6,
-      "hint": "三个落点分别预警、分别爆开；总冲力受限"
+      "hint": "三个落点分别预警、分别爆开；总冲力受限",
+      "family": "blast"
     },
     {
       "id": "ring-burst",
@@ -119,7 +128,138 @@
       "radius": 6,
       "damage": 28,
       "force": 7,
-      "hint": "冲击环沿地面扩散；跳过薄环可躲开"
+      "hint": "冲击环沿地面扩散；跳过薄环可躲开",
+      "family": "blast"
+    },
+    {
+      "id": "spring-pad",
+      "visualId": "swim-kickboard",
+      "label": "公共弹床",
+      "cooldown": 8,
+      "windup": 0.25,
+      "lifetime": 6,
+      "radius": 1.1,
+      "damage": 0,
+      "force": 2,
+      "hint": "F 放弹床，所有人可踩；可绕开或击打两次拆除",
+      "family": "movement"
+    },
+    {
+      "id": "uppercut-piston",
+      "visualId": "boxing-glove",
+      "label": "活塞顶起",
+      "cooldown": 4,
+      "windup": 0.25,
+      "lifetime": 0.4,
+      "radius": 1.7,
+      "damage": 18,
+      "force": 2,
+      "hint": "近距离向上顶起；侧绕避开，落点可预测",
+      "family": "movement"
+    },
+    {
+      "id": "pogo-hop",
+      "visualId": "hiking-pole",
+      "label": "撑杆连跳",
+      "cooldown": 8,
+      "windup": 0.2,
+      "lifetime": 3,
+      "radius": 0.6,
+      "damage": 0,
+      "force": 0,
+      "hint": "落地自动再跳；空中不能使用或吞噬，Q 停止",
+      "family": "movement"
+    },
+    {
+      "id": "inflate-shove",
+      "visualId": "pool-noodle",
+      "label": "充气挤人",
+      "cooldown": 10,
+      "windup": 0.4,
+      "lifetime": 1.2,
+      "radius": 2.2,
+      "damage": 0,
+      "force": 3,
+      "hint": "前摇可被打断；短时撑大挤开周围人，自己被反推",
+      "family": "movement"
+    },
+    {
+      "id": "stomp-pulse",
+      "visualId": "djembe",
+      "label": "落地跺脚",
+      "cooldown": 7,
+      "windup": 0.2,
+      "lifetime": 2,
+      "radius": 2.8,
+      "damage": 20,
+      "force": 5,
+      "hint": "先跳起再 F，落地触发一次；跳过脉冲可躲避",
+      "family": "movement"
+    },
+    {
+      "id": "short-dash",
+      "visualId": "swim-fins",
+      "label": "可碰撞滑冲",
+      "cooldown": 5,
+      "windup": 0.2,
+      "lifetime": 0.35,
+      "radius": 0.55,
+      "damage": 0,
+      "force": 2,
+      "hint": "沿输入方向滑冲；撞人撞墙会停，冲后不能立即吞噬",
+      "family": "movement"
+    },
+    {
+      "id": "grapple-anchor",
+      "visualId": "climbing-carabiner",
+      "label": "锚点拉近",
+      "cooldown": 9,
+      "windup": 0.25,
+      "lifetime": 1.3,
+      "radius": 8,
+      "damage": 0,
+      "force": 0,
+      "hint": "瞄准前方箱子或垃圾桶；Q 松开，锚点被搬走会中断",
+      "family": "movement"
+    },
+    {
+      "id": "glide-open",
+      "visualId": "umbrella",
+      "label": "展开滑翔",
+      "cooldown": 8,
+      "windup": 0.2,
+      "lifetime": 2.5,
+      "radius": 0.65,
+      "damage": 0,
+      "force": 0,
+      "hint": "空中 F 减缓下降；不能攻击吞噬，Q 收拢",
+      "family": "movement"
+    },
+    {
+      "id": "belt-floor",
+      "visualId": "water-slide-tube",
+      "label": "公共运输带",
+      "cooldown": 11,
+      "windup": 0.25,
+      "lifetime": 6,
+      "radius": 2,
+      "damage": 0,
+      "force": 0,
+      "hint": "F 放运输带，双方和地面道具都会被运送；跳开或拆除",
+      "family": "movement"
+    },
+    {
+      "id": "paired-teleport",
+      "visualId": "fold-light-gate",
+      "label": "双垫传送",
+      "cooldown": 16,
+      "windup": 0.25,
+      "lifetime": 8,
+      "radius": 0.75,
+      "damage": 0,
+      "force": 0,
+      "hint": "两次 F 放入口出口，主动走进后 0.6 秒传送；Q 取消",
+      "family": "movement"
     }
   ]
 }

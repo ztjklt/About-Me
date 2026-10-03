@@ -233,7 +233,7 @@ namespace AboutMe
                 present.Add(effect.id);
                 if(!objects.TryGetValue(effect.id,out var go))
                 {go=effect.kind=="PartyMechanic"?PartyMechanicVisual.Create(effect,objectRoot):effect.kind=="Pulse"?ToyFactory.Shape("impact",PrimitiveType.Sphere,objectRoot,effect.position,Vector3.one,effect.color):ToyFactory.Item(effect.visual,effect.color,objectRoot,"",effect.emblemPath,effect.emblemCrop,effect.generatedBy);objects[effect.id]=go;}
-                if(effect.kind=="PartyMechanic"){go.GetComponent<PartyMechanicVisual>().Present(effect,state.simulationTime,ViewCamera);continue;}
+                if(effect.kind=="PartyMechanic"){go.GetComponent<PartyMechanicVisual>().Present(effect,state.simulationTime,ViewCamera,state);continue;}
                 go.transform.position=effect.position;
                 if(effect.kind=="Pulse")go.transform.localScale=Vector3.one*Mathf.Max(.1f,effect.remaining*3);
                 else go.transform.Rotate(Vector3.up,UnityEngine.Time.deltaTime*(effect.kind=="ThrownDisc"?(effect.landed?32:900):200));

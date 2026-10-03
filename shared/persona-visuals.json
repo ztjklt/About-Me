@@ -1284,6 +1284,614 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "swim-cap",
+      "label": "泳帽",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/swim-cap",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "swim-pull-buoy",
+      "label": "夹腿浮漂",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/swim-pull-buoy",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "swim-hand-paddles",
+      "label": "游泳划水掌",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/swim-hand-paddles",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "swim-lane-rope",
+      "label": "泳池分道浮绳",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/swim-lane-rope",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "pool-start-block",
+      "label": "游泳出发台",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/pool-start-block",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "dive-float-marker",
+      "label": "潜水浮标",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/dive-float-marker",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "water-polo-goal",
+      "label": "水球球门",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/water-polo-goal",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "pool-scoop-net",
+      "label": "泳池捞网",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/pool-scoop-net",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#77C8BD",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "surf-board",
+      "label": "冲浪板",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/surf-board",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "kayak-paddle",
+      "label": "皮划艇桨",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/kayak-paddle",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "mini-kayak",
+      "label": "皮划艇模型",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/mini-kayak",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "rescue-buoy",
+      "label": "救生浮筒",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/rescue-buoy",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "pool-ladder",
+      "label": "泳池梯",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/pool-ladder",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "waterproof-pouch",
+      "label": "防水袋",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/waterproof-pouch",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "water-slide-tube",
+      "label": "滑水管筒",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/water-slide-tube",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "handball",
+      "label": "手球",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/handball",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F5CB77",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "hockey-stick",
+      "label": "曲棍球杆",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/hockey-stick",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "lacrosse-stick",
+      "label": "袋棍球网杆",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/lacrosse-stick",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "golf-putter",
+      "label": "高尔夫推杆",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/golf-putter",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "curling-stone",
+      "label": "冰壶",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/curling-stone",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "curling-broom",
+      "label": "冰壶刷",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/curling-broom",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "fencing-mask",
+      "label": "击剑面罩",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/fencing-mask",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "fencing-foil",
+      "label": "击剑花剑",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/fencing-foil",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "softball-glove",
+      "label": "垒球手套",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/softball-glove",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "goalkeeper-glove",
+      "label": "守门员手套",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/goalkeeper-glove",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "wrestling-belt",
+      "label": "摔跤腰带",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/wrestling-belt",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "martial-pads",
+      "label": "跆拳道脚靶",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/martial-pads",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "kettlebell",
+      "label": "壶铃",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/kettlebell",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "dumbbell",
+      "label": "哑铃",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/dumbbell",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "resistance-band",
+      "label": "弹力带",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/resistance-band",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "djembe",
+      "label": "非洲手鼓",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/djembe",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "fold-light-gate",
+      "label": "折叠光门",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/fold-light-gate",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

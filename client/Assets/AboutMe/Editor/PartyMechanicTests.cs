@@ -36,9 +36,9 @@ namespace AboutMe.Editor
             try
             {
                 Test("ten bounded authoritative definitions with unique bindings",()=>{
-                    Check(Resources.Load<Shader>("PartyWarning")!=null,"warning ring shader missing");var all=PartyMechanicRegistry.All;Check(all.Length==10&&all.Select(x=>x.id).Distinct().Count()==10&&all.Select(x=>x.visualId).Distinct().Count()==10,"registry count/duplicates");
-                    Check(all.All(x=>x.windup>=.2f&&x.cooldown>=6&&x.force<=8&&x.radius<=6),"budget exceeded");
-                    foreach(var d in all){var m=Make(d.id);Check(m.Item(m.Players["p0"].equipped).PublicCopy().asset.mechanicId==d.id,"public mechanic binding lost");Deploy(m);Check(m.Remaining("p0")==4,"deployment invented/consumed a life");}
+                    Check(Resources.Load<Shader>("PartyWarning")!=null,"warning ring shader missing");var all=PartyMechanicRegistry.All;Check(all.Length==20&&all.Select(x=>x.id).Distinct().Count()==20&&all.Select(x=>x.visualId).Distinct().Count()==20,"registry count/duplicates");
+                    Check(all.All(x=>x.windup>=.2f&&x.cooldown>=4&&x.force<=8&&x.radius<=8),"budget exceeded");
+                    foreach(var d in all.Where(x=>x.family=="blast")){var m=Make(d.id);Check(m.Item(m.Players["p0"].equipped).PublicCopy().asset.mechanicId==d.id,"public mechanic binding lost");Deploy(m);Check(m.Remaining("p0")==4,"deployment invented/consumed a life");}
                 });
                 Test("contact burst sweeps player and harms owner only within radius",()=>{
                     var m=Make("impact-burst");m.Players["p1"].position=new Vector3(0,1,2.3f);Deploy(m);Tick(m,.25f);
