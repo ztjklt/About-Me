@@ -18,10 +18,14 @@ mergeInto(LibraryManager.library, {
     var room=UTF8ToString(code);
     if(typeof wx!=='undefined'&&wx.shareAppMessage){wx.shareAppMessage({title:'拿「自己」打朋友 · About Me',query:'room='+encodeURIComponent(room)});return;}
     var link=new URL(location.href);link.searchParams.set('room',room);
-    if(navigator.clipboard)navigator.clipboard.writeText(link.toString());
+    var target=globalThis.aboutMeReceiver;
+    var notify=function(method,text){if(target)SendMessage(target,method,text);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link.toString()).then(function(){notify('OnPlatformStatus','邀请链接已复制；房间码：'+room);},function(){notify('OnPlatformError','复制链接未成功，请手动分享房间码：'+room);});
+    }else notify('OnPlatformError','浏览器不支持复制链接，请手动分享房间码：'+room);
   },
   AM_RecordStart: function(receiver) {
-    var target=UTF8ToString(receiver);
+    var target=UTF8ToString(receiver);globalThis.aboutMeRecordingCancelled=false;
     var fail=function(error){SendMessage(target,'OnPlatformError','录音失败：'+String(error.errMsg||error.message||error));};
     if(typeof wx!=='undefined'&&wx.getRecorderManager){
       var recorder=wx.getRecorderManager();globalThis.aboutMeRecorder=recorder;
@@ -32,13 +36,15 @@ mergeInto(LibraryManager.library, {
     }
     if(!navigator.mediaDevices){fail('浏览器录音需要 HTTPS 和麦克风权限');return;}
     navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
-      var recorder=new MediaRecorder(stream);globalThis.aboutMeRecorder=recorder;var chunks=[];
+      if(globalThis.aboutMeRecordingCancelled){stream.getTracks().forEach(function(track){track.stop();});return;}
+      var recorder;try{recorder=new MediaRecorder(stream);}catch(error){stream.getTracks().forEach(function(track){track.stop();});fail(error);return;}
+      globalThis.aboutMeRecorder=recorder;var chunks=[];
       recorder.ondataavailable=function(event){if(event.data.size)chunks.push(event.data);};
       recorder.onstop=function(){stream.getTracks().forEach(function(track){track.stop();});var reader=new FileReader();reader.onload=function(){SendMessage(target,'OnRecorded',(recorder.mimeType.indexOf('mp4')>=0?'m4a:':'webm:')+reader.result.split(',')[1]);};reader.readAsDataURL(new Blob(chunks,{type:recorder.mimeType}));};
       recorder.start();setTimeout(function(){if(recorder.state==='recording')recorder.stop();},60000);
     }).catch(fail);
   },
-  AM_RecordStop: function(){if(globalThis.aboutMeRecorder)globalThis.aboutMeRecorder.stop();},
+  AM_RecordStop: function(){globalThis.aboutMeRecordingCancelled=true;var recorder=globalThis.aboutMeRecorder;if(recorder&&recorder.state!=='inactive')recorder.stop();},
   AM_PickIntroductionImage: function(receiver) {
     var target=UTF8ToString(receiver), fail=function(){SendMessage(target,'OnPlatformError','无法读取所选图片');};
     if(typeof wx!=='undefined'&&wx.chooseMedia){
@@ -50,9 +56,20 @@ mergeInto(LibraryManager.library, {
     document.body.appendChild(input);input.click();
   },
   AM_Screenshot: function(){
-    var canvas=Module.canvas;
-    if(typeof wx!=='undefined'&&canvas.toTempFilePath){canvas.toTempFilePath({success:function(result){wx.saveImageToPhotosAlbum({filePath:result.tempFilePath});}});return;}
-    var a=document.createElement('a');a.download='AboutMe-result.png';a.href=canvas.toDataURL('image/png');a.click();
+    var canvas=Module.canvas,target=globalThis.aboutMeReceiver;
+    var notify=function(method,text){if(target)SendMessage(target,method,text);};
+    if(typeof wx!=='undefined'&&canvas.toTempFilePath){canvas.toTempFilePath({success:function(result){wx.saveImageToPhotosAlbum({filePath:result.tempFilePath,success:function(){notify('OnPlatformStatus','结算截图已保存到相册。');},fail:function(){notify('OnPlatformError','截图未保存，请检查相册权限后重试。');}});},fail:function(){notify('OnPlatformError','结算截图生成失败，请重试。');}});return;}
+    try{
+      var old=document.getElementById('aboutme-result-screenshot');if(old)old.remove();
+      var data=canvas.toDataURL('image/png');
+      var dialog=document.createElement('section');dialog.id='aboutme-result-screenshot';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-label','保存结算截图');
+      dialog.style.cssText='position:fixed;inset:16px;z-index:2147483647;background:#fff9ef;border:3px solid #222c3c;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px;overflow:auto;color:#222c3c;font:16px system-ui';
+      var title=document.createElement('p');title.textContent='截图已准备。点击下载；若浏览器不支持下载，可以右键或长按图片保存。';dialog.appendChild(title);
+      var image=document.createElement('img');image.src=data;image.alt='本局结算截图';image.style.cssText='max-width:100%;max-height:70%;object-fit:contain';dialog.appendChild(image);
+      var link=document.createElement('a');link.href=data;link.download='AboutMe-result.png';link.textContent='下载截图';link.style.cssText='padding:12px 28px;background:#79cfc5;border-radius:8px;color:#222c3c';dialog.appendChild(link);
+      var close=document.createElement('button');close.textContent='关闭截图';close.style.cssText='padding:10px 24px';close.onclick=function(){dialog.remove();canvas.focus();};dialog.appendChild(close);
+      document.body.appendChild(dialog);close.focus();notify('OnPlatformStatus','结算截图已准备，请点击下载截图。');
+    }catch(error){notify('OnPlatformError','结算截图生成失败，请稍后重试。');}
   },
   AM_InputOpen: function(receiver,value,placeholder,multiline,maxLength,x,y,width,height){
     var target=UTF8ToString(receiver),initial=UTF8ToString(value),hint=UTF8ToString(placeholder);

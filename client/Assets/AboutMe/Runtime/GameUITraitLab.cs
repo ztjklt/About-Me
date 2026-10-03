@@ -12,6 +12,8 @@ namespace AboutMe
         Camera traitCamera;
         RenderTexture traitRender;
         Text traitDetail,traitMetric,traitMbti;
+        Text traitAutoLabel;
+        readonly System.Collections.Generic.List<StickerButton> traitButtons=new System.Collections.Generic.List<StickerButton>();
         bool traitAuto=true;float traitNext;
         int traitChoice,mbtiChoice;
         static readonly string[] TraitNames={"热烈 · 喷火","冷静 · 冰霜","坚定 · 护罩","好奇 · 探照","调皮 · 弹跳","温柔 · 泡泡"};
@@ -28,6 +30,7 @@ namespace AboutMe
         void OpenTraitLab()
         {
             if(traitLab){traitLab.gameObject.SetActive(true);return;}
+            traitChoice=mbtiChoice=0;traitAuto=true;traitButtons.Clear();
             traitLab=ArtPanel(artboard,"Personality ability laboratory",20,16,1560,864,UITheme.Paper,true,true);
             statusPill.gameObject.SetActive(false);
             traitLab.SetAsLastSibling();
@@ -50,17 +53,19 @@ namespace AboutMe
             var cameraGo=new GameObject("Trait preview camera");cameraGo.transform.SetParent(traitScene.transform,false);traitCamera=cameraGo.AddComponent<Camera>();
             traitCamera.cullingMask=1<<29;traitCamera.clearFlags=CameraClearFlags.SolidColor;traitCamera.backgroundColor=ToyFactory.ColorOf("#EBE1D0");
             traitCamera.targetTexture=traitRender;traitCamera.fieldOfView=43;traitCamera.transform.position=new Vector3(4.7f,3.2f,6.2f);traitCamera.transform.LookAt(new Vector3(0,1.15f,1.45f));
-            for(int i=0;i<TraitNames.Length;i++){int choice=i;ArtButton(traitLab,TraitNames[i],954+(i%2)*282,137+(i/2)*70,263,55,()=>ChooseTrait(choice),i==0?UITheme.Yellow:UITheme.Mint,UITheme.Ink);}
+            for(int i=0;i<TraitNames.Length;i++){int choice=i;traitButtons.Add(ArtButton(traitLab,TraitNames[i],954+(i%2)*282,137+(i/2)*70,263,55,()=>ChooseTrait(choice),UITheme.Mint,UITheme.Ink).GetComponent<StickerButton>());}
+            traitButtons[0].SetState(UIVisualState.Selected);
             traitDetail=ArtText(traitLab,TraitDescriptions[0],954,363,558,211,22,UITheme.Ink);
             ArtText(traitLab,"MBTI 只作自选风格预设\n可选任意特性，不决定强弱，也不作心理判断。",954,591,555,66,17,UITheme.Muted);
             var mbti=ArtButton(traitLab,"",954,665,267,53,()=>{mbtiChoice=(mbtiChoice+1)%MbtiNames.Length;traitMbti.text=MbtiNames[mbtiChoice];if(mbtiChoice>0)ChooseTrait(MbtiSuggestions[mbtiChoice]);},UITheme.Purple,UITheme.Ink);
             traitMbti=mbti.GetComponentInChildren<Text>();traitMbti.text=MbtiNames[0];
             ArtButton(traitLab,"释放一次（F）",1238,665,274,53,()=>traitEffects.Play(),UITheme.Yellow,UITheme.Ink,"attack");
-            ArtButton(traitLab,"切换自动演示",954,734,558,46,()=>{traitAuto=!traitAuto;if(!traitAuto)traitNext=float.PositiveInfinity;else traitNext=0;},UITheme.Field,UITheme.Ink);
+            var autoButton=ArtButton(traitLab,"自动演示 · 开启",954,734,558,46,()=>{traitAuto=!traitAuto;traitNext=traitAuto?0:float.PositiveInfinity;traitAutoLabel.text="自动演示 · "+(traitAuto?"开启":"关闭");},UITheme.Field,UITheme.Ink);
+            traitAutoLabel=autoButton.GetComponentInChildren<Text>();
             traitMetric=ArtText(traitLab,"",30,783,1470,40,18,UITheme.Muted);
             traitNext=Time.unscaledTime+2.2f;StartCoroutine(TraitLabTick());
         }
-        void ChooseTrait(int choice){traitChoice=choice;traitDetail.text=TraitDescriptions[choice];traitEffects.Select(choice);traitNext=Time.unscaledTime+2.2f;}
+        void ChooseTrait(int choice){traitChoice=choice;traitDetail.text=TraitDescriptions[choice];traitEffects.Select(choice);traitNext=Time.unscaledTime+2.2f;for(int i=0;i<traitButtons.Count;i++)traitButtons[i].SetState(i==choice?UIVisualState.Selected:UIVisualState.Normal);}
         System.Collections.IEnumerator TraitLabTick()
         {
             while(traitLab&&traitLab.gameObject.activeSelf)

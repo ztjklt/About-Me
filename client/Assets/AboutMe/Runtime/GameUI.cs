@@ -200,7 +200,7 @@ namespace AboutMe
                 if(req.result==UnityWebRequest.Result.Success&&!net.Sample&&!busy&&net.State==null)
                 {profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);DisplayProfile();TryAutoJoin();}
                 else if(req.responseCode==401&&net.Token==requestedToken)
-                {net.Token="";SaveTokenForApi("");if(profile==null)net.Status="登录已过期，请重新生成 Persona。";}
+                {net.Token="";SaveTokenForApi("");net.Status="登录已过期；缓存角色仍可单人练习，联机请重新生成 Persona。";}
                 else if(profile==null)net.Status="在线角色暂时无法读取；仍可使用练习道具进行单人游戏。";
             }
         }
@@ -318,6 +318,8 @@ namespace AboutMe
         {
             if(busy)return;
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
+            if(!net.Sample&&string.IsNullOrEmpty(net.Token))
+            {ShowPage(MenuPage.Presets);net.Status="登录已过期；请重新生成 Persona 后联机，缓存角色仍可单人练习。";return;}
             net.Nickname=nickname.text;net.RoomCode=(requestedRoom??CurrentRoomCode()).Trim().ToUpperInvariant();SetRoomCode(net.RoomCode);net.Endpoint=endpoint.text.Trim();net.Connect();
         }
         void Leave(){net.Close();lastInventory="";lastEvent=0;lastEventMatch="";lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
@@ -354,6 +356,7 @@ namespace AboutMe
         }
         public void Speech(byte[] data,string extension)
         {recording=false;recordLabel.text="录音介绍";StartCoroutine(Transcribe(data,extension));}
+        public void ResetRecordingButton(){recording=false;if(recordLabel)recordLabel.text="录音介绍";}
         IEnumerator Transcribe(byte[] data,string extension)
         {
             net.Status="正在识别语音…";var form=new WWWForm();form.AddBinaryData("file",data,"recording."+extension,"application/octet-stream");
@@ -396,7 +399,7 @@ namespace AboutMe
         {
             switch(mime){case "image/jpeg":return ".jpg";case "image/png":return ".png";case "image/gif":return ".gif";case "image/webp":return ".webp";default:return ".img";}
         }
-        void Send(string action,string item=""){if(CombatInputAudit.Enabled&&action!="")Debug.Log("COMBAT_INPUT_ACTION "+action);net.Send(action,item,movement,yaw,running,escapeHeld);}
+        void Send(string action,string item=""){if((CombatInputAudit.Enabled||UIButtonAudit.Enabled)&&action!="")Debug.Log("COMBAT_INPUT_ACTION "+action);net.Send(action,item,movement,yaw,running,escapeHeld);}
         void ReleaseCursor(){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;skipMouseFrame=true;webLockAttempted=false;webPointerLocked=false;webDragCamera=false;webCameraHintShown=false;}
         static readonly KeyCode[] directionKeys={KeyCode.W,KeyCode.A,KeyCode.S,KeyCode.D};
         static int DirectionMask(bool down)

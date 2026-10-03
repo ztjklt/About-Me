@@ -212,7 +212,7 @@ namespace AboutMe
             }
             ArtButton(hotbar,"背包",714,12,114,60,ToggleBag,UITheme.Purple,UITheme.Ink,"bag");
             ArtButton(hud,"退出",1440,28,126,46,Leave,UITheme.Paper,UITheme.Ink,"exit");
-            reconnectButton=ArtButton(hud,"重连",1440,86,126,42,()=>{if(!Mirror.NetworkClient.active)net.Connect();},UITheme.Field,UITheme.Ink,"status");
+            reconnectButton=ArtButton(hud,"重连",1440,86,126,42,()=>{if(!Mirror.NetworkClient.active)net.Connect();else net.Status=Mirror.NetworkClient.isConnected?"当前连接正常，无需重连。":"正在连接，请稍候。";},UITheme.Field,UITheme.Ink,"status");
         }
 
         void BuildBag()
@@ -220,7 +220,7 @@ namespace AboutMe
             bag=ArtPanel(artboard,"Inventory modal",0,0,1600,900,new Color(.05f,.07f,.12f,.48f),false,false);Stretch(bag);bag.GetComponent<Image>().raycastTarget=true;
             var card=ArtPanel(bag,"Persona backpack",270,108,1060,684,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
             Tape(card,"YOUR PERSONA BAG",30,25,232,38,UITheme.Purple);
-            bagText=ArtText(card,"你的 Persona",30,75,770,42,29,UITheme.Ink,FontStyle.Bold);
+            bagText=ArtText(card,"你的 Persona",30,75,770,55,26,UITheme.Ink,FontStyle.Bold);
             ArtButton(card,"返回",876,28,152,50,ToggleBag,UITheme.Mint,UITheme.Ink,"exit");
             var viewport=ArtPanel(card,"Inventory viewport",24,136,1012,516,Color.clear,false,false);viewport.gameObject.AddComponent<RectMask2D>();
             inventoryContent=ArtRect(viewport,"Inventory cards",Vector2.zero,new Vector2(1000,516));inventoryContent.anchorMin=inventoryContent.anchorMax=inventoryContent.pivot=new Vector2(0,1);
@@ -415,6 +415,7 @@ namespace AboutMe
 
         void PositionStatus(Snapshot state)
         {
+            statusPill.SetAsLastSibling();
             if(inventoryOpen){Place(statusPill,475,40,650,46);return;}
             if(state==null){Place(statusPill,46,838,650,46);return;}
             if(state.phase==MatchPhase.Lobby){Place(statusPill,780,818,650,46);return;}
@@ -524,7 +525,7 @@ namespace AboutMe
         }
         Button ArtButton(Transform parent,string label,float x,float y,float width,float height,Action action,Color background,Color foreground,string icon="")
         {
-            var rect=ArtPanel(parent,"Button · "+label,x,y,width,height,background,true,false);var button=rect.gameObject.AddComponent<Button>();button.onClick.AddListener(()=>action());
+            var rect=ArtPanel(parent,"Button · "+label,x,y,width,height,background,true,false);var button=rect.gameObject.AddComponent<Button>();button.onClick.AddListener(()=>{if(UIButtonAudit.Enabled)Debug.Log("BUTTON_AUDIT_CLICK "+label);action();});
             float textX=icon==""?9:43;Image iconImage=null;if(icon!="")iconImage=ArtIcon(rect,icon,13,(height-26)/2,26,foreground);
             var text=ArtText(rect,label,textX,3,width-textX-8,height-6,Mathf.RoundToInt(Mathf.Clamp(height*.34f,15,21)),foreground,FontStyle.Bold,TextAnchor.MiddleCenter);
             var style=rect.gameObject.AddComponent<StickerButton>();style.Configure(button,rect.GetComponent<Image>(),text,background);style.Icon=iconImage;return button;

@@ -59,7 +59,7 @@ else
 fi
 export ABOUTME_GAME_ENDPOINT=ws://127.0.0.1:7785
 if ! lsof -nP -iTCP:7785 -sTCP:LISTEN >/dev/null 2>&1; then
-  ABOUTME_GAME_PORT=7785 "$task_app" -batchmode -nographics --aboutme-server -logFile "$task_root/artifacts/university-crests-server.log" > "$task_root/artifacts/university-crests-server-console.log" 2>&1 &
+  ABOUTME_GAME_PORT=7785 "$task_app" -batchmode -nographics --aboutme-server --allow-samples -logFile "$task_root/artifacts/university-crests-server.log" > "$task_root/artifacts/university-crests-server-console.log" 2>&1 &
   task_game_server_pid=$!
   task_server_ready=false
   for task_try in 1 2 3 4 5 6 7 8 9 10; do

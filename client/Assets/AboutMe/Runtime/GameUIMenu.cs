@@ -35,6 +35,7 @@ namespace AboutMe
             soloStart=ArtButton(soloCard,"当前角色开始",40,487,294,66,()=>StartSolo(false),UITheme.Mint,UITheme.Ink,"attack");
             ArtButton(soloCard,"练习道具（非 AI）",40,574,294,58,()=>StartSolo(true),UITheme.Yellow,UITheme.Ink);
             ArtButton(soloCard,"编辑自我介绍",356,574,242,58,()=>ShowPage(MenuPage.Presets),UITheme.Field,UITheme.Ink);
+            ArtButton(soloCard,"性格能力试验台",624,574,294,58,OpenTraitLab,UITheme.Purple,UITheme.Ink);
             var multiplayerCard=MenuCard("多人游戏","PLAY WITH FRIENDS");multiplayerMenu=(RectTransform)multiplayerCard.parent;
             multiSummary=ArtText(multiplayerCard,"",40,170,900,98,23,UITheme.Ink,FontStyle.Bold);
             ArtButton(multiplayerCard,"创建房间",40,294,245,67,CreateRoom,UITheme.Mint,UITheme.Ink,"share");

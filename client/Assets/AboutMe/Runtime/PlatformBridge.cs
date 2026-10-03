@@ -119,15 +119,20 @@ namespace AboutMe
             }
             catch(Exception){OnPlatformError("图片数据不可用，请重新选择");}
         }
-        public void OnPlatformError(string message){GameNetwork.Game.Status=message;}
+        public void OnPlatformError(string message)
+        {if((message??"").Contains("录音")||(message??"").Contains("麦克风"))GameUI.UI?.ResetRecordingButton();GameNetwork.Game.Status=message;}
+        public void OnPlatformStatus(string message){GameNetwork.Game.Status=message;}
         public void Screenshot()
         {
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
-            AM_Screenshot();
+            StartCoroutine(CaptureBrowserResult());
 #else
             string path=Path.Combine(Application.persistentDataPath,"AboutMe-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".png");
             ScreenCapture.CaptureScreenshot(path);GameNetwork.Game.Status="结算截图保存到："+path;
 #endif
         }
+#if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
+        IEnumerator CaptureBrowserResult(){yield return new WaitForEndOfFrame();AM_Screenshot();}
+#endif
     }
 }
