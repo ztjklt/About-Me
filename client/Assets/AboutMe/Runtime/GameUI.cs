@@ -13,7 +13,7 @@ namespace AboutMe
 {
     [Serializable] class SessionRequest {public string nickname;}
     [Serializable] class SessionResponse {public string token;public Profile profile;}
-    [Serializable] class GenerationRequest {public string nickname,introduction,color;public int outfit;}
+    [Serializable] class GenerationRequest {public string nickname,introduction,color,generationId;public int outfit;}
     [Serializable] class Transcription {public string text;}
     [Serializable] class IntroductionRecognition {public string introduction;}
     [Serializable] class ServiceHealth {public bool ok,aiConfigured,asrConfigured,visionConfigured;}
@@ -162,7 +162,8 @@ namespace AboutMe
             }
         }
         void DisplayProfile()
-        {LoadAppearance();profileText.text=(net.Sample?"[样例测试 · 非 AI 生成]\n":"")+"PERSONA × "+profile.personas.Length+"\n"+string.Join("  /  ",profile.personas.Select(p=>p.name+(string.IsNullOrEmpty(p.generatedBy)?"":" [DeepSeek 生成]")));profileText.rectTransform.sizeDelta=new Vector2(554,Mathf.Max(72,profileText.preferredHeight));CacheProfile();}
+        {LoadAppearance();EndGenerationPoll();DisplayGenerationTerms(ProfileGenerationTerms());CacheProfile();}
+
         void LoadPracticePersona()
         {
             var savedSkin=profile!=null&&!net.Sample?profile:null;
@@ -213,7 +214,7 @@ namespace AboutMe
             if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 暂不可用，请稍后重试，或选择练习道具。";yield break;}
             busy=true;SaveDraft(false);net.Status="正在把你变成游戏内容…";
             string generationToken=SavedTokenForApi();
-            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit};
+            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit,generationId=Guid.NewGuid().ToString("N")};
             for(int attempt=0;attempt<2;attempt++)
             {
                 if(string.IsNullOrEmpty(generationToken))
@@ -229,16 +230,17 @@ namespace AboutMe
                 }
                 using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/personas/generate",JsonUtility.ToJson(body),generationToken))
                 {
+                    BeginGenerationResults(generationToken,body.generationId);
                     req.timeout=210;yield return req.SendWebRequest();
                     if(req.responseCode==401&&attempt==0)
                     {generationToken="";SaveTokenForApi("");continue;}
-                    if(req.result!=UnityWebRequest.Result.Success){Fail(req,"Persona 生成");yield break;}
+                    if(req.result!=UnityWebRequest.Result.Success){DisplayGenerationFailure();Fail(req,"Persona 生成");yield break;}
                     var generated=JsonUtility.FromJson<Profile>(req.downloadHandler.text);
-                    if(generated?.personas==null||generated.personas.Length==0)
-                    {busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
+                    if(generated?.personas==null)
+                    {DisplayGenerationFailure();busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
                     net.Token=generationToken;net.Sample=false;profile=generated;DisplayProfile();
                     PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
-                    busy=false;net.Status=profile.personas.Any(p=>p.visualId=="school-disc"&&string.IsNullOrEmpty(p.emblemPath))?"Persona 已保存；部分学校校徽暂未找到，可再次生成以重试校徽。":profile.personas.Any(p=>!string.IsNullOrEmpty(p.generatedBy))?"DeepSeek 已完成校徽选择与完整裁切，Persona 已保存。":"你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
+                    busy=false;net.Status=profile.generationTerms!=null&&profile.generationTerms.Any(t=>t.status=="failed")?"生成结果已保存：绿色可用，红色未生成；可再次生成以重试校徽。":"Persona 已保存，绿色词条均可使用。";TryAutoJoin();yield break;
                 }
             }
             busy=false;net.Status="角色会话已失效，请重新尝试生成。";

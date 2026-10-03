@@ -29,6 +29,7 @@ namespace AboutMe
         public bool dsGirlUnlocked,claudeGirlUnlocked;
         public string characterSkin = "normal";
         public PersonaAsset[] personas = Array.Empty<PersonaAsset>();
+        public GenerationTerm[] generationTerms = Array.Empty<GenerationTerm>();
     }
     [Serializable] public class CatalogEntry { public string templateId, visualId, label, color; }
     [Serializable] public class Catalog { public CatalogEntry[] items; }

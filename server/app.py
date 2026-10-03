@@ -22,6 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_brands
 from server.university_crests import resolve_crest, cache_dir
+from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
@@ -164,6 +165,7 @@ class GenerateRequest(BaseModel):
     nickname: str = Field(min_length=1, max_length=24)
     color: str = '#77C8BD'
     outfit: int = Field(default=0, ge=0, le=2)
+    generationId: str | None = Field(default=None, pattern=r'^[0-9a-f]{32}$')
 
 
 class VerifyRequest(BaseModel):
@@ -266,13 +268,23 @@ def validate_personas(raw, introduction):
         raise ValueError('AI 输出必须包含 personas 列表')
     if not isinstance(introduction, str) or not introduction.strip():
         raise ValueError('缺少用于核对 Persona 来源的介绍')
+    terms = extracted_terms(raw, introduction, lambda text: not sensitive_persona_text(text))
     result, seen, schools_seen = [], [], set()
     candidates = list(raw['personas'])
     for school in raw.get('universities', []):
         if isinstance(school, dict):
-            candidates.append(dict(name=school.get('name', ''), source=school.get('source', ''), institutionName=school.get('name', ''), templateId='Disc', visualId='school-disc'))
+            candidates.append(dict(name=school.get('name', ''), source=school.get('source', ''), institutionName=school.get('name', ''), schoolCandidate=True, templateId='Disc', visualId='school-disc'))
+    # Do not silently omit a full school name already present in the extracted keywords.
+    for term in terms:
+        school = institution_name(term['term'])
+        if school == term['term'] or re.match(r'^(?:University|College) of \S', term['term'], re.I):
+            school = term['term']
+            candidates.append(dict(name=school, source=term['source'], institutionName=school,
+                                   schoolCandidate=True, templateId='Disc', visualId='school-disc'))
     for x in candidates:
         if not isinstance(x, dict) or (x.get('templateId'), x.get('visualId')) not in ALLOWED:
+            if terms:
+                continue
             raise ValueError('AI 返回未发布的模板或外观')
         name = plain(x.get('name', ''))
         source = plain(x.get('source', ''), 160)
@@ -289,7 +301,7 @@ def validate_personas(raw, introduction):
             template = 'Projectile'
         school = institution_name(source)
         explicit = plain(x.get('institutionName', ''), 80)
-        if explicit and explicit in source and institution_name(explicit):
+        if explicit and explicit in source and (institution_name(explicit) or x.get('schoolCandidate')):
             school = explicit
         if school and re.search(r'不是|不在|没有|没去|假如|假设|如果|比如|例如', source):
             continue
@@ -309,13 +321,16 @@ def validate_personas(raw, introduction):
         color = catalog['color']
         result.append(dict(assetId=uuid.uuid4().hex, name=name, templateId=template,
                            visualId=visual, color=color, source=source))
+        keyword = plain(x.get('term', ''), 80)
+        if keyword in source and any(t['term'] == keyword for t in terms):
+            result[-1]['generationTerm'] = keyword
         if school:
             result[-1]['institutionName'] = school
         if len(result) >= MAX_PERSONAS:
             break
-    if not result:
+    if not result and not terms:
         raise NoUsablePersonaError('介绍中未找到适合游戏化的信息，请补充兴趣或经历')
-    return result
+    return PersonaBatch(result, terms)
 
 
 def profile_follows_generation_rules(profile, introduction):
@@ -433,23 +448,26 @@ async def select_school_emblem_with_deepseek(client, key, base, school, candidat
 async def generate_school_emblem(school):
     crest = await resolve_crest(school)
     if crest.get('status') != 'ready':
-        return {'crestStatus': 'unavailable', 'emblemPath': '', 'emblemCrop': ''}
+        return {'crestStatus': 'unavailable', 'emblemPath': '', 'emblemCrop': '',
+                'crestReason': crest.get('reason') or '未找到可确认的校徽，可再次生成重试'}
     return {'emblemPath': '/assets/university-crests/' + crest['id'] + '.png',
             'emblemCrop': '0,0,1,1', 'emblemSource': crest['sourcePage'],
-            'emblemLicense': 'official-use-terms', 'generatedBy': 'DeepSeek Flash Vision',
+            'emblemLicense': 'source-use-terms', 'generatedBy': 'DeepSeek Flash Vision',
             'crestStatus': 'ready', 'crestId': crest['id'], 'color': crest.get('color', '#77C8BD')}
 
 
-async def attach_school_emblems(personas):
+async def attach_school_emblems(personas, on_update=None):
     schools = [p for p in personas if p.get('visualId') == 'school-disc']
     for persona in schools:
         school = persona.get('institutionName') or institution_name(persona.get('source', ''))
         if not school:
             raise HTTPException(422, '校徽圆盘缺少大学名称')
         persona['institutionName'] = school
-    results = await asyncio.gather(*(generate_school_emblem(p['institutionName']) for p in schools))
-    for persona, emblem in zip(schools, results):
-        persona.update(emblem)
+    async def attach(persona):
+        persona.update(await generate_school_emblem(persona['institutionName']))
+        if on_update:
+            on_update()
+    await asyncio.gather(*(attach(p) for p in schools))
     return personas
 
 
@@ -462,13 +480,16 @@ async def generate_with_provider(introduction):
               f'按辨识度、可视化与游戏化价值选择事实，数量随内容变化，不为凑数而生成；原型性能上限 {MAX_PERSONAS} 件。'
               '同一事实最多一个 Persona；仅有一个可游戏化事实时最多返回一个。'
               'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。'
+              '每个 personas 项的 term 必须逐字复制 terms 数组中与该道具直接对应的一个关键词，不能用同一句中其他兴趣的成功代替。'
+              '提取学校、兴趣、职业和特别经历的关键词，放在 terms 数组，每项含 term 原文关键词和 source 连续原文；无法匹配道具的词也要保留，供显示失败结果。联系方式、诊断等敏感内容不列。'
+              '大学不限知名度、国家或官网域名；学校简称也识别为大学，universities.name 必须是用户实际写的简称或校名，不得偷偷改成原文没有的名称。'
               '每所由本人明确提及的大学、学院或学校经历分别生成一个 Disc/school-disc 校徽圆盘，institutionName 逐字复制原文完整校名；不要生成假设或否定的大学。英文 University/College 同样处理。另用 universities 数组列出全部本人学校经历，每项包含 name 原文校名和 source 连续原文。Persona 颜色使用目录默认值，不根据人物配色推断。'
               '优先选择目录里语义最具体、与 source 直接对应的外观；evidenceTerms 是新道具的来源词线索，excludeTerms 表示不能选它的语境。'
               '足球、游戏手柄、尤克里里、纸质笔记本分别选同名外观；“笔记本电脑”不是纸质笔记本。没有合适外观的事实跳过。'
               '联系方式、账号、证件、精确住址、医疗诊断、性取向、宗教信仰和攻击性内容不成为 Persona，也不写入名称。'
               'source 仅用于服务端核对，名称会被其他玩家看到；不要把介绍原句或个人隐私写入名称。不能游戏化的信息跳过。'
-              '只输出 JSON 对象 {"universities":[{"name":"原文校名","source":"关联事实"}],"personas":[{"name":"中文名称","source":"关联事实",'
-              '"templateId":"...","visualId":"...","color":"#RRGGBB"}]}。'
+              '只输出 JSON 对象 {"terms":[{"term":"原文关键词","source":"关联事实"}],"universities":[{"name":"原文校名","source":"关联事实"}],"personas":[{"name":"中文名称","source":"关联事实",'
+              '"term":"对应原文关键词","templateId":"...","visualId":"...","color":"#RRGGBB"}]}。'
               'templateId 与 visualId 组合只能来自目录：' + json.dumps(CATALOG, ensure_ascii=False))
     try:
         async with httpx.AsyncClient(timeout=90) as client:
@@ -641,7 +662,7 @@ async def recognize_introduction_image(data, mime):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'universityCrests': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
+    return {'ok': True, 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
@@ -738,40 +759,107 @@ async def room_qrcode(room: str, authorization: str | None = Header(default=None
         raise HTTPException(502,'微信房间码生成失败，请确认体验版已上传') from exc
 
 
+GENERATION_PROGRESS = {}
+
+
+def start_generation_progress(player_id, generation_id):
+    now = time.time()
+    for key in list(GENERATION_PROGRESS):
+        if now - GENERATION_PROGRESS[key]['updated'] > 1200:
+            del GENERATION_PROGRESS[key]
+    while len(GENERATION_PROGRESS) >= 256:
+        del GENERATION_PROGRESS[next(iter(GENERATION_PROGRESS))]
+    value = {'generationId': generation_id or '', 'phase': 'extracting', 'generationTerms': [], 'updated': now}
+    if generation_id:
+        GENERATION_PROGRESS[(player_id, generation_id)] = value
+    return value
+
+
+@app.get('/personas/generation-status')
+def generation_status(generationId: str, authorization: str | None = Header(default=None)):
+    player_id, _, _ = authenticate(authorization)
+    value = GENERATION_PROGRESS.get((player_id, generationId))
+    if value is None:
+        raise HTTPException(404, '生成任务尚未开始或已过期')
+    return value
+
+
 @app.post('/personas/generate')
 async def generate(body: GenerateRequest, request: Request, authorization: str | None = Header(default=None)):
     player_id, previous, intro = authenticate(authorization)
     enforce_quota(request, 'ai')
     old = json.loads(previous)
-    if intro == body.introduction.strip() and profile_follows_generation_rules(old, intro):
-        if any(p.get('visualId') == 'school-disc' and (p.get('crestStatus') == 'unavailable' or not p.get('emblemPath', '').startswith('/assets/university-crests/')) for p in old['personas']):
-            old['personas'] = await attach_school_emblems(old['personas'])
+    progress = start_generation_progress(player_id, body.generationId)
+    def publish(candidates, terms, phase):
+        progress.update(phase=phase, generationTerms=generation_terms(candidates, terms, CATALOG_BY_PAIR, pending=phase=='searching'), updated=time.time())
+    if intro == body.introduction.strip() and (old.get('generationCandidates') is not None or profile_follows_generation_rules(old, intro)):
+        candidates = old.get('generationCandidates', old['personas'])
+        terms = old.get('generationTerms', [])
+        retry = [p for p in candidates if p.get('visualId') == 'school-disc' and
+                 (p.get('crestStatus') == 'unavailable' or not p.get('emblemPath', '').startswith('/assets/university-crests/'))]
+        if retry:
+            # An explicit retry bypasses only failed lookups; successful immutable images remain cached.
+            for persona in retry:
+                path = cache_dir() / (hashlib.sha256(persona['institutionName'].encode()).hexdigest() + '.json')
+                try:
+                    cached = json.loads(path.read_text())
+                    if cached.get('status') != 'ready':
+                        path.unlink()
+                except (OSError, ValueError):
+                    pass
+                search_path = cache_dir() / 'search' / (hashlib.sha256(persona['institutionName'].encode()).hexdigest() + '.json')
+                try:
+                    if not json.loads(search_path.read_text()).get('results'):
+                        search_path.unlink()
+                except (OSError, ValueError):
+                    pass
+                persona.pop('crestStatus', None)
+            publish(candidates, terms, 'searching')
+            await attach_school_emblems(retry, lambda: publish(candidates, terms, 'searching'))
+            old.update(personas=playable_assets(candidates), generationCandidates=candidates,
+                       generationTerms=generation_terms(candidates, terms, CATALOG_BY_PAIR))
             with db() as con:
                 changed = con.execute('UPDATE profiles SET profile=?,updated=? WHERE id=? AND profile=?',
                     (json.dumps(old), time.time(), player_id, previous)).rowcount
             if not changed:
+                progress['phase'] = 'failed'
                 raise HTTPException(409, '角色已更新，请刷新后重试')
+            publish(candidates, terms, 'complete')
+            return normalized_profile(old, intro)
+        publish(candidates, terms, 'complete')
+        if body.generationId:
             return normalized_profile(old, intro)
         raise HTTPException(409, '请修改自我介绍后重新生成；不支持原文重 Roll')
     if not body.introduction.strip():
         raise HTTPException(422, '请填写自我介绍')
-    personas = await generate_with_provider(body.introduction)
-    personas = await attach_school_emblems(personas)
+    try:
+        personas = await generate_with_provider(body.introduction)
+        terms = getattr(personas, 'terms', [])
+        publish(personas, terms, 'searching')
+        await attach_school_emblems(personas, lambda: publish(personas, terms, 'searching'))
+    except HTTPException:
+        progress['phase'] = 'failed'
+        for term in progress['generationTerms']:
+            if term['status'] == 'pending':
+                term.update(status='failed', reason='生成暂未完成，请稍后重试')
+        raise
     old_normalized = normalized_profile(old, intro)
     likes = liked_brands(body.introduction.strip())
     result = dict(playerId=player_id, nickname=plain(body.nickname, 24),
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
-                  outfit=body.outfit, personas=personas, revision=old['revision'] + 1,
-                  appearance=old_normalized['appearance'],appearanceRevision=old_normalized['appearanceRevision'],
+                  outfit=body.outfit, personas=playable_assets(personas), generationCandidates=list(personas),
+                  generationTerms=generation_terms(personas, terms, CATALOG_BY_PAIR), revision=old['revision'] + 1,
+                  appearance=old_normalized['appearance'], appearanceRevision=old_normalized['appearanceRevision'],
                   characterSkin=old_normalized['characterSkin'],
-                  dsGirlUnlocked=likes['deepseek'],claudeGirlUnlocked=likes['claude'])
+                  dsGirlUnlocked=likes['deepseek'], claudeGirlUnlocked=likes['claude'])
     result = normalized_profile(result, body.introduction.strip())
     with db() as con:
-        # Concurrent regeneration must not overwrite a newer result.
         changed = con.execute('UPDATE profiles SET profile=?,intro=?,updated=? WHERE id=? AND profile=?',
                     (json.dumps(result), body.introduction.strip(), time.time(), player_id, previous)).rowcount
     if not changed:
+        progress['phase'] = 'failed'
         raise HTTPException(409, '角色已更新，请刷新后重试')
+    publish(personas, terms, 'complete')
     return result
 
 

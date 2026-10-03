@@ -140,10 +140,10 @@ namespace AboutMe
         void ReplaySolo(){if(!net.IsSolo||lastSoloProfile==null)return;lastInventory="";lastResultVisual="";lastEvent=0;net.StartSolo(lastSoloProfile);}
         void LoadCachedProfile()
         {
-            try{var json=PlayerPrefs.GetString("cachedProfile","");if(json!=""){profile=JsonUtility.FromJson<Profile>(json);if(profile?.personas?.Length>0)DisplayProfile();}}
+            try{var json=PlayerPrefs.GetString("cachedProfile","");if(json!=""){profile=JsonUtility.FromJson<Profile>(json);if(profile?.personas?.Length>0||profile?.generationTerms?.Length>0)DisplayProfile();}}
             catch(Exception){profile=null;}
         }
-        void CacheProfile(){if(!net.Sample&&profile?.personas?.Length>0){PlayerPrefs.SetString("cachedProfile",JsonUtility.ToJson(profile));PlayerPrefs.Save();}RefreshMenuSummary();}
+        void CacheProfile(){if(!net.Sample&&(profile?.personas?.Length>0||profile?.generationTerms?.Length>0)){PlayerPrefs.SetString("cachedProfile",JsonUtility.ToJson(profile));PlayerPrefs.Save();}RefreshMenuSummary();}
         void BuildDraftLibrary()
         {
             if(homeHero)homeHero.gameObject.SetActive(false);

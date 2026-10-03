@@ -1,8 +1,10 @@
-## 大学校徽飞盘（最新版 UI，2026-10-03）
+## 大学校徽飞盘与关键词结果（2026-10-03）
 
-自我介绍中的多所大学分别生成校徽飞盘；DeepSeek 仅从官网选取并核对单个校徽，游戏两面显示真实图案。保存、投掷、掉落和换持大学均保留校徽；失败时提示稍后重试，不重 Roll 道具身份。
+最新四气泡 UI 已接通自我介绍、关键词切分、任意校名真实联网检索、DeepSeek 图片审核、校徽飞盘、全绿/全红结果、私有保存及原文失败重试。学校来源可为官网或可靠公开索引，支持非 edu 域名及 SVG。只发出核对成功的校徽飞盘；失败学校保留红词条。飞盘双面铺满校徽，盘体采用图案主色。
 
-最终入口为 `scripts/start-university-crests.command`，对应 `builds/university-crests-mac`、`builds/university-crests-web` 与同版服务包，1280×720 窗口，四气泡最新版首页。65 项服务测试、15 项 Unity 菜单和 31 项玩法检查通过；真实中山大学/北京大学官网与 DeepSeek API 流程及原生 HTTP 贴图验证通过。微信/公网未在本次验收范围。详细成果见 `docs/UNIVERSITY_CREST_DELIVERY.md`。
+81 项服务测试与 Unity 菜单/玩法、贴图、主色、全红缓存检查通过。未预置的湖北文理学院及 University of Otago 已通过真实模型与公开搜索验证，实际保存结果在最新版窗口 UI 显示；原生客户端验证 HTTP 贴图、学校切换与隐藏恢复。首次搜索可能因公开来源网络或负载失败，显式重试可补失败项且不刷新已有道具身份。
+
+入口 `scripts/start-university-crests.command` 使用同版 Mac、8085 API 与 7785 权威服务，1280×720 窗口。微信真机、公网、真人多人与公司 logo 尚未验收。见 [大学校徽交付](UNIVERSITY_CREST_DELIVERY.md) 和 [闭环审核](PERSONA_CYCLE_AUDIT.md)。
 
 # 本地交付与验收状态
 

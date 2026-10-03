@@ -30,7 +30,32 @@ namespace AboutMe.Editor
             Check(!disc.transform.Find("school name").gameObject.activeSelf,"name overlays emblem");
             Check(!disc.GetComponentsInChildren<TextMesh>(true).Any(t=>t.text=="DeepSeek 生成"),"extra logo label present");
             UnityEngine.Object.DestroyImmediate(disc);UnityEngine.Object.DestroyImmediate(texture);
+            var privateProfile=new Profile{generationTerms=new[]{new GenerationTerm{term="学校",status="failed",reason="未找到"}}};
+            Check(JsonUtility.FromJson<Profile>(JsonUtility.ToJson(privateProfile)).generationTerms[0].status=="failed","keyword status lost in persistence JSON");
+            Check(GameUI.GenerationTermColor("ready").g>GameUI.GenerationTermColor("ready").r,"successful term is not green");
+            Check(GameUI.GenerationTermColor("failed").r>GameUI.GenerationTermColor("failed").g,"failed term is not red");
+            CheckFailedResultPersistence(privateProfile);
             Debug.Log("ABOUTME_UNIVERSITY_CREST_TESTS_PASSED latest projection / two faces / original emblem only");
+        }
+        static void CheckFailedResultPersistence(Profile failed)
+        {
+            bool existed=PlayerPrefs.HasKey("cachedProfile");string previous=PlayerPrefs.GetString("cachedProfile","");
+            var go=new GameObject("Failed keyword persistence test");go.SetActive(false);
+            try
+            {
+                var net=go.AddComponent<GameNetwork>();var ui=go.AddComponent<GameUI>();
+                var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+                typeof(GameUI).GetField("net",flags).SetValue(ui,net);
+                typeof(GameUI).GetField("profile",flags).SetValue(ui,failed);
+                typeof(GameUI).GetMethod("CacheProfile",flags).Invoke(ui,null);
+                var restored=JsonUtility.FromJson<Profile>(PlayerPrefs.GetString("cachedProfile",""));
+                Check(restored.personas.Length==0&&restored.generationTerms[0].status=="failed","all-red result was not cached for restart");
+            }
+            finally
+            {
+                if(existed)PlayerPrefs.SetString("cachedProfile",previous);else PlayerPrefs.DeleteKey("cachedProfile");
+                PlayerPrefs.Save();UnityEngine.Object.DestroyImmediate(go);
+            }
         }
         public static void BuildDeliverables(){Run();ProjectTools.BuildMac();ProjectTools.BuildWeb();}
     }

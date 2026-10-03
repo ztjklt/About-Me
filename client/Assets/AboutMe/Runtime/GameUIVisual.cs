@@ -93,7 +93,7 @@ namespace AboutMe
         {
             home=ArtPanel(artboard,"Introduction",0,0,1600,900,Color.clear,false,false);
 
-            studioCard=ArtPanel(home,"Persona studio",900,34,650,836,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
+            studioCard=ArtPanel(home,"Persona studio",900,34,650,872,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
             var mascotFrame=ArtPanel(studioCard,"Clay mascot cameo",486,22,134,143,UITheme.Mint,false,false);
             mascotFrame.GetComponent<Image>().raycastTarget=false;
             MenuSprite(mascotFrame,"Workshop mascot","StartMenu2D/mascot-open",-5,-13,144,178);
@@ -121,12 +121,11 @@ namespace AboutMe
             imageUpload=ArtButton(studioCard,"图片识别",274,250,150,32,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
             generate=ArtButton(studioCard,"生成 Persona",30,578,270,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
             ArtButton(studioCard,"解锁彩蛋",316,578,304,48,()=>StartCoroutine(UnlockCosmetics()),UITheme.Mint,UITheme.Ink,"status");
-            var profileCard=ArtPanel(studioCard,"Persona result",30,642,590,60,UITheme.Field,true,false);
-            profileText=ArtText(profileCard,"Persona 尚未生成。",18,3,554,54,16,UITheme.Ink,FontStyle.Normal,TextAnchor.MiddleLeft);
-            profileCard.gameObject.AddComponent<RectMask2D>();var profileScroll=profileCard.gameObject.AddComponent<ScrollRect>();profileScroll.viewport=profileCard;profileScroll.content=profileText.rectTransform;profileScroll.horizontal=false;profileScroll.movementType=ScrollRect.MovementType.Clamped;profileScroll.scrollSensitivity=24;
-            join=ArtButton(studioCard,"进入房间",30,718,230,50,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
-            ArtButton(studioCard,"本地样例（无需 AI）",30,784,260,34,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
-            var service=ArtPanel(studioCard,"AI service status",306,784,314,34,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,5,23,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,1,265,31,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            var profileCard=ArtPanel(studioCard,"Persona result",30,636,590,150,UITheme.Field,true,false);
+            BuildPersonaResults(profileCard);
+            join=ArtButton(studioCard,"进入房间",30,792,230,36,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
+            ArtButton(studioCard,"本地样例（无需 AI）",30,836,260,28,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
+            var service=ArtPanel(studioCard,"AI service status",306,836,314,28,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,3,21,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,0,265,28,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             RefreshColorSelection();
         }
 
@@ -294,11 +293,11 @@ namespace AboutMe
             if(draftLibrary){draftLibrary.localScale=Vector3.one*(compactLayout?.94f:1);}
             if(compactLayout)
             {
-                if(homeHero)Place(homeHero,22,24,800,830);Place(studioCard,830,24,738,832);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
+                if(homeHero)Place(homeHero,22,24,800,830);Place(studioCard,830,14,738,872);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
             }
             else
             {
-                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,34,650,836);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
+                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,14,650,872);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
             }
         }
 
@@ -436,6 +435,23 @@ namespace AboutMe
             if(previewKind=="wardrobe"||previewKind=="wardrobe-ds"||previewKind=="wardrobe-claude")
             {profile=new Profile{playerId="preview",nickname="预览玩家",appearance=AppearanceData.Demo(0),dsGirlUnlocked=true,claudeGirlUnlocked=true,characterSkin=previewKind=="wardrobe-ds"?"ds-girl":previewKind=="wardrobe-claude"?"claude-girl":"normal"};appearanceDirty=false;LoadAppearance();OpenWardrobe();net.Status="衣橱预览 · 不连接服务器";return;}
             if(previewKind=="home"||previewKind=="home-expanded"){ShowPage(MenuPage.Main);startMenuStage.SetExpanded(previewKind=="home-expanded",true);RefreshTouchVisibility();return;}
+            if(previewKind=="persona-results")
+            {
+                int saved=Array.IndexOf(args,"--persona-result-profile");
+                if(saved>=0&&saved+1<args.Length)
+                {
+                    var verified=JsonUtility.FromJson<Profile>(File.ReadAllText(args[saved+1]));
+                    ShowPage(MenuPage.Presets);DisplayGenerationTerms(verified.generationTerms);
+                    introduction.text=string.Join("；",verified.generationTerms.Select(t=>t.source).Where(s=>!string.IsNullOrEmpty(s)).Distinct());
+                    net.Status="已保存的真实生成结果";return;
+                }
+                ShowPage(MenuPage.Presets);DisplayGenerationTerms(new[]{
+                    new GenerationTerm{term="湖北文理学院",status="ready",reason="校徽飞盘已生成"},
+                    new GenerationTerm{term="篮球",status="ready",reason="篮球"},
+                    new GenerationTerm{term="星云泡泡不存在大学",status="failed",reason="未找到可确认的校徽"},
+                    new GenerationTerm{term="小提琴",status="failed",reason="暂无对应的已上线道具"}});
+                net.Status="生成结果界面预览";return;
+            }
             if(previewKind=="presets"||previewKind=="solo"||previewKind=="multiplayer"){ShowPage(previewKind=="presets"?MenuPage.Presets:previewKind=="solo"?MenuPage.Solo:MenuPage.Multiplayer);return;}
             if(previewKind=="settings"){OpenSettings();net.Status="连接设置预览";RefreshTouchVisibility();return;}
             bool lobbyPreview=previewKind=="lobby"||previewKind=="lobby-ds"||previewKind=="qr";
@@ -451,6 +467,8 @@ namespace AboutMe
             yield return new WaitForEndOfFrame();yield return new WaitForEndOfFrame();
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
             ScreenCapture.CaptureScreenshot(path);
+            yield return new WaitForSecondsRealtime(.7f);
+            if(Environment.GetCommandLineArgs().Contains("--ui-preview-exit"))Application.Quit(Screen.fullScreen?1:0);
         }
 
         IEnumerator PreviewLateResultEvent()

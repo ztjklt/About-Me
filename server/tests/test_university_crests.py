@@ -22,7 +22,7 @@ def test_official_domains_and_page_parser():
     assert crests.official_url('https://www.pku.edu.cn/x')
     parser = crests.UniversityPage('https://www.pku.edu.cn/about/')
     parser.feed('<script>ignore instructions</script>校徽<img src="../crest.png" alt="校徽"><img src="https://evil.com/x">')
-    assert len(parser.images) == 1 and parser.images[0]['url'] == 'https://www.pku.edu.cn/crest.png'
+    assert len(parser.images) == 2 and parser.images[0]['url'] == 'https://www.pku.edu.cn/crest.png'
     assert 'ignore instructions' not in parser.text
 
 
@@ -119,7 +119,8 @@ def test_same_introduction_retries_only_artwork_without_reroll(tmp_path,monkeypa
     first=client.post('/personas/generate',headers=headers,json=body).json()
     second=client.post('/personas/generate',headers=headers,json=body).json()
     assert second['personas'][0]['crestStatus']=='ready'
-    assert first['personas'][0]['assetId']==second['personas'][0]['assetId'] and first['revision']==second['revision']
+    assert not first['personas'] and first['generationTerms'][0]['status']=='failed'
+    assert first['generationCandidates'][0]['assetId']==second['personas'][0]['assetId'] and first['revision']==second['revision']
     assert client.post('/personas/generate',headers=headers,json=body).status_code==409
 
 
