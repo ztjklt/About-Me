@@ -667,7 +667,7 @@ def health():
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
             'visionConfigured': bool(deepseek_vision_credentials()[0]),
-            'introductionImageRecognition': False, 'personalitySkins': True}
+            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG)}
 
 
 @app.get('/school-emblems/{filename}')

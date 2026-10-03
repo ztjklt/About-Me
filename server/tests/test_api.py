@@ -106,7 +106,7 @@ def test_private_and_abusive_facts_do_not_become_personas():
         module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
-    assert len(module.CATALOG) == 61
+    assert len(module.CATALOG) == 89
     result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):
@@ -124,8 +124,8 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     assert module.LEGACY_FOOTBALL_PAIR in module.ALLOWED
     assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
-    assert len(visuals) == 53
-    assert len({item['visualId'] for item in visuals}) == 53
+    assert len(visuals) == 81
+    assert len({item['visualId'] for item in visuals}) == 81
     assert all((item['templateId'], item['visualId']) in module.ALLOWED for item in visuals)
     intro = '我每周踢足球，也喜欢用手柄玩游戏，会弹尤克里里，还用笔记本记手账。'
     raw = {'personas': [

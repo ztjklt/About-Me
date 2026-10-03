@@ -1,63 +1,1129 @@
-{"items":[
-{"templateId":"Projectile","visualId":"basketball","label":"篮球","color":"#FF934F"},
-{"templateId":"Disc","visualId":"school-disc","label":"大学校徽圆盘","color":"#77C8BD"},
-{"templateId":"Melee","visualId":"book","label":"知识之书","color":"#AA91ED"},
-{"templateId":"HeavyWeapon","visualId":"computer","label":"电脑","color":"#86ADCB"},
-{"templateId":"Utility","visualId":"camera","label":"相机","color":"#FFE08D"},
-{"templateId":"Deployable","visualId":"plant","label":"盆栽","color":"#99CD80"},
-{"templateId":"Summon","visualId":"cat","label":"猫","color":"#F5C0CF"},
-{"templateId":"SpecialAbility","visualId":"robot","label":"AI 机器人","color":"#A2B7FF"},
-{"templateId":"Ricochet","visualId":"basketball-cc0","label":"低模篮球","color":"#FF934F"},
-{"templateId":"Ricochet","visualId":"bowling-ball","label":"保龄球","color":"#9FAFF2"},
-{"templateId":"Projectile","visualId":"bowling-pin","label":"保龄球瓶","color":"#FFF9EF"},
-{"templateId":"Melee","visualId":"baseball-bat","label":"棒球棒","color":"#F49A6B"},
-{"templateId":"Melee","visualId":"book-single","label":"单本书","color":"#AA91ED"},
-{"templateId":"Barricade","visualId":"book-stack","label":"书堆","color":"#AA91ED"},
-{"templateId":"Projectile","visualId":"red-pen","label":"红笔","color":"#F06D70"},
-{"templateId":"HeavyWeapon","visualId":"computer-tower","label":"电脑主机","color":"#86ADCB"},
-{"templateId":"Tether","visualId":"flashlight","label":"手电筒","color":"#FFE08D"},
-{"templateId":"Cushion","visualId":"pillow-a","label":"方抱枕","color":"#F5C0CF"},
-{"templateId":"Cushion","visualId":"pillow-b","label":"圆抱枕","color":"#F5C0CF"},
-{"templateId":"HeavyWeapon","visualId":"armchair","label":"单人沙发","color":"#79CFC5"},
-{"templateId":"Cushion","visualId":"armchair-pillows","label":"抱枕扶手椅","color":"#79CFC5"},
-{"templateId":"Barricade","visualId":"couch","label":"双人沙发","color":"#9FAFF2"},
-{"templateId":"Cushion","visualId":"couch-pillows","label":"抱枕沙发","color":"#9FAFF2"},
-{"templateId":"Deployable","visualId":"cactus-small-a","label":"小仙人掌","color":"#99CD80"},
-{"templateId":"Deployable","visualId":"cactus-small-b","label":"圆仙人掌","color":"#99CD80"},
-{"templateId":"Deployable","visualId":"cactus-tall-a","label":"高仙人掌","color":"#78BE8C"},
-{"templateId":"Deployable","visualId":"cactus-tall-b","label":"分枝仙人掌","color":"#78BE8C"},
-{"templateId":"Utility","visualId":"table-lamp","label":"台灯","color":"#FFE08D"},
-{"templateId":"Utility","visualId":"standing-lamp","label":"落地灯","color":"#FFE08D"},
-{"templateId":"Disc","visualId":"photo-frame","label":"照片框","color":"#F3AFC2"},
-{"templateId":"Disc","visualId":"standing-frame","label":"立式相框","color":"#F3AFC2"},
-{"templateId":"Barricade","visualId":"oval-rug","label":"椭圆地毯","color":"#AA91ED"},
-{"templateId":"HeavyWeapon","visualId":"stool","label":"小圆凳","color":"#F49A6B"},
-{"templateId":"Projectile","visualId":"burger","label":"汉堡","color":"#F49A6B"},
-{"templateId":"Projectile","visualId":"veggie-burger","label":"蔬菜汉堡","color":"#99CD80"},
-{"templateId":"HeavyWeapon","visualId":"dinner-plate","label":"晚餐盘","color":"#FFE08D"},
-{"templateId":"Cushion","visualId":"stew","label":"炖菜","color":"#E77770"},
-{"templateId":"Ricochet","visualId":"carrot","label":"胡萝卜","color":"#F49A6B"},
-{"templateId":"Projectile","visualId":"tomato","label":"番茄","color":"#E77770"},
-{"templateId":"Projectile","visualId":"potato","label":"土豆","color":"#FFD773"},
-{"templateId":"HeavyWeapon","visualId":"steak","label":"牛排","color":"#E77770"},
-{"templateId":"Ricochet","visualId":"bun","label":"面包胚","color":"#FFD773"},
-{"templateId":"Disc","visualId":"bowl","label":"碗","color":"#79CFC5"},
-{"templateId":"Disc","visualId":"plate","label":"餐盘","color":"#FFF9EF"},
-{"templateId":"HeavyWeapon","visualId":"cooking-pot","label":"小锅","color":"#86ADCB"},
-{"templateId":"Ricochet","visualId":"toy-airplane","label":"玩具飞机","color":"#9FAFF2"},
-{"templateId":"Tether","visualId":"crowbar","label":"撬棍","color":"#E77770"},
-{"templateId":"Tether","visualId":"screwdriver","label":"螺丝刀","color":"#FFD773"},
-{"templateId":"Tether","visualId":"wrench","label":"扳手","color":"#86ADCB"},
-{"templateId":"Melee","visualId":"hammer","label":"羊角锤","color":"#F49A6B"},
-{"templateId":"Tether","visualId":"watering-can","label":"浇水壶","color":"#79CFC5"},
-{"templateId":"Summon","visualId":"tree-round","label":"圆冠小树","color":"#78BE8C"},
-{"templateId":"Summon","visualId":"pine-tree","label":"松树","color":"#78BE8C"},
-{"templateId":"Barricade","visualId":"trashcan","label":"垃圾桶","color":"#79CFC5"},
-{"templateId":"Melee","visualId":"sword","label":"短剑","color":"#9FAFF2"},
-{"templateId":"SpecialAbility","visualId":"toy-bomb","label":"玩具炸弹","color":"#E77770"},
-{"templateId":"Projectile","visualId":"football-cc0","label":"足球","color":"#FFF9EF","evidenceTerms":["足球","football","soccer"],"excludeTerms":["美式足球","美式橄榄球","american football","gridiron football"]},
-{"templateId":"Utility","visualId":"gamepad-cc0","label":"游戏手柄","color":"#A2B7FF","evidenceTerms":["手柄","gamepad","controller"]},
-{"templateId":"Melee","visualId":"ukulele-cc0","label":"尤克里里","color":"#F49A6B","evidenceTerms":["尤克里里","ukulele"]},
-{"templateId":"Disc","visualId":"notebook-cc0","label":"纸质笔记本","color":"#AA91ED","evidenceTerms":["笔记本","手账","手帐","记事本","notebook"],"excludeTerms":["笔记本电脑","电脑笔记本","laptop","notebook computer"]},
-{"templateId":"Cushion","visualId":"swimming-ring","label":"游泳圈","color":"#86ADCB","evidenceTerms":["游泳","泳圈","游泳圈","swim","swimming","swimmer"],"excludeTerms":["不会游泳","不喜欢游泳","讨厌游泳","cannot swim","can’t swim","can't swim"]}
-]}
+{
+  "items": [
+    {
+      "templateId": "Projectile",
+      "visualId": "basketball",
+      "label": "篮球",
+      "color": "#FF934F"
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "school-disc",
+      "label": "大学校徽圆盘",
+      "color": "#77C8BD"
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "book",
+      "label": "知识之书",
+      "color": "#AA91ED"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "computer",
+      "label": "电脑",
+      "color": "#86ADCB"
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "camera",
+      "label": "相机",
+      "color": "#FFE08D"
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "plant",
+      "label": "盆栽",
+      "color": "#99CD80"
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "cat",
+      "label": "猫",
+      "color": "#F5C0CF"
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "robot",
+      "label": "AI 机器人",
+      "color": "#A2B7FF"
+    },
+    {
+      "templateId": "Ricochet",
+      "visualId": "basketball-cc0",
+      "label": "低模篮球",
+      "color": "#FF934F"
+    },
+    {
+      "templateId": "Ricochet",
+      "visualId": "bowling-ball",
+      "label": "保龄球",
+      "color": "#9FAFF2"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "bowling-pin",
+      "label": "保龄球瓶",
+      "color": "#FFF9EF"
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "baseball-bat",
+      "label": "棒球棒",
+      "color": "#F49A6B"
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "book-single",
+      "label": "单本书",
+      "color": "#AA91ED"
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "book-stack",
+      "label": "书堆",
+      "color": "#AA91ED"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "red-pen",
+      "label": "红笔",
+      "color": "#F06D70"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "computer-tower",
+      "label": "电脑主机",
+      "color": "#86ADCB"
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "flashlight",
+      "label": "手电筒",
+      "color": "#FFE08D"
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "pillow-a",
+      "label": "方抱枕",
+      "color": "#F5C0CF"
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "pillow-b",
+      "label": "圆抱枕",
+      "color": "#F5C0CF"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "armchair",
+      "label": "单人沙发",
+      "color": "#79CFC5"
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "armchair-pillows",
+      "label": "抱枕扶手椅",
+      "color": "#79CFC5"
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "couch",
+      "label": "双人沙发",
+      "color": "#9FAFF2"
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "couch-pillows",
+      "label": "抱枕沙发",
+      "color": "#9FAFF2"
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "cactus-small-a",
+      "label": "小仙人掌",
+      "color": "#99CD80"
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "cactus-small-b",
+      "label": "圆仙人掌",
+      "color": "#99CD80"
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "cactus-tall-a",
+      "label": "高仙人掌",
+      "color": "#78BE8C"
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "cactus-tall-b",
+      "label": "分枝仙人掌",
+      "color": "#78BE8C"
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "table-lamp",
+      "label": "台灯",
+      "color": "#FFE08D"
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "standing-lamp",
+      "label": "落地灯",
+      "color": "#FFE08D"
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "photo-frame",
+      "label": "照片框",
+      "color": "#F3AFC2"
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "standing-frame",
+      "label": "立式相框",
+      "color": "#F3AFC2"
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "oval-rug",
+      "label": "椭圆地毯",
+      "color": "#AA91ED"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "stool",
+      "label": "小圆凳",
+      "color": "#F49A6B"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "burger",
+      "label": "汉堡",
+      "color": "#F49A6B"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "veggie-burger",
+      "label": "蔬菜汉堡",
+      "color": "#99CD80"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "dinner-plate",
+      "label": "晚餐盘",
+      "color": "#FFE08D"
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "stew",
+      "label": "炖菜",
+      "color": "#E77770"
+    },
+    {
+      "templateId": "Ricochet",
+      "visualId": "carrot",
+      "label": "胡萝卜",
+      "color": "#F49A6B"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "tomato",
+      "label": "番茄",
+      "color": "#E77770"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "potato",
+      "label": "土豆",
+      "color": "#FFD773"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "steak",
+      "label": "牛排",
+      "color": "#E77770"
+    },
+    {
+      "templateId": "Ricochet",
+      "visualId": "bun",
+      "label": "面包胚",
+      "color": "#FFD773"
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "bowl",
+      "label": "碗",
+      "color": "#79CFC5"
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "plate",
+      "label": "餐盘",
+      "color": "#FFF9EF"
+    },
+    {
+      "templateId": "HeavyWeapon",
+      "visualId": "cooking-pot",
+      "label": "小锅",
+      "color": "#86ADCB"
+    },
+    {
+      "templateId": "Ricochet",
+      "visualId": "toy-airplane",
+      "label": "玩具飞机",
+      "color": "#9FAFF2"
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "crowbar",
+      "label": "撬棍",
+      "color": "#E77770"
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "screwdriver",
+      "label": "螺丝刀",
+      "color": "#FFD773"
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "wrench",
+      "label": "扳手",
+      "color": "#86ADCB"
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "hammer",
+      "label": "羊角锤",
+      "color": "#F49A6B"
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "watering-can",
+      "label": "浇水壶",
+      "color": "#79CFC5"
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "tree-round",
+      "label": "圆冠小树",
+      "color": "#78BE8C"
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "pine-tree",
+      "label": "松树",
+      "color": "#78BE8C"
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "trashcan",
+      "label": "垃圾桶",
+      "color": "#79CFC5"
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "sword",
+      "label": "短剑",
+      "color": "#9FAFF2"
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "toy-bomb",
+      "label": "玩具炸弹",
+      "color": "#E77770"
+    },
+    {
+      "templateId": "Projectile",
+      "visualId": "football-cc0",
+      "label": "足球",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "足球",
+        "football",
+        "soccer"
+      ],
+      "excludeTerms": [
+        "美式足球",
+        "美式橄榄球",
+        "american football",
+        "gridiron football"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "gamepad-cc0",
+      "label": "游戏手柄",
+      "color": "#A2B7FF",
+      "evidenceTerms": [
+        "手柄",
+        "gamepad",
+        "controller"
+      ]
+    },
+    {
+      "templateId": "Melee",
+      "visualId": "ukulele-cc0",
+      "label": "尤克里里",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "尤克里里",
+        "ukulele"
+      ]
+    },
+    {
+      "templateId": "Disc",
+      "visualId": "notebook-cc0",
+      "label": "纸质笔记本",
+      "color": "#AA91ED",
+      "evidenceTerms": [
+        "笔记本",
+        "手账",
+        "手帐",
+        "记事本",
+        "notebook"
+      ],
+      "excludeTerms": [
+        "笔记本电脑",
+        "电脑笔记本",
+        "laptop",
+        "notebook computer"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "swimming-ring",
+      "label": "游泳圈",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "泳圈",
+        "游泳圈",
+        "swim",
+        "swimming",
+        "swimmer"
+      ],
+      "excludeTerms": [
+        "不会游泳",
+        "不喜欢游泳",
+        "讨厌游泳",
+        "cannot swim",
+        "can’t swim",
+        "can't swim"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "swim-goggles",
+      "label": "泳镜",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "自由泳",
+        "swimming",
+        "泳镜"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢自由泳",
+        "不会自由泳",
+        "讨厌自由泳",
+        "不擅长自由泳",
+        "不喜欢swimming",
+        "不会swimming",
+        "讨厌swimming",
+        "不擅长swimming",
+        "不喜欢泳镜",
+        "不会泳镜",
+        "讨厌泳镜",
+        "不擅长泳镜"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "swim-kickboard",
+      "label": "游泳浮板",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "蛙泳",
+        "浮板",
+        "kickboard",
+        "游泳浮板"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢蛙泳",
+        "不会蛙泳",
+        "讨厌蛙泳",
+        "不擅长蛙泳",
+        "不喜欢浮板",
+        "不会浮板",
+        "讨厌浮板",
+        "不擅长浮板",
+        "不喜欢kickboard",
+        "不会kickboard",
+        "讨厌kickboard",
+        "不擅长kickboard",
+        "不喜欢游泳浮板",
+        "不会游泳浮板",
+        "讨厌游泳浮板",
+        "不擅长游泳浮板"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "swim-fins",
+      "label": "游泳脚蹼",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "游泳",
+        "潜泳",
+        "脚蹼",
+        "游泳脚蹼"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢潜泳",
+        "不会潜泳",
+        "讨厌潜泳",
+        "不擅长潜泳",
+        "不喜欢脚蹼",
+        "不会脚蹼",
+        "讨厌脚蹼",
+        "不擅长脚蹼",
+        "不喜欢游泳脚蹼",
+        "不会游泳脚蹼",
+        "讨厌游泳脚蹼",
+        "不擅长游泳脚蹼"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "snorkel-mask",
+      "label": "呼吸管面镜",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "浮潜",
+        "潜水",
+        "snorkeling",
+        "呼吸管面镜"
+      ],
+      "excludeTerms": [
+        "不喜欢浮潜",
+        "不会浮潜",
+        "讨厌浮潜",
+        "不擅长浮潜",
+        "不喜欢潜水",
+        "不会潜水",
+        "讨厌潜水",
+        "不擅长潜水",
+        "不喜欢snorkeling",
+        "不会snorkeling",
+        "讨厌snorkeling",
+        "不擅长snorkeling",
+        "不喜欢呼吸管面镜",
+        "不会呼吸管面镜",
+        "讨厌呼吸管面镜",
+        "不擅长呼吸管面镜"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "pool-noodle",
+      "label": "泡沫泳棒",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "游泳",
+        "水中健身",
+        "泡沫泳棒"
+      ],
+      "excludeTerms": [
+        "不喜欢游泳",
+        "不会游泳",
+        "讨厌游泳",
+        "不擅长游泳",
+        "不喜欢水中健身",
+        "不会水中健身",
+        "讨厌水中健身",
+        "不擅长水中健身",
+        "不喜欢泡沫泳棒",
+        "不会泡沫泳棒",
+        "讨厌泡沫泳棒",
+        "不擅长泡沫泳棒"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "volleyball",
+      "label": "排球",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "排球",
+        "volleyball"
+      ],
+      "excludeTerms": [
+        "不喜欢排球",
+        "不会排球",
+        "讨厌排球",
+        "不擅长排球",
+        "不喜欢volleyball",
+        "不会volleyball",
+        "讨厌volleyball",
+        "不擅长volleyball"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "boxing-glove",
+      "label": "拳击手套",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "拳击",
+        "boxing",
+        "拳击手套"
+      ],
+      "excludeTerms": [
+        "不喜欢拳击",
+        "不会拳击",
+        "讨厌拳击",
+        "不擅长拳击",
+        "不喜欢boxing",
+        "不会boxing",
+        "讨厌boxing",
+        "不擅长boxing",
+        "不喜欢拳击手套",
+        "不会拳击手套",
+        "讨厌拳击手套",
+        "不擅长拳击手套"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "jump-rope",
+      "label": "跳绳",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "跳绳",
+        "体能训练"
+      ],
+      "excludeTerms": [
+        "不喜欢跳绳",
+        "不会跳绳",
+        "讨厌跳绳",
+        "不擅长跳绳",
+        "不喜欢体能训练",
+        "不会体能训练",
+        "讨厌体能训练",
+        "不擅长体能训练"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "yoga-mat-roll",
+      "label": "瑜伽垫卷",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "瑜伽",
+        "yoga",
+        "瑜伽垫卷"
+      ],
+      "excludeTerms": [
+        "不喜欢瑜伽",
+        "不会瑜伽",
+        "讨厌瑜伽",
+        "不擅长瑜伽",
+        "不喜欢yoga",
+        "不会yoga",
+        "讨厌yoga",
+        "不擅长yoga",
+        "不喜欢瑜伽垫卷",
+        "不会瑜伽垫卷",
+        "讨厌瑜伽垫卷",
+        "不擅长瑜伽垫卷"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "climbing-carabiner",
+      "label": "攀岩锁扣",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "攀岩",
+        "climbing",
+        "攀岩锁扣"
+      ],
+      "excludeTerms": [
+        "不喜欢攀岩",
+        "不会攀岩",
+        "讨厌攀岩",
+        "不擅长攀岩",
+        "不喜欢climbing",
+        "不会climbing",
+        "讨厌climbing",
+        "不擅长climbing",
+        "不喜欢攀岩锁扣",
+        "不会攀岩锁扣",
+        "讨厌攀岩锁扣",
+        "不擅长攀岩锁扣"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "paint-palette",
+      "label": "调色盘",
+      "color": "#C99D70",
+      "evidenceTerms": [
+        "绘画",
+        "画画",
+        "painting",
+        "调色盘"
+      ],
+      "excludeTerms": [
+        "不喜欢绘画",
+        "不会绘画",
+        "讨厌绘画",
+        "不擅长绘画",
+        "不喜欢画画",
+        "不会画画",
+        "讨厌画画",
+        "不擅长画画",
+        "不喜欢painting",
+        "不会painting",
+        "讨厌painting",
+        "不擅长painting",
+        "不喜欢调色盘",
+        "不会调色盘",
+        "讨厌调色盘",
+        "不擅长调色盘"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "paintbrush",
+      "label": "油画笔",
+      "color": "#C99D70",
+      "evidenceTerms": [
+        "油画",
+        "画笔",
+        "油画笔"
+      ],
+      "excludeTerms": [
+        "不喜欢油画",
+        "不会油画",
+        "讨厌油画",
+        "不擅长油画",
+        "不喜欢画笔",
+        "不会画笔",
+        "讨厌画笔",
+        "不擅长画笔",
+        "不喜欢油画笔",
+        "不会油画笔",
+        "讨厌油画笔",
+        "不擅长油画笔"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "calligraphy-brush",
+      "label": "书法毛笔",
+      "color": "#C99D70",
+      "evidenceTerms": [
+        "书法",
+        "毛笔字",
+        "书法毛笔"
+      ],
+      "excludeTerms": [
+        "不喜欢书法",
+        "不会书法",
+        "讨厌书法",
+        "不擅长书法",
+        "不喜欢毛笔字",
+        "不会毛笔字",
+        "讨厌毛笔字",
+        "不擅长毛笔字",
+        "不喜欢书法毛笔",
+        "不会书法毛笔",
+        "讨厌书法毛笔",
+        "不擅长书法毛笔"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "microscope",
+      "label": "显微镜",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "生物学",
+        "显微镜"
+      ],
+      "excludeTerms": [
+        "不喜欢生物学",
+        "不会生物学",
+        "讨厌生物学",
+        "不擅长生物学",
+        "不喜欢显微镜",
+        "不会显微镜",
+        "讨厌显微镜",
+        "不擅长显微镜"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "horseshoe-magnet",
+      "label": "马蹄磁铁",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "磁学",
+        "物理",
+        "马蹄磁铁"
+      ],
+      "excludeTerms": [
+        "不喜欢磁学",
+        "不会磁学",
+        "讨厌磁学",
+        "不擅长磁学",
+        "不喜欢物理",
+        "不会物理",
+        "讨厌物理",
+        "不擅长物理",
+        "不喜欢马蹄磁铁",
+        "不会马蹄磁铁",
+        "讨厌马蹄磁铁",
+        "不擅长马蹄磁铁"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "law-gavel",
+      "label": "法槌",
+      "color": "#C99D70",
+      "evidenceTerms": [
+        "法律",
+        "法学",
+        "law",
+        "法槌"
+      ],
+      "excludeTerms": [
+        "不喜欢法律",
+        "不会法律",
+        "讨厌法律",
+        "不擅长法律",
+        "不喜欢法学",
+        "不会法学",
+        "讨厌法学",
+        "不擅长法学",
+        "不喜欢law",
+        "不会law",
+        "讨厌law",
+        "不擅长law",
+        "不喜欢法槌",
+        "不会法槌",
+        "讨厌法槌",
+        "不擅长法槌"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "fire-extinguisher",
+      "label": "消防灭火器",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "消防员",
+        "消防",
+        "消防灭火器"
+      ],
+      "excludeTerms": [
+        "不喜欢消防员",
+        "不会消防员",
+        "讨厌消防员",
+        "不擅长消防员",
+        "不喜欢消防",
+        "不会消防",
+        "讨厌消防",
+        "不擅长消防",
+        "不喜欢消防灭火器",
+        "不会消防灭火器",
+        "讨厌消防灭火器",
+        "不擅长消防灭火器"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "umbrella",
+      "label": "雨伞",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "下雨",
+        "雨伞"
+      ],
+      "excludeTerms": [
+        "不喜欢下雨",
+        "不会下雨",
+        "讨厌下雨",
+        "不擅长下雨",
+        "不喜欢雨伞",
+        "不会雨伞",
+        "讨厌雨伞",
+        "不擅长雨伞"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "soap-bar",
+      "label": "肥皂",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "肥皂",
+        "洗澡"
+      ],
+      "excludeTerms": [
+        "不喜欢肥皂",
+        "不会肥皂",
+        "讨厌肥皂",
+        "不擅长肥皂",
+        "不喜欢洗澡",
+        "不会洗澡",
+        "讨厌洗澡",
+        "不擅长洗澡"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "sushi-roll",
+      "label": "寿司卷",
+      "color": "#263248",
+      "evidenceTerms": [
+        "寿司",
+        "日料",
+        "寿司卷"
+      ],
+      "excludeTerms": [
+        "不喜欢寿司",
+        "不会寿司",
+        "讨厌寿司",
+        "不擅长寿司",
+        "不喜欢日料",
+        "不会日料",
+        "讨厌日料",
+        "不擅长日料",
+        "不喜欢寿司卷",
+        "不会寿司卷",
+        "讨厌寿司卷",
+        "不擅长寿司卷"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "icecream-cone",
+      "label": "冰淇淋甜筒",
+      "color": "#C99D70",
+      "evidenceTerms": [
+        "冰淇淋",
+        "甜筒",
+        "冰淇淋甜筒"
+      ],
+      "excludeTerms": [
+        "不喜欢冰淇淋",
+        "不会冰淇淋",
+        "讨厌冰淇淋",
+        "不擅长冰淇淋",
+        "不喜欢甜筒",
+        "不会甜筒",
+        "讨厌甜筒",
+        "不擅长甜筒",
+        "不喜欢冰淇淋甜筒",
+        "不会冰淇淋甜筒",
+        "讨厌冰淇淋甜筒",
+        "不擅长冰淇淋甜筒"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "popcorn-bucket",
+      "label": "爆米花桶",
+      "color": "#EDAAA9",
+      "evidenceTerms": [
+        "爆米花",
+        "电影院",
+        "爆米花桶"
+      ],
+      "excludeTerms": [
+        "不喜欢爆米花",
+        "不会爆米花",
+        "讨厌爆米花",
+        "不擅长爆米花",
+        "不喜欢电影院",
+        "不会电影院",
+        "讨厌电影院",
+        "不擅长电影院",
+        "不喜欢爆米花桶",
+        "不会爆米花桶",
+        "讨厌爆米花桶",
+        "不擅长爆米花桶"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "kettle-spout",
+      "label": "细嘴壶",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "手冲壶",
+        "烧水",
+        "细嘴壶"
+      ],
+      "excludeTerms": [
+        "不喜欢手冲壶",
+        "不会手冲壶",
+        "讨厌手冲壶",
+        "不擅长手冲壶",
+        "不喜欢烧水",
+        "不会烧水",
+        "讨厌烧水",
+        "不擅长烧水",
+        "不喜欢细嘴壶",
+        "不会细嘴壶",
+        "讨厌细嘴壶",
+        "不擅长细嘴壶"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "mushroom-cluster",
+      "label": "蘑菇簇",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "菌菇",
+        "蘑菇采集",
+        "蘑菇簇"
+      ],
+      "excludeTerms": [
+        "不喜欢菌菇",
+        "不会菌菇",
+        "讨厌菌菇",
+        "不擅长菌菇",
+        "不喜欢蘑菇采集",
+        "不会蘑菇采集",
+        "讨厌蘑菇采集",
+        "不擅长蘑菇采集",
+        "不喜欢蘑菇簇",
+        "不会蘑菇簇",
+        "讨厌蘑菇簇",
+        "不擅长蘑菇簇"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "hiking-pole",
+      "label": "登山杖",
+      "color": "#263248",
+      "evidenceTerms": [
+        "徒步",
+        "登山",
+        "登山杖"
+      ],
+      "excludeTerms": [
+        "不喜欢徒步",
+        "不会徒步",
+        "讨厌徒步",
+        "不擅长徒步",
+        "不喜欢登山",
+        "不会登山",
+        "讨厌登山",
+        "不擅长登山",
+        "不喜欢登山杖",
+        "不会登山杖",
+        "讨厌登山杖",
+        "不擅长登山杖"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "mini-drone",
+      "label": "无人机",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "无人机",
+        "航拍"
+      ],
+      "excludeTerms": [
+        "不喜欢无人机",
+        "不会无人机",
+        "讨厌无人机",
+        "不擅长无人机",
+        "不喜欢航拍",
+        "不会航拍",
+        "讨厌航拍",
+        "不擅长航拍"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "party-popper",
+      "label": "派对礼炮",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "庆祝",
+        "礼炮",
+        "派对礼炮"
+      ],
+      "excludeTerms": [
+        "不喜欢庆祝",
+        "不会庆祝",
+        "讨厌庆祝",
+        "不擅长庆祝",
+        "不喜欢礼炮",
+        "不会礼炮",
+        "讨厌礼炮",
+        "不擅长礼炮",
+        "不喜欢派对礼炮",
+        "不会派对礼炮",
+        "讨厌派对礼炮",
+        "不擅长派对礼炮"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "cloud-jar",
+      "label": "云朵罐",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "想象力",
+        "云朵",
+        "梦境",
+        "云朵罐"
+      ],
+      "excludeTerms": [
+        "不喜欢想象力",
+        "不会想象力",
+        "讨厌想象力",
+        "不擅长想象力",
+        "不喜欢云朵",
+        "不会云朵",
+        "讨厌云朵",
+        "不擅长云朵",
+        "不喜欢梦境",
+        "不会梦境",
+        "讨厌梦境",
+        "不擅长梦境",
+        "不喜欢云朵罐",
+        "不会云朵罐",
+        "讨厌云朵罐",
+        "不擅长云朵罐"
+      ]
+    }
+  ]
+}
