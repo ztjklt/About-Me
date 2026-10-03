@@ -1519,7 +1519,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "ring-burst"
     },
     {
       "id": "fire-extinguisher",
@@ -1855,7 +1856,7 @@
             "z": 0.57
           },
           "rotation": {
-            "x": 0,
+            "x": 90,
             "y": 0,
             "z": 0
           },
@@ -1865,8 +1866,8 @@
           "shape": "cylinder",
           "position": {
             "x": 0,
-            "y": 0.247,
-            "z": 0
+            "y": 0,
+            "z": 0.247
           },
           "scale": {
             "x": 0.5,
@@ -1874,7 +1875,7 @@
             "z": 0.5
           },
           "rotation": {
-            "x": 0,
+            "x": 90,
             "y": 0,
             "z": 0
           },
@@ -1884,8 +1885,8 @@
           "shape": "cylinder",
           "position": {
             "x": 0,
-            "y": 0.26,
-            "z": 0
+            "y": 0,
+            "z": 0.26
           },
           "scale": {
             "x": 0.2,
@@ -1893,7 +1894,7 @@
             "z": 0.2
           },
           "rotation": {
-            "x": 0,
+            "x": 90,
             "y": 0,
             "z": 0
           },
@@ -1903,8 +1904,8 @@
           "shape": "cylinder",
           "position": {
             "x": 0.13,
-            "y": 0.26,
-            "z": 0.07
+            "y": -0.07,
+            "z": 0.26
           },
           "scale": {
             "x": 0.14,
@@ -1912,7 +1913,7 @@
             "z": 0.14
           },
           "rotation": {
-            "x": 0,
+            "x": 90,
             "y": 0,
             "z": 0
           },
@@ -1921,7 +1922,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "relay-burst"
     },
     {
       "id": "icecream-cone",
@@ -2274,7 +2276,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "cluster-burst"
     },
     {
       "id": "kettle-spout",
@@ -3052,7 +3055,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "impact-burst"
     },
     {
       "id": "cloud-jar",
@@ -3202,6 +3206,938 @@
       "license": "project-original",
       "source": "About Me original assembly geometry",
       "stage": "model_with_existing_template"
+    },
+    {
+      "id": "acorn",
+      "label": "橡果",
+      "templateId": "SpecialAbility",
+      "color": "#B67B4C",
+      "keywords": [
+        "森林",
+        "橡树"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.65,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.63,
+            "y": 0.3,
+            "z": 0.63
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#76533D"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.22,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": -15,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "fuse-burst"
+    },
+    {
+      "id": "network-router",
+      "label": "网络路由器",
+      "templateId": "SpecialAbility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "网络工程",
+        "路由器"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.75,
+            "y": 0.17,
+            "z": 0.44
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.23
+          },
+          "scale": {
+            "x": 0.65,
+            "y": 0.06,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.32,
+            "y": 0.25,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.54,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -8.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.1,
+            "y": 0.25,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.54,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -2.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.1,
+            "y": 0.25,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.54,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 2.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.32,
+            "y": 0.25,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.54,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 8.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.24,
+            "y": 0,
+            "z": 0.235
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.04,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.12,
+            "y": 0,
+            "z": 0.235
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.04,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.235
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.04,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0.235
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.04,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "remote-burst"
+    },
+    {
+      "id": "alarm-clock",
+      "label": "闹钟",
+      "templateId": "SpecialAbility",
+      "color": "#F49A6B",
+      "keywords": [
+        "早起",
+        "闹钟"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.53,
+            "y": 0.19,
+            "z": 0.53
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.106
+          },
+          "scale": {
+            "x": 0.45,
+            "y": 0.02,
+            "z": 0.45
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.06,
+            "y": 0.065,
+            "z": 0.123
+          },
+          "scale": {
+            "x": 0.02,
+            "y": 0.2,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 35
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.075,
+            "y": -0.015,
+            "z": 0.127
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.02,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 20
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.132
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.05,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": -0.22,
+            "y": 0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.15,
+            "z": 0.21
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 12.1
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0.22,
+            "y": 0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.15,
+            "z": 0.21
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -12.1
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.19,
+            "y": -0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.18,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -13.3
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.19,
+            "y": -0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.18,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 13.3
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.32,
+            "z": -0.03
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.27,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "proximity-burst"
+    },
+    {
+      "id": "cricket-bat",
+      "label": "板球拍",
+      "templateId": "SpecialAbility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "板球",
+        "cricket"
+      ],
+      "parts": [
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": -0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.33,
+            "y": 0.73,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.12,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.46,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.38,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.4,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.47,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.54,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "cone-burst"
+    },
+    {
+      "id": "slime-capsule",
+      "label": "弹性史莱姆罐",
+      "templateId": "Tether",
+      "color": "#86ADCB",
+      "keywords": [
+        "史莱姆",
+        "软胶玩具"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.49,
+            "y": 0.59,
+            "z": 0.49
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.56,
+            "y": 0.12,
+            "z": 0.56
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0.255
+          },
+          "scale": {
+            "x": 0.37,
+            "y": 0.36,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.1,
+            "y": 0.02,
+            "z": 0.323
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.05,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.1,
+            "y": 0.02,
+            "z": 0.323
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.05,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": -0.08,
+            "z": 0.323
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.12,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "sticky-burst"
+    },
+    {
+      "id": "conical-flask",
+      "label": "锥形瓶",
+      "templateId": "SpecialAbility",
+      "color": "#86ADCB",
+      "keywords": [
+        "化学实验",
+        "锥形瓶"
+      ],
+      "parts": [
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.56,
+            "y": 0.55,
+            "z": 0.56
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.27,
+            "z": 0.16
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.38,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.2,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.19,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.13,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": 0.17,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.015,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": 0.23,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.015,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": 0.29,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.015,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "vacuum-burst"
     }
   ]
 }

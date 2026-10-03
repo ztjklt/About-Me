@@ -17,6 +17,7 @@ namespace AboutMe
         Sprite selectionCampusSprite,selectionStudioSprite;
         ScrollRect inventoryScroll;
         Button keyboardHelpButton;
+        Text mechanicHint;
         readonly List<RectTransform> inventoryCards=new List<RectTransform>();
         readonly List<Image> slotThumbnails=new List<Image>();
         readonly Dictionary<string,Sprite> personaThumbnails=new Dictionary<string,Sprite>();
@@ -197,6 +198,7 @@ namespace AboutMe
             hudToast=ArtPanel(hud,"Announcement sticker",480,128,640,58,UITheme.Ink,true,true);eventText=ArtText(hudToast,"准备介绍你自己",20,7,600,44,19,UITheme.Paper,FontStyle.Bold,TextAnchor.MiddleCenter);toastPulse=hudToast.gameObject.AddComponent<UIPulse>();
             hudProgress=ArtPanel(hud,"Interaction progress",545,690,510,74,UITheme.Paper,true,true);progressText=ArtText(hudProgress,"吞噬 0%",18,8,474,25,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             var progressTrack=ArtPanel(hudProgress,"Progress track",18,42,474,18,UITheme.Field,true,false);progressFill=ArtPanel(progressTrack,"Progress fill",3,3,468,12,UITheme.Pink,false,false).GetComponent<Image>();progressFill.rectTransform.anchorMin=new Vector2(0,0);progressFill.rectTransform.anchorMax=new Vector2(1,1);progressFill.rectTransform.offsetMin=new Vector2(3,3);progressFill.rectTransform.offsetMax=new Vector2(-3,-3);hudProgress.gameObject.SetActive(false);
+            mechanicHint=ArtText(hud,"",340,762,920,29,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             keyboardHint=ArtPanel(hud,"Keyboard help",34,202,382,142,new Color(1,1,1,.94f),true,true);
             ArtText(keyboardHint,"WASD 移动  ·  点击场地锁定鼠标\n移动鼠标转镜头；失败时按住右键拖动\nF 使用  ·  G/H 抓取  ·  E 吃/收\n1–5 切换  ·  B 背包  ·  Q 挣脱",16,10,350,125,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             keyboardHint.gameObject.SetActive(false);
@@ -223,7 +225,7 @@ namespace AboutMe
             ArtButton(card,"返回",876,28,152,50,ToggleBag,UITheme.Mint,UITheme.Ink,"exit");
             var viewport=ArtPanel(card,"Inventory viewport",24,136,1012,516,Color.clear,false,false);viewport.gameObject.AddComponent<RectMask2D>();
             inventoryContent=ArtRect(viewport,"Inventory cards",Vector2.zero,new Vector2(1000,516));inventoryContent.anchorMin=inventoryContent.anchorMax=inventoryContent.pivot=new Vector2(0,1);
-            var grid=inventoryContent.gameObject.AddComponent<GridLayoutGroup>();grid.cellSize=new Vector2(320,168);grid.spacing=new Vector2(12,12);grid.constraint=GridLayoutGroup.Constraint.FixedColumnCount;grid.constraintCount=3;grid.padding=new RectOffset(6,6,6,6);
+            var grid=inventoryContent.gameObject.AddComponent<GridLayoutGroup>();grid.cellSize=new Vector2(320,215);grid.spacing=new Vector2(12,12);grid.constraint=GridLayoutGroup.Constraint.FixedColumnCount;grid.constraintCount=3;grid.padding=new RectOffset(6,6,6,6);
             inventoryScroll=viewport.gameObject.AddComponent<ScrollRect>();inventoryScroll.viewport=viewport;inventoryScroll.content=inventoryContent;inventoryScroll.horizontal=false;inventoryScroll.movementType=ScrollRect.MovementType.Clamped;inventoryScroll.scrollSensitivity=42;
             ArtText(card,"拖动浏览  ·  点击装备  ·  置顶加入快捷栏",30,658,810,22,14,UITheme.Muted);
         }
@@ -270,7 +272,7 @@ namespace AboutMe
             ArtButton(touch,"吃/收",1402,648,118,76,()=>Send("interact"),UITheme.Orange,UITheme.Ink,"status");
             var escape=ArtButton(touch,"挣脱",1138,556,118,76,()=>{},UITheme.Orange,UITheme.Ink,"grab");
             var escapePress=escape.gameObject.AddComponent<PressButton>();
-            escapePress.Down=()=>{touchEscapeHeld=escapeHeld=true;var me=net.State?.players.FirstOrDefault(p=>p.id==net.State.you);Send(me!=null&&me.grabbed?"escape":"cancel");};
+            escapePress.Down=()=>{touchEscapeHeld=escapeHeld=true;var me=net.State?.players.FirstOrDefault(p=>p.id==net.State.you);Send(me!=null&&(me.grabbed||me.sticky)?"escape":"cancel");};
             escapePress.Up=()=>{touchEscapeHeld=escapeHeld=false;Send("escape_end");};
             touch.gameObject.SetActive(false);
         }
@@ -309,11 +311,12 @@ namespace AboutMe
             phaseText.text=phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
             if(me!=null)
             {
+                var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":mechanic.label+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;
-                bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||dragging);
-                if(me.grabbed){progressText.text="按住 Q / 挣脱按钮  "+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
+                bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||me.sticky||dragging);
+                if(me.grabbed||me.sticky){progressText.text=(me.sticky?"按住 Q 撕掉黏附爆风  ":"按住 Q / 挣脱按钮  ")+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
                 else if(interacting){progressText.text=(me.interaction=="eat"?"正在吞噬":"正在回收")+"  "+Mathf.RoundToInt(me.progress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.progress),1);}
                 else if(dragging){progressText.text="拖拽中 · G / 抓取按钮松手";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.grabTension),1);}
             }
@@ -370,20 +373,22 @@ namespace AboutMe
             {
                 string id=item.id,assetId=item.asset.assetId;
                 bool equipped=item.state==ItemState.Equipped,available=item.state==ItemState.Inventory||equipped;
-                var card=ArtPanel(inventoryContent,"Persona "+item.asset.name,0,0,320,168,equipped?Color.Lerp(UITheme.Yellow,UITheme.Paper,.52f):UITheme.Field,true,false);inventoryCards.Add(card);
+                var card=ArtPanel(inventoryContent,"Persona "+item.asset.name,0,0,320,215,equipped?Color.Lerp(UITheme.Yellow,UITheme.Paper,.52f):UITheme.Field,true,false);inventoryCards.Add(card);
                 var thumbnail=PersonaThumbnail(item.asset.visualId);
                 var well=ArtPanel(card,"Persona thumbnail",10,12,92,92,Color.Lerp(ToyFactory.ColorOf(item.asset.color),UITheme.Paper,.7f),true,false);
                 var itemImage=ArtIcon(well,thumbnail?"":IconForTemplate(item.asset.templateId),6,6,80,thumbnail?Color.white:ToyFactory.ColorOf(item.asset.color));
                 if(thumbnail)itemImage.sprite=thumbnail;
                 ArtText(card,item.asset.name,109,10,199,40,18,UITheme.Ink,FontStyle.Bold);
-                ArtText(card,TemplateLabel(item.asset.templateId),109,51,195,22,13,UITheme.Muted,FontStyle.Bold);
+                ArtText(card,(PartyMechanicRegistry.ForVisual(item.asset.visualId)?.label??TemplateLabel(item.asset.templateId)),109,51,195,22,13,UITheme.Muted,FontStyle.Bold);
+                var mechanic=PartyMechanicRegistry.ForVisual(item.asset.visualId);
+                if(mechanic!=null)ArtText(card,mechanic.hint,10,99,298,46,14,UITheme.Muted);
                 if(equipped)ArtText(card,"● 装备中",109,75,90,22,13,UITheme.Orange,FontStyle.Bold);
-                var equip=ArtButton(card,equipped?"已装备":"装备",10,105,141,55,()=>Send("equip",id),equipped?UITheme.Yellow:UITheme.Mint,UITheme.Ink);
+                var equip=ArtButton(card,equipped?"已装备":"装备",10,152,141,55,()=>Send("equip",id),equipped?UITheme.Yellow:UITheme.Mint,UITheme.Ink);
                 equip.interactable=available&&!equipped;
-                var quick=ArtButton(card,"置顶",167,105,141,55,()=>Favorite(assetId),UITheme.Purple,UITheme.Ink);
+                var quick=ArtButton(card,"置顶",167,152,141,55,()=>Favorite(assetId),UITheme.Purple,UITheme.Ink);
                 quick.interactable=available;
             }
-            int rows=Mathf.CeilToInt(state.inventory.Length/3f);inventoryContent.sizeDelta=new Vector2(1000,Mathf.Max(516,12+rows*168+Mathf.Max(0,rows-1)*12));
+            int rows=Mathf.CeilToInt(state.inventory.Length/3f);inventoryContent.sizeDelta=new Vector2(1000,Mathf.Max(516,12+rows*215+Mathf.Max(0,rows-1)*12));
             Canvas.ForceUpdateCanvases();inventoryScroll.verticalNormalizedPosition=Mathf.Clamp01(scrollPosition);inventoryHasBeenBuilt=true;
         }
 

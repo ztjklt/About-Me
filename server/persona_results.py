@@ -43,14 +43,16 @@ def generation_terms(assets, terms, catalogs, pending=False):
             return asset['institutionName'] == term['term']
         if term['term'] not in asset.get('source', ''):
             return False
-        if asset.get('generationTerm'):
-            return asset['generationTerm'] == term['term']
+        if asset.get('generationTerm') == term['term']:
+            return True
         catalog = catalogs.get((asset['templateId'], asset['visualId']), {})
         normalize = lambda value: re.sub(r'[^0-9A-Za-z\u4e00-\u9fff]', '', value).casefold()
         word = normalize(term['term'])
-        labels = [asset['name'], catalog.get('label', ''), *catalog.get('evidenceTerms', [])]
+        labels = [catalog.get('label', ''), *catalog.get('evidenceTerms', [])]
         if word and any(word in normalize(label) or normalize(label) in word for label in labels if normalize(label)):
             return True
+        if asset.get('generationTerm'):
+            return False
         # Legacy responses may omit a keyword; a shared sentence cannot mark unrelated terms green.
         return sum(t['term'] in asset.get('source', '') for t in terms) == 1
     for asset in assets:

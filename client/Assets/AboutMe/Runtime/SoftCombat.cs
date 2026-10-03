@@ -47,7 +47,10 @@ namespace AboutMe
             // Attacks are always an explicit use of an equipped Persona (or a
             // public prop being carried). There is no unarmed light attack.
             if(Item(p.equipped)==null&&Props.Find(x=>x.id==p.publicProp)==null)return;
-            Attack(p,true,1f);
+            var item=Item(p.equipped);if(p.publicProp==""&&!PartyCanUse(p,item))return;
+            int before=p.actionId;Attack(p,true,1f);
+            var mechanic=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);
+            if(p.actionId!=before&&p.publicProp==""&&mechanic!=null)p.pendingAt=Time+mechanic.windup;
         }
         void Grab(Player p,bool item)
         {
@@ -126,13 +129,13 @@ namespace AboutMe
             {
                 if(p.eliminated)continue;
                 if(Time-p.lastInput>.35f){p.input.escapeHeld=false;ResetEscape(p);}
-                if(!IsGrabbed(p))ResetEscape(p);
+                if(!IsGrabbed(p)&&!HasStickyCharge(p))ResetEscape(p);
                 else if(p.input.escapeHeld)
                 {
                     if(p.escapeStartedAt<0)p.escapeStartedAt=Time;
                     p.escapeReleasedAt=-1;p.escapeCharge=Mathf.Min(Rules.escapeDuration,p.escapeCharge+dt);
                     if(p.escapeCharge+.0001f>=Rules.escapeDuration)
-                    {ReleaseAllGrabs(p);CancelAction(p);SetAction(p,"escape");}
+                    {if(HasStickyCharge(p))RemoveStickyCharges(p);ReleaseAllGrabs(p);CancelAction(p);SetAction(p,"escape");}
                 }
                 else
                 {

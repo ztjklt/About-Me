@@ -500,7 +500,7 @@ namespace AboutMe
             if(movePad){movePad.ShowRun(running);if(!canMove)movePad.Reset();}
             yaw=locomotionInput.FacingYaw(world.CameraYaw,movement);
             var worldMove=Quaternion.Euler(0,world.CameraYaw,0)*new Vector3(movement.x,0,movement.y);movement=new Vector2(worldMove.x,worldMove.z);
-            if(controls&&Input.GetKeyDown(KeyCode.Q))Send(controlled.grabbed?"escape":"cancel");
+            if(controls&&Input.GetKeyDown(KeyCode.Q))Send((controlled.grabbed||controlled.sticky)?"escape":"cancel");
             if(Input.GetKeyUp(KeyCode.Q))Send("escape_end");
             if(canAct)
             {

@@ -9,7 +9,7 @@ namespace AboutMe.Editor
     public static class OriginalPersonaModelTools
     {
         const string Folder="Assets/AboutMe/Resources/PersonaProps";
-        public static void BuildDeliverables(){Build();PersonalitySkinTests.BuildDeliverables();}
+        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PersonalitySkinTests.BuildDeliverables();}
         public static void Build()
         {
             int count=0;var fingerprints=new System.Collections.Generic.HashSet<string>();
@@ -55,21 +55,21 @@ namespace AboutMe.Editor
         }
         public static void Review()
         {
-            var camera=new GameObject("Original model review camera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=2.95f;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.94f,.92f,.86f);
+            var camera=new GameObject("Original model review camera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=3.5f;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.94f,.92f,.86f);
             var light=new GameObject("Original model review light").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.2f;light.transform.rotation=Quaternion.Euler(30,-20,0);
             var group=new GameObject("Original model review");group.transform.position=new Vector3(1000,1000,1000);
             int index=0;
             foreach(var recipe in OriginalPersonaModels.All)
             {
-                var model=UnityEngine.Object.Instantiate(Resources.Load<GameObject>("PersonaProps/"+recipe.id),group.transform,false);model.transform.localPosition=new Vector3((index%7-3)*1.25f,(1.5f-index/7)*1.27f,0);model.transform.localRotation=Quaternion.Euler(-10,-18,0);
+                var model=UnityEngine.Object.Instantiate(Resources.Load<GameObject>("PersonaProps/"+recipe.id),group.transform,false);model.transform.localPosition=new Vector3((index%7-3)*1.25f,(2f-index/7)*1.27f,0);model.transform.localRotation=Quaternion.Euler(-10,-18,0);
                 var label=new GameObject("Label").AddComponent<TextMesh>();label.transform.SetParent(group.transform,false);label.transform.localPosition=model.transform.localPosition+Vector3.down*.51f;label.transform.localRotation=Quaternion.Euler(0,180,0);label.text=recipe.label;label.font=Resources.Load<Font>("AboutMeFont");label.fontSize=45;label.characterSize=.033f;label.anchor=TextAnchor.MiddleCenter;label.color=new Color(.13f,.17f,.24f);if(label.font)label.GetComponent<MeshRenderer>().sharedMaterial=label.font.material;index++;
             }
             camera.transform.position=group.transform.position+new Vector3(0,0,10);camera.transform.LookAt(group.transform.position);
-            var render=new RenderTexture(1400,900,24);var old=RenderTexture.active;camera.targetTexture=render;
+            var render=new RenderTexture(1400,1100,24);var old=RenderTexture.active;camera.targetTexture=render;
             try
             {
-                camera.Render();RenderTexture.active=render;var texture=new Texture2D(1400,900,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1400,900),0,0);texture.Apply();
-                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-28-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
+                camera.Render();RenderTexture.active=render;var texture=new Texture2D(1400,1100,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,1400,1100),0,0);texture.Apply();
+                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-34-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
             }
             finally{camera.targetTexture=null;RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(render);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(light.gameObject);UnityEngine.Object.DestroyImmediate(group);}
         }

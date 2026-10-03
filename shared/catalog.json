@@ -1124,6 +1124,146 @@
         "讨厌云朵罐",
         "不擅长云朵罐"
       ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "acorn",
+      "label": "橡果",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "森林",
+        "橡树",
+        "橡果"
+      ],
+      "excludeTerms": [
+        "不喜欢森林",
+        "不会森林",
+        "讨厌森林",
+        "不擅长森林",
+        "不喜欢橡树",
+        "不会橡树",
+        "讨厌橡树",
+        "不擅长橡树",
+        "不喜欢橡果",
+        "不会橡果",
+        "讨厌橡果",
+        "不擅长橡果"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "network-router",
+      "label": "网络路由器",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "网络工程",
+        "路由器",
+        "网络路由器"
+      ],
+      "excludeTerms": [
+        "不喜欢网络工程",
+        "不会网络工程",
+        "讨厌网络工程",
+        "不擅长网络工程",
+        "不喜欢路由器",
+        "不会路由器",
+        "讨厌路由器",
+        "不擅长路由器",
+        "不喜欢网络路由器",
+        "不会网络路由器",
+        "讨厌网络路由器",
+        "不擅长网络路由器"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "alarm-clock",
+      "label": "闹钟",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "早起",
+        "闹钟"
+      ],
+      "excludeTerms": [
+        "不喜欢早起",
+        "不会早起",
+        "讨厌早起",
+        "不擅长早起",
+        "不喜欢闹钟",
+        "不会闹钟",
+        "讨厌闹钟",
+        "不擅长闹钟"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "cricket-bat",
+      "label": "板球拍",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "板球",
+        "cricket",
+        "板球拍"
+      ],
+      "excludeTerms": [
+        "不喜欢板球",
+        "不会板球",
+        "讨厌板球",
+        "不擅长板球",
+        "不喜欢cricket",
+        "不会cricket",
+        "讨厌cricket",
+        "不擅长cricket",
+        "不喜欢板球拍",
+        "不会板球拍",
+        "讨厌板球拍",
+        "不擅长板球拍"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "slime-capsule",
+      "label": "弹性史莱姆罐",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "史莱姆",
+        "软胶玩具",
+        "弹性史莱姆罐"
+      ],
+      "excludeTerms": [
+        "不喜欢史莱姆",
+        "不会史莱姆",
+        "讨厌史莱姆",
+        "不擅长史莱姆",
+        "不喜欢软胶玩具",
+        "不会软胶玩具",
+        "讨厌软胶玩具",
+        "不擅长软胶玩具",
+        "不喜欢弹性史莱姆罐",
+        "不会弹性史莱姆罐",
+        "讨厌弹性史莱姆罐",
+        "不擅长弹性史莱姆罐"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "conical-flask",
+      "label": "锥形瓶",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "化学实验",
+        "锥形瓶"
+      ],
+      "excludeTerms": [
+        "不喜欢化学实验",
+        "不会化学实验",
+        "讨厌化学实验",
+        "不擅长化学实验",
+        "不喜欢锥形瓶",
+        "不会锥形瓶",
+        "讨厌锥形瓶",
+        "不擅长锥形瓶"
+      ]
     }
   ]
 }

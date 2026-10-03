@@ -667,7 +667,7 @@ def health():
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
             'visionConfigured': bool(deepseek_vision_credentials()[0]),
-            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG)}
+            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': 10}
 
 
 @app.get('/school-emblems/{filename}')
@@ -708,7 +708,10 @@ def session(body: SessionRequest, request: Request):
 @app.get('/profiles/me')
 def profile(authorization: str | None = Header(default=None)):
     _, stored, intro = authenticate(authorization)
-    return normalized_profile(json.loads(stored), intro)
+    current = json.loads(stored)
+    if current.get('generationCandidates') is not None:
+        current['generationTerms'] = generation_terms(current['generationCandidates'], current.get('generationTerms', []), CATALOG_BY_PAIR)
+    return normalized_profile(current, intro)
 
 @app.post('/sessions/wechat')
 async def wechat_session(body: WechatSessionRequest, request: Request):
@@ -828,6 +831,14 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                 raise HTTPException(409, '角色已更新，请刷新后重试')
             publish(candidates, terms, 'complete')
             return normalized_profile(old, intro)
+        updated_terms = generation_terms(candidates, terms, CATALOG_BY_PAIR)
+        if updated_terms != old.get('generationTerms', []):
+            old['generationTerms'] = updated_terms
+            with db() as con:
+                changed = con.execute('UPDATE profiles SET profile=?,updated=? WHERE id=? AND profile=?',
+                    (json.dumps(old), time.time(), player_id, previous)).rowcount
+            if not changed:
+                raise HTTPException(409, '角色已更新，请刷新后重试')
         publish(candidates, terms, 'complete')
         if body.generationId:
             return normalized_profile(old, intro)

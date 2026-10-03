@@ -35,7 +35,7 @@ cleanup() {
   fi
 }
 trap cleanup EXIT INT TERM
-if curl --silent --fail --max-time 2 "$ABOUTME_API_URL/health" | .venv/bin/python -c 'import json,sys; h=json.load(sys.stdin); sys.exit(0 if h.get("latestUI") == "four-bubbles-e5470e2" and h.get("personaKeywordResults") and h.get("webUniversitySearch") and h.get("universityProgress") and h.get("domesticPriority") and h.get("personaCatalogCount",0) >= 89 and h.get("personalitySkins") and h.get("introductionImageRecognition") is False else 1)' 2>/dev/null; then
+if curl --silent --fail --max-time 2 "$ABOUTME_API_URL/health" | .venv/bin/python -c 'import json,sys; h=json.load(sys.stdin); sys.exit(0 if h.get("latestUI") == "four-bubbles-e5470e2" and h.get("personaKeywordResults") and h.get("webUniversitySearch") and h.get("universityProgress") and h.get("domesticPriority") and h.get("personaCatalogCount",0) >= 95 and h.get("partyMechanicsCount",0) >= 10 and h.get("personalitySkins") and h.get("introductionImageRecognition") is False else 1)' 2>/dev/null; then
   echo '使用已启动的校徽 API。'
 else
   if lsof -nP -iTCP:8085 -sTCP:LISTEN >/dev/null 2>&1; then

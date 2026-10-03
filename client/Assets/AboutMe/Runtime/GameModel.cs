@@ -13,13 +13,13 @@ namespace AboutMe
         public PersonaAsset Copy() => (PersonaAsset)MemberwiseClone();
         public PublicPersonaAsset PublicCopy() => new PublicPersonaAsset
         { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color,
-          emblemPath=emblemPath, emblemCrop=emblemCrop, generatedBy=generatedBy };
+          emblemPath=emblemPath, emblemCrop=emblemCrop, generatedBy=generatedBy, mechanicId=PartyMechanicRegistry.ForVisual(visualId)?.id??"" };
     }
     // A separate wire type prevents private profile fields from being serialized.
     [Serializable] public class PublicPersonaAsset
     {
         public string assetId, name, templateId, visualId, color;
-        public string emblemPath, emblemCrop, generatedBy;
+        public string emblemPath, emblemCrop, generatedBy, mechanicId;
     }
     [Serializable] public class Profile
     {
@@ -122,14 +122,17 @@ namespace AboutMe
         public int actionId, actionVariant, impactId;
         public string actionKind="idle", actionTarget="";
         public float actionStartedAt, simulationTime, grabTension, escapeProgress;
-        public float yaw, stability, stagger, progress, charge, locomotionSpeed;
+        public float yaw, stability, stagger, progress, charge, locomotionSpeed,mechanicCooldown;
         public bool running, airborne;
-        public bool connected, ready, eliminated, reveal, grabbed;
+        public bool connected, ready, eliminated, reveal, grabbed, sticky;
     }
     [Serializable] public class EffectState
     {
         public string id, owner, kind, visual, color, targetId = "";
         public string emblemPath, emblemCrop, generatedBy;
+        public string mechanicId="",sourceInstance="",stage="";
+        public float createdAt,deadline,triggerAt;
+        public int chainIndex;
         public Vector3 position, velocity;
         public float remaining, damage, force, nextHit, radius = .7f;
         public int health, bounces;
@@ -427,6 +430,7 @@ namespace AboutMe
                 else foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated&&Vector3.Distance(x.position,p.position)<2.3f).ToArray())Hit(target,p,12,2,false);
                 return;
             }
+            if(heavy&&TryPartyMechanic(p,equipped))return;
             float damage=(heavy?Rules.heavyDamage*(.65f+.65f*charge):Rules.lightDamage)*(equipped==null?.4f:1);
             float force=heavy?6+charge*3:4.5f;
             if(heavy && PhysicalThrow(equipped?.asset))
@@ -485,18 +489,19 @@ namespace AboutMe
             if(heavy && template=="SpecialAbility") { reach=4.5f; force=15; p.nextAttack=Time+7; }
             if(template=="HeavyWeapon") { damage*=1.25f; force*=1.2f; p.nextAttack+=.3f; }
             Effects.Add(new EffectState {id=Guid.NewGuid().ToString("N"),owner=p.profile.playerId,kind="Pulse",color=equipped?.asset.color??"#FFFFFF",position=p.position+Forward(p),remaining=.25f,damage=reach});
-            if(heavy)DamageBarricades(p,p.position+Forward(p)*reach,reach);
+            if(heavy){DamageBarricades(p,p.position+Forward(p)*reach,reach);DamagePartyDevices(p,p.position+Forward(p)*reach,reach);}
             foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated).ToArray())
             {
                 var delta=target.position-p.position;
                 if(delta.magnitude<=reach && CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,target.position+Vector3.up*.25f) && (template=="SpecialAbility" || Vector3.Dot(Forward(p),delta.normalized)>.1f)) Hit(target,p,damage,force,heavy,knockdown);
             }
         }
-        public void Hit(Player target,Player attacker,float damage,float force,bool heavy,bool knockdown=false,bool keepDepletedUntilGetUp=false)
+        public void Hit(Player target,Player attacker,float damage,float force,bool heavy,bool knockdown=false,bool keepDepletedUntilGetUp=false,Vector3? origin=null,Vector3? impulseOverride=null)
         {
             if(!Active||target.eliminated||target.bodyMode==BodyMode.GettingUp||Time<target.bodyProtectedUntil)return;
-            var direction=target.position-attacker.position;direction.y=0;if(direction.sqrMagnitude<.001f)direction=Forward(attacker);direction.Normalize();
-            var point=BodyWorld==null?target.position+Vector3.up*.2f:BodyWorld.Contact(target,attacker.position+Vector3.up*.2f);
+            var originPoint=origin??attacker.position;
+            var direction=target.position-originPoint;direction.y=0;if(direction.sqrMagnitude<.001f)direction=Forward(attacker);direction.Normalize();
+            var point=BodyWorld==null?target.position+Vector3.up*.2f:BodyWorld.Contact(target,originPoint+Vector3.up*.2f);
             if(BodyDown(target))
             {if(BodyWorld!=null)BodyWorld.Impact(target,direction*.7f,point,false);else target.impulse+=direction*.7f;return;}
             if(heavy&&target.cushionUntil>Time)
@@ -504,7 +509,7 @@ namespace AboutMe
             Interrupt(target);ReleaseAllGrabs(target);CancelAction(target);target.chargingSince=-1;
             target.stability=Mathf.Max(0,target.stability-damage);target.lastHit=Time;
             bool depleted=target.stability<=0;bool falls=knockdown||depleted;
-            var kick=direction*(falls?7:heavy?11.5f:5.8f)+(falls?Vector3.up*3:Vector3.zero);
+            var kick=impulseOverride??(direction*(falls?7:heavy?11.5f:5.8f)+(falls?Vector3.up*3:Vector3.zero));
             if(falls)BeginBodyFall(target,kick,point);
             else
             {
@@ -567,6 +572,7 @@ namespace AboutMe
         {
             foreach(var e in Effects.ToArray())
             {
+                if(e.kind=="PartyMechanic"){TickPartyEffect(e,dt);continue;}
                 e.remaining-=dt;
                 if(e.remaining<=0) { Effects.Remove(e); continue; }
                 if(e.kind=="Pulse")continue;
@@ -697,6 +703,8 @@ namespace AboutMe
         {
             if(Phase==MatchPhase.Finished)return;
             foreach(var p in Players.Values){Interrupt(p);ReleaseAllGrabs(p);CancelAction(p);p.input=new Command();p.chargingSince=-1;p.velocity=Vector3.zero;}
+            foreach(var e in Effects.Where(x=>x.kind=="PartyMechanic").ToArray())RemovePartyEffect(e);
+            partyCooldowns.Clear();
             handPending=false;LastHand=-999;EndReason=reason;Phase=MatchPhase.Finished;
             Rankings=Players.Values.Select(p=>new MatchRank{playerId=p.profile.playerId,nickname=p.profile.nickname,
                 eaten=Eaten.Count(e=>e.eaterId==p.profile.playerId),remaining=Remaining(p.profile.playerId),eliminated=p.eliminated})
@@ -713,10 +721,10 @@ namespace AboutMe
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
-                        equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
+                        mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
-                        carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
+                        carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
                 ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
                 inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),

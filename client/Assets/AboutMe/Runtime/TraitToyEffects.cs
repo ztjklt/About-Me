@@ -15,7 +15,7 @@ namespace AboutMe
         public const int MaxParticleBudget=240;
         public string ActiveId=>Ids[activeStyle];
 
-        static Material SpriteMaterial(bool bubble)
+        public static Material SpriteMaterial(bool bubble)
         {
             var material=bubble?bubbleMaterial:softMaterial;if(material)return material;
             var texture=new Texture2D(64,64,TextureFormat.RGBA32,false){name=bubble?"Code bubble ring":"Code flame lobe",wrapMode=TextureWrapMode.Clamp};

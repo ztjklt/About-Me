@@ -1170,6 +1170,120 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "acorn",
+      "label": "橡果",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/acorn",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "network-router",
+      "label": "网络路由器",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/network-router",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "alarm-clock",
+      "label": "闹钟",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/alarm-clock",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "cricket-bat",
+      "label": "板球拍",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/cricket-bat",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "slime-capsule",
+      "label": "弹性史莱姆罐",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/slime-capsule",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "conical-flask",
+      "label": "锥形瓶",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/conical-flask",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

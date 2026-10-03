@@ -276,3 +276,35 @@ def test_wikipedia_prefers_provided_standard_thumbnail(monkeypatch):
     monkeypatch.setattr(search.httpx, 'AsyncClient', client)
     rows = asyncio.run(search.wikipedia_university('College'))
     assert rows[0]['logoUrl'] == 'https://thumb.wikimedia.org/provided-500.png'
+
+def test_catalog_aliases_share_one_ready_asset_without_greening_unrelated_term():
+    from server.persona_results import generation_terms
+    intro='我喜欢网络工程和路由器，也会小提琴'
+    assets=api.validate_personas({'personas':[{'name':'路由器（小提琴爱好者）','term':'网络工程','source':intro,
+        'templateId':'SpecialAbility','visualId':'network-router'}],
+        'terms':[{'term':word,'source':intro} for word in ('网络工程','路由器','小提琴')]},intro)
+    terms=generation_terms(assets,assets.terms,api.CATALOG_BY_PAIR)
+    assert {t['term']:t['status'] for t in terms}=={'网络工程':'ready','路由器':'ready','小提琴':'failed'}
+    assert terms[0]['assetId']==terms[1]['assetId']
+
+def test_saved_alias_red_is_corrected_on_read_and_cached_generate(client,monkeypatch):
+    intro='我喜欢网络工程和路由器'
+    async def provider(value):
+        return api.validate_personas({'personas':[{'name':'网络路由器','term':'网络工程','source':value,
+            'templateId':'SpecialAbility','visualId':'network-router'}],
+            'terms':[{'term':word,'source':value} for word in ('网络工程','路由器')]},value)
+    monkeypatch.setattr(api,'generate_with_provider',provider)
+    headers,session=login(client)
+    body={'nickname':'测试','introduction':intro,'generationId':'a'*32}
+    before=client.post('/personas/generate',headers=headers,json=body).json()
+    with api.db() as con:
+        before['generationTerms'][1].update(status='failed',assetId='',progress=0,stage='未生成')
+        con.execute('UPDATE profiles SET profile=? WHERE id=?',(json.dumps(before),session['profile']['playerId']))
+    after=client.get('/profiles/me',headers=headers).json()
+    assert all(t['status']=='ready' for t in after['generationTerms'])
+    cached=client.post('/personas/generate',headers=headers,json=body).json()
+    assert all(t['status']=='ready' for t in cached['generationTerms'])
+    assert cached['revision']==before['revision']
+    with api.db() as con:
+        stored=json.loads(con.execute('SELECT profile FROM profiles WHERE id=?',(session['profile']['playerId'],)).fetchone()[0])
+    assert all(t['status']=='ready' for t in stored['generationTerms'])

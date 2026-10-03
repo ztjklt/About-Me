@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "impact-burst",
+      "visualId": "party-popper",
+      "label": "接触爆风",
+      "cooldown": 7,
+      "windup": 0.35,
+      "lifetime": 2,
+      "radius": 3,
+      "damage": 32,
+      "force": 8,
+      "hint": "碰到人或地面爆开；自己也会被波及"
+    },
+    {
+      "id": "fuse-burst",
+      "visualId": "acorn",
+      "label": "倒计时橡果",
+      "cooldown": 8,
+      "windup": 0.2,
+      "lifetime": 2.4,
+      "radius": 3,
+      "damage": 32,
+      "force": 8,
+      "hint": "2.4 秒后爆开；G 捡起，使用键扔回去"
+    },
+    {
+      "id": "remote-burst",
+      "visualId": "network-router",
+      "label": "遥控爆风",
+      "cooldown": 9,
+      "windup": 0.2,
+      "lifetime": 8,
+      "radius": 3,
+      "damage": 32,
+      "force": 8,
+      "hint": "再按使用键引爆；捡走或击打两次可拆除"
+    },
+    {
+      "id": "proximity-burst",
+      "visualId": "alarm-clock",
+      "label": "感应闹钟",
+      "cooldown": 10,
+      "windup": 0.2,
+      "lifetime": 10,
+      "radius": 2.4,
+      "damage": 28,
+      "force": 7,
+      "hint": "地面进入警戒圈 0.6 秒后爆开；离开或跳过可躲避"
+    },
+    {
+      "id": "cone-burst",
+      "visualId": "cricket-bat",
+      "label": "扇形爆风",
+      "cooldown": 6,
+      "windup": 0.35,
+      "lifetime": 0.5,
+      "radius": 4.5,
+      "damage": 30,
+      "force": 8,
+      "hint": "向前 60° 冲击；侧后方安全，使用者会后退"
+    },
+    {
+      "id": "sticky-burst",
+      "visualId": "slime-capsule",
+      "label": "黏附爆风",
+      "cooldown": 10,
+      "windup": 0.2,
+      "lifetime": 1.6,
+      "radius": 2.5,
+      "damage": 28,
+      "force": 7,
+      "hint": "命中后黏住；按住 Q 0.7 秒可撕掉"
+    },
+    {
+      "id": "vacuum-burst",
+      "visualId": "conical-flask",
+      "label": "吸入再爆开",
+      "cooldown": 11,
+      "windup": 0.2,
+      "lifetime": 2.8,
+      "radius": 3.2,
+      "damage": 30,
+      "force": 7,
+      "hint": "落地先吸入 0.5 秒再爆开；移动离开或击打拆除"
+    },
+    {
+      "id": "relay-burst",
+      "visualId": "sushi-roll",
+      "label": "接力爆风",
+      "cooldown": 12,
+      "windup": 0.2,
+      "lifetime": 3,
+      "radius": 2.4,
+      "damage": 24,
+      "force": 6,
+      "hint": "连放最多 3 个；只在相邻 4 米内接力，可搬走中间节点"
+    },
+    {
+      "id": "cluster-burst",
+      "visualId": "popcorn-bucket",
+      "label": "三点爆米花",
+      "cooldown": 12,
+      "windup": 0.35,
+      "lifetime": 2,
+      "radius": 1.65,
+      "damage": 12,
+      "force": 2.6,
+      "hint": "三个落点分别预警、分别爆开；总冲力受限"
+    },
+    {
+      "id": "ring-burst",
+      "visualId": "law-gavel",
+      "label": "地面冲击环",
+      "cooldown": 9,
+      "windup": 0.35,
+      "lifetime": 1.2,
+      "radius": 6,
+      "damage": 28,
+      "force": 7,
+      "hint": "冲击环沿地面扩散；跳过薄环可躲开"
+    }
+  ]
+}
