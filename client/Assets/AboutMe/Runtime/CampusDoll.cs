@@ -262,6 +262,7 @@ namespace AboutMe
             var current=new List<(Vector3 p,Quaternion q)>();
             Vector3 fallPosition=fallPivot.localPosition;Quaternion fallRotation=fallPivot.localRotation;fallPivot.localPosition=Vector3.zero;fallPivot.localRotation=Quaternion.identity;
             foreach(var bone in rest){current.Add((bone.t.localPosition,bone.t.localRotation));bone.t.localPosition=bone.p;bone.t.localRotation=bone.q;}
+            var personalitySurface=root.GetComponent<PersonalitySkinSurface>()??root.AddComponent<PersonalitySkinSurface>();personalitySurface.Configure(a);
             BuildClothes(a);if(!ds&&!claude){BuildHair(a);BuildAccessories(a);}
             Skin=DollSkin.Build(root.transform,rest.ConvertAll(x=>x.t).ToArray(),cosmetics,mouth,leftBrow,rightBrow,leftArm,rightArm,leftForearm,rightForearm,torso);
             for(int i=0;i<rest.Count;i++){rest[i].t.localPosition=current[i].p;rest[i].t.localRotation=current[i].q;}

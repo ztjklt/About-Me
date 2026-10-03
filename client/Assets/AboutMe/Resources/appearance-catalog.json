@@ -208,6 +208,22 @@
         {
           "id": "#202A3D",
           "label": "深蓝灰"
+        },
+        {
+          "id": "#F49A6B",
+          "label": "暖橙"
+        },
+        {
+          "id": "#E77770",
+          "label": "珊瑚红"
+        },
+        {
+          "id": "#86ADCB",
+          "label": "湖蓝"
+        },
+        {
+          "id": "#78BE8C",
+          "label": "叶绿"
         }
       ]
     },
@@ -263,6 +279,47 @@
         {
           "id": "#202A3D",
           "label": "深蓝灰"
+        }
+      ]
+    },
+    {
+      "id": "skinPattern",
+      "options": [
+        {
+          "id": "plain",
+          "label": "纯色"
+        },
+        {
+          "id": "flame",
+          "label": "热烈火焰"
+        },
+        {
+          "id": "wave",
+          "label": "自在波纹"
+        },
+        {
+          "id": "stars",
+          "label": "好奇星点"
+        },
+        {
+          "id": "leaf",
+          "label": "温柔叶片"
+        },
+        {
+          "id": "circuit",
+          "label": "理性电路"
+        },
+        {
+          "id": "lightning",
+          "label": "活力闪电"
+        },
+        {
+          "id": "grid",
+          "label": "秩序格纹"
+        },
+        {
+          "id": "stripe",
+          "label": "轻快条纹"
         }
       ]
     }

@@ -53,9 +53,14 @@ namespace AboutMe
             {
                 var a=Get(p);var b=Get(other);var grabbedBody=b.Bodies[Mathf.Clamp(p.bodyGrabBone,0,14)];var contact=grabbedBody.position+grabbedBody.rotation*p.bodyGrabAnchor;
                 var hand=(a.Bodies[5].position+a.Bodies[8].position)*.5f;
-                var force=Vector3.ClampMagnitude((contact-hand)*110+(grabbedBody.velocity-a.Bodies[0].velocity)*12,90);
+                var rules=match.Rules;
+                var away=other.position-p.position;away.y=0;var movement=new Vector3(other.input.x,0,other.input.z);
+                float resistance=movement.sqrMagnitude>.01f&&Vector3.Dot(movement.normalized,away.normalized)>.5f?.8f:1;
+                var raw=((contact-hand)*rules.bodyGrabSpring+(grabbedBody.velocity-a.Bodies[0].velocity)*rules.bodyGrabDamping)*resistance;
+                float blend=Mathf.SmoothStep(0,1,Mathf.Clamp01((match.Time-p.grabStartedAt)/rules.grabBlendDuration));
+                var force=Vector3.ClampMagnitude(raw,rules.bodyGrabMaxForce)*blend;
                 a.Bodies[0].AddForce(force);grabbedBody.AddForceAtPosition(-force,contact);
-                a.Reach(contact);p.grabTension=other.grabTension=Mathf.Clamp01(force.magnitude/90);
+                a.Reach(contact);p.grabTension=other.grabTension=Mathf.Clamp01(raw.magnitude/rules.bodyGrabMaxForce)*blend;
             }
             physics.Simulate(dt/substeps);
             }
@@ -229,18 +234,19 @@ namespace AboutMe
             if((p.position-lastPublished).sqrMagnitude>64)Reset(p.position,p.yaw);
             bool down=p.bodyMode==BodyMode.Falling||p.bodyMode==BodyMode.Grounded;
             bool getting=p.bodyMode==BodyMode.GettingUp;
+            bool beingDragged=match.Players.Values.Any(other=>other.grabbing==p.profile.playerId);
             if(getting&&previousMode!=BodyMode.GettingUp)
             {
                 for(int i=0;i<15;i++){getUpPositions[i]=Bodies[i].position;getUpRotations[i]=Bodies[i].rotation;}
                 standingPoint=p.getUpPosition;
             }
-            var view=new PublicPlayer{position=getting?standingPoint:p.position,yaw=p.yaw,stability=100,connected=true,velocity=down||getting?Vector3.zero:p.velocity,locomotionSpeed=down||getting?0:p.locomotionSpeed,running=p.running,airborne=p.airborne&&!down,
+            var view=new PublicPlayer{position=getting?standingPoint:p.position,yaw=p.grabbing!=""?p.grabAnchorYaw:p.yaw,stability=100,connected=true,velocity=down||getting?Vector3.zero:p.velocity,locomotionSpeed=down||getting?0:p.locomotionSpeed,running=p.running,airborne=p.airborne&&!down,
                 simulationTime=match.Time,actionKind=down||getting?"":p.actionKind,actionStartedAt=p.actionStartedAt,actionId=p.actionId,actionVariant=p.actionVariant,interaction=down||getting?"":p.interaction,progress=p.interaction=="eat"?Mathf.Clamp01((match.Time-p.interactionStart)/match.Rules.eatDuration):0,
                 charge=p.chargingSince<0?0:Mathf.Clamp01((match.Time-p.chargingSince)/1.2f),grabbing=p.grabbing,grabAnchor=match.BodyGrabPoint(p)};
             donor.DrawAt(view,null,dt,match.Time);donor.root.transform.localScale=Vector3.one;
 
             if(getting)ApplyGetUpTarget(p,match.Time-p.bodyStateAt);
-            PrepareFeet(p,dt,match.Time);
+            PrepareFeet(p,dt,match.Time,beingDragged);
             previousMode=p.bodyMode;
             float getUpBlend=getting?Mathf.SmoothStep(0,1,Mathf.Clamp01((match.Time-p.bodyStateAt)/.10f)):1;
             for(int i=0;i<15;i++)
@@ -281,6 +287,7 @@ namespace AboutMe
                     {
                         var foot=feet[side];var body=Bodies[side==0?11:14];
                         var force=(foot.desiredAnkle-body.position)*(foot.planted?190:210)-body.velocity*(foot.planted?18:13);
+                        if(beingDragged){force.x*=.12f;force.z*=.12f;}
                         body.AddForce(Vector3.ClampMagnitude(force,foot.planted?90:100));
                         var facing=Quaternion.LookRotation(Vector3.ProjectOnPlane(donor.root.transform.forward,Vector3.up).normalized,Vector3.up);
                         var turn=facing*Quaternion.Inverse(body.rotation);turn.ToAngleAxis(out float degrees,out var axis);if(degrees>180)degrees-=360;
@@ -304,6 +311,8 @@ namespace AboutMe
                 var movement=getting?Vector3.zero:(p.position-lastPublished)/Mathf.Max(.001f,motorDt);
                 movement=Vector3.ClampMagnitude(movement,10);
                 var accel=(goal-Bodies[0].position)*180+(movement-Bodies[0].velocity)*22+Vector3.up*(match.Rules.gravity*5);
+                // Keep vertical support while letting an external hand pull the body along the floor.
+                if(beingDragged){accel.x*=.12f;accel.z*=.12f;}
                 if(p.bodyMode==BodyMode.Standing&&movement.sqrMagnitude>.01f)
                 {
                     var planarError=movement-Bodies[0].velocity;planarError.y=0;
@@ -317,9 +326,9 @@ namespace AboutMe
                     if(!float.IsNaN(chestAxis.x))Bodies[1].AddTorque(Vector3.ClampMagnitude((chestAxis*(chestAngle*Mathf.Deg2Rad*2500)-Bodies[1].angularVelocity*90)/(1+90*dt+2500*dt*dt),1200)*(p.bodyMode==BodyMode.Stagger?.3f:1),ForceMode.Acceleration);}
             }
         }
-        void PrepareFeet(Player p,float dt,float now)
+        void PrepareFeet(Player p,float dt,float now,bool beingDragged)
         {
-            bool locomoting=p.bodyMode==BodyMode.Standing&&!p.airborne;
+            bool locomoting=p.bodyMode==BodyMode.Standing&&!p.airborne&&!beingDragged;
             bool settling=p.bodyMode==BodyMode.GettingUp&&now-p.bodyStateAt>.45f;
             float speed=p.locomotionSpeed;
             for(int side=0;side<2;side++)
@@ -329,7 +338,7 @@ namespace AboutMe
                 state.desiredAnkle=animatedFoot.position;
                 if(!locomoting)
                 {
-                    state.planted=false;state.plantAge=0;state.swingAge=0;footColliders[side].sharedMaterial=bodyMaterial;
+                    state.planted=false;state.plantAge=0;state.swingAge=0;footColliders[side].sharedMaterial=beingDragged?swingMaterial:bodyMaterial;
                     if(settling)
                     {
                         var settlingAnkle=animatedFoot.position;

@@ -106,7 +106,7 @@ def test_private_and_abusive_facts_do_not_become_personas():
         module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
-    assert len(module.CATALOG) == 60
+    assert len(module.CATALOG) == 61
     result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):
@@ -124,8 +124,8 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     assert module.LEGACY_FOOTBALL_PAIR in module.ALLOWED
     assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
-    assert len(visuals) == 52
-    assert len({item['visualId'] for item in visuals}) == 52
+    assert len(visuals) == 53
+    assert len({item['visualId'] for item in visuals}) == 53
     assert all((item['templateId'], item['visualId']) in module.ALLOWED for item in visuals)
     intro = '我每周踢足球，也喜欢用手柄玩游戏，会弹尤克里里，还用笔记本记手账。'
     raw = {'personas': [
@@ -312,26 +312,10 @@ def test_voice_upload_format_is_forwarded(client,monkeypatch):
     assert response.status_code==200 and response.json()['text']=='我喜欢篮球'
 
 
-def test_intro_image_uses_deepseek_v4_flash_vision_and_returns_editable_intro(client,monkeypatch):
-    import httpx
-    monkeypatch.setenv('DEEPSEEK_API_KEY','test-key')
-    monkeypatch.setenv('DEEPSEEK_BASE_URL','https://deepseek.example/v1')
-    class Provider:
-        def __init__(self,**kw):pass
-        async def __aenter__(self):return self
-        async def __aexit__(self,*args):pass
-        async def post(self,url,**kw):
-            assert url=='https://deepseek.example/v1/chat/completions'
-            assert kw['json']['model']=='deepseek-v4-flash-vision-exp'
-            assert kw['json']['thinking']=={'type':'disabled'}
-            content=kw['json']['messages'][1]['content']
-            assert content[1]['type']=='image_url' and content[1]['image_url']['url'].startswith('data:image/png;base64,')
-            return httpx.Response(200,json={'choices':[{'message':{'content':'{"introduction":"我喜欢篮球和摄影"}'}}]},request=httpx.Request('POST',url))
-    monkeypatch.setattr(module.httpx,'AsyncClient',Provider)
+def test_removed_intro_image_endpoint_has_no_upload_flow(client):
     headers,_=credentials(client)
-    png=b'\x89PNG\r\n\x1a\n' + b'test image'
-    response=client.post('/introduction/recognize-image',headers=headers,files={'file':('intro.png',png,'image/png')})
-    assert response.status_code==200 and response.json()=={'introduction':'我喜欢篮球和摄影'}
+    assert client.post('/introduction/recognize-image',headers=headers).status_code==404
+    assert module.health()['introductionImageRecognition'] is False
 
 
 def test_vision_can_use_existing_deepseek_text_credentials(monkeypatch):
@@ -340,12 +324,6 @@ def test_vision_can_use_existing_deepseek_text_credentials(monkeypatch):
     monkeypatch.setenv('LLM_BASE_URL','https://api.deepseek.com/v1')
     assert module.deepseek_vision_credentials()==('test-text-key','https://api.deepseek.com/v1')
     assert module.health()['visionConfigured'] is True
-
-
-def test_intro_image_rejects_non_images(client):
-    headers,_=credentials(client)
-    response=client.post('/introduction/recognize-image',headers=headers,files={'file':('intro.txt',b'not an image','text/plain')})
-    assert response.status_code==415
 
 
 def test_timeout_result_keeps_co_winners_and_rankings_once(client):

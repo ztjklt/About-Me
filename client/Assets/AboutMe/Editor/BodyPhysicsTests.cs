@@ -11,7 +11,7 @@ namespace AboutMe.Editor
     {
         [InitializeOnLoadMethod] static void Resume()
         {
-            EditorApplication.playModeStateChanged+=state=>{if(state!=PlayModeStateChange.EnteredPlayMode)return;string job=SessionState.GetString("V4Job","");if(job=="")return;SessionState.EraseString("V4Job");EditorApplication.delayCall+=()=>{try{if(job=="review")RenderReview();else if(job=="validate")Validate();else if(job=="feet")ValidateFeet();else if(job=="controls")ValidateLocomotionControls();else Diagnose();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};};
+            EditorApplication.playModeStateChanged+=state=>{if(state!=PlayModeStateChange.EnteredPlayMode)return;string job=SessionState.GetString("V4Job","");if(job=="")return;SessionState.EraseString("V4Job");EditorApplication.delayCall+=()=>{try{if(job=="review")RenderReview();else if(job=="validate")Validate();else if(job=="feet")ValidateFeet();else if(job=="controls")ValidateLocomotionControls();else if(job=="grab")ValidateGrab();else Diagnose();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};};
         }
         static bool Enter(string job){if(Application.isPlaying)return false;SessionState.SetString("V4Job",job);EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorApplication.isPlaying=true;return true;}
         static readonly FieldInfo Cache=typeof(CampusGeometry).GetField("solids",BindingFlags.NonPublic|BindingFlags.Static);
@@ -24,6 +24,39 @@ namespace AboutMe.Editor
             match.EnableBodyPhysics();match.Phase=MatchPhase.Reveal;match.Tick(.02f);Check(match.View("p0").players.All(p=>p.bodyPose?.positions?.Length==15),"First battle snapshot missing physics pose");return match;
         }
         static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
+        public static void ValidateGrab()
+        {
+            if(Enter("grab"))return;
+            var old=Cache.GetValue(null);Cache.SetValue(null,Flat);
+            try
+            {
+                foreach(bool turn in new[]{false,true})using(var m=Create())
+                {
+                    var a=m.Players["p0"];var b=m.Players["p1"];
+                    a.position=new Vector3(0,1,0);b.position=new Vector3(0,1,.9f);a.yaw=0;b.yaw=180;m.BodyWorld.Reset(a);m.BodyWorld.Reset(b);
+                    for(int i=0;i<30;i++){m.Receive("p0",new Command{sequence=a.sequence+1,yaw=0});m.Receive("p1",new Command{sequence=b.sequence+1,yaw=180});m.Tick(.02f);}
+                    m.Receive("p0",new Command{sequence=a.sequence+1,action="grab",yaw=0});
+                    for(int i=0;i<12;i++){m.Receive("p0",new Command{sequence=a.sequence+1,yaw=0});m.Receive("p1",new Command{sequence=b.sequence+1,yaw=180});m.Tick(.02f);}
+                    Check(a.grabbing==b.profile.playerId,"Actual hand contact did not connect a grip");
+                    var start=b.position;var grabberStart=a.position;int held=0;float peak=0;
+                    for(int i=0;i<45;i++)
+                    {
+                        m.Receive("p0",new Command{sequence=a.sequence+1,z=-.5f,x=turn?.3f:0,yaw=turn?90:0});m.Receive("p1",new Command{sequence=b.sequence+1,yaw=180});m.Tick(.02f);
+                        if(a.grabbing!="")held++;peak=Mathf.Max(peak,m.BodyWorld.Get(b).Bodies.Max(x=>x.velocity.magnitude));
+                    }
+                    Debug.Log("PARTY_DRAG_PHYSICS turn="+turn+" heldTicks="+held+" distance="+Vector3.Distance(start,b.position)+" grabberDistance="+Vector3.Distance(grabberStart,a.position)+" peakSpeed="+peak);
+                    Check(held>=20,"Physical grip released before a usable interaction window");
+                    Check(Vector3.Distance(start,b.position)>.20f&&peak<20,"Drag did not move the actual body safely");
+                    if(a.grabbing!="")
+                    {
+                        for(int i=0;i<36;i++){m.Receive("p0",new Command{sequence=a.sequence+1,yaw=turn?90:0});m.Receive("p1",new Command{sequence=b.sequence+1,yaw=180,escapeHeld=true});m.Tick(.02f);}
+                        Check(a.grabbing==""&&b.grabImmuneUntil>m.Time&&b.actionKind=="escape","Held Q failed in the actual physics world");
+                    }
+                }
+            }
+            finally{Cache.SetValue(null,old);}
+            Debug.Log("PARTY_DRAG_PHYSICS_PASSED straight / turn / bounded velocity / held Q");
+        }
         public static void ValidateLocomotionControls()
         {
             if(Enter("controls"))return;

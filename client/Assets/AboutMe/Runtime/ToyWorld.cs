@@ -28,6 +28,7 @@ namespace AboutMe
             var root=new GameObject(visual);root.transform.SetParent(parent,false);var t=root.transform;
             switch(visual)
             {
+                case "swimming-ring":UnityEngine.Object.Destroy(root);return SwimmingRingVisual.Create(parent,color);
                 case "chair":
                     Shape("seat",PrimitiveType.Cube,t,Vector3.zero,new Vector3(.9f,.15f,.9f),color);
                     Shape("back",PrimitiveType.Cube,t,new Vector3(0,.45f,-.4f),new Vector3(.9f,.8f,.13f),color);

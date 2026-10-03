@@ -11,10 +11,12 @@ namespace AboutMe
         // It is deliberately absent from the catalog-bound API appearance JSON.
         [NonSerialized] public string character="normal";
         public string expression="friendly";
+        public string skinPattern="plain";
+        public int skinSeed;
         public string hair="short",top="hoodie",bottom="trousers",shoes="canvas",headAccessory="none",bag="none";
         public string skinColor="#F3CDA9",hairColor="#493A36",topColor="#79CFC5",bottomColor="#202A3D",shoeColor="#FFF9EF",accessoryColor="#FFD773";
         public bool SameAs(AppearanceData a)=>a!=null&&character==a.character&&SameStyleAs(a);
-        public bool SameStyleAs(AppearanceData a)=>a!=null&&version==a.version&&expression==a.expression&&hair==a.hair&&top==a.top&&bottom==a.bottom&&shoes==a.shoes&&headAccessory==a.headAccessory&&bag==a.bag&&skinColor==a.skinColor&&hairColor==a.hairColor&&topColor==a.topColor&&bottomColor==a.bottomColor&&shoeColor==a.shoeColor&&accessoryColor==a.accessoryColor;
+        public bool SameStyleAs(AppearanceData a)=>a!=null&&version==a.version&&skinPattern==a.skinPattern&&skinSeed==a.skinSeed&&expression==a.expression&&hair==a.hair&&top==a.top&&bottom==a.bottom&&shoes==a.shoes&&headAccessory==a.headAccessory&&bag==a.bag&&skinColor==a.skinColor&&hairColor==a.hairColor&&topColor==a.topColor&&bottomColor==a.bottomColor&&shoeColor==a.shoeColor&&accessoryColor==a.accessoryColor;
         public AppearanceData Copy()=>(AppearanceData)MemberwiseClone();
         public string Get(string slot)=>(string)GetType().GetField(slot).GetValue(this);
         public void Set(string slot,string value)=>GetType().GetField(slot).SetValue(this,value);
@@ -24,7 +26,7 @@ namespace AboutMe
             var defaults=new AppearanceData();
             foreach(var slot in AppearanceCatalog.Data.slots)
             {var value=result.Get(slot.id);if(!slot.options.Any(x=>x.id==value))result.Set(slot.id,defaults.Get(slot.id));}
-            result.version=1;result.character=result.character=="ds"||result.character=="claude"?result.character:"normal";return result;
+            result.version=1;result.skinSeed=Mathf.Clamp(result.skinSeed,0,9999);result.character=result.character=="ds"||result.character=="claude"?result.character:"normal";return result;
         }
         public static AppearanceData Demo(int i)
         {

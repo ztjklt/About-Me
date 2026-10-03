@@ -15,7 +15,6 @@ namespace AboutMe
     [Serializable] class SessionResponse {public string token;public Profile profile;}
     [Serializable] class GenerationRequest {public string nickname,introduction,color,generationId;public int outfit;}
     [Serializable] class Transcription {public string text;}
-    [Serializable] class IntroductionRecognition {public string introduction;}
     [Serializable] class ServiceHealth {public bool ok,aiConfigured,asrConfigured,visionConfigured;}
     [Serializable] class ErrorDetail {public string detail;}
     [Serializable] class WechatLoginRequest {public string code,nickname;}
@@ -52,7 +51,7 @@ namespace AboutMe
         Font font;RectTransform canvas,home,lobby,hud,results,settings,bag,touch;
         InputField nickname,introduction,room,endpoint,api;
         Text status,profileText,lobbyText,hudText,eventText,resultText,resultEventText,bagText,recordLabel;
-        Button generate,ready,start,join,imageUpload;
+        Button generate,ready,start,join;
         readonly List<Button> slots=new List<Button>();
         readonly List<string> favorites=new List<string>();
         Profile profile;string lastInventory="",lastEventMatch="";int lastEvent;
@@ -260,7 +259,7 @@ namespace AboutMe
                 if(req.result==UnityWebRequest.Result.Success)
                 {
                     var health=JsonUtility.FromJson<ServiceHealth>(req.downloadHandler.text);aiCapabilityKnown=true;aiConfigured=health!=null&&health.aiConfigured;asrCapabilityKnown=true;asrConfigured=health!=null&&health.asrConfigured;
-                    SetAIServiceStatus(aiConfigured?(health.visionConfigured?"DeepSeek 文本 + Vision 已连接":"真实 AI 已连接，Vision 未配置"):"真实 AI 未配置",aiConfigured&&health.visionConfigured?UITheme.Mint:UITheme.Yellow);
+                    SetAIServiceStatus(aiConfigured?"DeepSeek 已连接":"真实 AI 未配置",aiConfigured?UITheme.Mint:UITheme.Yellow);
                 }
                 else{aiCapabilityKnown=false;aiConfigured=false;asrCapabilityKnown=false;asrConfigured=false;SetAIServiceStatus("AI 服务不可达",UITheme.Red);}
             }
@@ -363,42 +362,6 @@ namespace AboutMe
             using(var req=UnityWebRequest.Post(net.ApiUrl+"/speech/transcribe",form))
             {req.timeout=50;req.SetRequestHeader("Authorization","Bearer "+net.Token);yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}introduction.text=JsonUtility.FromJson<Transcription>(req.downloadHandler.text).text;net.Status="转写完成，请检查介绍后生成 Persona";}
         }
-        void PickIntroductionImage()
-        {
-            if(busy)return;
-            net.Status="请选择包含自我介绍的图片…";
-            platform.PickIntroductionImage();
-        }
-        public void IntroductionImage(byte[] data,string mime)
-        {StartCoroutine(RecognizeIntroductionImage(data,mime));}
-        IEnumerator RecognizeIntroductionImage(byte[] data,string mime)
-        {
-            if(busy)yield break;
-            if(data==null||data.Length==0){net.Status="图片数据不可用，请重新选择。";yield break;}
-            if(data.Length>10*1024*1024){net.Status="图片不能超过 10 MB，请重新选择。";yield break;}
-            busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');net.Status="正在用 DeepSeek V4 Flash Vision 识别自我介绍…";
-            if(string.IsNullOrEmpty(net.Token)||net.Sample)
-            {
-                using(var session=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
-                {
-                    yield return session.SendWebRequest();if(session.result!=UnityWebRequest.Result.Success){Fail(session);yield break;}
-                    net.Token=JsonUtility.FromJson<SessionResponse>(session.downloadHandler.text).token;net.Sample=false;profile=null;SaveTokenForApi(net.Token);
-                }
-            }
-            var form=new WWWForm();form.AddBinaryData("file",data,"introduction-image"+ImageExtension(mime),mime);
-            using(var req=UnityWebRequest.Post(net.ApiUrl+"/introduction/recognize-image",form))
-            {
-                req.timeout=70;req.SetRequestHeader("Authorization","Bearer "+net.Token);yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
-                var result=JsonUtility.FromJson<IntroductionRecognition>(req.downloadHandler.text);
-                if(result==null||string.IsNullOrWhiteSpace(result.introduction)){net.Status="没有识别到自我介绍，请换一张更清晰的图片。";busy=false;yield break;}
-                introduction.text=result.introduction;SaveDraft(false);net.Status="图片识别完成，已回填当前自我介绍草稿。";
-            }
-            busy=false;
-        }
-        static string ImageExtension(string mime)
-        {
-            switch(mime){case "image/jpeg":return ".jpg";case "image/png":return ".png";case "image/gif":return ".gif";case "image/webp":return ".webp";default:return ".img";}
-        }
         void Send(string action,string item=""){if((CombatInputAudit.Enabled||UIButtonAudit.Enabled)&&action!="")Debug.Log("COMBAT_INPUT_ACTION "+action);net.Send(action,item,movement,yaw,running,escapeHeld);}
         void ReleaseCursor(){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;skipMouseFrame=true;webLockAttempted=false;webPointerLocked=false;webDragCamera=false;webCameraHintShown=false;}
         static readonly KeyCode[] directionKeys={KeyCode.W,KeyCode.A,KeyCode.S,KeyCode.D};
@@ -461,7 +424,7 @@ namespace AboutMe
         {
             if(net==null)return;
             if(traitLab&&traitLab.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))CloseTraitLab();return;}
-            generate.interactable=!busy;join.interactable=!busy;if(imageUpload)imageUpload.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
+            generate.interactable=!busy;join.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
             var state=net.State;
             UpdateSelectionBackground(state);
             if(battleMusic)battleMusic.Sync(state,net.IsSolo||Mirror.NetworkClient.isConnected);

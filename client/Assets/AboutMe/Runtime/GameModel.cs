@@ -43,8 +43,11 @@ namespace AboutMe
         public float eatDuration = 2.5f, recoverDuration = 1.5f, switchDuration = .3f;
         public float revealDuration = 5, handInterval = 150, finalTime = 450;
         public float grabReach = 1.25f, grabContactDistance=1.12f, grabBreakDistance = 2.6f, interactionRange = 2.4f;
-        public float grabDuration=2, grabCooldown=1.5f, escapeDuration=.7f, grabImmunity=1;
+        public float grabDuration=3, grabCooldown=1.5f, escapeDuration=.7f, grabImmunity=1.1f;
         public float grabSpring=18, grabDamping=3, grabMaxForce=16;
+        public float grabMoveScale=.68f, grabbedMoveScale=.72f, grabTurnSpeed=210, grabBlendDuration=.12f;
+        public float escapeReleaseGrace=.12f, escapeDecayDuration=.35f;
+        public float bodyGrabSpring=110, bodyGrabDamping=12, bodyGrabMaxForce=90;
         public int fallDrop = 1, handDrop = 1, maxPlayers = 6;
     }
     [Serializable] public class Command
@@ -85,6 +88,7 @@ namespace AboutMe
         public int actionId, actionVariant, impactId;
         public string actionKind="idle", actionTarget="", pendingAction="";
         public float actionStartedAt, pendingAt, pendingCharge, nextGrab, grabImmuneUntil, grabStartedAt, grabTension, grabOverload, escapeStartedAt=-1;
+        public float escapeCharge, escapeReleasedAt=-1, grabAnchorYaw;
         public Vector3 impactImpulse, grabberLocalAnchor, targetLocalAnchor;
         public float yaw, stability = 100, verticalSpeed, staggerUntil, nextAttack, switchUntil, lastHit, cushionUntil;
         public bool connected = true, ready, eliminated, airborne;
@@ -234,7 +238,7 @@ namespace AboutMe
             if (!Active || p.eliminated) return;
             if (input.action == "escape") input.escapeHeld=true;
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
-            if (input.action == "cancel") { Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; p.escapeStartedAt=-1; SetAction(p,"release"); return; }
+            if (input.action == "cancel") { Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
             switch (input.action)
             {
@@ -323,8 +327,8 @@ namespace AboutMe
                 p.runBlend=stunned||grabbed||p.interaction!=""||p.grabbing!=""||p.chargingSince>=0?0:Mathf.MoveTowards(p.runBlend,p.running?1:0,dt/.18f);
                 var desired = !stunned && p.interaction == "" ? new Vector3(p.input.x,0,p.input.z) * Mathf.Lerp(Rules.moveSpeed,Rules.runSpeed,p.runBlend) : Vector3.zero;
                 if (p.chargingSince >= 0) desired *= .45f;
-                if (p.grabbing!="") desired *= .45f;
-                else if (grabbed) desired *= .55f;
+                if (p.grabbing!="") desired *= Rules.grabMoveScale;
+                else if (grabbed) desired *= Rules.grabbedMoveScale;
                 if (!stunned) p.yaw = p.input.yaw;
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
                 if(!(BodyWorld!=null&&BodyLocked(p)))
@@ -711,7 +715,7 @@ namespace AboutMe
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
                         equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
-                        bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=p.escapeStartedAt<0?0:Mathf.Clamp01((Time-p.escapeStartedAt)/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
+                        bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
                 ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),

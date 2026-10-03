@@ -171,7 +171,7 @@ namespace AboutMe.Editor
                 {
                     var m=Make(); Connect(m); Send(m,"b","escape",true);
                     Tick(m,.3f,"b"); Check(m.Players["a"].grabbing=="b","escape completed too early");
-                    Send(m,"b","escape_end"); Tick(m,.1f);
+                    Send(m,"b","escape_end"); Tick(m,.28f);
                     Send(m,"b","escape",true); Tick(m,.44f,"b");
                     Check(m.Players["a"].grabbing=="b","released Q retained old progress");
                     Tick(m,.3f,"b"); Check(m.Players["a"].grabbing=="","Q did not release another player's grip");
@@ -184,13 +184,34 @@ namespace AboutMe.Editor
                 });
                 Test("grip expires and enforces release cooldown",()=>
                 {
-                    var m=Make(); Connect(m); Tick(m,2.02f);
+                    var m=Make(); Connect(m); Tick(m,m.Rules.grabDuration+.02f);
                     var a=m.Players["a"];
-                    Check(a.grabbing=="","grip lasted more than two seconds");
+                    Check(a.grabbing=="","grip exceeded its bounded interaction window");
                     Check(a.nextGrab>m.Time+1.2f,"release cooldown absent");
                     Place(m); Send(m,"a","grab"); Tick(m,.24f);
                     Check(a.grabbing=="","grab restarted during cooldown");
                     Tick(m,1.6f); Place(m); Connect(m);
+                });
+                Test("brief Q release preserves charge without completing escape",()=>
+                {
+                    var m=Make();Connect(m);Tick(m,.30f,"b");float before=m.Players["b"].escapeCharge;
+                    Send(m,"b","escape_end");Tick(m,.08f);
+                    Check(m.Players["a"].grabbing=="b"&&Mathf.Abs(m.Players["b"].escapeCharge-before)<.001f,"brief release lost progress or escaped unattended");
+                    Tick(m,.42f,"b");Check(m.Players["a"].grabbing=="","resumed hold did not complete escape");
+                });
+                Test("long Q release decays all charge and stale input clears it",()=>
+                {
+                    var m=Make();Connect(m);Tick(m,.30f,"b");Send(m,"b","escape_end");
+                    for(int i=0;i<26;i++){Send(m,"b");m.Tick(Step);}
+                    Check(m.Players["b"].escapeCharge==0&&m.Players["a"].grabbing=="b","released input retained charge");
+                    Tick(m,.30f,"b");Tick(m,.38f);Check(m.Players["b"].escapeCharge==0,"input silence retained escape charge");
+                });
+                Test("dragging permits movement but smooths sudden facing changes",()=>
+                {
+                    var m=Make();Connect(m);var a=m.Players["a"];float before=a.grabAnchorYaw;
+                    m.Receive("a",new Command{sequence=a.sequence+1,x=.3f,yaw=180,run=true});m.Tick(Step);
+                    Check(Mathf.Abs(Mathf.DeltaAngle(before,a.grabAnchorYaw))<=m.Rules.grabTurnSpeed*Step+.001f,"turn snapped the grip anchor");
+                    Check(!a.running&&a.position.x>0,"grabbing blocked walking or allowed sprint");
                 });
                 Test("escape immunity blocks a second eligible grabber",()=>
                 {

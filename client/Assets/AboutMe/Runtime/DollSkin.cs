@@ -35,6 +35,7 @@ namespace AboutMe
         public static SkinnedMeshRenderer Build(Transform root,Transform[] bones,List<GameObject> cosmetics,params Transform[] special)
         {
             Transform mouth=special[0],leftBrow=special[1],rightBrow=special[2],leftArm=special[3],rightArm=special[4],leftForearm=special[5],rightForearm=special[6],torso=special[7];
+            var surface=root.GetComponent<PersonalitySkinSurface>();var patternUV=new List<Vector3>();
             var vertices=new List<Vector3>();var normals=new List<Vector3>();var colors=new List<Color>();var weights=new List<BoneWeight>();var triangles=new List<int>();var gulp=new List<Vector3>();var belly=new List<Vector3>();var armStretch=new List<Vector3>();var blink=new List<Vector3>();var keep=new List<GameObject>();
             foreach(var part in cosmetics)
             {
@@ -49,6 +50,9 @@ namespace AboutMe
                     {
                         var worldVertex=matrix.MultiplyPoint3x4(points[i]);
                         vertices.Add(worldVertex);
+                        bool patterned=surface&&surface.Active&&(part.name=="Shirt silhouette"||part.name=="Shirt hem"||part.name=="Hood"||part.name=="Kangaroo pocket");
+                        var clothPoint=torso.InverseTransformPoint(root.TransformPoint(worldVertex));
+                        patternUV.Add(patterned?new Vector3((clothPoint.x+.44f)/.88f,(clothPoint.y+.44f)/.88f,1):Vector3.zero);
                         var delta=Vector3.zero;string name=part.name;
                         bool dsEye=name.StartsWith("DS Eye ",StringComparison.Ordinal);
                         bool claudeEye=name.StartsWith("Claude Eye ",StringComparison.Ordinal);
@@ -116,7 +120,7 @@ namespace AboutMe
                 part.SetActive(false);if(Application.isPlaying)UnityEngine.Object.Destroy(part);else UnityEngine.Object.DestroyImmediate(part);
             }
             var combined=new Mesh{name="Campus doll palette skin",hideFlags=HideFlags.DontSave,indexFormat=vertices.Count>65535?IndexFormat.UInt32:IndexFormat.UInt16};
-            combined.SetVertices(vertices);combined.SetNormals(normals);combined.SetColors(colors);combined.SetTriangles(triangles,0);combined.boneWeights=weights.ToArray();
+            combined.SetVertices(vertices);combined.SetNormals(normals);combined.SetColors(colors);combined.SetUVs(0,patternUV);combined.SetTriangles(triangles,0);combined.boneWeights=weights.ToArray();
             var bind=new Matrix4x4[bones.Length];for(int i=0;i<bones.Length;i++)bind[i]=bones[i].worldToLocalMatrix*root.localToWorldMatrix;combined.bindposes=bind;combined.RecalculateBounds();
             combined.AddBlendShapeFrame("Giant mouth and jaw",100,gulp.ToArray(),new Vector3[vertices.Count],new Vector3[vertices.Count]);
             combined.AddBlendShapeFrame("Swallow belly",100,belly.ToArray(),new Vector3[vertices.Count],new Vector3[vertices.Count]);
@@ -125,7 +129,7 @@ namespace AboutMe
             if(!paletteMaterial)paletteMaterial=Resources.Load<Material>("CampusDoll/Palette");
             if(!paletteMaterial)paletteMaterial=new Material(Shader.Find("AboutMe/DollPalette")){name="Campus doll shared vertex palette"};
             var obj=new GameObject("Skinned campus outfit",typeof(SkinnedMeshRenderer),typeof(DollMeshOwner));obj.transform.SetParent(root,false);obj.GetComponent<DollMeshOwner>().mesh=combined;
-            var skin=obj.GetComponent<SkinnedMeshRenderer>();skin.sharedMesh=combined;skin.sharedMaterial=paletteMaterial;skin.bones=bones;skin.rootBone=torso;skin.quality=SkinQuality.Bone4;skin.localBounds=new Bounds(new Vector3(0,.3f,0),new Vector3(3.3f,3.8f,3.3f));skin.updateWhenOffscreen=false;
+            var skin=obj.GetComponent<SkinnedMeshRenderer>();skin.sharedMesh=combined;skin.sharedMaterial=surface&&surface.Active?surface.Material:paletteMaterial;skin.bones=bones;skin.rootBone=torso;skin.quality=SkinQuality.Bone4;skin.localBounds=new Bounds(new Vector3(0,.3f,0),new Vector3(3.3f,3.8f,3.3f));skin.updateWhenOffscreen=false;
             cosmetics.Clear();cosmetics.AddRange(keep);cosmetics.Add(obj);return skin;
         }
     }

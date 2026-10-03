@@ -9,13 +9,14 @@ using UnityEngine.UI;
 namespace AboutMe
 {
     [Serializable] class AppearanceSaveRequest {public AppearanceData appearance;public int expectedRevision;public string characterSkin,introduction;}
-    [Serializable] class AppearanceRecommendRequest {public AppearanceData appearance;public string introduction;}
-    [Serializable] class AppearanceRecommendation {public AppearanceData appearance;public string reason;}
+    [Serializable] class AppearanceRecommendRequest {public AppearanceData appearance;public string introduction,personality;}
+    [Serializable] class AppearanceRecommendation {public AppearanceData appearance;public string reason;public string[] traits;}
     public partial class GameUI
     {
         AppearanceData appearanceDraft=new AppearanceData();bool appearanceDirty;string skinDraft="normal";
         RectTransform wardrobe;Camera wardrobeCamera;ToyActor wardrobeActor;RenderTexture wardrobeTexture;
         GameObject wardrobeLight;Text wardrobeNote;Button normalSkinButton,dsSkinButton,claudeSkinButton,recommendButton;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
+        InputField personalityInput;
         readonly List<Button> wardrobeButtons=new List<Button>();
         UILiquidTabIndicator wardrobeViewIndicator;readonly Text[] wardrobeViewLabels=new Text[3];
         public AppearanceData CurrentAppearance=>appearanceDraft.Copy();
@@ -24,7 +25,7 @@ namespace AboutMe
             wardrobe=ArtPanel(artboard,"Wardrobe",0,0,1600,900,Color.clear,false,false);
             wardrobe.GetComponent<Image>().raycastTarget=true;
             var card=ArtPanel(wardrobe,"Campus wardrobe",115,28,1370,836,UITheme.Paper,true,true);
-            ArtText(card,"我的校园穿搭",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
+            ArtText(card,"我的性格皮肤",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
             ArtText(card,"自由搭配 · 不影响战斗属性或 Persona",34,84,810,32,18,UITheme.Muted);
             wardrobeButtons.Add(ArtButton(card,"关闭",1220,28,116,46,CloseWardrobe,UITheme.Field,UITheme.Ink));
             normalSkinButton=ArtButton(card,"普通",800,82,160,42,()=>SetCharacterSkin("normal"),UITheme.Field,UITheme.Ink);
@@ -47,18 +48,19 @@ namespace AboutMe
                 wardrobeViewLabels[i]=ArtText(tab,new[]{"正面","侧面","背面"}[i],0,0,137,45,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             }
             wardrobeViewIndicator=viewTabs.gameObject.AddComponent<UILiquidTabIndicator>();wardrobeViewIndicator.Configure(activeView,tabRects);
-            wardrobeNote=ArtText(card,"根据介绍推荐一套，再按你的喜好调整。",32,706,435,83,18,UITheme.Ink);
-            var labels=new Dictionary<string,string>{{"expression","表情"},{"hair","发型"},{"top","上衣"},{"bottom","下装"},{"shoes","鞋子"},{"headAccessory","头部配饰"},{"bag","包"},{"skinColor","肤色"},{"hairColor","发色"},{"topColor","上衣配色"},{"bottomColor","下装配色"},{"shoeColor","鞋子配色"},{"accessoryColor","配饰配色"}};
+            personalityInput=ArtField(card,32,699,435,44,"性格 / MBTI：热情、好奇、ENFP…",false);personalityInput.characterLimit=240;
+            wardrobeNote=ArtText(card,"填写性格或在介绍里描述自己，再生成皮肤。",32,754,435,67,16,UITheme.Ink);
+            var labels=new Dictionary<string,string>{{"expression","表情"},{"hair","发型"},{"top","上衣"},{"bottom","下装"},{"shoes","鞋子"},{"headAccessory","头部配饰"},{"bag","包"},{"skinColor","肤色"},{"hairColor","发色"},{"topColor","上衣配色"},{"bottomColor","下装配色"},{"shoeColor","鞋子配色"},{"accessoryColor","配饰配色"},{"skinPattern","皮肤图案"}};
             int row=0;foreach(var slot in AppearanceCatalog.Data.slots)
             {
-                string id=slot.id;float y=131+row++*42;
+                string id=slot.id;float y=131+row++*39;
                 ArtText(card,labels[id],510,y+8,130,30,18,UITheme.Ink,FontStyle.Bold);
                 wardrobeButtons.Add(ArtButton(card,"‹",650,y,46,37,()=>CycleAppearance(id,-1),UITheme.Field,UITheme.Ink));
                 var value=ArtPanel(card,"Choice "+id,711,y,477,37,UITheme.Field,true,false);
                 wardrobeValues[id]=ArtText(value,"",9,3,459,31,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
                 wardrobeButtons.Add(ArtButton(card,"›",1202,y,46,37,()=>CycleAppearance(id,1),UITheme.Field,UITheme.Ink));
             }
-            recommendButton=ArtButton(card,"根据介绍 AI 推荐",510,704,357,52,()=>StartCoroutine(RecommendAppearance()),UITheme.Yellow,UITheme.Ink);wardrobeButtons.Add(recommendButton);
+            recommendButton=ArtButton(card,"根据性格 AI 生成皮肤",510,704,357,52,()=>StartCoroutine(RecommendAppearance()),UITheme.Yellow,UITheme.Ink);wardrobeButtons.Add(recommendButton);
             wardrobeButtons.Add(ArtButton(card,"保存穿搭",885,704,363,52,()=>StartCoroutine(SaveAppearance()),UITheme.Mint,UITheme.Ink));
             wardrobeButtons.Add(ArtButton(card,"撤销未保存修改",510,771,357,37,()=>{appearanceDirty=false;LoadAppearance();wardrobeNote.text="已恢复上次保存的穿搭。";},UITheme.Field,UITheme.Ink));
             wardrobeButtons.Add(ArtButton(card,"重新载入角色",885,771,363,37,()=>{if(net.Sample){appearanceDirty=false;LoadAppearance();}else StartCoroutine(ReloadAppearance());},UITheme.Field,UITheme.Ink));
@@ -67,7 +69,7 @@ namespace AboutMe
         void OpenWardrobe()
         {
             if(busy)return;if(!wardrobe)BuildWardrobe();wardrobe.gameObject.SetActive(true);wardrobe.SetAsLastSibling();RefreshAppearancePreview();SetWardrobeView(0,true);wardrobeCamera.enabled=true;
-            wardrobeNote.text=skinDraft=="normal"?"普通穿搭可自由搭配。喜欢 DeepSeek / Claude 可解锁彩蛋。":"彩蛋套装固定；普通穿搭仍保留。";
+            wardrobeNote.text=skinDraft=="normal"?"描述性格或 MBTI，AI 为你设计图案和穿搭。生成后可调整并保存。":"彩蛋套装固定；普通穿搭仍保留。";
         }
         void CloseWardrobe(){wardrobe.gameObject.SetActive(false);wardrobeCamera.enabled=false;}
         void SetWardrobeView(int view,bool immediate=false)
@@ -170,13 +172,14 @@ namespace AboutMe
         {
             if(busy)yield break;
             if(skinDraft!="normal"){wardrobeNote.text="彩蛋套装固定；切回普通穿搭后可推荐。";yield break;}
-            if(net.Sample){net.Status="样例模式可手动搭配；真实 AI 推荐请使用真实角色。";yield break;}
-            if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="先写一段介绍，再让 AI 推荐穿搭。";yield break;}
-            busy=true;wardrobeNote.text="正在根据你的介绍推荐穿搭…";yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
-            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/appearance/recommend",JsonUtility.ToJson(new AppearanceRecommendRequest{introduction=introduction.text,appearance=appearanceDraft}),net.Token))
+            if(net.Sample){net.Status="练习模式可手动试图案；AI 皮肤请使用真实角色。";yield break;}
+            string description=introduction.text.Trim(),traits=personalityInput.text.Trim();
+            if(description.Length<3&&traits.Length<3){net.Status="先写一段性格描述或介绍，再让 AI 生成皮肤。";yield break;}
+            busy=true;wardrobeNote.text="正在分析性格并设计皮肤…";net.Status="正在用 DeepSeek 生成性格皮肤，请稍候。";yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
+            using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/appearance/personality-skin",JsonUtility.ToJson(new AppearanceRecommendRequest{introduction=description.Length>=3?description:traits,personality=traits,appearance=appearanceDraft}),net.Token))
             {
                 yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){wardrobeNote.text="推荐未完成，保留当前穿搭；可继续手动搭配。";Fail(req);yield break;}
-                var result=JsonUtility.FromJson<AppearanceRecommendation>(req.downloadHandler.text);appearanceDraft=AppearanceData.Resolve(result.appearance);appearanceDirty=true;wardrobeNote.text=result.reason+"\n可继续调整，满意后保存。";RefreshAppearancePreview();
+                var result=JsonUtility.FromJson<AppearanceRecommendation>(req.downloadHandler.text);appearanceDraft=AppearanceData.Resolve(result.appearance);appearanceDirty=true;wardrobeNote.text=result.reason;net.Status="性格皮肤已生成"+(result.traits?.Length>0?" · "+string.Join(" / ",result.traits):"")+"；满意后保存。";RefreshAppearancePreview();
             }
             busy=false;
         }

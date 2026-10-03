@@ -26,7 +26,7 @@ namespace AboutMe
         Text roomTitle,roomCount,phaseText,timerText,stabilityText,personaCountText,progressText,winnerText,outfitText,aiServiceText,introCounter;
         Image stabilityFill,progressFill,statusSurface,aiServiceSurface;
         RectTransform statusPill;
-        StickerButton generateStyle,recordStyle,imageUploadStyle,readyStyle,startStyle;
+        StickerButton generateStyle,recordStyle,readyStyle,startStyle;
         readonly List<StickerButton> slotStyles=new List<StickerButton>(),colorStyles=new List<StickerButton>();
         UIPulse toastPulse;
         Button reconnectButton;
@@ -118,7 +118,6 @@ namespace AboutMe
             }
             var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
             BuildExpressionChoices(studioCard);
-            imageUpload=ArtButton(studioCard,"图片识别",274,250,150,32,PickIntroductionImage,UITheme.Purple,UITheme.Ink,"status");imageUploadStyle=imageUpload.GetComponent<StickerButton>();
             generate=ArtButton(studioCard,"生成 Persona",30,578,270,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
             ArtButton(studioCard,"解锁彩蛋",316,578,304,48,()=>StartCoroutine(UnlockCosmetics()),UITheme.Mint,UITheme.Ink,"status");
             var profileCard=ArtPanel(studioCard,"Persona result",30,636,590,150,UITheme.Field,true,false);
@@ -313,9 +312,10 @@ namespace AboutMe
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;
-                bool interacting=!string.IsNullOrEmpty(me.interaction);hudProgress.gameObject.SetActive(interacting||me.grabbed);
+                bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||dragging);
                 if(me.grabbed){progressText.text="按住 Q / 挣脱按钮  "+Mathf.RoundToInt(me.escapeProgress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(me.escapeProgress,1);}
                 else if(interacting){progressText.text=(me.interaction=="eat"?"正在吞噬":"正在回收")+"  "+Mathf.RoundToInt(me.progress*100)+"%";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.progress),1);}
+                else if(dragging){progressText.text="拖拽中 · G / 抓取按钮松手";progressFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(me.grabTension),1);}
             }
             UpdateResultCards(state);
         }
@@ -398,7 +398,6 @@ namespace AboutMe
         {
             if(generateStyle)generateStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
             if(recordStyle)recordStyle.SetState(recording?UIVisualState.Recording:UIVisualState.Normal);
-            if(imageUploadStyle)imageUploadStyle.SetState(busy?UIVisualState.Loading:UIVisualState.Normal);
             if(recordLabel)recordLabel.text=recording?"停止录音":asrCapabilityKnown&&!asrConfigured?"语音未配置":"录音介绍";
         }
 
