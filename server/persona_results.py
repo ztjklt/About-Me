@@ -61,17 +61,20 @@ def generation_terms(assets, terms, catalogs, pending=False):
     for term in terms[:32]:
         asset = next((a for a in assets if matches(a, term)), None)
         row = {'term': term['term'], 'source': term.get('source', ''), 'assetId': '',
-               'status': 'failed', 'reason': '暂无对应的已上线道具'}
+               'status': 'failed', 'reason': '暂无对应的已上线道具', 'kind': 'prop', 'progress': 0, 'stage': '未生成'}
         if asset:
             row['assetId'] = asset['assetId']
             if asset['visualId'] != 'school-disc':
-                row.update(status='ready', reason=asset['name'])
+                row.update(status='ready', reason=asset['name'], progress=1, stage='道具已生成')
             elif asset.get('emblemPath') and asset.get('crestStatus') != 'unavailable':
-                row.update(status='ready', reason='校徽飞盘已生成')
+                row.update(status='ready', reason='校徽飞盘已生成', kind='university', progress=1, stage='校徽飞盘已生成')
             elif pending and asset.get('crestStatus') != 'unavailable':
-                row.update(status='pending', reason='正在搜索并核对校徽…')
+                stage = asset.get('crestStage', '等待生成，国内大学优先')
+                row.update(status='pending', kind='university', reason=stage, stage=stage,
+                           progress=min(.95, asset.get('crestProgress', 0)))
             else:
                 row['reason'] = asset.get('crestReason') or '未找到可确认的校徽，可再次生成重试'
+                row.update(kind='university', progress=min(.95, asset.get('crestProgress', 0)), stage='未完成')
         result.append(row)
     return result
 

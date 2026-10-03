@@ -269,11 +269,13 @@ def validate_personas(raw, introduction):
     if not isinstance(introduction, str) or not introduction.strip():
         raise ValueError('缺少用于核对 Persona 来源的介绍')
     terms = extracted_terms(raw, introduction, lambda text: not sensitive_persona_text(text))
+    countries = {normalized_fact(s.get('name', '')): str(s.get('countryCode', '')).upper()
+                 for s in raw.get('universities', []) if isinstance(s, dict) and s.get('source', '') in introduction}
     result, seen, schools_seen = [], [], set()
     candidates = list(raw['personas'])
     for school in raw.get('universities', []):
         if isinstance(school, dict):
-            candidates.append(dict(name=school.get('name', ''), source=school.get('source', ''), institutionName=school.get('name', ''), schoolCandidate=True, templateId='Disc', visualId='school-disc'))
+            candidates.append(dict(name=school.get('name', ''), source=school.get('source', ''), institutionName=school.get('name', ''), countryCode=school.get('countryCode', ''), schoolCandidate=True, templateId='Disc', visualId='school-disc'))
     # Do not silently omit a full school name already present in the extracted keywords.
     for term in terms:
         school = institution_name(term['term'])
@@ -326,6 +328,9 @@ def validate_personas(raw, introduction):
             result[-1]['generationTerm'] = keyword
         if school:
             result[-1]['institutionName'] = school
+            country = str(x.get('countryCode') or countries.get(normalized_fact(school), '')).upper()
+            if re.fullmatch('[A-Z]{2}', country):
+                result[-1]['institutionCountry'] = country
         if len(result) >= MAX_PERSONAS:
             break
     if not result and not terms:
@@ -457,17 +462,52 @@ async def generate_school_emblem(school):
 
 
 async def attach_school_emblems(personas, on_update=None):
+    from server.university_crests import CREST_PROGRESS, SEEDS
     schools = [p for p in personas if p.get('visualId') == 'school-disc']
     for persona in schools:
         school = persona.get('institutionName') or institution_name(persona.get('source', ''))
         if not school:
             raise HTTPException(422, '校徽圆盘缺少大学名称')
         persona['institutionName'] = school
+        persona['crestProgress'] = 0
+        persona['crestStage'] = '等待生成，国内大学优先'
+    def domestic(persona):
+        return persona.get('institutionCountry') in ('CN', 'HK', 'MO', 'TW') or persona['institutionName'] in SEEDS
+    semaphore = asyncio.Semaphore(2)
     async def attach(persona):
-        persona.update(await generate_school_emblem(persona['institutionName']))
+        async with semaphore:
+            def progress(value, stage):
+                persona['crestProgress'] = max(persona.get('crestProgress', 0), min(.95, value))
+                persona['crestStage'] = stage
+                if on_update:
+                    on_update()
+            context = CREST_PROGRESS.set(progress)
+            try:
+                progress(.05, '开始检索校徽')
+                persona.update(await generate_school_emblem(persona['institutionName']))
+                if persona.get('crestStatus') == 'ready':
+                    persona.update(crestProgress=1, crestStage='校徽飞盘已生成')
+                elif not persona.get('crestReason'):
+                    persona['crestReason'] = '校徽检索未完成，可再次生成重试'
+                if on_update:
+                    on_update()
+            finally:
+                CREST_PROGRESS.reset(context)
+    # Domestic schools finish first; unknown/overseas schools remain visible in the queue.
+    if on_update:
+        on_update()
+    try:
+        # Keep the whole queue within the existing client's request deadline.
+        async with asyncio.timeout(float(os.getenv('UNIVERSITY_GENERATION_TIMEOUT', '100'))):
+            for group in ([p for p in schools if domestic(p)], [p for p in schools if not domestic(p)]):
+                await asyncio.gather(*(attach(p) for p in group))
+    except TimeoutError:
+        for persona in schools:
+            if persona.get('crestStatus') not in ('ready', 'unavailable'):
+                persona.update(crestStatus='unavailable', crestStage='本次检索已超时',
+                               crestReason='本次检索等待较久，可再次生成以重试；已成功项目保留')
         if on_update:
             on_update()
-    await asyncio.gather(*(attach(p) for p in schools))
     return personas
 
 
@@ -483,12 +523,13 @@ async def generate_with_provider(introduction):
               '每个 personas 项的 term 必须逐字复制 terms 数组中与该道具直接对应的一个关键词，不能用同一句中其他兴趣的成功代替。'
               '提取学校、兴趣、职业和特别经历的关键词，放在 terms 数组，每项含 term 原文关键词和 source 连续原文；无法匹配道具的词也要保留，供显示失败结果。联系方式、诊断等敏感内容不列。'
               '大学不限知名度、国家或官网域名；学校简称也识别为大学，universities.name 必须是用户实际写的简称或校名，不得偷偷改成原文没有的名称。'
+              'universities 每项另给 countryCode 学校所在国家或地区的两位代码，中国大陆 CN、香港 HK、澳门 MO、台湾 TW；无法判断用空字符串。该字段只用于优先生成国内大学，不改写用户学校名称。'
               '每所由本人明确提及的大学、学院或学校经历分别生成一个 Disc/school-disc 校徽圆盘，institutionName 逐字复制原文完整校名；不要生成假设或否定的大学。英文 University/College 同样处理。另用 universities 数组列出全部本人学校经历，每项包含 name 原文校名和 source 连续原文。Persona 颜色使用目录默认值，不根据人物配色推断。'
               '优先选择目录里语义最具体、与 source 直接对应的外观；evidenceTerms 是新道具的来源词线索，excludeTerms 表示不能选它的语境。'
               '足球、游戏手柄、尤克里里、纸质笔记本分别选同名外观；“笔记本电脑”不是纸质笔记本。没有合适外观的事实跳过。'
               '联系方式、账号、证件、精确住址、医疗诊断、性取向、宗教信仰和攻击性内容不成为 Persona，也不写入名称。'
               'source 仅用于服务端核对，名称会被其他玩家看到；不要把介绍原句或个人隐私写入名称。不能游戏化的信息跳过。'
-              '只输出 JSON 对象 {"terms":[{"term":"原文关键词","source":"关联事实"}],"universities":[{"name":"原文校名","source":"关联事实"}],"personas":[{"name":"中文名称","source":"关联事实",'
+              '只输出 JSON 对象 {"terms":[{"term":"原文关键词","source":"关联事实"}],"universities":[{"name":"原文校名","source":"关联事实","countryCode":"CN 或其他两位代码"}],"personas":[{"name":"中文名称","source":"关联事实",'
               '"term":"对应原文关键词","templateId":"...","visualId":"...","color":"#RRGGBB"}]}。'
               'templateId 与 visualId 组合只能来自目录：' + json.dumps(CATALOG, ensure_ascii=False))
     try:
@@ -662,7 +703,8 @@ async def recognize_introduction_image(data, mime):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
+    return {'ok': True, 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
+            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
@@ -814,6 +856,7 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                 except (OSError, ValueError):
                     pass
                 persona.pop('crestStatus', None)
+                persona.update(crestProgress=0, crestStage='重新排队，国内大学优先')
             publish(candidates, terms, 'searching')
             await attach_school_emblems(retry, lambda: publish(candidates, terms, 'searching'))
             old.update(personas=playable_assets(candidates), generationCandidates=candidates,

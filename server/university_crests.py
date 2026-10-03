@@ -9,6 +9,7 @@ import os
 import re
 import socket
 import time
+from contextvars import ContextVar
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
@@ -23,6 +24,13 @@ SEEDS = {'中山大学': 'https://www.sysu.edu.cn/xxg/zdjj1.htm',
          '北京大学': 'https://vim.pku.edu.cn/cjwt/index.htm', '清华大学': 'https://vi.tsinghua.edu.cn/gk/xxbz/xh/bzjbzsy.htm',
          '复旦大学': 'https://www.fudan.edu.cn/', '浙江大学': 'https://www.zju.edu.cn/'}
 _locks = {}
+CREST_PROGRESS = ContextVar('crest_progress', default=None)
+
+
+def report_crest_progress(value, stage):
+    callback = CREST_PROGRESS.get()
+    if callback:
+        callback(value, stage)
 
 
 def cache_dir():
@@ -173,11 +181,13 @@ async def completion(messages, **extra):
 async def discover_candidates(name, prefer_index=True):
     """DeepSeek chooses genuine page images after real web search, not a domain whitelist."""
     pages = []
+    report_crest_progress(.12, '正在搜索校徽来源')
     search_results = [] if name in SEEDS else await search_university(name)
     for row in search_results:
         if row.get('logoUrl'):
             pages.append({'url': row['sourcePage'], 'text': row['title'],
                           'images': [{'url': row['logoUrl'], 'hint': row['title'] + ' logo'}], 'links': [row['url']]})
+    report_crest_progress(.30, '正在定位真实校徽图片')
     tools = [{'type': 'function', 'function': {'name': 'fetch_university_page',
               'description': 'Read a real public university or reference webpage and list its actual image URLs.',
               'parameters': {'type': 'object', 'properties': {'url': {'type': 'string'}}, 'required': ['url']}}},
@@ -310,8 +320,10 @@ def raster_image(raw):
 
 
 async def verify_candidate(name, candidate):
+    report_crest_progress(.45, '正在下载校徽候选图')
     raw, final, _ = await download(candidate['url'])
     raw = await asyncio.to_thread(raster_image, raw)
+    report_crest_progress(.65, 'DeepSeek 正在核对学校与校徽')
     # Do not give active SVG/HTML content to clients or expose an unverified remote image.
     with Image.open(io.BytesIO(raw)) as image:
         if image.width * image.height > 16_000_000:
@@ -333,6 +345,7 @@ async def verify_candidate(name, candidate):
     decision = json.loads(message['content'])
     if decision.get('approved') is not True or decision.get('university') != name:
         raise ValueError('not a verified university emblem: ' + json.dumps(decision, ensure_ascii=False)[:300])
+    report_crest_progress(.85, '正在裁切校徽并生成飞盘贴图')
     return normalize_crest(raw, decision.get('box')), final
 
 
@@ -344,6 +357,7 @@ async def resolve_crest(name):
         try:
             previous = json.loads(metadata_path.read_text())
             if previous.get('status') == 'ready' and (directory / (previous['id'] + '.png')).is_file():
+                report_crest_progress(.95, '已读取核对成功的校徽缓存')
                 if not previous.get('color'):
                     previous['color'] = dominant_crest_color((directory / (previous['id'] + '.png')).read_bytes())
                     temporary = metadata_path.with_suffix('.tmp')
@@ -362,6 +376,7 @@ async def resolve_crest(name):
                         try:
                             png, source_image = await verify_candidate(name, candidate)
                         except (ValueError, TypeError, OSError, httpx.HTTPError, UnidentifiedImageError, KeyError, Image.DecompressionBombError) as exc:
+                            report_crest_progress(.45, '候选暂未确认，正在尝试其他来源')
                             result.setdefault('diagnostics', []).append(candidate['url'] + ' ' + type(exc).__name__ + ': ' + str(exc)[:350])
                             continue
                         identity = hashlib.sha256(png).hexdigest()
@@ -383,6 +398,8 @@ async def resolve_crest(name):
             result['retryAfter'] = time.time() + 300
         temporary = metadata_path.with_suffix('.tmp')
         temporary.write_text(json.dumps(result, ensure_ascii=False)); temporary.replace(metadata_path)
+        if result['status'] == 'ready':
+            report_crest_progress(.95, '校徽贴图已保存')
         return result
 
 

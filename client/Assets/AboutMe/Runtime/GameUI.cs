@@ -457,6 +457,7 @@ namespace AboutMe
         void Update()
         {
             if(net==null)return;
+            if(traitLab&&traitLab.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))CloseTraitLab();return;}
             generate.interactable=!busy;join.interactable=!busy;if(imageUpload)imageUpload.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
             var state=net.State;
             UpdateSelectionBackground(state);

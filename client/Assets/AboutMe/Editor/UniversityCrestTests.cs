@@ -35,6 +35,16 @@ namespace AboutMe.Editor
             Check(GameUI.GenerationTermColor("ready").g>GameUI.GenerationTermColor("ready").r,"successful term is not green");
             Check(GameUI.GenerationTermColor("failed").r>GameUI.GenerationTermColor("failed").g,"failed term is not red");
             CheckFailedResultPersistence(privateProfile);
+            var fxRoot=new GameObject("Code trait effect test");
+            try
+            {
+                var fx=fxRoot.AddComponent<TraitToyEffects>();fx.Select(0);
+                Check(fx.ActiveId=="fire"&&fx.ParticleCount>0&&fx.ParticleCount<=TraitToyEffects.MaxParticleBudget,"code fire did not emit within its budget");
+                Check(fxRoot.GetComponentsInChildren<ParticleSystem>().All(p=>!p.collision.enabled),"presentation particles decide physics");
+                fx.Select(5);Check(fx.ActiveId=="gentle"&&fx.ParticleCount>0,"effect theme switch failed");
+                Debug.Log("ABOUTME_TRAIT_VFX_TESTS_PASSED code texture / real particles / bounded / visual only");
+            }
+            finally {UnityEngine.Object.DestroyImmediate(fxRoot);}
             Debug.Log("ABOUTME_UNIVERSITY_CREST_TESTS_PASSED latest projection / two faces / original emblem only");
         }
         static void CheckFailedResultPersistence(Profile failed)

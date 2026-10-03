@@ -432,6 +432,16 @@ namespace AboutMe
         {
             var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--ui-preview");if(index<0||index+1>=args.Length)return;previewKind=args[index+1].ToLowerInvariant();
             int capture=Array.IndexOf(args,"--ui-screenshot");if(capture>=0&&capture+1<args.Length)StartCoroutine(CaptureUIPreview(args[capture+1]));
+            if(previewKind=="trait-lab"){OpenTraitLab();return;}
+            if(previewKind=="persona-progress")
+            {
+                ShowPage(MenuPage.Presets);DisplayGenerationTerms(new[]{
+                    new GenerationTerm{term="湖北文理学院",kind="university",status="pending",progress=.45f,reason="正在下载校徽候选图"},
+                    new GenerationTerm{term="University of Otago",kind="university",status="pending",progress=0,reason="等待国内大学优先生成"},
+                    new GenerationTerm{term="北京大学",kind="university",status="ready",progress=1,reason="校徽飞盘已生成"},
+                    new GenerationTerm{term="示例学校",kind="university",status="failed",progress=.65f,reason="校徽未能确认，可重试"}},"searching");
+                net.Status="阶段进度示例 · 真实生成进度来自服务端";return;
+            }
             if(previewKind=="wardrobe"||previewKind=="wardrobe-ds"||previewKind=="wardrobe-claude")
             {profile=new Profile{playerId="preview",nickname="预览玩家",appearance=AppearanceData.Demo(0),dsGirlUnlocked=true,claudeGirlUnlocked=true,characterSkin=previewKind=="wardrobe-ds"?"ds-girl":previewKind=="wardrobe-claude"?"claude-girl":"normal"};appearanceDirty=false;LoadAppearance();OpenWardrobe();net.Status="衣橱预览 · 不连接服务器";return;}
             if(previewKind=="home"||previewKind=="home-expanded"){ShowPage(MenuPage.Main);startMenuStage.SetExpanded(previewKind=="home-expanded",true);RefreshTouchVisibility();return;}
@@ -464,6 +474,7 @@ namespace AboutMe
 
         IEnumerator CaptureUIPreview(string path)
         {
+            yield return new WaitForSecondsRealtime(.8f);
             yield return new WaitForEndOfFrame();yield return new WaitForEndOfFrame();
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
             ScreenCapture.CaptureScreenshot(path);

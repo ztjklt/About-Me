@@ -39,3 +39,7 @@
 在实现工作区运行 `.venv/bin/python -m pytest -q server/tests`。真实模型/搜索复核：`scripts/verify-persona-keywords.py --env <DeepSeek环境文件> --output <独立证据目录>`，验证进度、资料保存、内部验证及重复生成的身份稳定。匹配交付包需在 `builds/university-crests-service` 内运行服务测试，避免旧项目模块遮蔽新版模块。
 
 构建入口 `AboutMe.Editor.UniversityCrestTests.BuildDeliverables`，设置 `ABOUTME_RELEASE_BUILD=1`、`ABOUTME_MAC_OUTPUT` 和 `ABOUTME_WEB_OUTPUT` 后团结引擎批处理执行。日志应使用绝对路径。
+
+## 国内优先与进度条更新（2026-10-03）
+
+学校生成新增国内优先及实际阶段进度，失败停在阶段进度转红，成功满格绿。当前源码与匹配服务包各 85 项测试通过；旧章节 81 项为上一轮历史记录。详见 [本轮交付](PERSONALITY_MOOD_DELIVERY.md)。
