@@ -229,7 +229,7 @@ namespace AboutMe
                 }
                 using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/personas/generate",JsonUtility.ToJson(body),generationToken))
                 {
-                    req.timeout=100;yield return req.SendWebRequest();
+                    req.timeout=210;yield return req.SendWebRequest();
                     if(req.responseCode==401&&attempt==0)
                     {generationToken="";SaveTokenForApi("");continue;}
                     if(req.result!=UnityWebRequest.Result.Success){Fail(req,"Persona 生成");yield break;}
@@ -238,7 +238,7 @@ namespace AboutMe
                     {busy=false;net.Status="AI 未返回可用 Persona，请修改介绍后重试。";yield break;}
                     net.Token=generationToken;net.Sample=false;profile=generated;DisplayProfile();
                     PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
-                    busy=false;net.Status=profile.personas.Any(p=>!string.IsNullOrEmpty(p.generatedBy))?"DeepSeek 已完成校徽选择与完整裁切，Persona 已保存。":"你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
+                    busy=false;net.Status=profile.personas.Any(p=>p.visualId=="school-disc"&&string.IsNullOrEmpty(p.emblemPath))?"Persona 已保存；部分学校校徽暂未找到，可再次生成以重试校徽。":profile.personas.Any(p=>!string.IsNullOrEmpty(p.generatedBy))?"DeepSeek 已完成校徽选择与完整裁切，Persona 已保存。":"你的 Persona 已保存，下次仍可继续使用。";TryAutoJoin();yield break;
                 }
             }
             busy=false;net.Status="角色会话已失效，请重新尝试生成。";

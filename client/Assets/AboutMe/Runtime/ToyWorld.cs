@@ -44,13 +44,8 @@ namespace AboutMe
                     var schoolText=school.AddComponent<TextMesh>();var shortName=(label??"").Replace("校徽圆盘","").Replace("校徽","");if(shortName.Length>6)shortName=shortName.Substring(0,6);
                     schoolText.text=shortName;schoolText.anchor=TextAnchor.MiddleCenter;schoolText.alignment=TextAlignment.Center;schoolText.characterSize=.075f;schoolText.fontSize=52;schoolText.color=ColorOf("#263248");
                     var schoolFont=Resources.Load<Font>("AboutMeFont");if(schoolFont){schoolText.font=schoolFont;school.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}
-                    if(!string.IsNullOrEmpty(emblemPath))root.AddComponent<SchoolDiscTextureLoader>().Configure(crest.GetComponent<Renderer>(),schoolText,emblemPath,emblemCrop);
-                    if(!string.IsNullOrEmpty(generatedBy))
-                    {
-                        var badge=new GameObject("DeepSeek generated mark");badge.transform.SetParent(t,false);badge.transform.localPosition=new Vector3(0,.128f,-.57f);badge.transform.localRotation=Quaternion.Euler(90,0,0);
-                        var badgeText=badge.AddComponent<TextMesh>();badgeText.text="DeepSeek 生成";badgeText.anchor=TextAnchor.MiddleCenter;badgeText.alignment=TextAlignment.Center;badgeText.characterSize=.035f;badgeText.fontSize=44;badgeText.color=ColorOf("#263248");
-                        if(schoolFont){badgeText.font=schoolFont;badge.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}
-                    }
+                    if(UniversityCrestTexture.ValidPath(emblemPath))UniversityCrestTexture.Attach(t,emblemPath,school);
+                    else if(!string.IsNullOrEmpty(emblemPath))root.AddComponent<SchoolDiscTextureLoader>().Configure(crest.GetComponent<Renderer>(),schoolText,emblemPath,emblemCrop);
                     break;
                 case "book":
                     Shape("cover",PrimitiveType.Cube,t,Vector3.zero,new Vector3(.65f,.8f,.2f),color);

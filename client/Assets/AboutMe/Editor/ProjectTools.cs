@@ -170,12 +170,12 @@ namespace AboutMe.Editor
                 effect.remaining=.7f;effect.position=new Vector3(0,1,8);effect.velocity=Vector3.zero;Tick(m,.02f);
                 Assert(effect.velocity.z<0,"non-school Disc no longer returns to its owner");
             });
-            Test("three school discs show their DeepSeek generation mark",()=>{
+            Test("school discs contain only the emblem or school fallback",()=>{
                 foreach(var school in new[]{"清华大学","北京大学","中山大学"})
                 {
                     var disc=ToyFactory.Item("school-disc","#77C8BD",null,school+"校徽圆盘","","","DeepSeek Flash Vision");
                     var labels=disc.GetComponentsInChildren<TextMesh>(true).Select(x=>x.text).ToArray();
-                    Assert(labels.Contains("DeepSeek 生成")&&labels.Any(x=>x.Contains(school.Substring(0,2))),school+" did not show generated provenance");
+                    Assert(!labels.Contains("DeepSeek 生成")&&labels.Any(x=>x.Contains(school.Substring(0,2))),school+" has unwanted text or lacks a fallback");
                     UnityEngine.Object.DestroyImmediate(disc);
                 }
             });

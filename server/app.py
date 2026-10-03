@@ -1,4 +1,5 @@
 """About Me profile/AI gateway. Run from repository root: uvicorn server.app:app."""
+import asyncio
 import hashlib
 import ipaddress
 import json
@@ -20,6 +21,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_brands
+from server.university_crests import resolve_crest, cache_dir
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
@@ -237,9 +239,15 @@ def same_fact(source, previous):
 
 def institution_name(source):
     value = plain(source, 160)
-    value = re.sub(r'^(?:我(?:现在)?(?:就读于|毕业于|来自|在)|就读于|毕业于|来自|在)', '', value)
-    match = re.search(r'([0-9A-Za-z\u4e00-\u9fff·]{2,20}(?:大学|学院|学校))', value)
-    return match.group(1) if match else ''
+    # A model source is a single verbatim fact. Strip sentence prefixes, never school suffixes.
+    value = re.split(r'[，,。；;！!？?\s]', value)[0]
+    value = re.sub(r'^(?:我(?:现在|目前|曾经)?(?:本科|硕士|博士|研究生)?|是|曾在|正在|就读于|毕业于|来自|喜欢|想去|希望考上|希望就读|就职于|任职于|在)+', '', value)
+    value = re.sub(r'^(?:一名|一个|学生于)', '', value)
+    match = re.search(r'([0-9A-Za-z\u4e00-\u9fff·]{2,40}(?:大学|学院|学校))', value)
+    if match:
+        return match.group(1)
+    match = re.search(r'([A-Za-z][A-Za-z .&-]{1,70}(?:University|College))', plain(source, 160), re.I)
+    return match.group(1).strip() if match else ''
 
 
 def catalog_supports_fact(catalog, source):
@@ -258,8 +266,12 @@ def validate_personas(raw, introduction):
         raise ValueError('AI 输出必须包含 personas 列表')
     if not isinstance(introduction, str) or not introduction.strip():
         raise ValueError('缺少用于核对 Persona 来源的介绍')
-    result, seen = [], []
-    for x in raw['personas']:
+    result, seen, schools_seen = [], [], set()
+    candidates = list(raw['personas'])
+    for school in raw.get('universities', []):
+        if isinstance(school, dict):
+            candidates.append(dict(name=school.get('name', ''), source=school.get('source', ''), institutionName=school.get('name', ''), templateId='Disc', visualId='school-disc'))
+    for x in candidates:
         if not isinstance(x, dict) or (x.get('templateId'), x.get('visualId')) not in ALLOWED:
             raise ValueError('AI 返回未发布的模板或外观')
         name = plain(x.get('name', ''))
@@ -272,14 +284,24 @@ def validate_personas(raw, introduction):
             continue
         if sensitive_persona_text(source) or sensitive_persona_text(name):
             continue
-        if any(same_fact(source, prior) for prior in seen):
-            continue
         template, visual = x['templateId'], x['visualId']
         if (template, visual) == LEGACY_FOOTBALL_PAIR:
             template = 'Projectile'
         school = institution_name(source)
+        explicit = plain(x.get('institutionName', ''), 80)
+        if explicit and explicit in source and institution_name(explicit):
+            school = explicit
+        if school and re.search(r'不是|不在|没有|没去|假如|假设|如果|比如|例如', source):
+            continue
+        if visual == 'school-disc' and not school:
+            continue
         if school:
+            if normalized_fact(school) in schools_seen:
+                continue
+            schools_seen.add(normalized_fact(school))
             template, visual, name = 'Disc', 'school-disc', school + '校徽圆盘'
+        if not school and any(same_fact(source, prior) for prior in seen):
+            continue
         catalog = CATALOG_BY_PAIR[(template, visual)]
         if not catalog_supports_fact(catalog, source):
             continue
@@ -287,6 +309,8 @@ def validate_personas(raw, introduction):
         color = catalog['color']
         result.append(dict(assetId=uuid.uuid4().hex, name=name, templateId=template,
                            visualId=visual, color=color, source=source))
+        if school:
+            result[-1]['institutionName'] = school
         if len(result) >= MAX_PERSONAS:
             break
     if not result:
@@ -306,9 +330,8 @@ def profile_follows_generation_rules(profile, introduction):
                 or any(same_fact(source, prior) for prior in seen)):
             return False
         seen.append(source)
-        school = institution_name(source)
-        if school and ((item.get('templateId'), item.get('visualId')) != ('Disc', 'school-disc')
-                       or not item.get('emblemPath') or item.get('generatedBy') != 'DeepSeek Flash Vision'):
+        school = item.get('institutionName') or institution_name(source)
+        if school and (item.get('templateId'), item.get('visualId')) != ('Disc', 'school-disc'):
             return False
         catalog = CATALOG_BY_PAIR.get((item.get('templateId'), item.get('visualId')))
         if catalog is None or not catalog_supports_fact(catalog, source):
@@ -408,45 +431,25 @@ async def select_school_emblem_with_deepseek(client, key, base, school, candidat
 
 
 async def generate_school_emblem(school):
-    key, base = deepseek_vision_credentials()
-    if not key:
-        raise HTTPException(503, '大学校徽圆盘需要 DeepSeek Flash Vision，当前未配置')
-    try:
-        async with httpx.AsyncClient(timeout=75, follow_redirects=True) as client:
-            candidates = await search_school_emblem_candidates(client, school)
-            selected, (data, mime), crop, confidence = await select_school_emblem_with_deepseek(
-                client, key, base, school, candidates)
-        digest = hashlib.sha256((school + selected['url']).encode()).hexdigest()[:24]
-        suffix = {'image/png': '.png', 'image/jpeg': '.jpg', 'image/webp': '.webp'}[mime]
-        SCHOOL_EMBLEM_DIR.mkdir(parents=True, exist_ok=True)
-        path = SCHOOL_EMBLEM_DIR / (digest + suffix)
-        path.write_bytes(data)
-        return {
-            'emblemPath': '/school-emblems/' + path.name, 'emblemCrop': crop,
-            'emblemSource': plain(selected['pageUrl'], 300), 'emblemLicense': selected['license'],
-            'generatedBy': 'DeepSeek Flash Vision', 'generationConfidence': round(confidence, 3),
-        }
-    except HTTPException:
-        raise
-    except httpx.TimeoutException as exc:
-        raise HTTPException(504, 'DeepSeek 校徽生成超时') from exc
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(502, f'校徽搜索或 DeepSeek 返回错误（{exc.response.status_code}）') from exc
-    except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError, json.JSONDecodeError) as exc:
-        raise HTTPException(502, 'DeepSeek 校徽生成结果不可用') from exc
+    crest = await resolve_crest(school)
+    if crest.get('status') != 'ready':
+        return {'crestStatus': 'unavailable', 'emblemPath': '', 'emblemCrop': ''}
+    return {'emblemPath': '/assets/university-crests/' + crest['id'] + '.png',
+            'emblemCrop': '0,0,1,1', 'emblemSource': crest['sourcePage'],
+            'emblemLicense': 'official-use-terms', 'generatedBy': 'DeepSeek Flash Vision',
+            'crestStatus': 'ready', 'crestId': crest['id']}
 
 
 async def attach_school_emblems(personas):
-    cache = {}
-    for persona in personas:
-        if persona.get('visualId') != 'school-disc':
-            continue
-        school = institution_name(persona.get('source', ''))
+    schools = [p for p in personas if p.get('visualId') == 'school-disc']
+    for persona in schools:
+        school = persona.get('institutionName') or institution_name(persona.get('source', ''))
         if not school:
             raise HTTPException(422, '校徽圆盘缺少大学名称')
-        if school not in cache:
-            cache[school] = await generate_school_emblem(school)
-        persona.update(cache[school])
+        persona['institutionName'] = school
+    results = await asyncio.gather(*(generate_school_emblem(p['institutionName']) for p in schools))
+    for persona, emblem in zip(schools, results):
+        persona.update(emblem)
     return personas
 
 
@@ -459,12 +462,12 @@ async def generate_with_provider(introduction):
               f'按辨识度、可视化与游戏化价值选择事实，数量随内容变化，不为凑数而生成；原型性能上限 {MAX_PERSONAS} 件。'
               '同一事实最多一个 Persona；仅有一个可游戏化事实时最多返回一个。'
               'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。'
-              '大学、学院或学校信息统一只生成一个 Disc/school-disc 校徽圆盘。Persona 颜色使用目录默认值，不根据人物配色推断。'
+              '每所由本人明确提及的大学、学院或学校经历分别生成一个 Disc/school-disc 校徽圆盘，institutionName 逐字复制原文完整校名；不要生成假设或否定的大学。英文 University/College 同样处理。另用 universities 数组列出全部本人学校经历，每项包含 name 原文校名和 source 连续原文。Persona 颜色使用目录默认值，不根据人物配色推断。'
               '优先选择目录里语义最具体、与 source 直接对应的外观；evidenceTerms 是新道具的来源词线索，excludeTerms 表示不能选它的语境。'
               '足球、游戏手柄、尤克里里、纸质笔记本分别选同名外观；“笔记本电脑”不是纸质笔记本。没有合适外观的事实跳过。'
               '联系方式、账号、证件、精确住址、医疗诊断、性取向、宗教信仰和攻击性内容不成为 Persona，也不写入名称。'
               'source 仅用于服务端核对，名称会被其他玩家看到；不要把介绍原句或个人隐私写入名称。不能游戏化的信息跳过。'
-              '只输出 JSON 对象 {"personas":[{"name":"中文名称","source":"关联事实",'
+              '只输出 JSON 对象 {"universities":[{"name":"原文校名","source":"关联事实"}],"personas":[{"name":"中文名称","source":"关联事实",'
               '"templateId":"...","visualId":"...","color":"#RRGGBB"}]}。'
               'templateId 与 visualId 组合只能来自目录：' + json.dumps(CATALOG, ensure_ascii=False))
     try:
@@ -638,7 +641,7 @@ async def recognize_introduction_image(data, mime):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'aiConfigured': ai_ready,
+    return {'ok': True, 'universityCrests': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
@@ -653,6 +656,14 @@ def school_emblem(filename: str):
     if not path.is_file():
         raise HTTPException(404, '校徽贴图不存在')
     return FileResponse(path, headers={'Cache-Control': 'public, max-age=31536000, immutable'})
+
+
+@app.get('/assets/university-crests/{filename}')
+def university_crest(filename: str):
+    if not re.fullmatch(r'[0-9a-f]{64}\.png', filename) or not (cache_dir() / filename).is_file():
+        raise HTTPException(404, '校徽贴图不存在')
+    return FileResponse(cache_dir() / filename, media_type='image/png', headers={
+        'Cache-Control': 'public, max-age=31536000, immutable', 'X-Content-Type-Options': 'nosniff'})
 
 
 @app.get('/catalog')
@@ -733,6 +744,14 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
     enforce_quota(request, 'ai')
     old = json.loads(previous)
     if intro == body.introduction.strip() and profile_follows_generation_rules(old, intro):
+        if any(p.get('visualId') == 'school-disc' and (p.get('crestStatus') == 'unavailable' or not p.get('emblemPath', '').startswith('/assets/university-crests/')) for p in old['personas']):
+            old['personas'] = await attach_school_emblems(old['personas'])
+            with db() as con:
+                changed = con.execute('UPDATE profiles SET profile=?,updated=? WHERE id=? AND profile=?',
+                    (json.dumps(old), time.time(), player_id, previous)).rowcount
+            if not changed:
+                raise HTTPException(409, '角色已更新，请刷新后重试')
+            return normalized_profile(old, intro)
         raise HTTPException(409, '请修改自我介绍后重新生成；不支持原文重 Roll')
     if not body.introduction.strip():
         raise HTTPException(422, '请填写自我介绍')
