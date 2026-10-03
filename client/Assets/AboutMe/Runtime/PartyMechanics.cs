@@ -49,6 +49,8 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
+            if(!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="field")return TryFieldMechanic(p,item,d);
             if(d.family=="movement")return TryMovementMechanic(p,item,d);
             var previous=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
             if(d.id=="remote-burst"&&previous.Length>0)
@@ -149,6 +151,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="field"){TickField(e,owner,d,dt);return;}
             if(d.family=="movement"){TickMovement(e,owner,d,dt);return;}
             e.remaining=Mathf.Max(0,e.deadline-Time);
             if(e.stage=="burst"){if(Time>=e.deadline)RemovePartyEffect(e);return;}
@@ -211,8 +214,8 @@ namespace AboutMe
         }
         void DamagePartyDevices(Player attacker,Vector3 point,float reach)
         {
-            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&(e.mechanicId=="remote-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport")&&Vector3.Distance(e.position,point)<=reach&&PartyClear(attacker.position,e.position)).ToArray())
-            {if(--e.health<=0){RemovePartyEffect(e);Say(attacker.profile.nickname+" 拆掉了爆风装置！");}}
+            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&PartyDevice(e)&&Vector3.Distance(e.position,point)<=reach&&PartyClear(attacker.position,e.position)).ToArray())
+            {if(--e.health<=0){RemovePartyEffect(e);Say(attacker.profile.nickname+" 拆掉了公共装置！");}}
         }
     }
 }

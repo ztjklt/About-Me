@@ -16,17 +16,17 @@ def test_original_model_has_grounded_catalog_and_negative_rejection(recipe):
 
 def test_original_recipes_and_client_copy_are_exact_and_unique():
     assert (ROOT/'shared/persona-original-models.json').read_bytes()==(ROOT/'client/Assets/AboutMe/Resources/persona-original-models.json').read_bytes()
-    assert len({r['id'] for r in RECIPES})==len(RECIPES)==66
+    assert len({r['id'] for r in RECIPES})==len(RECIPES)==98
     geometry=[json.dumps(r['parts'],sort_keys=True) for r in RECIPES]
-    assert len(set(geometry))==66
+    assert len(set(geometry))==98
     assert all(r['license']=='project-original' and r['parts'] and r['stage'] in ('model_with_existing_template','model_with_authoritative_mechanic') for r in RECIPES)
 
 def test_live_party_mechanic_registry_is_packaged_and_bound_to_real_models():
     path=ROOT/'shared/persona-mechanics.json'
     assert path.read_bytes()==(ROOT/'client/Assets/AboutMe/Resources/persona-mechanics.json').read_bytes()
     mechanics=json.loads(path.read_text())['items']
-    assert len(mechanics)==len({m['id'] for m in mechanics})==20
-    assert len({m['visualId'] for m in mechanics})==20
+    assert len(mechanics)==len({m['id'] for m in mechanics})==30
+    assert len({m['visualId'] for m in mechanics})==30
     recipes={r['id']:r for r in RECIPES}
     planned={m['id'] for m in json.loads((ROOT/'shared/persona-expansion-200.json').read_text())['mechanics']}
     for m in mechanics:

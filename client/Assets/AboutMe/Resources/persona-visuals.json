@@ -1892,6 +1892,614 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "fire-hose-reel",
+      "label": "消防水带盘",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/fire-hose-reel",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "hand-fan",
+      "label": "便携小风扇",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/hand-fan",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "sandcastle-mold",
+      "label": "沙堡模具",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/sandcastle-mold",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F5CB77",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "coil-solenoid",
+      "label": "电磁线圈",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/coil-solenoid",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "washi-tape-roll",
+      "label": "手账胶带卷",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/washi-tape-roll",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#77C8BD",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "magic-cauldron",
+      "label": "咕噜泡泡锅",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/magic-cauldron",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "vector-glove",
+      "label": "矢量手套",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/vector-glove",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "colander",
+      "label": "沥水篮",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/colander",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "camping-stove",
+      "label": "野营炉",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/camping-stove",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#77C8BD",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "soda-siphon",
+      "label": "苏打气泡壶",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/soda-siphon",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "chef-hat",
+      "label": "厨师帽",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/chef-hat",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "chef-ladle",
+      "label": "厨师汤勺",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/chef-ladle",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "baker-rollingpin",
+      "label": "烘焙擀面杖",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/baker-rollingpin",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "moka-pot",
+      "label": "摩卡壶",
+      "templateId": "SpecialAbility",
+      "resourcePath": "PersonaProps/moka-pot",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "espresso-machine",
+      "label": "意式咖啡机",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/espresso-machine",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "coffee-grinder",
+      "label": "手摇磨豆机",
+      "templateId": "Barricade",
+      "resourcePath": "PersonaProps/coffee-grinder",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "pour-over-dripper",
+      "label": "滤杯",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/pour-over-dripper",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "tea-strainer",
+      "label": "滤茶网",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/tea-strainer",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B7C5CE",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "tea-caddy",
+      "label": "茶叶罐",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/tea-caddy",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#77C8BD",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "milk-frother",
+      "label": "奶泡棒",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/milk-frother",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "blender",
+      "label": "料理搅拌机",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/blender",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "juicer-press",
+      "label": "手压榨汁器",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/juicer-press",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "spice-mill",
+      "label": "香料磨",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/spice-mill",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "salt-shaker",
+      "label": "盐罐",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/salt-shaker",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#FFF9EF",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "honey-dipper",
+      "label": "蜂蜜棒",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/honey-dipper",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "oven-mitt",
+      "label": "隔热手套",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/oven-mitt",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "measuring-cup",
+      "label": "量杯",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/measuring-cup",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#86ADCB",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "construction-helmet",
+      "label": "建筑安全帽",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/construction-helmet",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F5CB77",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "traffic-cone",
+      "label": "交通锥",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/traffic-cone",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "stop-paddle",
+      "label": "交通指挥牌",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/stop-paddle",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F49A6B",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "camping-lantern",
+      "label": "营地灯",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/camping-lantern",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263248",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "hammock",
+      "label": "吊床",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/hammock",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#77C8BD",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

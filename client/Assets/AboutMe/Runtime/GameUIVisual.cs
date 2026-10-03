@@ -312,6 +312,7 @@ namespace AboutMe
             if(me!=null)
             {
                 var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
+                if(!string.IsNullOrEmpty(me.fieldStatus))mechanicHint.text=me.fieldStatus+" · "+mechanicHint.text;
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;

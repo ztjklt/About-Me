@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AboutMe
 {
     // Presentation only: warnings and particles follow the authority's phase and clock.
-    public sealed class PartyMechanicVisual : MonoBehaviour
+    public sealed partial class PartyMechanicVisual : MonoBehaviour
     {
         static Material warningMaterial;
         GameObject model;LineRenderer ring,rope;GameObject[] arrows;TextMesh label;ParticleSystem burst;string phase="";
@@ -61,6 +61,7 @@ namespace AboutMe
             var d=PartyMechanicRegistry.Find(e.mechanicId);if(d==null)return;
             transform.position=e.position;
             if(d.family=="movement"){PresentMovement(e,d,now,camera,state);return;}
+            if(d.family=="field"){PresentField(e,d,now,camera);return;}
             bool exploding=e.stage=="burst",isRing=e.stage=="ring";
             model.SetActive(!exploding&&!isRing&&!e.targetId.StartsWith("device-"));
             if(e.stage=="flying")model.transform.Rotate(Vector3.up,280*Time.deltaTime);

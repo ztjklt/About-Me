@@ -8455,6 +8455,4334 @@
       "source": "About Me original assembly geometry",
       "stage": "model_with_authoritative_mechanic",
       "mechanicId": "paired-teleport"
+    },
+    {
+      "id": "fire-hose-reel",
+      "label": "消防水带盘",
+      "templateId": "Deployable",
+      "color": "#F49A6B",
+      "keywords": [
+        "消防",
+        "消防水带"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.16,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.09
+          },
+          "scale": {
+            "x": 0.42,
+            "y": 0.42,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.08,
+            "z": 0.16
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.18,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.53,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.3,
+            "y": -0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.15,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -25
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.32,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.5,
+            "y": 0.06,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "clean-rain"
+    },
+    {
+      "id": "hand-fan",
+      "label": "便携小风扇",
+      "templateId": "Deployable",
+      "color": "#FFF9EF",
+      "keywords": [
+        "怕热",
+        "随身风扇"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.49,
+            "y": 0.49,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": -0.012
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.025,
+            "z": 0.39
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0.045
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.1,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.42,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0.037
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0.037
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 45
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0.037
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0.037
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 135
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "fan-volume"
+    },
+    {
+      "id": "sandcastle-mold",
+      "label": "沙堡模具",
+      "templateId": "Tether",
+      "color": "#F5CB77",
+      "keywords": [
+        "海滩",
+        "沙滩城堡"
+      ],
+      "parts": [
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.5,
+            "y": 0.38,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": 0.19,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": 0.19,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.19,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.19,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": -0.01,
+            "z": 0.215
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.2,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "sand-sink"
+    },
+    {
+      "id": "coil-solenoid",
+      "label": "电磁线圈",
+      "templateId": "Tether",
+      "color": "#B7C5CE",
+      "keywords": [
+        "电磁学",
+        "电气工程"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.65,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.24,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.16,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.08,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.08,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.16,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.24,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.68,
+            "y": 0.06,
+            "z": 0.37
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.34,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.07,
+            "z": 0.17
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "tractor-loose"
+    },
+    {
+      "id": "washi-tape-roll",
+      "label": "手账胶带卷",
+      "templateId": "Tether",
+      "color": "#77C8BD",
+      "keywords": [
+        "手账胶带",
+        "纸胶带"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.42,
+            "y": 0.42,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.045
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.22,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.25,
+            "y": -0.22,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.34,
+            "y": 0.1,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.16,
+            "y": -0.252,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.1,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.25,
+            "y": -0.22,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.1,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.33999999999999997,
+            "y": -0.188,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.1,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "sticky-step"
+    },
+    {
+      "id": "magic-cauldron",
+      "label": "咕噜泡泡锅",
+      "templateId": "Tether",
+      "color": "#263248",
+      "keywords": [
+        "奇幻",
+        "泡泡锅"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.55,
+            "y": 0.49,
+            "z": 0.55
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.075,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.54,
+            "y": 0.54,
+            "z": 0.037
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.43,
+            "y": 0.025,
+            "z": 0.43
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.16,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.16,
+            "y": -0.25,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.16,
+            "y": -0.25,
+            "z": -0.12
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.28,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.22,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.28,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.22,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.14,
+            "y": 0.17,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.065,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.05,
+            "y": 0.17,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.065,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.18,
+            "y": 0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.065,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "loose-whirlpool"
+    },
+    {
+      "id": "vector-glove",
+      "label": "矢量手套",
+      "templateId": "Utility",
+      "color": "#86ADCB",
+      "keywords": [
+        "科幻手套",
+        "矢量"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.3,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.13,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.18,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.045,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.215,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.04000000000000001,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.18,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.125,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.215,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.19,
+            "y": 0.005,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.095,
+            "y": 0.2,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -35
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.085,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0.055
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.15,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "polarity-push"
+    },
+    {
+      "id": "colander",
+      "label": "沥水篮",
+      "templateId": "Deployable",
+      "color": "#B7C5CE",
+      "keywords": [
+        "煮面",
+        "沥水"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.53,
+            "y": 0.34,
+            "z": 0.53
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.53,
+            "y": 0.53,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": -0.27,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.22,
+            "z": 0.027
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.27,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.22,
+            "z": 0.027
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.13,
+            "y": -0.05,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.024,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.05,
+            "z": 0.21
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.024,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.13,
+            "y": -0.05,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.024,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.09,
+            "y": -0.05,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.024,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.09,
+            "y": -0.05,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.024,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "item-push-wave"
+    },
+    {
+      "id": "camping-stove",
+      "label": "野营炉",
+      "templateId": "Utility",
+      "color": "#77C8BD",
+      "keywords": [
+        "露营",
+        "野炊"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.15,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.075,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.37,
+            "y": 0.37,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.025,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.025,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 60,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.025,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 120,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.22,
+            "y": -0.15,
+            "z": 0.19
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.075,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.19,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "flame-fan"
+    },
+    {
+      "id": "soda-siphon",
+      "label": "苏打气泡壶",
+      "templateId": "Tether",
+      "color": "#86ADCB",
+      "keywords": [
+        "气泡水",
+        "苏打"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.52,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.15,
+            "z": 0.31
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.13,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.11,
+            "y": 0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.046,
+            "y": 0.24,
+            "z": 0.046
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.39,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.04,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.21,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "wet-trail"
+    },
+    {
+      "id": "chef-hat",
+      "label": "厨师帽",
+      "templateId": "Cushion",
+      "color": "#FFF9EF",
+      "keywords": [
+        "厨师",
+        "烹饪职业"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.36,
+            "y": 0.26,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.23,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.055,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.16,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.29,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.16,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.29,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.29,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": -0.12
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.29,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.14
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.29,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "chef-ladle",
+      "label": "厨师汤勺",
+      "templateId": "Utility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "厨师",
+        "煮汤"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.7,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": -0.31,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.23,
+            "z": 0.31
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.34,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.16,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.43,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.072,
+            "y": 0.072,
+            "z": 0.014
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "baker-rollingpin",
+      "label": "烘焙擀面杖",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "面包师",
+        "擀面"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.49,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.32,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.18,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.32,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.18,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.16,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.23,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.16,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.23,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "moka-pot",
+      "label": "摩卡壶",
+      "templateId": "SpecialAbility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "摩卡壶",
+        "咖啡制作"
+      ],
+      "parts": [
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.33,
+            "y": 0.31,
+            "z": 0.33
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.33,
+            "y": 0.3,
+            "z": 0.33
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.085,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.37,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.2,
+            "y": 0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.25,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.2,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.32,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "espresso-machine",
+      "label": "意式咖啡机",
+      "templateId": "Deployable",
+      "color": "#F49A6B",
+      "keywords": [
+        "咖啡师",
+        "浓缩咖啡"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.48,
+            "z": 0.31
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.045,
+            "z": 0.37
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.23,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.045,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.02,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.26,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0.22
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.06,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0.24
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.14,
+            "z": 0.17
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.14,
+            "y": 0.19,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.047,
+            "y": 0.047,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.23,
+            "y": -0.02,
+            "z": 0.22
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.2,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "coffee-grinder",
+      "label": "手摇磨豆机",
+      "templateId": "Barricade",
+      "color": "#B67B4C",
+      "keywords": [
+        "手冲",
+        "磨咖啡"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.32,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.16,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.15,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.15,
+            "z": 0.205
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.038,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.09,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.18,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08,
+            "y": 0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.025,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.2,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.08,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "pour-over-dripper",
+      "label": "滤杯",
+      "templateId": "Deployable",
+      "color": "#FFF9EF",
+      "keywords": [
+        "手冲咖啡",
+        "滤杯"
+      ],
+      "parts": [
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.4,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.49,
+            "y": 0.035,
+            "z": 0.49
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.25,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.24,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "tea-strainer",
+      "label": "滤茶网",
+      "templateId": "Utility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "泡茶",
+        "滤茶"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.2,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.6,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.44,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09,
+            "y": 0.17,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.13,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.03,
+            "y": 0.17,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.13,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.03,
+            "y": 0.17,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.13,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.09,
+            "y": 0.17,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.13,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "tea-caddy",
+      "label": "茶叶罐",
+      "templateId": "Cushion",
+      "color": "#77C8BD",
+      "keywords": [
+        "茶叶",
+        "茶收藏"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.46,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.065,
+            "z": 0.39
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.065,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.18,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": -0.035,
+            "z": 0.195
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.08,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "milk-frother",
+      "label": "奶泡棒",
+      "templateId": "Tether",
+      "color": "#86ADCB",
+      "keywords": [
+        "拿铁",
+        "奶泡"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.28,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.017,
+            "y": 0.47,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.35,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.16,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.39,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.05,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "blender",
+      "label": "料理搅拌机",
+      "templateId": "Deployable",
+      "color": "#F49A6B",
+      "keywords": [
+        "果昔",
+        "料理机"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.34,
+            "y": 0.17,
+            "z": 0.34
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.39,
+            "z": 0.31
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.055,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.2,
+            "y": 0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.3,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.06,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.022,
+            "y": 0.22,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "juicer-press",
+      "label": "手压榨汁器",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "鲜榨果汁",
+        "柑橘榨汁"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.37,
+            "y": 0.05,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.11,
+            "y": 0.01,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.034,
+            "y": 0.64,
+            "z": 0.034
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.27,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.33,
+            "y": 0.045,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -15
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.16,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.075,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.18,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.15,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "spice-mill",
+      "label": "香料磨",
+      "templateId": "Cushion",
+      "color": "#B67B4C",
+      "keywords": [
+        "胡椒",
+        "香料"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.4,
+            "z": 0.21
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.25,
+            "z": 0.31
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.28,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.02
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.34,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.035,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "salt-shaker",
+      "label": "盐罐",
+      "templateId": "Deployable",
+      "color": "#FFF9EF",
+      "keywords": [
+        "食盐",
+        "调味"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.38,
+            "z": 0.28
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.16,
+            "z": 0.28
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.019,
+            "y": 0.018,
+            "z": 0.019
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.05,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.019,
+            "y": 0.018,
+            "z": 0.019
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.05,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.019,
+            "y": 0.018,
+            "z": 0.019
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.25,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.019,
+            "y": 0.018,
+            "z": 0.019
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.25,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.019,
+            "y": 0.018,
+            "z": 0.019
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "honey-dipper",
+      "label": "蜂蜜棒",
+      "templateId": "Tether",
+      "color": "#B67B4C",
+      "keywords": [
+        "蜂蜜",
+        "甜饮"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.62,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.19,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.209,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.19,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.16799999999999998,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.19,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.127,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.19,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.086,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.19,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.36,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.07,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "oven-mitt",
+      "label": "隔热手套",
+      "templateId": "Cushion",
+      "color": "#F49A6B",
+      "keywords": [
+        "烘焙",
+        "烤箱"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.42,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.2,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.29,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -30
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.16,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.21,
+            "z": 0.069
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.04,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "measuring-cup",
+      "label": "量杯",
+      "templateId": "Utility",
+      "color": "#86ADCB",
+      "keywords": [
+        "配方",
+        "烘焙计量"
+      ],
+      "parts": [
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.43,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.25,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.32,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.23,
+            "y": 0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.06,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.065,
+            "y": -0.15,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.012,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.065,
+            "y": -0.075,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.012,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.065,
+            "y": 0,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.012,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.065,
+            "y": 0.075,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.012,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.065,
+            "y": 0.15,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.012,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "construction-helmet",
+      "label": "建筑安全帽",
+      "templateId": "Cushion",
+      "color": "#F5CB77",
+      "keywords": [
+        "施工",
+        "工程师"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.54,
+            "y": 0.41,
+            "z": 0.46
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.018,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.67,
+            "y": 0.045,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.16,
+            "z": 0.41
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0.24
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.07,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "traffic-cone",
+      "label": "交通锥",
+      "templateId": "Tether",
+      "color": "#263248",
+      "keywords": [
+        "交通管理",
+        "交警"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.26,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.45,
+            "y": 0.055,
+            "z": 0.45
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.35,
+            "y": 0.58,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.11,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.17,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "stop-paddle",
+      "label": "交通指挥牌",
+      "templateId": "Cushion",
+      "color": "#F49A6B",
+      "keywords": [
+        "交通指挥",
+        "交通志愿者"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.36,
+            "y": 0.07,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0.046
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.32,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.034,
+            "y": 0.56,
+            "z": 0.034
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0.047
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.04,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "camping-lantern",
+      "label": "营地灯",
+      "templateId": "Utility",
+      "color": "#263248",
+      "keywords": [
+        "露营",
+        "营地灯"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.34,
+            "y": 0.075,
+            "z": 0.34
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.36,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.13,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.29,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.14,
+            "y": 0.015,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.14,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.14,
+            "y": 0.015,
+            "z": -0.14
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.14,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.4,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "hammock",
+      "label": "吊床",
+      "templateId": "Cushion",
+      "color": "#77C8BD",
+      "keywords": [
+        "露营",
+        "吊床"
+      ],
+      "parts": [
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.7,
+            "y": 0.44,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.33,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.028,
+            "y": 0.32,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.33,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.028,
+            "y": 0.32,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.4,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.016,
+            "y": 0.16,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 45
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.4,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.016,
+            "y": 0.16,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -45
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.42,
+            "y": 0.05,
+            "z": 0.014
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
     }
   ]
 }

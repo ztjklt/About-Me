@@ -99,12 +99,13 @@ namespace AboutMe
                 {target.grabImmuneUntil=Time+Rules.grabImmunity;ResetEscape(target);target.grabTension=0;CombatEvent("grabRelease",p,target);}
                 p.nextGrab=Time+Rules.grabCooldown;
             }
-            p.grabbing="";p.grabKind="";p.grabTension=0;p.grabOverload=0;
+            p.grabbing="";p.grabKind="";p.grabTension=0;p.grabOverload=0;p.grabForceDemand=0;
             var prop=Props.Find(x=>x.id==p.publicProp);
             if(prop!=null){prop.holder="";prop.velocity=Vector3.ClampMagnitude(p.velocity,5);}
             p.publicProp="";
             if(held)SetAction(p,"release");
         }
+        bool GrabLineClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from,to)&&!Effects.Any(e=>e.kind=="Barricade"&&DistanceToSegment(e.position,from,to)<e.radius+.1f);
         Vector3 GrabAnchor(Player p)
         {
             if(p.grabbing!=""&&Players.TryGetValue(p.grabbing,out var t))return t.position+Quaternion.Euler(0,t.yaw,0)*p.targetLocalAnchor;
@@ -162,15 +163,15 @@ namespace AboutMe
                 p.grabAnchorYaw=Mathf.MoveTowardsAngle(p.grabAnchorYaw,p.input.yaw,Rules.grabTurnSpeed*dt);
                 if(BodyWorld!=null)
                 {
-                    p.grabOverload=p.grabTension>.9f?p.grabOverload+dt:0;
+                    p.grabOverload=p.grabForceDemand>Rules.bodyGrabMaxForce*1.8f?p.grabOverload+dt:Mathf.Max(0,p.grabOverload-dt*2);
                     if(p.grabOverload>.18f){ReleaseGrab(p);continue;}
-                    if(!CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,BodyGrabPoint(p))){ReleaseGrab(p);continue;}
+                    if(!GrabLineClear(p.position+Vector3.up*.25f,BodyGrabPoint(p))){ReleaseGrab(p);continue;}
                     if(!BodyDown(target)){target.stability=Mathf.Max(0,target.stability-dt*9);target.lastHit=Time;if(target.stability<=0){BeginBodyFall(target,Vector3.zero,target.position);DropBodyOnce(target);target.stability=Rules.maxStability*.65f;}}
                     continue;
                 }
                 var a=p.position+Quaternion.Euler(0,p.grabAnchorYaw,0)*p.grabberLocalAnchor;
                 var b=target.position+Quaternion.Euler(0,target.yaw,0)*p.targetLocalAnchor;
-                if(!CampusGeometry.ClearSegment(a,b)){ReleaseGrab(p);continue;}
+                if(!GrabLineClear(a,b)){ReleaseGrab(p);continue;}
                 var delta=b-a;delta.y=0;
                 var relative=target.velocity-p.velocity;relative.y=0;
                 var force=(delta*Rules.grabSpring+relative*Rules.grabDamping)*GrabResistance(p,target);

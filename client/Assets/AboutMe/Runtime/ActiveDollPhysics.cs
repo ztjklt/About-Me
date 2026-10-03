@@ -52,14 +52,17 @@ namespace AboutMe
             foreach(var p in match.Players.Values)if(p.grabbing!=""&&match.Players.TryGetValue(p.grabbing,out var other)&&!other.eliminated)
             {
                 var a=Get(p);var b=Get(other);var grabbedBody=b.Bodies[Mathf.Clamp(p.bodyGrabBone,0,14)];var contact=grabbedBody.position+grabbedBody.rotation*p.bodyGrabAnchor;
-                var hand=(a.Bodies[5].position+a.Bodies[8].position)*.5f;
+                // Drive the grip from the smoothed torso anchor; reaching arms remain visual/physical contacts,
+                // but their stretch must not absorb the entire dragging force.
+                var hand=a.Bodies[0].position+Quaternion.Euler(0,p.grabAnchorYaw,0)*p.grabberLocalAnchor;
                 var rules=match.Rules;
                 var away=other.position-p.position;away.y=0;var movement=new Vector3(other.input.x,0,other.input.z);
                 float resistance=movement.sqrMagnitude>.01f&&Vector3.Dot(movement.normalized,away.normalized)>.5f?.8f:1;
                 var raw=((contact-hand)*rules.bodyGrabSpring+(grabbedBody.velocity-a.Bodies[0].velocity)*rules.bodyGrabDamping)*resistance;
                 float blend=Mathf.SmoothStep(0,1,Mathf.Clamp01((match.Time-p.grabStartedAt)/rules.grabBlendDuration));
                 var force=Vector3.ClampMagnitude(raw,rules.bodyGrabMaxForce)*blend;
-                a.Bodies[0].AddForce(force);grabbedBody.AddForceAtPosition(-force,contact);
+                a.Bodies[0].AddForce(force);grabbedBody.AddForceAtPosition(-force*.35f,contact);b.Bodies[0].AddForce(-force*.65f);
+                p.grabForceDemand=raw.magnitude;
                 a.Reach(contact);p.grabTension=other.grabTension=Mathf.Clamp01(raw.magnitude/rules.bodyGrabMaxForce)*blend;
             }
             physics.Simulate(dt/substeps);
@@ -316,7 +319,7 @@ namespace AboutMe
                 if(p.bodyMode==BodyMode.Standing&&movement.sqrMagnitude>.01f)
                 {
                     var planarError=movement-Bodies[0].velocity;planarError.y=0;
-                    accel+=planarError*20;
+                    accel+=planarError*(beingDragged?2.4f:20);
                 }
                 Bodies[0].AddForce(Vector3.ClampMagnitude(accel,p.bodyMode==BodyMode.Standing&&movement.sqrMagnitude>.01f?240:180),ForceMode.Acceleration);
                 var rotation=getting?Quaternion.Slerp(getUpRotations[0],target[0].rotation,getUpBlend):target[0].rotation;

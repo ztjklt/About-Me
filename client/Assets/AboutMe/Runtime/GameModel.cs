@@ -87,7 +87,7 @@ namespace AboutMe
         public Vector3 position, impulse, velocity, tickOrigin;
         public int actionId, actionVariant, impactId;
         public string actionKind="idle", actionTarget="", pendingAction="";
-        public float actionStartedAt, pendingAt, pendingCharge, nextGrab, grabImmuneUntil, grabStartedAt, grabTension, grabOverload, escapeStartedAt=-1;
+        public float actionStartedAt, pendingAt, pendingCharge, nextGrab, grabImmuneUntil, grabStartedAt, grabTension, grabOverload, grabForceDemand, escapeStartedAt=-1;
         public float escapeCharge, escapeReleasedAt=-1, grabAnchorYaw;
         public Vector3 impactImpulse, grabberLocalAnchor, targetLocalAnchor;
         public float yaw, stability = 100, verticalSpeed, staggerUntil, nextAttack, switchUntil, lastHit, cushionUntil;
@@ -96,7 +96,9 @@ namespace AboutMe
         public bool running;
         public string equipped = "", carrying = "", grabbing = "", grabKind = "", interaction = "";
         public float interactionStart, lastInput, chargingSince = -1,interactBlockedUntil,portalStartedAt;
-        public string portalEntry="";
+        public string portalEntry="",fieldStatus="";
+        public Vector3 wetMomentum;
+        public bool wasWet;
         public Command input = new Command();
         public int sequence = -1;
         public string publicProp = "";
@@ -124,7 +126,7 @@ namespace AboutMe
         public string actionKind="idle", actionTarget="";
         public float actionStartedAt, simulationTime, grabTension, escapeProgress;
         public float yaw, stability, stagger, progress, charge, locomotionSpeed,mechanicCooldown,portalProgress;
-        public string movementStatus;
+        public string movementStatus,fieldStatus;
         public bool running, airborne;
         public bool connected, ready, eliminated, reveal, grabbed, sticky;
     }
@@ -136,6 +138,7 @@ namespace AboutMe
         public float createdAt,deadline,triggerAt;
         public int chainIndex;
         public float height;
+        public Vector3[] path;
         [NonSerialized] public Dictionary<string,float> touchTimes=new Dictionary<string,float>();
         public Vector3 position, velocity;
         public float remaining, damage, force, nextHit, radius = .7f;
@@ -339,6 +342,7 @@ namespace AboutMe
                 else if (grabbed) desired *= Rules.grabbedMoveScale;
                 if (!stunned) p.yaw = p.input.yaw;
                 PartyMotor(p,ref desired,dt);
+                if(!stunned)FieldMotor(p,ref desired,dt);else {p.fieldStatus="";p.wasWet=false;p.wetMomentum=Vector3.zero;}
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
                 if(!(BodyWorld!=null&&BodyLocked(p)))
                 {
@@ -398,10 +402,10 @@ namespace AboutMe
             if(BodyWorld==null)foreach(var player in Players.Values)player.velocity=Vector3.ClampMagnitude((player.position-player.tickOrigin)/dt,30);
             foreach (var item in Items.Where(x => x.state == ItemState.Ground))
             {
-                PartyLooseBelt(ref item.velocity,item.position,.35f,dt);
+                bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);
                 item.velocity += Vector3.down * Rules.gravity * dt; item.position = CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f);
                 float ground = CampusGeometry.Floor(item.position,.35f) + .35f;
-                if(item.position.y < ground) { item.position.y=ground; item.velocity=new Vector3(item.velocity.x*.9f,Mathf.Abs(item.velocity.y)*.25f,item.velocity.z*.9f); if(item.velocity.magnitude<.5f)item.velocity=Vector3.zero; }
+                if(item.position.y < ground) { item.position.y=ground; item.velocity=new Vector3(item.velocity.x*.9f,Mathf.Abs(item.velocity.y)*.25f,item.velocity.z*.9f); if(!beltDriven&&!fieldDriven&&item.velocity.magnitude<.5f)item.velocity=Vector3.zero; }
                 if(CampusGeometry.Outside(item.position))
                 { item.position = new Vector3(Mathf.Clamp(item.position.x,-11,11),2,Mathf.Clamp(item.position.z,-11,11)); item.velocity=Vector3.zero; }
             }
@@ -410,7 +414,7 @@ namespace AboutMe
             foreach(var prop in Props)
             {
                 if(prop.holder!=""&&Players.TryGetValue(prop.holder,out var holder)) {prop.position=holder.position+Forward(holder);prop.velocity=Vector3.zero;continue;}
-                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);
+                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);
                 prop.velocity+=Vector3.down*Rules.gravity*dt;prop.position=CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f);
                 if(prop.position.y<CampusGeometry.Floor(prop.position,.6f)+.6f){prop.position.y=CampusGeometry.Floor(prop.position,.6f)+.6f;prop.velocity=new Vector3(prop.velocity.x*.96f,0,prop.velocity.z*.96f);}
                 if(prop.position.y< -6){prop.position=new Vector3(0,1,-6);prop.velocity=Vector3.zero;}
@@ -729,7 +733,7 @@ namespace AboutMe
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
-                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
+                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),

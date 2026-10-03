@@ -11,6 +11,7 @@ namespace AboutMe
         EffectState MovementFor(Player p)=>Effects.FirstOrDefault(e=>e.kind=="PartyMechanic"&&e.owner==p.profile.playerId&&SelfMovement(e.mechanicId)&&e.stage!="burst"&&e.stage!="ended");
         void CancelSelfMovement(Player p)
         {
+            CancelSelfFields(p);
             foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.owner==p.profile.playerId&&SelfMovement(e.mechanicId)).ToArray())RemovePartyEffect(e);
             p.portalEntry="";p.portalStartedAt=0;
         }
@@ -142,10 +143,10 @@ namespace AboutMe
             }
             return Vector3.zero;
         }
-        void PartyLooseBelt(ref Vector3 velocity,Vector3 position,float footOffset,float dt)
+        bool PartyLooseBelt(ref Vector3 velocity,Vector3 position,float footOffset,float dt)
         {
-            var belt=BeltVelocity(position,footOffset);if(belt.sqrMagnitude<.01f)return;
-            var flat=Vector3.MoveTowards(Flat(velocity),belt,8*dt);velocity=new Vector3(flat.x,velocity.y,flat.z);
+            var belt=BeltVelocity(position,footOffset);if(belt.sqrMagnitude<.01f)return false;
+            var flat=Vector3.MoveTowards(Flat(velocity),belt,8*dt);velocity=new Vector3(flat.x,velocity.y,flat.z);return true;
         }
         void TickMovement(EffectState e,Player owner,PartyMechanic d,float dt)
         {
