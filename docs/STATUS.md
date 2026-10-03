@@ -2,7 +2,7 @@
 
 自我介绍中的多所大学分别生成校徽飞盘；DeepSeek 仅从官网选取并核对单个校徽，游戏两面显示真实图案。保存、投掷、掉落和换持大学均保留校徽；失败时提示稍后重试，不重 Roll 道具身份。
 
-最终入口为 `scripts/start-university-crests.command`，对应 `builds/university-crests-mac`、`builds/university-crests-web` 与同版服务包，1280×720 窗口，四气泡最新版首页。63 项服务测试、15 项 Unity 菜单和 31 项玩法检查通过；真实中山大学/北京大学官网与 DeepSeek API 流程及原生 HTTP 贴图验证通过。微信/公网未在本次验收范围。详细成果见 `docs/UNIVERSITY_CREST_DELIVERY.md`。
+最终入口为 `scripts/start-university-crests.command`，对应 `builds/university-crests-mac`、`builds/university-crests-web` 与同版服务包，1280×720 窗口，四气泡最新版首页。65 项服务测试、15 项 Unity 菜单和 31 项玩法检查通过；真实中山大学/北京大学官网与 DeepSeek API 流程及原生 HTTP 贴图验证通过。微信/公网未在本次验收范围。详细成果见 `docs/UNIVERSITY_CREST_DELIVERY.md`。
 
 # 本地交付与验收状态
 

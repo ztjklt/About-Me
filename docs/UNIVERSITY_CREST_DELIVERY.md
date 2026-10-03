@@ -10,7 +10,7 @@
 
 ## 验收范围
 
-- 服务端 63 项自动测试通过，涵盖官网 URL、非校徽拒绝、重复大学、多大学、图片缓存、资料保存、内部身份验证，以及同文仅重试贴图。
+- 服务端 65 项自动测试通过，涵盖官网 URL、非校徽拒绝、重复大学、多大学、图片缓存、资料保存、内部身份验证，以及同文仅重试贴图。
 - 最新 Unity 菜单/玩法和双面贴图检查通过（构建日志 `artifacts/UniversityCrestBuilds.log`）。
 - 真实 DeepSeek + 中山大学、北京大学官网端到端验证：`artifacts/university-crest-final/report.json`，生成图片和持久化资料均在同目录。清华大学真实校徽验证结果仍在 `artifacts/university-crest-tsinghua-final`。
 - Mac 原生运行验证真实 HTTP 贴图、逐像素一致、同外观大学切换与临时隐藏恢复：`artifacts/university-crest-runtime/runtime-report.json`。
@@ -21,3 +21,9 @@
 使用已有 `server/.env` 的 DeepSeek 凭据。可配置 `UNIVERSITY_CREST_MODEL`、`UNIVERSITY_CREST_CACHE` 与 `UNIVERSITY_CREST_TIMEOUT`。图片使用内容摘要缓存；新学校由 DeepSeek 通过受控官网抓取工具动态检索，不限于预置学校。官网阻拦、网络失败或模型不能确认时会返回未就绪状态。
 
 在实现工作区运行 `.venv/bin/python -m pytest -q server/tests`；真实调用验证入口为 `scripts/verify-university-crests.py`。构建入口 `AboutMe.Editor.UniversityCrestTests.BuildDeliverables`，设置 `ABOUTME_RELEASE_BUILD=1`、`ABOUTME_MAC_OUTPUT` 与 `ABOUTME_WEB_OUTPUT` 后以团结引擎批处理执行。
+
+## 飞盘铺满与校徽主色（2026-10-03）
+
+校徽覆盖整张飞盘正反面，自动排除透明画布与外围白色留边，保持原标志比例及内部白色细节。盘体和侧边采用真实校徽的主要有色部分，排除白色背景：中山大学绿色、北京大学红色。已有贴图和资料无需重新生成即可显示新效果。新生成 Persona 的主色同时写入资料并随既有协议同步。
+
+窗口模式原生验证和截图在 `artifacts/university-crest-full-disc-runtime`；报告包含 `fullDiscCoverage` 和 `bodyUsesEmblemColor`。65 项服务测试与 Unity 满盘贴图、主色和最新版菜单/玩法检查通过。

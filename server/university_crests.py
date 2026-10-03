@@ -182,6 +182,32 @@ def normalize_crest(data, box):
         output = io.BytesIO(); canvas.save(output, 'PNG'); return output.getvalue()
 
 
+def dominant_crest_color(data):
+    """Measure the emblem ink; transparent pixels and its white background aren't brand colors."""
+    with Image.open(io.BytesIO(data)) as source:
+        image = source.convert('RGBA')
+        image.thumbnail((256, 256))
+        buckets = {}
+        dark = None
+        for red, green, blue, alpha in image.get_flattened_data():
+            high, low = max(red, green, blue), min(red, green, blue)
+            if alpha < 32:
+                continue
+            if dark is None and high < 220:
+                dark = (red, green, blue)
+            if high - low < 32 or high < 60:
+                continue
+            key = (red >> 5, green >> 5, blue >> 5)
+            weight = (high - low) * alpha
+            bucket = buckets.setdefault(key, [0, 0, 0, 0])
+            bucket[0] += weight
+            for i, channel in enumerate((red, green, blue), 1):
+                bucket[i] += weight * channel
+        best = max(buckets.values(), key=lambda x: x[0]) if buckets else None
+        color = tuple(x // best[0] for x in best[1:]) if best else (dark or (255, 255, 255))
+        return '#%02X%02X%02X' % color
+
+
 async def verify_candidate(name, candidate):
     raw, final, _ = await download(candidate['url'])
     # Do not give active SVG/HTML content to clients or expose an unverified remote image.
@@ -215,6 +241,10 @@ async def resolve_crest(name):
         try:
             previous = json.loads(metadata_path.read_text())
             if previous.get('status') == 'ready' and (directory / (previous['id'] + '.png')).is_file():
+                if not previous.get('color'):
+                    previous['color'] = dominant_crest_color((directory / (previous['id'] + '.png')).read_bytes())
+                    temporary = metadata_path.with_suffix('.tmp')
+                    temporary.write_text(json.dumps(previous, ensure_ascii=False)); temporary.replace(metadata_path)
                 return previous
             if previous.get('retryAfter', 0) > time.time():
                 return previous
@@ -233,7 +263,8 @@ async def resolve_crest(name):
                     temporary.write_bytes(png); temporary.replace(directory / (identity + '.png'))
                     result = {'university': name, 'status': 'ready', 'id': identity,
                               'path': '/assets/university-crests/' + identity + '.png',
-                              'sourcePage': candidate['sourcePage'], 'sourceImage': source_image}
+                              'sourcePage': candidate['sourcePage'], 'sourceImage': source_image,
+                              'color': dominant_crest_color(png)}
                     break
         except (TimeoutError, ValueError, TypeError, KeyError, IndexError, httpx.HTTPError, OSError, Image.DecompressionBombError):
             pass
@@ -250,5 +281,5 @@ async def attach_crests(personas):
     for item, result in zip(schools, results):
         item['crestStatus'] = result['status']
         if result['status'] == 'ready':
-            item.update(crestId=result['id'], crestPath=result['path'], crestSource=result['sourcePage'])
+            item.update(crestId=result['id'], crestPath=result['path'], crestSource=result['sourcePage'], color=result.get('color',item['color']))
     return personas

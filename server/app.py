@@ -437,7 +437,7 @@ async def generate_school_emblem(school):
     return {'emblemPath': '/assets/university-crests/' + crest['id'] + '.png',
             'emblemCrop': '0,0,1,1', 'emblemSource': crest['sourcePage'],
             'emblemLicense': 'official-use-terms', 'generatedBy': 'DeepSeek Flash Vision',
-            'crestStatus': 'ready', 'crestId': crest['id']}
+            'crestStatus': 'ready', 'crestId': crest['id'], 'color': crest.get('color', '#77C8BD')}
 
 
 async def attach_school_emblems(personas):

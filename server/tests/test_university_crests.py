@@ -126,3 +126,26 @@ def test_same_introduction_retries_only_artwork_without_reroll(tmp_path,monkeypa
 def test_multiple_names_do_not_use_single_school_preset():
     with pytest.raises(ValueError):
         api.validate_personas({'personas':[{'name':'兴趣','source':'兴趣','templateId':'Disc','visualId':'school-disc'}]},'我的兴趣')
+
+
+def test_main_color_ignores_white_and_transparent_padding():
+    image = Image.new('RGBA', (128, 128), 'white')
+    for x in range(48, 80):
+        for y in range(48, 80):
+            image.putpixel((x, y), (25, 145, 55, 255))
+    image.putpixel((0, 0), (240, 0, 0, 0))
+    data = io.BytesIO(); image.save(data, 'PNG')
+    assert crests.dominant_crest_color(data.getvalue()) == '#199137'
+    assert crests.dominant_crest_color(png()) == '#006E41'
+
+
+def test_old_verified_cache_gains_color_without_network(monkeypatch):
+    directory=crests.cache_dir();directory.mkdir(parents=True)
+    data=png();identity=hashlib.sha256(data).hexdigest();(directory/(identity+'.png')).write_bytes(data)
+    lookup=hashlib.sha256('北京大学'.encode()).hexdigest()
+    metadata={'university':'北京大学','status':'ready','id':identity,'path':'/assets/university-crests/'+identity+'.png'}
+    (directory/(lookup+'.json')).write_text(json.dumps(metadata))
+    async def forbidden(name): raise AssertionError('cached emblem must not be re-fetched')
+    monkeypatch.setattr(crests,'discover_candidates',forbidden)
+    result=asyncio.run(crests.resolve_crest('北京大学'))
+    assert result['id']==identity and result['color']=='#006E41'

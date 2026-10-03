@@ -48,6 +48,9 @@ namespace AboutMe
                 var actual=top.GetComponent<Renderer>().sharedMaterial.mainTexture as Texture2D;
                 var expected=new Texture2D(2,2);expected.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(profilePath),"crests",Path.GetFileName(assets[i].emblemPath))));
                 if(!actual||!actual.GetPixels32().SequenceEqual(expected.GetPixels32())){Debug.LogError("CREST_TEXTURE_MISMATCH");Application.Quit(1);yield break;}
+                var ink=UniversityCrestTexture.MainColor(expected);
+                var body=actor.held.transform.Find("disc").GetComponent<Renderer>().sharedMaterial.color;
+                if(Vector4.Distance(body,ink)>.02f||UniversityCrestTexture.FaceMesh.vertices[1].magnitude<.399f){Debug.LogError("CREST_FULL_DISC_APPEARANCE_FAILED");Application.Quit(1);yield break;}
                 Destroy(expected);
                 displays[i]=ToyFactory.Item(assets[i].visualId,assets[i].color,root.transform,assets[i].name,assets[i].emblemPath);
                 displays[i].transform.localPosition=new Vector3((i==0?-.55f:.55f),0,0);
@@ -60,7 +63,7 @@ namespace AboutMe
             var cameraGo=new GameObject("University emblem verification camera");var camera=cameraGo.AddComponent<Camera>();camera.cullingMask=1<<layer;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=ToyFactory.ColorOf("#EEE8DC");camera.orthographic=true;camera.orthographicSize=.9f;camera.transform.position=new Vector3(0,2.5f,-1.5f);camera.transform.LookAt(Vector3.zero);
             var rt=new RenderTexture(1200,800,24);camera.targetTexture=rt;camera.Render();var old=RenderTexture.active;RenderTexture.active=rt;
             var screenshot=new Texture2D(1200,800,TextureFormat.RGB24,false);screenshot.ReadPixels(new Rect(0,0,1200,800),0,0);screenshot.Apply();RenderTexture.active=old;File.WriteAllBytes(Path.Combine(output,"university-disc-game.png"),screenshot.EncodeToPNG());
-            File.WriteAllText(Path.Combine(output,"runtime-report.json"),"{\"latestFourBubbleUI\":true,\"windowed\":true,\"httpTexturesLoaded\":true,\"exactOfficialPixels\":true,\"sameVisualSchoolSwitch\":true,\"hiddenDiscRecovered\":true,\"schools\":[\""+assets[0].name+"\",\""+assets[1].name+"\"]}");
+            File.WriteAllText(Path.Combine(output,"runtime-report.json"),"{\"latestFourBubbleUI\":true,\"windowed\":true,\"fullDiscCoverage\":true,\"bodyUsesEmblemColor\":true,\"httpTexturesLoaded\":true,\"exactOfficialPixels\":true,\"sameVisualSchoolSwitch\":true,\"hiddenDiscRecovered\":true,\"schools\":[\""+assets[0].name+"\",\""+assets[1].name+"\"]}");
             Debug.Log("ABOUTME_UNIVERSITY_CREST_RUNTIME_PASSED real HTTP / exact pixels / same-visual school switch");Application.Quit(0);
         }
     }

@@ -18,7 +18,15 @@ namespace AboutMe.Editor
             var mesh=UniversityCrestTexture.FaceMesh;
             Check(disc.transform.Find("Official university crest · top").TransformDirection(mesh.normals[0]).y>.9f,"top faces inward");
             Check(disc.transform.Find("Official university crest · bottom").TransformDirection(mesh.normals[0]).y<-.9f,"bottom faces inward");
-            var texture=new Texture2D(2,2);decal.Apply(texture);
+            Check(Math.Abs(mesh.vertices[1].magnitude-.4f)<.001f,"emblem does not span the whole disc");
+            var texture=new Texture2D(64,64);var pixels=Enumerable.Repeat(Color.white,4096).ToArray();
+            for(int y=8;y<56;y++)for(int x=8;x<56;x++)pixels[y*64+x]=new Color32(25,145,55,255);
+            texture.SetPixels(pixels);texture.Apply();decal.Apply(texture);
+            var body=disc.transform.Find("disc").GetComponent<Renderer>();
+            Check(body.sharedMaterial.color.g>.5f&&body.sharedMaterial.color.r<.2f,"disc did not adopt emblem green");
+            var bounds=UniversityCrestTexture.ArtworkBounds(texture);
+            Check(bounds.width<.8f&&bounds.width>.74f,"white padding was not removed");
+            Check(!disc.transform.Find("crest").gameObject.activeSelf,"raised inset badge remains");
             Check(!disc.transform.Find("school name").gameObject.activeSelf,"name overlays emblem");
             Check(!disc.GetComponentsInChildren<TextMesh>(true).Any(t=>t.text=="DeepSeek 生成"),"extra logo label present");
             UnityEngine.Object.DestroyImmediate(disc);UnityEngine.Object.DestroyImmediate(texture);
