@@ -308,7 +308,7 @@ namespace AboutMe
             if(state==null)return;
             UpdateLobbyCards(state);
             string phase=state.phase==MatchPhase.Reveal?"PERSONA REVEAL":state.phase==MatchPhase.FinalBurst?"FINAL BURST":state.phase==MatchPhase.Finished?"RESULT":"BATTLE";
-            phaseText.text=phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
+            phaseText.text=state.practiceOpening>0?"练习准备 "+Mathf.CeilToInt(state.practiceOpening)+"s":phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
             if(me!=null)
             {
                 var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;

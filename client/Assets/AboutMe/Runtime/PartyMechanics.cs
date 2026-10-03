@@ -34,6 +34,7 @@ namespace AboutMe
         {
             var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
+            if(definition.id=="impact-bank"&&active.Any(e=>e.stage=="banked"&&GuardAlive(e)))return true;
             if(definition.id=="paired-teleport"&&active.Length==1&&active[0].stage=="portal_wait")return true;
             if(definition.id=="remote-burst"&&active.Length>0)return true;
             if(definition.id=="relay-burst"&&active.Length>0&&active.Length<3&&active.All(e=>e.stage=="waiting"))return true;
@@ -49,7 +50,8 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
-            if(!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="guard")return TryGuardMechanic(p,item,d);
             if(d.family=="field")return TryFieldMechanic(p,item,d);
             if(d.family=="movement")return TryMovementMechanic(p,item,d);
             var previous=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
@@ -151,6 +153,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="guard"){TickGuard(e,owner,d,dt);return;}
             if(d.family=="field"){TickField(e,owner,d,dt);return;}
             if(d.family=="movement"){TickMovement(e,owner,d,dt);return;}
             e.remaining=Mathf.Max(0,e.deadline-Time);

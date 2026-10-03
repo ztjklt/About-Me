@@ -61,7 +61,7 @@ namespace AboutMe
                 var raw=((contact-hand)*rules.bodyGrabSpring+(grabbedBody.velocity-a.Bodies[0].velocity)*rules.bodyGrabDamping)*resistance;
                 float blend=Mathf.SmoothStep(0,1,Mathf.Clamp01((match.Time-p.grabStartedAt)/rules.grabBlendDuration));
                 var force=Vector3.ClampMagnitude(raw,rules.bodyGrabMaxForce)*blend;
-                a.Bodies[0].AddForce(force);grabbedBody.AddForceAtPosition(-force*.35f,contact);b.Bodies[0].AddForce(-force*.65f);
+                a.Bodies[0].AddForce(force);var targetForce=force;if(match.GuardAnchored(other))targetForce=new Vector3(0,force.y,0);grabbedBody.AddForceAtPosition(-targetForce*.35f,contact);b.Bodies[0].AddForce(-targetForce*.65f);
                 p.grabForceDemand=raw.magnitude;
                 a.Reach(contact);p.grabTension=other.grabTension=Mathf.Clamp01(raw.magnitude/rules.bodyGrabMaxForce)*blend;
             }
@@ -237,7 +237,7 @@ namespace AboutMe
             if((p.position-lastPublished).sqrMagnitude>64)Reset(p.position,p.yaw);
             bool down=p.bodyMode==BodyMode.Falling||p.bodyMode==BodyMode.Grounded;
             bool getting=p.bodyMode==BodyMode.GettingUp;
-            bool beingDragged=match.Players.Values.Any(other=>other.grabbing==p.profile.playerId);
+            bool beingDragged=match.Players.Values.Any(other=>other.grabbing==p.profile.playerId)&&!match.GuardAnchored(p);
             if(getting&&previousMode!=BodyMode.GettingUp)
             {
                 for(int i=0;i<15;i++){getUpPositions[i]=Bodies[i].position;getUpRotations[i]=Bodies[i].rotation;}

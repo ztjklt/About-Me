@@ -12783,6 +12783,5951 @@
       "license": "project-original",
       "source": "About Me original assembly geometry",
       "stage": "model_with_existing_template"
+    },
+    {
+      "id": "solar-panel",
+      "label": "太阳能板",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "新能源",
+        "太阳能"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.65,
+            "y": 0.06,
+            "z": 0.48
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.21,
+            "y": 0.041,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.21,
+            "y": 0.041,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.21,
+            "y": 0.041,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.041,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.041,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.041,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.21,
+            "y": 0.041,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.21,
+            "y": 0.041,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.21,
+            "y": 0.041,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.012,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.35,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.045,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "front-shield"
+    },
+    {
+      "id": "mirror-fold-screen",
+      "label": "折镜屏",
+      "templateId": "Cushion",
+      "color": "#B67B4C",
+      "keywords": [
+        "镜面艺术",
+        "反射幻想"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.52,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": -25,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.52,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.52,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 25,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.26,
+            "y": 0,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.46,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": -25,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.46,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.26,
+            "y": 0,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.46,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 25,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.31,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.12,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "timed-reflect"
+    },
+    {
+      "id": "doorstop",
+      "label": "门楔",
+      "templateId": "Cushion",
+      "color": "#F49A6B",
+      "keywords": [
+        "装修",
+        "门挡"
+      ],
+      "parts": [
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.26,
+            "z": 0.62
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 70
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.035,
+            "z": 0.64
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.164,
+            "z": -0.22
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.014,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.164,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.014,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.164,
+            "z": 0.22
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.014,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": -0.28
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.1,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "ground-anchor"
+    },
+    {
+      "id": "data-drive",
+      "label": "移动硬盘",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "数据备份",
+        "硬盘"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.43,
+            "y": 0.13,
+            "z": 0.62
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.035,
+            "z": 0.56
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.1,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.02,
+            "y": 0.018,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.36
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.06,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.48
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.23,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "impact-bank"
+    },
+    {
+      "id": "ribbon-reel",
+      "label": "彩带卷盘",
+      "templateId": "Cushion",
+      "color": "#F5CB77",
+      "keywords": [
+        "庆典",
+        "彩带"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.48,
+            "y": 0.17,
+            "z": 0.48
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.09
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.03,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": -0.21,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.38,
+            "y": 0.16,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.42,
+            "y": -0.34,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.16,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 40
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "ribbon-cover"
+    },
+    {
+      "id": "picnic-blanket",
+      "label": "野餐垫",
+      "templateId": "Utility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "野餐",
+        "picnic"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.72,
+            "y": 0.03,
+            "z": 0.62
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.27,
+            "y": 0.024,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.27,
+            "y": 0.024,
+            "z": -0.08000000000000002
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.27,
+            "y": 0.024,
+            "z": 0.06999999999999998
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.27,
+            "y": 0.024,
+            "z": 0.21999999999999995
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09000000000000002,
+            "y": 0.024,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09000000000000002,
+            "y": 0.024,
+            "z": -0.08000000000000002
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09000000000000002,
+            "y": 0.024,
+            "z": 0.06999999999999998
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09000000000000002,
+            "y": 0.024,
+            "z": 0.21999999999999995
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08999999999999997,
+            "y": 0.024,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08999999999999997,
+            "y": 0.024,
+            "z": -0.08000000000000002
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08999999999999997,
+            "y": 0.024,
+            "z": 0.06999999999999998
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08999999999999997,
+            "y": 0.024,
+            "z": 0.21999999999999995
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.27,
+            "y": 0.024,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.27,
+            "y": 0.024,
+            "z": -0.08000000000000002
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.27,
+            "y": 0.024,
+            "z": 0.06999999999999998
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.27,
+            "y": 0.024,
+            "z": 0.21999999999999995
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.015,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.32,
+            "y": 0.025,
+            "z": -0.27
+          },
+          "scale": {
+            "x": 0.048,
+            "y": 0.027,
+            "z": 0.048
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.32,
+            "y": 0.025,
+            "z": -0.27
+          },
+          "scale": {
+            "x": 0.048,
+            "y": 0.027,
+            "z": 0.048
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.32,
+            "y": 0.025,
+            "z": 0.27
+          },
+          "scale": {
+            "x": 0.048,
+            "y": 0.027,
+            "z": 0.048
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.32,
+            "y": 0.025,
+            "z": 0.27
+          },
+          "scale": {
+            "x": 0.048,
+            "y": 0.027,
+            "z": 0.048
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "recover-screen"
+    },
+    {
+      "id": "capybara-model",
+      "label": "水豚模型",
+      "templateId": "Utility",
+      "color": "#90745A",
+      "keywords": [
+        "水豚",
+        "capybara"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": -0.06
+          },
+          "scale": {
+            "x": 0.42,
+            "y": 0.42,
+            "z": 0.6
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0.21
+          },
+          "scale": {
+            "x": 0.32,
+            "y": 0.28,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0.37
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.15,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": -0.19,
+            "z": -0.22
+          },
+          "scale": {
+            "x": 0.105,
+            "y": 0.19,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": -0.19,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.105,
+            "y": 0.19,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.14,
+            "y": -0.19,
+            "z": -0.22
+          },
+          "scale": {
+            "x": 0.105,
+            "y": 0.19,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.14,
+            "y": -0.19,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.105,
+            "y": 0.19,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": -0.12,
+            "y": 0.33,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.12,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0.12,
+            "y": 0.33,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.12,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.095,
+            "y": 0.23,
+            "z": 0.347
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.025,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.095,
+            "y": 0.23,
+            "z": 0.347
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.025,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "calm-dome"
+    },
+    {
+      "id": "folding-fan",
+      "label": "折扇",
+      "templateId": "Deployable",
+      "color": "#F49A6B",
+      "keywords": [
+        "扇子",
+        "传统文化"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": -0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.66,
+            "y": 0.62,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -70
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -45
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 20
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 45
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.52,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 70
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.32,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.24,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "wind-deflector"
+    },
+    {
+      "id": "metronome",
+      "label": "机械节拍器",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "音乐练习",
+        "节拍器"
+      ],
+      "parts": [
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": -0.025,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.42,
+            "y": 0.66,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.025,
+            "z": 0.165
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.44,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.035,
+            "y": 0.045,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.022,
+            "y": 0.43,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.035,
+            "y": 0.13,
+            "z": 0.2
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.065,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.37,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.45,
+            "y": 0.05,
+            "z": 0.34
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "rhythm-gate"
+    },
+    {
+      "id": "bath-sponge",
+      "label": "浴球",
+      "templateId": "Deployable",
+      "color": "#77C8BD",
+      "keywords": [
+        "沐浴",
+        "浴球"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": -0.14,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0.14,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.26,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": -90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.25,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "sponge-dry"
+    },
+    {
+      "id": "piano-keyboard",
+      "label": "便携电子琴",
+      "templateId": "Utility",
+      "color": "#263248",
+      "keywords": [
+        "钢琴",
+        "电子琴",
+        "piano"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.055,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.76,
+            "y": 0.15,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.32,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.256,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.192,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.128,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.064,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.064,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.128,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.192,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.25600000000000006,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.32,
+            "y": 0.04,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.035,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.285,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.20999999999999996,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.06,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.015000000000000013,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.09000000000000002,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.24000000000000005,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.315,
+            "y": 0.073,
+            "z": -0.015
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.035,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": -0.08,
+            "z": -0.19
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.17,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "saxophone",
+      "label": "萨克斯",
+      "templateId": "SpecialAbility",
+      "color": "#F5CB77",
+      "keywords": [
+        "萨克斯",
+        "saxophone"
+      ],
+      "parts": [
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.36,
+            "y": 0.36,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.13,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.52,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -12
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.22,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.31,
+            "z": 0.21
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -15
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.2,
+            "y": 0.4,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.19,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 70
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.075,
+            "y": 0.25,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.075,
+            "y": 0.13,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.075,
+            "y": 0.010000000000000009,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.075,
+            "y": -0.10999999999999999,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.055,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "trumpet",
+      "label": "小号",
+      "templateId": "SpecialAbility",
+      "color": "#F5CB77",
+      "keywords": [
+        "小号",
+        "trumpet"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.04,
+            "y": 0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.64,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.34,
+            "y": 0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.23,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": -0.15,
+            "y": -0.085,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.38,
+            "y": 0.22,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.11,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.22,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.015,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.22,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.08,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.22,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.12,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.025,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "trombone",
+      "label": "长号",
+      "templateId": "Deployable",
+      "color": "#F5CB77",
+      "keywords": [
+        "长号",
+        "trombone"
+      ],
+      "parts": [
+        {
+          "shape": "arc",
+          "position": {
+            "x": -0.21,
+            "y": -0.035,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.18,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.05,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.7,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.05,
+            "y": -0.11,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.7,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.35,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.25,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.22,
+            "y": -0.035,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.19,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "flute",
+      "label": "长笛",
+      "templateId": "Deployable",
+      "color": "#B7C5CE",
+      "keywords": [
+        "长笛",
+        "flute"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.78,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.21,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.10999999999999999,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.009999999999999981,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.09000000000000005,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.19000000000000003,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.29000000000000004,
+            "y": 0.052,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.025,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.32,
+            "y": 0.025,
+            "z": 0.024
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.023,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "clarinet",
+      "label": "单簧管",
+      "templateId": "Utility",
+      "color": "#263248",
+      "keywords": [
+        "单簧管",
+        "clarinet"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.015,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.54,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.14,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.35,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.048,
+            "y": 0.17,
+            "z": 0.048
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.084,
+            "y": 0.084,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.084,
+            "y": 0.084,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.084,
+            "y": 0.084,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.26,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.084,
+            "y": 0.084,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.052,
+            "y": 0.025,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.25,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "cello",
+      "label": "大提琴",
+      "templateId": "Cushion",
+      "color": "#B67B4C",
+      "keywords": [
+        "大提琴",
+        "cello"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.32,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.25,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.34,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.43,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.37,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.016,
+            "y": 0.18,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.31,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.016,
+            "y": 0.67,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -14
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.02,
+            "y": 0.045,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.005,
+            "y": 0.57,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.005,
+            "y": 0.57,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.02,
+            "y": 0.045,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.005,
+            "y": 0.57,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "harp",
+      "label": "竖琴",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "竖琴",
+        "harp"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.25,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.65,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.55,
+            "y": 0.29,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.015,
+            "y": -0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.54,
+            "y": 0.08,
+            "z": 0.16
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.19,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.052,
+            "y": 0.65,
+            "z": 0.052
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 26
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.17,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.51,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.12300000000000001,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.487,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.07600000000000001,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.464,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.028999999999999998,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.441,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.017999999999999988,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.41800000000000004,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.06499999999999997,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.395,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11200000000000002,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.372,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.159,
+            "y": -0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.007,
+            "y": 0.349,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "accordion",
+      "label": "手风琴",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "手风琴",
+        "accordion"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.24,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.47,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.24,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.47,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.13,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.085,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.04000000000000001,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0050000000000000044,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.04999999999999999,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.09499999999999997,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.14,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.021,
+            "y": 0.4,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": -0.17,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": -0.12000000000000001,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": -0.07,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": -0.01999999999999999,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": 0.03,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": 0.07999999999999999,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": 0.13000000000000003,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.252,
+            "y": 0.18000000000000002,
+            "z": 0.145
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.045,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.23,
+            "y": -0.14,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.035,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.23,
+            "y": -0.03,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.035,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.23,
+            "y": 0.08,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.035,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.23,
+            "y": 0.19,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.035,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "snare-drum",
+      "label": "军鼓",
+      "templateId": "SpecialAbility",
+      "color": "#F49A6B",
+      "keywords": [
+        "军鼓",
+        "打击乐"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.53,
+            "y": 0.26,
+            "z": 0.53
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.025,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.025,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.23,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.023,
+            "y": 0.3,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.23,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.023,
+            "y": 0.3,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.023,
+            "y": 0.3,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.23
+          },
+          "scale": {
+            "x": 0.023,
+            "y": 0.3,
+            "z": 0.023
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.08,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.58,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -50
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.08,
+            "y": 0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.58,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 50
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "cymbals",
+      "label": "铜镲",
+      "templateId": "SpecialAbility",
+      "color": "#F5CB77",
+      "keywords": [
+        "铜镲",
+        "打击乐"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.17,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.44,
+            "y": 0.035,
+            "z": 0.44
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.17,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.44,
+            "y": 0.035,
+            "z": 0.44
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": -0.17,
+            "y": 0,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.095,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.17,
+            "y": 0,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.095,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": -0.17,
+            "y": 0,
+            "z": -0.04
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.14,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.17,
+            "y": 0,
+            "z": -0.04
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.14,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "tambourine",
+      "label": "铃鼓",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "铃鼓",
+        "tambourine"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.55,
+            "y": 0.55,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.01
+          },
+          "scale": {
+            "x": 0.49,
+            "y": 0.02,
+            "z": 0.49
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.2,
+            "y": -0.14,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.2,
+            "y": 0.14,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.2,
+            "y": -0.14,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.2,
+            "y": 0.14,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.245,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.245,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.026,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "triangle-instrument",
+      "label": "三角铁",
+      "templateId": "Utility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "三角铁",
+        "管弦乐"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.14,
+            "y": 0.045,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.47,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -35
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.14,
+            "y": 0.045,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.47,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 35
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.03,
+            "y": -0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.45,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.32,
+            "y": -0.025,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.45,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -10
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.27,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.1,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "kalimba",
+      "label": "拇指琴",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "拇指琴",
+        "kalimba"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.41,
+            "y": 0.12,
+            "z": 0.55
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.075,
+            "z": -0.035
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.02,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.085,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.024,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.18200000000000002
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.11249999999999999,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.20400000000000001
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.075,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.22600000000000003
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.037500000000000006,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.24800000000000003
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.037500000000000006,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.24800000000000003
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.07499999999999998,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.22600000000000003
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11250000000000002,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.20400000000000001
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.1,
+            "z": -0.018
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.02,
+            "z": 0.18200000000000002
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "guzheng",
+      "label": "古筝",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "古筝",
+        "民族乐器"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.77,
+            "y": 0.13,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.015,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.79,
+            "y": 0.15,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": -0.085
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": -0.055
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": -0.025
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": 0.005
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.092,
+            "z": 0.095
+          },
+          "scale": {
+            "x": 0.71,
+            "y": 0.007,
+            "z": 0.007
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.13,
+            "y": 0.098,
+            "z": -0.075
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.07,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.13,
+            "y": 0.098,
+            "z": -0.025
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.07,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.13,
+            "y": 0.098,
+            "z": 0.025
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.07,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.13,
+            "y": 0.098,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.07,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "pipa",
+      "label": "琵琶",
+      "templateId": "SpecialAbility",
+      "color": "#B67B4C",
+      "keywords": [
+        "琵琶",
+        "民乐"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.38,
+            "y": 0.4,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.015,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.26,
+            "y": 0.36,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.28,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.4,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.47,
+            "z": -0.025
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.14,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.057
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.167,
+            "z": 0.057
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.234,
+            "z": 0.057
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.30100000000000005,
+            "z": 0.057
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.368,
+            "z": 0.057
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.021,
+            "y": 0.05,
+            "z": 0.078
+          },
+          "scale": {
+            "x": 0.004,
+            "y": 0.46,
+            "z": 0.005
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.007,
+            "y": 0.05,
+            "z": 0.078
+          },
+          "scale": {
+            "x": 0.004,
+            "y": 0.46,
+            "z": 0.005
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.007,
+            "y": 0.05,
+            "z": 0.078
+          },
+          "scale": {
+            "x": 0.004,
+            "y": 0.46,
+            "z": 0.005
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.021,
+            "y": 0.05,
+            "z": 0.078
+          },
+          "scale": {
+            "x": 0.004,
+            "y": 0.46,
+            "z": 0.005
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "erhu",
+      "label": "二胡",
+      "templateId": "Tether",
+      "color": "#B67B4C",
+      "keywords": [
+        "二胡",
+        "民乐"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.22,
+            "z": 0.19
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.075,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.69,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0.024
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.44,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.08,
+            "y": 0.28,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.028,
+            "y": 0.2,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.08,
+            "y": 0.37,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.028,
+            "y": 0.2,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.26,
+            "y": 0.015,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.014,
+            "y": 0.62,
+            "z": 0.014
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -12
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "music-stand",
+      "label": "谱架",
+      "templateId": "Tether",
+      "color": "#263248",
+      "keywords": [
+        "乐谱",
+        "乐队排练"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.19,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.61,
+            "y": 0.39,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": -12,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.075
+          },
+          "scale": {
+            "x": 0.65,
+            "y": 0.038,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.45,
+            "z": 0.032
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.38,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.035,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": -0.38,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.035,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 120,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": -0.38,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.032,
+            "y": 0.035,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": -120,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "watercolor-box",
+      "label": "水彩盒",
+      "templateId": "Deployable",
+      "color": "#FFF9EF",
+      "keywords": [
+        "水彩",
+        "watercolor"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.7,
+            "y": 0.065,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": -0.17
+          },
+          "scale": {
+            "x": 0.7,
+            "y": 0.31,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": -15,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.25,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.04999999999999999,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.050000000000000044,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15000000000000002,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.25,
+            "y": 0.049,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.026,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.048,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.54,
+            "y": 0.02,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "easel",
+      "label": "画架",
+      "templateId": "Tether",
+      "color": "#B67B4C",
+      "keywords": [
+        "油画",
+        "素描",
+        "画架"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.76,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -15
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.18,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.76,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 15
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.01,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.67,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.09,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.42,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.53,
+            "y": 0.035,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.04,
+            "y": 0.11,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.12,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 10
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "charcoal-stick",
+      "label": "素描炭条",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "素描",
+        "炭笔"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.64,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.115,
+            "y": 0.2,
+            "z": 0.115
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": 0.345,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.08,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 8
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "inkstone",
+      "label": "砚台",
+      "templateId": "Deployable",
+      "color": "#263248",
+      "keywords": [
+        "书法",
+        "磨墨"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.045,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.56,
+            "y": 0.16,
+            "z": 0.42
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.045,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.41,
+            "y": 0.025,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.44,
+            "y": 0.3,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.12,
+            "y": 0.07,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.03,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.27,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.24,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -40
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
     }
   ]
 }

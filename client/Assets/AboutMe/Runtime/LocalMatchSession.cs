@@ -19,7 +19,7 @@ namespace AboutMe
         readonly NpcController npc;
         float nextThink;
         bool closed;
-        public Snapshot Current => closed?null:Match.View(PlayerId);
+        public Snapshot Current {get {if(closed)return null;var state=Match.View(PlayerId);state.practiceOpening=Match.Active?Mathf.Max(0,4-state.time):0;return state;}}
         public LocalMatchSession(Profile player, MatchRules rules=null)
         {
             // Never mutate the cached persistent profile during a match.
@@ -31,7 +31,7 @@ namespace AboutMe
             opponent.personas=Enumerable.Range(0,copy.personas.Length).Select(i=>{
                 var asset=catalog[i%catalog.Length].Copy();asset.assetId="npc-asset-"+i;return asset;
             }).ToArray();
-            Match.Add(opponent);npc=new NpcController(opponent.playerId);
+            Match.Add(opponent);npc=new NpcController(opponent.playerId,true);
             Match.Receive(PlayerId,new Command{sequence=0,action="start"});
         }
         public void Tick(float dt)
@@ -53,7 +53,8 @@ namespace AboutMe
         string trackedEnemy="";
         Vector3 previous, destination;
         readonly Queue<Vector3> path=new Queue<Vector3>();
-        public NpcController(string id){Id=id;}
+        readonly bool practice;
+        public NpcController(string id,bool practice=false){Id=id;this.practice=practice;}
         public Command Decide(Snapshot state)
         {
             var c=new Command{sequence=++sequence};
@@ -86,6 +87,8 @@ namespace AboutMe
             if(me.equippedVisual==""&&state.inventory.Length>0){c.action="equip";c.itemId=state.inventory[0].id;return c;}
             if(now<reactionUntil)return c;
             float distance=Vector3.Distance(enemy.position,me.position);
+            if(practice&&(state.time<4||enemy.bodyMode==BodyMode.GettingUp||now<enemy.bodyProtectedUntil))
+            {if(distance<3.2f){var away=me.position-enemy.position;away.y=0;if(away.sqrMagnitude<.01f)away=Vector3.right;Move(c,me.position,me.position+away.normalized*3,now);}return c;}
             var aim=enemy.position-me.position;c.yaw=Mathf.Atan2(aim.x,aim.z)*Mathf.Rad2Deg;
             if(distance>1.08f)Move(c,me.position,enemy.position,now);
             if(distance<2.4f&&now>=nextAttack)
@@ -93,7 +96,7 @@ namespace AboutMe
                 attacks++;
                 if(me.grabbing!=""){c.action="cancel";nextAttack=now+.4f;nextGrab=now+2.5f;}
                 else if(attacks%5==0&&distance<1.25f&&now>=nextGrab){c.action="grab";nextAttack=now+1.2f;nextGrab=now+3.5f;}
-                else if(me.equippedVisual!=""||me.publicProp!="") {c.action="use_item";nextAttack=now+1.1f;}
+                else if(me.equippedVisual!=""||me.publicProp!="") {c.action="use_item";nextAttack=now+(practice?2.2f:1.1f);}
             }
             return c;
         }

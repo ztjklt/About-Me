@@ -179,7 +179,7 @@ namespace AboutMe
                 p.grabOverload=force.magnitude>Rules.grabMaxForce*1.8f?p.grabOverload+dt:0;
                 if(p.grabOverload>.2f){ReleaseGrab(p);continue;}
                 var impulse=Vector3.ClampMagnitude(force,Rules.grabMaxForce)*Mathf.SmoothStep(0,1,Mathf.Clamp01((Time-p.grabStartedAt)/Rules.grabBlendDuration))*dt;
-                p.impulse+=impulse;target.impulse-=impulse;
+                p.impulse+=impulse;if(!GuardAnchored(target))target.impulse-=impulse;
                 target.stability=Mathf.Max(0,target.stability-dt*9);target.lastHit=Time;
                 if(target.stability<=0){BeginBodyFall(target,Vector3.zero,target.position);DropBodyOnce(target);target.stability=Rules.maxStability*.65f;}
             }

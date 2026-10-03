@@ -2844,6 +2844,726 @@
         "讨厌吊床",
         "不擅长吊床"
       ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "solar-panel",
+      "label": "太阳能板",
+      "color": "#263248",
+      "evidenceTerms": [
+        "新能源",
+        "太阳能",
+        "太阳能板"
+      ],
+      "excludeTerms": [
+        "不喜欢新能源",
+        "不会新能源",
+        "讨厌新能源",
+        "不擅长新能源",
+        "不喜欢太阳能",
+        "不会太阳能",
+        "讨厌太阳能",
+        "不擅长太阳能",
+        "不喜欢太阳能板",
+        "不会太阳能板",
+        "讨厌太阳能板",
+        "不擅长太阳能板"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "mirror-fold-screen",
+      "label": "折镜屏",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "镜面艺术",
+        "反射幻想",
+        "折镜屏"
+      ],
+      "excludeTerms": [
+        "不喜欢镜面艺术",
+        "不会镜面艺术",
+        "讨厌镜面艺术",
+        "不擅长镜面艺术",
+        "不喜欢反射幻想",
+        "不会反射幻想",
+        "讨厌反射幻想",
+        "不擅长反射幻想",
+        "不喜欢折镜屏",
+        "不会折镜屏",
+        "讨厌折镜屏",
+        "不擅长折镜屏"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "doorstop",
+      "label": "门楔",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "装修",
+        "门挡",
+        "门楔"
+      ],
+      "excludeTerms": [
+        "不喜欢装修",
+        "不会装修",
+        "讨厌装修",
+        "不擅长装修",
+        "不喜欢门挡",
+        "不会门挡",
+        "讨厌门挡",
+        "不擅长门挡",
+        "不喜欢门楔",
+        "不会门楔",
+        "讨厌门楔",
+        "不擅长门楔"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "data-drive",
+      "label": "移动硬盘",
+      "color": "#263248",
+      "evidenceTerms": [
+        "数据备份",
+        "硬盘",
+        "移动硬盘"
+      ],
+      "excludeTerms": [
+        "不喜欢数据备份",
+        "不会数据备份",
+        "讨厌数据备份",
+        "不擅长数据备份",
+        "不喜欢硬盘",
+        "不会硬盘",
+        "讨厌硬盘",
+        "不擅长硬盘",
+        "不喜欢移动硬盘",
+        "不会移动硬盘",
+        "讨厌移动硬盘",
+        "不擅长移动硬盘"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "ribbon-reel",
+      "label": "彩带卷盘",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "庆典",
+        "彩带",
+        "彩带卷盘"
+      ],
+      "excludeTerms": [
+        "不喜欢庆典",
+        "不会庆典",
+        "讨厌庆典",
+        "不擅长庆典",
+        "不喜欢彩带",
+        "不会彩带",
+        "讨厌彩带",
+        "不擅长彩带",
+        "不喜欢彩带卷盘",
+        "不会彩带卷盘",
+        "讨厌彩带卷盘",
+        "不擅长彩带卷盘"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "picnic-blanket",
+      "label": "野餐垫",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "野餐",
+        "picnic",
+        "野餐垫"
+      ],
+      "excludeTerms": [
+        "不喜欢野餐",
+        "不会野餐",
+        "讨厌野餐",
+        "不擅长野餐",
+        "不喜欢picnic",
+        "不会picnic",
+        "讨厌picnic",
+        "不擅长picnic",
+        "不喜欢野餐垫",
+        "不会野餐垫",
+        "讨厌野餐垫",
+        "不擅长野餐垫"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "capybara-model",
+      "label": "水豚模型",
+      "color": "#90745A",
+      "evidenceTerms": [
+        "水豚",
+        "capybara",
+        "水豚模型"
+      ],
+      "excludeTerms": [
+        "不喜欢水豚",
+        "不会水豚",
+        "讨厌水豚",
+        "不擅长水豚",
+        "不喜欢capybara",
+        "不会capybara",
+        "讨厌capybara",
+        "不擅长capybara",
+        "不喜欢水豚模型",
+        "不会水豚模型",
+        "讨厌水豚模型",
+        "不擅长水豚模型"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "folding-fan",
+      "label": "折扇",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "扇子",
+        "传统文化",
+        "折扇"
+      ],
+      "excludeTerms": [
+        "不喜欢扇子",
+        "不会扇子",
+        "讨厌扇子",
+        "不擅长扇子",
+        "不喜欢传统文化",
+        "不会传统文化",
+        "讨厌传统文化",
+        "不擅长传统文化",
+        "不喜欢折扇",
+        "不会折扇",
+        "讨厌折扇",
+        "不擅长折扇"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "metronome",
+      "label": "机械节拍器",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "音乐练习",
+        "节拍器",
+        "机械节拍器"
+      ],
+      "excludeTerms": [
+        "不喜欢音乐练习",
+        "不会音乐练习",
+        "讨厌音乐练习",
+        "不擅长音乐练习",
+        "不喜欢节拍器",
+        "不会节拍器",
+        "讨厌节拍器",
+        "不擅长节拍器",
+        "不喜欢机械节拍器",
+        "不会机械节拍器",
+        "讨厌机械节拍器",
+        "不擅长机械节拍器"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "bath-sponge",
+      "label": "浴球",
+      "color": "#77C8BD",
+      "evidenceTerms": [
+        "沐浴",
+        "浴球"
+      ],
+      "excludeTerms": [
+        "不喜欢沐浴",
+        "不会沐浴",
+        "讨厌沐浴",
+        "不擅长沐浴",
+        "不喜欢浴球",
+        "不会浴球",
+        "讨厌浴球",
+        "不擅长浴球"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "piano-keyboard",
+      "label": "便携电子琴",
+      "color": "#263248",
+      "evidenceTerms": [
+        "钢琴",
+        "电子琴",
+        "piano",
+        "便携电子琴"
+      ],
+      "excludeTerms": [
+        "不喜欢钢琴",
+        "不会钢琴",
+        "讨厌钢琴",
+        "不擅长钢琴",
+        "不喜欢电子琴",
+        "不会电子琴",
+        "讨厌电子琴",
+        "不擅长电子琴",
+        "不喜欢piano",
+        "不会piano",
+        "讨厌piano",
+        "不擅长piano",
+        "不喜欢便携电子琴",
+        "不会便携电子琴",
+        "讨厌便携电子琴",
+        "不擅长便携电子琴"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "saxophone",
+      "label": "萨克斯",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "萨克斯",
+        "saxophone"
+      ],
+      "excludeTerms": [
+        "不喜欢萨克斯",
+        "不会萨克斯",
+        "讨厌萨克斯",
+        "不擅长萨克斯",
+        "不喜欢saxophone",
+        "不会saxophone",
+        "讨厌saxophone",
+        "不擅长saxophone"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "trumpet",
+      "label": "小号",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "小号",
+        "trumpet"
+      ],
+      "excludeTerms": [
+        "不喜欢小号",
+        "不会小号",
+        "讨厌小号",
+        "不擅长小号",
+        "不喜欢trumpet",
+        "不会trumpet",
+        "讨厌trumpet",
+        "不擅长trumpet"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "trombone",
+      "label": "长号",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "长号",
+        "trombone"
+      ],
+      "excludeTerms": [
+        "不喜欢长号",
+        "不会长号",
+        "讨厌长号",
+        "不擅长长号",
+        "不喜欢trombone",
+        "不会trombone",
+        "讨厌trombone",
+        "不擅长trombone"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "flute",
+      "label": "长笛",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "长笛",
+        "flute"
+      ],
+      "excludeTerms": [
+        "不喜欢长笛",
+        "不会长笛",
+        "讨厌长笛",
+        "不擅长长笛",
+        "不喜欢flute",
+        "不会flute",
+        "讨厌flute",
+        "不擅长flute"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "clarinet",
+      "label": "单簧管",
+      "color": "#263248",
+      "evidenceTerms": [
+        "单簧管",
+        "clarinet"
+      ],
+      "excludeTerms": [
+        "不喜欢单簧管",
+        "不会单簧管",
+        "讨厌单簧管",
+        "不擅长单簧管",
+        "不喜欢clarinet",
+        "不会clarinet",
+        "讨厌clarinet",
+        "不擅长clarinet"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "cello",
+      "label": "大提琴",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "大提琴",
+        "cello"
+      ],
+      "excludeTerms": [
+        "不喜欢大提琴",
+        "不会大提琴",
+        "讨厌大提琴",
+        "不擅长大提琴",
+        "不喜欢cello",
+        "不会cello",
+        "讨厌cello",
+        "不擅长cello"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "harp",
+      "label": "竖琴",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "竖琴",
+        "harp"
+      ],
+      "excludeTerms": [
+        "不喜欢竖琴",
+        "不会竖琴",
+        "讨厌竖琴",
+        "不擅长竖琴",
+        "不喜欢harp",
+        "不会harp",
+        "讨厌harp",
+        "不擅长harp"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "accordion",
+      "label": "手风琴",
+      "color": "#263248",
+      "evidenceTerms": [
+        "手风琴",
+        "accordion"
+      ],
+      "excludeTerms": [
+        "不喜欢手风琴",
+        "不会手风琴",
+        "讨厌手风琴",
+        "不擅长手风琴",
+        "不喜欢accordion",
+        "不会accordion",
+        "讨厌accordion",
+        "不擅长accordion"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "snare-drum",
+      "label": "军鼓",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "军鼓",
+        "打击乐"
+      ],
+      "excludeTerms": [
+        "不喜欢军鼓",
+        "不会军鼓",
+        "讨厌军鼓",
+        "不擅长军鼓",
+        "不喜欢打击乐",
+        "不会打击乐",
+        "讨厌打击乐",
+        "不擅长打击乐"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "cymbals",
+      "label": "铜镲",
+      "color": "#F5CB77",
+      "evidenceTerms": [
+        "铜镲",
+        "打击乐"
+      ],
+      "excludeTerms": [
+        "不喜欢铜镲",
+        "不会铜镲",
+        "讨厌铜镲",
+        "不擅长铜镲",
+        "不喜欢打击乐",
+        "不会打击乐",
+        "讨厌打击乐",
+        "不擅长打击乐"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "tambourine",
+      "label": "铃鼓",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "铃鼓",
+        "tambourine"
+      ],
+      "excludeTerms": [
+        "不喜欢铃鼓",
+        "不会铃鼓",
+        "讨厌铃鼓",
+        "不擅长铃鼓",
+        "不喜欢tambourine",
+        "不会tambourine",
+        "讨厌tambourine",
+        "不擅长tambourine"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "triangle-instrument",
+      "label": "三角铁",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "三角铁",
+        "管弦乐"
+      ],
+      "excludeTerms": [
+        "不喜欢三角铁",
+        "不会三角铁",
+        "讨厌三角铁",
+        "不擅长三角铁",
+        "不喜欢管弦乐",
+        "不会管弦乐",
+        "讨厌管弦乐",
+        "不擅长管弦乐"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "kalimba",
+      "label": "拇指琴",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "拇指琴",
+        "kalimba"
+      ],
+      "excludeTerms": [
+        "不喜欢拇指琴",
+        "不会拇指琴",
+        "讨厌拇指琴",
+        "不擅长拇指琴",
+        "不喜欢kalimba",
+        "不会kalimba",
+        "讨厌kalimba",
+        "不擅长kalimba"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "guzheng",
+      "label": "古筝",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "古筝",
+        "民族乐器"
+      ],
+      "excludeTerms": [
+        "不喜欢古筝",
+        "不会古筝",
+        "讨厌古筝",
+        "不擅长古筝",
+        "不喜欢民族乐器",
+        "不会民族乐器",
+        "讨厌民族乐器",
+        "不擅长民族乐器"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "pipa",
+      "label": "琵琶",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "琵琶",
+        "民乐"
+      ],
+      "excludeTerms": [
+        "不喜欢琵琶",
+        "不会琵琶",
+        "讨厌琵琶",
+        "不擅长琵琶",
+        "不喜欢民乐",
+        "不会民乐",
+        "讨厌民乐",
+        "不擅长民乐"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "erhu",
+      "label": "二胡",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "二胡",
+        "民乐"
+      ],
+      "excludeTerms": [
+        "不喜欢二胡",
+        "不会二胡",
+        "讨厌二胡",
+        "不擅长二胡",
+        "不喜欢民乐",
+        "不会民乐",
+        "讨厌民乐",
+        "不擅长民乐"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "music-stand",
+      "label": "谱架",
+      "color": "#263248",
+      "evidenceTerms": [
+        "乐谱",
+        "乐队排练",
+        "谱架"
+      ],
+      "excludeTerms": [
+        "不喜欢乐谱",
+        "不会乐谱",
+        "讨厌乐谱",
+        "不擅长乐谱",
+        "不喜欢乐队排练",
+        "不会乐队排练",
+        "讨厌乐队排练",
+        "不擅长乐队排练",
+        "不喜欢谱架",
+        "不会谱架",
+        "讨厌谱架",
+        "不擅长谱架"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "watercolor-box",
+      "label": "水彩盒",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "水彩",
+        "watercolor",
+        "水彩盒"
+      ],
+      "excludeTerms": [
+        "不喜欢水彩",
+        "不会水彩",
+        "讨厌水彩",
+        "不擅长水彩",
+        "不喜欢watercolor",
+        "不会watercolor",
+        "讨厌watercolor",
+        "不擅长watercolor",
+        "不喜欢水彩盒",
+        "不会水彩盒",
+        "讨厌水彩盒",
+        "不擅长水彩盒"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "easel",
+      "label": "画架",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "油画",
+        "素描",
+        "画架"
+      ],
+      "excludeTerms": [
+        "不喜欢油画",
+        "不会油画",
+        "讨厌油画",
+        "不擅长油画",
+        "不喜欢素描",
+        "不会素描",
+        "讨厌素描",
+        "不擅长素描",
+        "不喜欢画架",
+        "不会画架",
+        "讨厌画架",
+        "不擅长画架"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "charcoal-stick",
+      "label": "素描炭条",
+      "color": "#263248",
+      "evidenceTerms": [
+        "素描",
+        "炭笔",
+        "素描炭条"
+      ],
+      "excludeTerms": [
+        "不喜欢素描",
+        "不会素描",
+        "讨厌素描",
+        "不擅长素描",
+        "不喜欢炭笔",
+        "不会炭笔",
+        "讨厌炭笔",
+        "不擅长炭笔",
+        "不喜欢素描炭条",
+        "不会素描炭条",
+        "讨厌素描炭条",
+        "不擅长素描炭条"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "inkstone",
+      "label": "砚台",
+      "color": "#263248",
+      "evidenceTerms": [
+        "书法",
+        "磨墨",
+        "砚台"
+      ],
+      "excludeTerms": [
+        "不喜欢书法",
+        "不会书法",
+        "讨厌书法",
+        "不擅长书法",
+        "不喜欢磨墨",
+        "不会磨墨",
+        "讨厌磨墨",
+        "不擅长磨墨",
+        "不喜欢砚台",
+        "不会砚台",
+        "讨厌砚台",
+        "不擅长砚台"
+      ]
     }
   ]
 }
