@@ -52,7 +52,7 @@ namespace AboutMe
             string signature=JsonUtility.ToJson(profile)+"|"+net.Sample+"|"+GameLocalization.English;
             if(!force&&signature==savedCharacterSignature)return;savedCharacterSignature=signature;
             var appearance=AppearanceData.Resolve(profile?.appearance,profile?.color??"#77C8BD",profile?.outfit??0);
-            appearance.character=profile?.characterSkin=="ds-girl"&&profile.dsGirlUnlocked?"ds":profile?.characterSkin=="claude-girl"&&profile.claudeGirlUnlocked?"claude":"normal";
+            appearance.character=AISkinRegistry.CharacterForSkin(AISkinRegistry.Verified(profile));
             if(savedCharacterActor==null){savedCharacterActor=new ToyActor("Saved character",appearance.topColor,0,null,appearance);savedCharacterActor.root.transform.position=new Vector3(1100,1,0);savedCharacterActor.label.text="";}
             savedCharacterActor.ApplyAppearance(appearance);
             var persona=profile?.personas?.FirstOrDefault(a=>a.visualId==TraitAbilityCatalog.VisualId)??profile?.personas?.FirstOrDefault();

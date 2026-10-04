@@ -30,13 +30,14 @@ namespace AboutMe
             new IntroductionQuestion("喜欢哪种人物表情？","我喜欢的人物表情是",new[]{"友好微笑","开心大笑","自信挑眉","慵懒半眯","惊讶睁眼","认真坚定"},new string[0]),
             new IntroductionQuestion("喜欢使用哪个 AI？","我喜欢",new[]{"DeepSeek","Claude"},new string[0]),
             new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0]),
-            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0])
+            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0]),
+            new IntroductionQuestion("其他 AI 偏好（可跳过）","我喜欢",new[]{"GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0])
         };
 
         RectTransform introductionQuestionnaire;
         InputField questionnaireDraft;
         Text questionnaireFeedback;
-        readonly bool[] introductionAnswers=new bool[76];
+        readonly bool[] introductionAnswers=new bool[84];
         readonly List<InputField> questionnaireOther=new List<InputField>();
         readonly List<string> questionnaireOptionLabels=new List<string>();
         static readonly string[] QuestionnaireExpressions={"friendly","joy","confident","sleepy","surprised","determined"};
@@ -104,7 +105,7 @@ namespace AboutMe
                 float otherY=y+40+((question.labels.Length+1)/2)*52;
                 var other=ArtField(content,0,otherY,528,42,"其他 / 自己填写",false);other.characterLimit=120;questionnaireOther.Add(other);
                 y=otherY+65;
-                if(q==12){ArtText(content,"根据你喜欢的 AI，可能会额外提供可选的彩蛋角色模型。",0,y,528,42,14,UITheme.Muted);y+=52;}
+                if(q==12||q==15){ArtText(content,"根据你喜欢的 AI，可能会额外提供可选的彩蛋角色模型。",0,y,528,42,14,UITheme.Muted);y+=52;}
                 if(q==14){ArtText(content,"仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。",0,y,528,58,14,UITheme.Muted);y+=68;}
             }
             content.sizeDelta=new Vector2(540,y+8);

@@ -16,6 +16,7 @@ namespace AboutMe
         AppearanceData appearanceDraft=new AppearanceData();bool appearanceDirty;string skinDraft="normal";
         RectTransform wardrobe;Camera wardrobeCamera;ToyActor wardrobeActor;RenderTexture wardrobeTexture;
         GameObject wardrobeLight;Text wardrobeNote;Button normalSkinButton,dsSkinButton,claudeSkinButton,recommendButton;readonly Dictionary<string,Text> wardrobeValues=new Dictionary<string,Text>();
+        readonly Dictionary<string,Button> aiSkinButtons=new Dictionary<string,Button>();
         InputField personalityInput;
         readonly List<Button> wardrobeButtons=new List<Button>();
         UILiquidTabIndicator wardrobeViewIndicator;readonly Text[] wardrobeViewLabels=new Text[3];
@@ -28,10 +29,15 @@ namespace AboutMe
             ArtText(card,"我的衣橱",32,28,600,52,34,UITheme.Ink,FontStyle.Bold);
             ArtText(card,"自由搭配 · 不影响战斗属性或 Persona",34,84,810,32,18,UITheme.Muted);
             wardrobeButtons.Add(ArtButton(card,"关闭",1220,28,116,46,CloseWardrobe,UITheme.Field,UITheme.Ink));
-            normalSkinButton=ArtButton(card,"普通",800,82,160,42,()=>SetCharacterSkin("normal"),UITheme.Field,UITheme.Ink);
-            dsSkinButton=ArtButton(card,"DS · 锁定",972,82,168,42,()=>SetCharacterSkin("ds-girl"),UITheme.Mint,UITheme.Ink);
-            claudeSkinButton=ArtButton(card,"Claude · 锁定",1152,82,184,42,()=>SetCharacterSkin("claude-girl"),UITheme.Yellow,UITheme.Ink);
-            wardrobeButtons.Add(normalSkinButton);wardrobeButtons.Add(dsSkinButton);wardrobeButtons.Add(claudeSkinButton);
+            var skinViewport=ArtPanel(card,"AI character choices viewport",800,80,536,50,UITheme.Field,false,false);skinViewport.gameObject.AddComponent<RectMask2D>();
+            var skinContent=ArtRect(skinViewport,"AI character choices",Vector2.zero,new Vector2(11*148,48));
+            var skinScroll=skinViewport.gameObject.AddComponent<ScrollRect>();skinScroll.viewport=skinViewport;skinScroll.content=skinContent;skinScroll.vertical=false;skinScroll.horizontal=true;skinScroll.movementType=ScrollRect.MovementType.Clamped;skinScroll.scrollSensitivity=45;
+            var available=new[]{"normal"}.Concat(AISkinRegistry.All.Select(x=>x.skin)).ToArray();
+            for(int i=0;i<available.Length;i++)
+            {
+                var skin=available[i];var button=ArtButton(skinContent,AISkinRegistry.Label(skin),i*148,2,140,44,()=>SetCharacterSkin(skin),UITheme.Mint,UITheme.Ink);aiSkinButtons.Add(skin,button);wardrobeButtons.Add(button);
+            }
+            normalSkinButton=aiSkinButtons["normal"];dsSkinButton=aiSkinButtons["ds-girl"];claudeSkinButton=aiSkinButtons["claude-girl"];
             var preview=ArtPanel(card,"Doll preview",32,137,435,484,UITheme.Field,true,false);var viewport=ArtRect(preview,"Preview image",new Vector2(5,-5),new Vector2(425,474));var raw=viewport.gameObject.AddComponent<RawImage>();
             wardrobeTexture=new RenderTexture(640,740,24){antiAliasing=4};raw.texture=wardrobeTexture;raw.raycastTarget=false;
             var cameraObject=new GameObject("Wardrobe camera");wardrobeCamera=cameraObject.AddComponent<Camera>();wardrobeCamera.orthographic=true;wardrobeCamera.orthographicSize=1.5f;wardrobeCamera.clearFlags=CameraClearFlags.SolidColor;wardrobeCamera.backgroundColor=UITheme.Field;wardrobeCamera.cullingMask=1<<30;wardrobeCamera.targetTexture=wardrobeTexture;wardrobeCamera.enabled=false;
@@ -88,12 +94,12 @@ namespace AboutMe
             if(busy)return;var slot=AppearanceCatalog.Data.slots.First(x=>x.id==id);int index=Array.FindIndex(slot.options,x=>x.id==appearanceDraft.Get(id));appearanceDraft.Set(id,slot.options[(index+step+slot.options.Length)%slot.options.Length].id);appearanceDirty=true;RefreshAppearancePreview();
         }
         void SetDraftColor(string color){appearanceDraft.topColor=color;appearanceDirty=true;RefreshAppearancePreview();}
-        bool CanUseSkin(string skin)=>skin=="normal"||profile!=null&&(skin=="ds-girl"&&profile.dsGirlUnlocked||skin=="claude-girl"&&profile.claudeGirlUnlocked);
+        bool CanUseSkin(string skin)=>AISkinRegistry.CanUse(profile,skin);
         void SetCharacterSkin(string skin)
         {
             if(busy)return;
             if(net.Sample){wardrobeNote.text="请在真实角色衣橱保存 AI 角色选择，再载入练习道具。";return;}
-            if(!CanUseSkin(skin)){wardrobeNote.text=skin=="ds-girl"?"介绍写明喜欢 DeepSeek 后解锁。":"介绍写明喜欢 Claude 后解锁。";return;}
+            if(!CanUseSkin(skin)){wardrobeNote.text=GameLocalization.Text("介绍写明本人喜欢该 AI 后解锁：")+AISkinRegistry.Label(skin);return;}
             skinDraft=skin;appearanceDirty=true;
             wardrobeNote.text=skin=="normal"?"普通穿搭；保存后生效。":"AI 角色套装；保存后生效。";RefreshAppearancePreview();
         }
@@ -112,14 +118,14 @@ namespace AboutMe
         }
         void RefreshAppearancePreview()
         {
-            appearanceDraft=AppearanceData.Resolve(appearanceDraft);appearanceDraft.character=CanUseSkin(skinDraft)?skinDraft=="ds-girl"?"ds":skinDraft=="claude-girl"?"claude":"normal":"normal";
+            appearanceDraft=AppearanceData.Resolve(appearanceDraft);appearanceDraft.character=AISkinRegistry.CharacterForSkin(CanUseSkin(skinDraft)?skinDraft:"normal");
             selectedColor=appearanceDraft.topColor;world.PreviewAppearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();RefreshColorSelection();RefreshExpressionChoices();
             if(!wardrobe)return;
-            dsSkinButton.GetComponentInChildren<Text>().text=profile!=null&&profile.dsGirlUnlocked?"DS 娘":"DS · 锁定";
-            claudeSkinButton.GetComponentInChildren<Text>().text=profile!=null&&profile.claudeGirlUnlocked?"Claude 娘":"Claude · 锁定";
-            normalSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="normal"?UIVisualState.Selected:UIVisualState.Normal);
-            dsSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="ds-girl"?UIVisualState.Selected:UIVisualState.Normal);
-            claudeSkinButton.GetComponent<StickerButton>().SetState(skinDraft=="claude-girl"?UIVisualState.Selected:UIVisualState.Normal);
+            foreach(var entry in aiSkinButtons)
+            {
+                bool allowed=CanUseSkin(entry.Key);entry.Value.GetComponentInChildren<Text>().text=AISkinRegistry.Label(entry.Key)+(allowed?"":GameLocalization.Text(" · 锁定"));
+                entry.Value.GetComponent<StickerButton>().SetState(skinDraft==entry.Key?UIVisualState.Selected:UIVisualState.Normal);
+            }
             recommendButton.interactable=skinDraft=="normal"&&!busy;
             foreach(var slot in AppearanceCatalog.Data.slots)
             {
@@ -205,19 +211,19 @@ namespace AboutMe
                     if(req.responseCode==401&&attempt==0)
                     {net.Token="";SaveTokenForApi("");yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;continue;}
                     if(req.result!=UnityWebRequest.Result.Success){Fail(req,"保存穿搭与AI 角色解锁");if(wardrobeNote)wardrobeNote.text=net.Status;yield break;}
-                    bool wasDsUnlocked=profile!=null&&profile.dsGirlUnlocked,wasClaudeUnlocked=profile!=null&&profile.claudeGirlUnlocked;
+                    var previouslyUnlocked=AISkinRegistry.All.Where(x=>CanUseSkin(x.skin)).Select(x=>x.skin).ToArray();
                     profile=JsonUtility.FromJson<Profile>(req.downloadHandler.text);appearanceDirty=false;DisplayProfile();
                     PlayerPrefs.SetString("introduction",introduction.text);PlayerPrefs.SetString("nickname",nickname.text);PlayerPrefs.Save();
                     busy=false;
                     if(openWardrobeOnUnlock)
                     {
-                        if(profile.dsGirlUnlocked||profile.claudeGirlUnlocked){OpenWardrobe();net.Status="AI 角色资格已更新，请在衣橱中选择并保存。";wardrobeNote.text="DS 与 Claude 可分别选择；保存后生效。";}
-                        else net.Status="未解锁：介绍需写明本人喜欢 DeepSeek 或 Claude。";
+                        if(AISkinRegistry.All.Any(x=>CanUseSkin(x.skin))){OpenWardrobe();net.Status="AI 角色资格已更新，请在衣橱中选择并保存。";wardrobeNote.text="已解锁的 AI 角色可分别选择；保存后生效。";}
+                        else net.Status="未解锁：介绍需写明本人喜欢名单中的 AI。";
                     }
                     else
                     {
                         net.Status="穿搭已保存，Persona 没有改变。";
-                        if(wardrobeNote)wardrobeNote.text=(!wasDsUnlocked&&profile.dsGirlUnlocked)||(!wasClaudeUnlocked&&profile.claudeGirlUnlocked)?"新AI 角色已解锁；选择外观并保存。":"已保存。";
+                        if(wardrobeNote)wardrobeNote.text=AISkinRegistry.All.Any(x=>CanUseSkin(x.skin)&&!previouslyUnlocked.Contains(x.skin))?"新AI 角色已解锁；选择外观并保存。":"已保存。";
                     }
                     yield break;
                 }

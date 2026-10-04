@@ -4,7 +4,7 @@ from pathlib import Path
 import httpx
 from fastapi import HTTPException
 from pydantic import BaseModel,ConfigDict,Field,model_validator
-from server.easter_egg import liked_brands
+from server.easter_egg import liked_ai_brands as liked_brands, SKINS
 
 CATALOG=json.loads((Path(__file__).resolve().parents[1]/'shared/appearance-catalog.json').read_text())
 OPTIONS={slot['id']:{o['id'] for o in slot['options']} for slot in CATALOG['slots']}
@@ -40,11 +40,17 @@ def normalized_profile(profile,introduction=None):
     likes=liked_brands(introduction)
     profile['dsGirlUnlocked']=(bool(profile['dsGirlUnlocked']) if 'dsGirlUnlocked' in profile else likes['deepseek'])
     profile['claudeGirlUnlocked']=(bool(profile['claudeGirlUnlocked']) if 'claudeGirlUnlocked' in profile else likes['claude'])
+    allowed={s['skin'] for s in SKINS}
+    unlocked=profile.get('unlockedCharacterSkins')
+    if not isinstance(unlocked,list):unlocked=[s['skin'] for s in SKINS if likes[s['brand']]]
+    unlocked={skin for skin in unlocked if isinstance(skin,str) and skin in allowed}
+    for field,skin in [('dsGirlUnlocked','ds-girl'),('claudeGirlUnlocked','claude-girl')]:
+        if profile[field]:unlocked.add(skin)
+        else:unlocked.discard(skin)
+    profile['unlockedCharacterSkins']=[s['skin'] for s in SKINS if s['skin'] in unlocked]
     skin=profile.get('characterSkin')
-    if (skin not in ('ds-girl','claude-girl') or
-        (skin=='ds-girl' and not profile['dsGirlUnlocked']) or
-        (skin=='claude-girl' and not profile['claudeGirlUnlocked'])):
-        profile['characterSkin']='normal'
+    if skin!='normal' and skin not in unlocked:profile['characterSkin']='normal'
+    profile.setdefault('characterSkin','normal')
     return profile
 
 class AppearanceSave(BaseModel):

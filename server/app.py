@@ -20,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
-from server.easter_egg import liked_brands
+from server.easter_egg import liked_ai_brands as liked_brands, SKINS
 from server.university_crests import resolve_crest, cache_dir
 from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity, specific_catalog_pairs
 from server.roast_safety import safe_public_text, safe_roast
@@ -867,7 +867,7 @@ def preserve_retry_assets(assets, old, introduction):
 def public_profile(profile):
     """Authority receives gameplay/appearance fields, never the player's private evidence."""
     allowed = {'playerId', 'nickname', 'color', 'outfit', 'revision', 'appearance', 'appearanceRevision',
-               'characterSkin', 'dsGirlUnlocked', 'claudeGirlUnlocked', 'displayLanguage'}
+               'characterSkin', 'dsGirlUnlocked', 'claudeGirlUnlocked', 'unlockedCharacterSkins', 'displayLanguage'}
     asset_allowed = {'assetId', 'name', 'templateId', 'visualId', 'color', 'wordCategory', 'wordText', 'abilityId',
                      'institutionName', 'emblemPath', 'emblemCrop', 'emblemLicense', 'crestStatus'}
     result = {k: v for k, v in profile.items() if k in allowed}
@@ -966,7 +966,8 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                   wordAbilities=merged_word_selections(selections),
                   appearance=old_normalized['appearance'], appearanceRevision=old_normalized['appearanceRevision'],
                   characterSkin=old_normalized['characterSkin'],
-                  dsGirlUnlocked=likes['deepseek'], claudeGirlUnlocked=likes['claude'])
+                  dsGirlUnlocked=likes['deepseek'], claudeGirlUnlocked=likes['claude'],
+                  unlockedCharacterSkins=[s['skin'] for s in SKINS if likes[s['brand']]])
     result = normalized_profile(result, body.introduction.strip())
     with db() as con:
         changed = con.execute('UPDATE profiles SET profile=?,intro=?,updated=? WHERE id=? AND profile=?',
@@ -1050,16 +1051,14 @@ def save_appearance(body: AppearanceSave, authorization: str | None = Header(def
         likes = liked_brands(body.introduction)
         profile['dsGirlUnlocked'] = likes['deepseek']
         profile['claudeGirlUnlocked'] = likes['claude']
-        if ((profile['characterSkin'] == 'ds-girl' and not profile['dsGirlUnlocked']) or
-            (profile['characterSkin'] == 'claude-girl' and not profile['claudeGirlUnlocked'])):
-            profile['characterSkin'] = 'normal'
+        profile['unlockedCharacterSkins']=[s['skin'] for s in SKINS if likes[s['brand']]]
+        if profile['characterSkin']!='normal' and profile['characterSkin'] not in profile['unlockedCharacterSkins']:
+            profile['characterSkin']='normal'
     if body.characterSkin is not None:
-        if body.characterSkin not in ('normal','ds-girl','claude-girl'):
+        if body.characterSkin not in {'normal',*(s['skin'] for s in SKINS)}:
             raise HTTPException(422, '未发布的角色外观')
-        if body.characterSkin == 'ds-girl' and not profile['dsGirlUnlocked']:
-            raise HTTPException(422, '该角色外观尚未解锁')
-        if body.characterSkin == 'claude-girl' and not profile['claudeGirlUnlocked']:
-            raise HTTPException(403, '该角色外观尚未解锁')
+        if body.characterSkin!='normal' and body.characterSkin not in profile['unlockedCharacterSkins']:
+            raise HTTPException(422 if body.characterSkin=='ds-girl' else 403, '该角色外观尚未解锁')
         profile['characterSkin'] = body.characterSkin
     profile['appearance'] = body.appearance.model_dump()
     profile['appearanceRevision'] += 1

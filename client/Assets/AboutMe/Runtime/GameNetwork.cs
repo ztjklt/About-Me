@@ -173,7 +173,7 @@ namespace AboutMe
                     {
                         Profile verified=null;try{verified=JsonUtility.FromJson<Profile>(req.downloadHandler.text);}catch(Exception){}
                         if(verified!=null)
-                        {sample.dsGirlUnlocked=verified.dsGirlUnlocked;sample.claudeGirlUnlocked=verified.claudeGirlUnlocked;sample.characterSkin=verified.characterSkin;}
+                        {sample.dsGirlUnlocked=verified.dsGirlUnlocked;sample.claudeGirlUnlocked=verified.claudeGirlUnlocked;sample.unlockedCharacterSkins=verified.unlockedCharacterSkins;sample.characterSkin=verified.characterSkin;}
                     }
                 }
             }

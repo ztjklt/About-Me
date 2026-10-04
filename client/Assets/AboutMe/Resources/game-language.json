@@ -5823,6 +5823,66 @@
     {
       "zh": "文字道具能力 · ",
       "en": "Word Persona ability · "
+    },
+    {
+      "zh": "其他 AI 偏好（可跳过）",
+      "en": "Other AI preferences (optional)"
+    },
+    {
+      "zh": "千问",
+      "en": "Qwen"
+    },
+    {
+      "zh": "豆包",
+      "en": "Doubao"
+    },
+    {
+      "zh": " · 锁定",
+      "en": " · Locked"
+    },
+    {
+      "zh": "介绍写明本人喜欢该 AI 后解锁：",
+      "en": "Say you like this AI in your introduction to unlock: "
+    },
+    {
+      "zh": "已解锁的 AI 角色可分别选择；保存后生效。",
+      "en": "Select any unlocked AI character, then save to apply."
+    },
+    {
+      "zh": "未解锁：介绍需写明本人喜欢名单中的 AI。",
+      "en": "Not unlocked: say you personally like a supported AI in your introduction."
+    },
+    {
+      "zh": "GPT 娘",
+      "en": "GPT Girl"
+    },
+    {
+      "zh": "Gemini 娘",
+      "en": "Gemini Girl"
+    },
+    {
+      "zh": "Grok 娘",
+      "en": "Grok Girl"
+    },
+    {
+      "zh": "Kimi 娘",
+      "en": "Kimi Girl"
+    },
+    {
+      "zh": "千问娘",
+      "en": "Qwen Girl"
+    },
+    {
+      "zh": "MiniMax 娘",
+      "en": "MiniMax Girl"
+    },
+    {
+      "zh": "豆包娘",
+      "en": "Doubao Girl"
+    },
+    {
+      "zh": "GLM 娘",
+      "en": "GLM Girl"
     }
   ]
 }

@@ -45,7 +45,7 @@ namespace AboutMe
                     var mesh=filter.sharedMesh;var renderer=filter.GetComponent<MeshRenderer>();if(!mesh||!renderer)continue;
                     int bone=Array.IndexOf(bones,part.transform.parent);if(bone<0)throw new InvalidOperationException("Unbound cosmetic "+part.name);
                     var matrix=root.worldToLocalMatrix*filter.transform.localToWorldMatrix;var normalMatrix=matrix.inverse.transpose;var points=mesh.vertices;var sourceNormals=mesh.normals;var sourceWeights=part.name=="Weighted sleeve"?mesh.boneWeights:null;
-                    var tint=renderer.sharedMaterial.color;int offset=vertices.Count;
+                    var tint=renderer.sharedMaterial.color;var painted=mesh.name=="Doubao painted original body"?mesh.colors:null;int offset=vertices.Count;
                     for(int i=0;i<points.Length;i++)
                     {
                         var worldVertex=matrix.MultiplyPoint3x4(points[i]);
@@ -56,8 +56,16 @@ namespace AboutMe
                         var delta=Vector3.zero;string name=part.name;
                         bool dsEye=name.StartsWith("DS Eye ",StringComparison.Ordinal);
                         bool claudeEye=name.StartsWith("Claude Eye ",StringComparison.Ordinal);
-                        bool styledEye=dsEye||claudeEye;
-                        float eyeDrop=claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
+                        bool gptEye=name.StartsWith("GPT Eye ",StringComparison.Ordinal);
+                        bool geminiEye=name.StartsWith("Gemini Eye ",StringComparison.Ordinal);
+                        bool grokEye=name.StartsWith("Grok Eye ",StringComparison.Ordinal);
+                        bool kimiEye=name.StartsWith("Kimi Eye ",StringComparison.Ordinal);
+                        bool qwenEye=name.StartsWith("Qwen Eye ",StringComparison.Ordinal);
+                        bool minimaxEye=name.StartsWith("MiniMax Eye ",StringComparison.Ordinal);
+                        bool doubaoEye=name.StartsWith("Doubao Eye ",StringComparison.Ordinal);
+                        bool glmEye=name.StartsWith("GLM Eye ",StringComparison.Ordinal);
+                        bool styledEye=dsEye||claudeEye||gptEye||geminiEye||grokEye||kimiEye||qwenEye||minimaxEye||doubaoEye||glmEye;
+                        float eyeDrop=gptEye?GPTGirlFaceDetails.EyeDrop:geminiEye?GeminiGirlFaceDetails.EyeDrop:grokEye?GrokGirlFaceDetails.EyeDrop:kimiEye?KimiGirlFaceDetails.EyeDrop:qwenEye?QwenGirlFaceDetails.EyeDrop:minimaxEye?MiniMaxGirlFaceDetails.EyeDrop:doubaoEye?DoubaoGirlFaceDetails.EyeDrop:glmEye?GLMGirlFaceDetails.EyeDrop:claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
                         bool isEye=styledEye||name=="Eye white"||name=="Pupil"||name=="Eye glint";
                         if(name.StartsWith("Head(")||name=="Round head and chin")
                         {
@@ -96,7 +104,7 @@ namespace AboutMe
                             var local=bones[bone].InverseTransformPoint(root.TransformPoint(worldVertex));stretch=Vector3.down*Mathf.Max(0,-local.y-.285f)*1.5f;
                         }
                         armStretch.Add(root.InverseTransformVector(bones[bone].TransformVector(stretch)));
-                        normals.Add(normalMatrix.MultiplyVector(sourceNormals[i]).normalized);colors.Add(tint);
+                        normals.Add(normalMatrix.MultiplyVector(sourceNormals[i]).normalized);colors.Add(painted!=null&&painted.Length==points.Length?painted[i]:tint);
                         if(sourceWeights==null)
                         {
                             var w=new BoneWeight{boneIndex0=bone,weight0=1};

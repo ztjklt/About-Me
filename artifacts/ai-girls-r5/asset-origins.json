@@ -1,0 +1,1063 @@
+{
+  "baseCommit": "11ff7e8",
+  "packages": [
+    {
+      "model": "gpt",
+      "zip": "/Users/jitian/.codex/worktrees/gpt-girl-modular/About Me/artifacts/gpt-girl-modular/GPTGirl-Modular-Delivery.zip",
+      "zipSha256": "6713c0763f1a59f895995f75234392153f89985bdb0950d4547f7e096a6df964",
+      "branch": "codex/gpt-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular.meta",
+          "sha256": "548ec1f1e643e4c620d980368905c742eeefe3ffc4d15bb44d55925f2bce9b56"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab",
+          "sha256": "b45e931bbea66a5d7bb33f69da12efe7bfe602f07339e331d1e2038b46eb627b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab.meta",
+          "sha256": "4b11da24a19ad1b2e9a1f3346f5444482b68e2f5d3a4f911660a5a85c3a1b10c"
+        },
+        {
+          "path": "docs/GPT_GIRL_MODULAR.md",
+          "sha256": "c16bb3b85b0984d51127dd70aafb7efa3c0a8767768369e29f5db5db036c1c87"
+        },
+        {
+          "path": "scripts/package-gpt-girl.py",
+          "sha256": "d1f3b3a4d98a8766659696cc2ce2b69d7970ab4a94805e96eeeaa61ea49fdd01"
+        },
+        {
+          "path": "scripts/run-gpt-girl-audit.command",
+          "sha256": "d2f0652717a6d6b43fea1ceb1064e12ec9e52ad83b0fdba788c90a376ae5a103"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs",
+          "sha256": "63ca619a5a827f607fe9d3cb49fb69419a339ac56498f4f5e5f709572f7c6e3b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs.meta",
+          "sha256": "caf5cc8c0cb7702218ffc54cc7e3d51ddcb8fde26dcae2b501663a05eaa7f741"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs",
+          "sha256": "dbdd01986ba70dfd9e8478824cd14b0d4753ad5c9138dd603c17f13867dcfd4c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs.meta",
+          "sha256": "4c36f5dc883663474ade4ea5efb0c5f990c673fede5785847f2ddc02dd75cc29"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GPTGirlModularTools.cs",
+          "sha256": "0ddf16e453d5de3192644b21c11ff82c06ed3b99a47061af7bf508bcc1b7c522"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GPTGirlModularTools.cs.meta",
+          "sha256": "2a686d0b100eb1b31f0fc95d22f72c422ae961a8ff4d06d5ef460301c7d18633"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GPTGirlFaceReview.cs",
+          "sha256": "e8d74f8cccba5d62616a2daab3121244d77ea5245fdc0f76253e2e8e2b5ae450"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GPTGirlFaceReview.cs.meta",
+          "sha256": "fe3acad5d6ed1f3db5ae7970ba60a63a4d7d92b4444f2a1a98a3335985f76554"
+        },
+        {
+          "path": "scripts/gpt-girl-modular-assets.py",
+          "sha256": "6bba849231ae02ea2d236adad551ff57c2c17f5184b8165b42f0105982ce495f"
+        },
+        {
+          "path": "scripts/gpt-girl-modular-source.py",
+          "sha256": "be14928de3f040cb55759f05ee56c89a1b81d698f6292d04ef9b902033daa4b0"
+        },
+        {
+          "path": "scripts/gpt-girl-modular-video.py",
+          "sha256": "c84010d1f3660528827aa273995341acf2990c71eea37de94c723e5058e5d81d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset",
+          "sha256": "5749938dded5629bbb9dfcb9aa195f3e182c029fde7d9c485e06f498cc184c1b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset.meta",
+          "sha256": "799ac139eb208dae755db46783a514e6d3a9b5d19ed063ee5aacec99540ef27d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader",
+          "sha256": "04b262a60001cad846654d53b8f59a596b2b56a9ef96a0cca4f2cb1ccb9edca8"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader.meta",
+          "sha256": "076c263b264401a6f511fe4160a48ee428965a77a97b0529a724f58ad1a1bee9"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx",
+          "sha256": "ec256e342984be9e64e000403cc747ea173e2907161d2a0fea0a8bca1d2d6a14"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx.meta",
+          "sha256": "be64b24059c19374c728465350900f76ba4b69ebe70ce60aa98934752af01fbd"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat",
+          "sha256": "d8833794b5b110c32ad507a7da98c36a7497a9060e50cbdb9febd8beac2550e2"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat.meta",
+          "sha256": "4e2d60d3245a0407f5f8d61c9be8429521ba46629dd8f60ebbaffdbf3f184dbd"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/GPTGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader",
+        "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "87bd4e2d1dbd8c92d03355cf3867fc35c92eaaceb2350f9c6a47f9fd54641598",
+      "semanticIntegration": true
+    },
+    {
+      "model": "gemini",
+      "zip": "/Users/jitian/.codex/worktrees/gemini-girl-modular/About Me/artifacts/gemini-girl-modular/GeminiGirl-Modular-Delivery.zip",
+      "zipSha256": "e60256b9f1b65bf1b566ca2924b8aaec9cfeba991380897c868562bbc87550ee",
+      "branch": "codex/gemini-girl-modular",
+      "sourceSnapshotSha256": null,
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular.meta",
+          "sha256": "98419c866ebe47fdf68ddfd81896aed06c740d206747674f97690705658d8d72"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab",
+          "sha256": "ace228c2d4ee373989d786db8ead90c5e452a8f3013f5603c524e592d242eee3"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab.meta",
+          "sha256": "bd0aa3be17f5a4f3901ca5c1ad2223624900390f90c323adbd22bc95abbfff37"
+        },
+        {
+          "path": "docs/GEMINI_GIRL_MODULAR.md",
+          "sha256": "cd1fa37841be23349f6bb941e030722239c529ef9b0621f0a9194c3363a7477a"
+        },
+        {
+          "path": "scripts/package-gemini-girl.py",
+          "sha256": "6faded3206626ed56514474a590122eb320a23d01b413e7d6c949977da06de70"
+        },
+        {
+          "path": "scripts/start-gemini-girl-preview.command",
+          "sha256": "094ded6b726f61997509418766f5d01d18d55bf9f4d9cf09d5443f0deaadbc1d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs",
+          "sha256": "cce4f6a09cdb2d241cab9990ee8dfd9fc70f399b353c41ffd425c9e83b072f43"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs.meta",
+          "sha256": "3ee9f34a9a43953d96724f588664d3d0b2503074c43f6aa8f5607329ab4b006f"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs",
+          "sha256": "8f9fdf2c3950cf71fde42445ed7f59f71d07b904cb963b8709242e0ddb462d85"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs.meta",
+          "sha256": "035851bf9db1a6327611450f87225f8751c0ed9e8cec788a81d7a194242680ce"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GeminiGirlModularTools.cs",
+          "sha256": "ebe829a0d9dbf939b8e89d4e0aaddd889a17df4b8c73c746e45363f0f7781946"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GeminiGirlModularTools.cs.meta",
+          "sha256": "fb2229881f06be2ae6d9d0e8a64eb35e4744a3057f834f9aecc22f827aa27c57"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GeminiGirlFaceReview.cs",
+          "sha256": "58de901b6413117ff757aa08c7f69f80661e349b632fab458810368bd455dfbf"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GeminiGirlFaceReview.cs.meta",
+          "sha256": "8850c2a5cd02c4064fc9304859f9d8530fd418a98a091ce996e6b25254403ba2"
+        },
+        {
+          "path": "scripts/gemini-girl-modular-assets.py",
+          "sha256": "b279eedab3ca5860e3070cae61b0f650868a65dffe590eb56da0a307a8ef349b"
+        },
+        {
+          "path": "scripts/gemini-girl-modular-source.py",
+          "sha256": "29bc7d24c27b6c0a03b12979f8e53fd326cf1f39ab9ddbadfe2340a674de36b1"
+        },
+        {
+          "path": "scripts/gemini-girl-modular-video.py",
+          "sha256": "dfbce68cc5ed27310dcc1bf98cf791f0e68075f480413ec66cc753a438f7d402"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset",
+          "sha256": "b7f6d32062d4230afbd29bce63c7b2c248a2166c26bff534a2c08c7c60e7858e"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset.meta",
+          "sha256": "f02ed42d0b98a8db9621076fbd6c020a4752ce65890df54e4b79f5e804da6b70"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader",
+          "sha256": "2b4db3db7ca6aa6e1c6811118748fa832dd5ce38a0909b0715ca4184b0277983"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader.meta",
+          "sha256": "a8a6ede6a1291a1062e96201a7bd4adf83dd0b1154034f66ee967f46afd2a0fb"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx",
+          "sha256": "12ed8aa685f8e2e284b6e0e0bfb6474f11a78ca0eb2cc4adddc1b0886fc130c1"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx.meta",
+          "sha256": "2ac98291bb7c2ee10ec9cc8618c1590e47107fd4c488eaff71f2638a0e2c4ebd"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat",
+          "sha256": "c89bd9a9fbb8875032a045bd92fc0a9becd2e682f8d66100f63335338017c0b6"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat.meta",
+          "sha256": "db30dd6fe4ee0e46b0c34279c605a8dc77d292fa34720677a28a6915e4254f23"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/GeminiGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "727c00ac8e4e46ca6d3258e2c6641f1d372e91182b9b680e0fad7a9db7a0cc7d",
+      "semanticIntegration": true
+    },
+    {
+      "model": "grok",
+      "zip": "/Users/jitian/.codex/worktrees/grok-girl-modular/About Me/artifacts/grok-girl-modular/GrokGirl-Modular-Delivery.zip",
+      "zipSha256": "9766a3b0497a8ff606714ca745d817aebe96e18fb4d65eb462f9654a91c72e3b",
+      "branch": "codex/grok-girl-modular",
+      "sourceSnapshotSha256": null,
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular.meta",
+          "sha256": "625ec8c139329077e5162f634f7898d3cadec493f0ef99af553bb560a7e7c3a6"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab",
+          "sha256": "ad21a525e9208ea82c796b3d907868b4a807e620ab7f1f216fe42ba51f43e8b9"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab.meta",
+          "sha256": "70546b18d84e7906f70c485fe93a303aca153c4ba16768c0d1dd74551dbd14eb"
+        },
+        {
+          "path": "docs/GROK_GIRL_MODULAR.md",
+          "sha256": "079fa5ee2329f047abbc4559d9258bf6b91814db7ae85f3fd006387a5e289216"
+        },
+        {
+          "path": "scripts/package-grok-girl.py",
+          "sha256": "8b3a4b3ba8f38b6bc2a49e196db2714801bb84955de740e224d024a1116425dc"
+        },
+        {
+          "path": "scripts/start-grok-girl-preview.command",
+          "sha256": "9e9df2014bed2de0088be2a9fb358e0f9ca731f6de7c50a0baecbe196cbcf31f"
+        },
+        {
+          "path": "scripts/grok-girl-display-axe.py",
+          "sha256": "64514654796dce52c8449798cfa040c260b5a5843a040e1b110d63760f555e6c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab",
+          "sha256": "7d2e8e5f56fc2e277460f037ea9c28d547aa18c0d6c44cb2b75baaf8052a2e88"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab.meta",
+          "sha256": "7a61b802bf72311e35db8bcc911811fa6310aea60b139e77e3e881fd5b681e11"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs",
+          "sha256": "fef6ac6fadc4f9d3473d5748ef65c1e45e2d3bd3163673bcfcf3f778edf94e37"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs.meta",
+          "sha256": "338bb316967dc19c70f6749448012e4c4e052d0e8542d9959104fb23fe5c4785"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs",
+          "sha256": "cd5ebe9f9520d9d969bab221ba6d1800d75a458b7ea0b7bb0326fd288d663962"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs.meta",
+          "sha256": "281f71c45711ce60f78741b8b1ea68b153a50b0a47f82d439b1f15cbc1ee2d3a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GrokGirlModularTools.cs",
+          "sha256": "17d03281bd24f1c519bb04006063bbd62f9e41fc1bc927028d2de87fca3fac44"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GrokGirlModularTools.cs.meta",
+          "sha256": "7b1f8eff0b6cf3d637b3e99e293b181ec07a14f2255957cc1ebc9da6039c5a9f"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GrokGirlFaceReview.cs",
+          "sha256": "a70950c9c30ec171ea7a10288468e9f7a24122b1f5595ff0569bd48bfbc9ed90"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GrokGirlFaceReview.cs.meta",
+          "sha256": "94a30da9b51c14683e136d75cf5fe03a87038f0b50c8f37cb15c91b53f1e6176"
+        },
+        {
+          "path": "scripts/grok-girl-modular-assets.py",
+          "sha256": "452b8c62c89965d052ffbcdc970ca938477a6f3bbc1f7b3f35e5302e255d9689"
+        },
+        {
+          "path": "scripts/grok-girl-modular-source.py",
+          "sha256": "81ab5ed004f1b9ba71f35bd185b9d0b28249f64723b180d024f0e43ce8af87ac"
+        },
+        {
+          "path": "scripts/grok-girl-modular-video.py",
+          "sha256": "ed4bc5a67b9906a8fe80bd9509652ca04e84bb19b657de4635166314d2450c8a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset",
+          "sha256": "12902ac696921593e583e68072e55b40c5f00e450cc77ed1bae5362fab7a3ee5"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset.meta",
+          "sha256": "4b49d8ba73672464a604ce5a08b9e85c8c0a8af55ee075cdd0d5b4312a25af6d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset",
+          "sha256": "edcbb170f054bf51f750f70f879a86e723a514af6e43ad280c7b2284d633366e"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset.meta",
+          "sha256": "334145e4d1b6b76a8645eb75f5d5b9a59fdb5c27dc35708ec4d74ccf57629842"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader",
+          "sha256": "d665fa86814eb2bfcc0ff4d688db913c113053f0e0c3f40d6118404c9a6fe37e"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader.meta",
+          "sha256": "fce4b40b5653f04b3c5644c4079d5ceebfb535249b9adfcf1532bdefbe9922d9"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx",
+          "sha256": "f455f8ad8be5d8905548124c25aed41e2e03714f010001a5f3eeb3db99021c74"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx.meta",
+          "sha256": "fa6648f79754f76b920b8fa1fbbf777e6e049344b5845b7887d9c2e0ae8e4a68"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx",
+          "sha256": "bce56c416dcf589c58207942c82feddb9c88d0b4c2520b81b0c4bd6b7ede98f2"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx.meta",
+          "sha256": "fac1a99d5107ca21f2520f6801513aff92d779a6d20675d9849cbbc21f779fa6"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat",
+          "sha256": "2fc228ba4358341b278eb06d95ece8c07449f50714864eea954ec3a1a79a8cf1"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat.meta",
+          "sha256": "af788ef650ea7b99d8b74002c9fc15b327e5d380e469473f57d138c402c41736"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/GrokGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab.meta",
+        "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset",
+        "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx",
+        "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx.meta",
+        "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "a278739652a1021e6f32938fbc5bb804902d1f841077a3e292572ce040c3e9ec",
+      "semanticIntegration": true
+    },
+    {
+      "model": "kimi",
+      "zip": "/Users/jitian/.codex/worktrees/kimi-girl-modular/About Me/artifacts/kimi-girl-modular/KimiGirl-Modular-Delivery.zip",
+      "zipSha256": "aeb1ecce6d8d122665f64315084cd8be25ba4174ba034f1d6d57c37e834d6ee5",
+      "branch": "codex/kimi-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular.meta",
+          "sha256": "fcf18c590858c71d533ebbae67a09eeffdc059287f39e19093e16b03319ccebe"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/KimiGirlModular.prefab",
+          "sha256": "22558849c035de1de6ec4223cc788e0e06cf3049dc4de884b0c306f7194c03ac"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/KimiGirlModular.prefab.meta",
+          "sha256": "b80cb8200dab068a2a518c55432efcd95cb37e16f10d00f04fb55d7674c8b186"
+        },
+        {
+          "path": "docs/KIMI_GIRL_MODULAR.md",
+          "sha256": "2664377bed5c41b652ee15df38dd13998778ec9e21dc7f0ad925acc402f100bb"
+        },
+        {
+          "path": "scripts/package-kimi-girl.py",
+          "sha256": "b8cc632bc4614c2e09f0cae9ba6a055797c5ea0adf60b91d5643c7e53a3c93cd"
+        },
+        {
+          "path": "scripts/run-kimi-girl-audit.command",
+          "sha256": "511eb5060ae7bd8f0887ef96e49d225717afcf1e60e2397e1233e6dc4ab565ea"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/KimiGirlOutfit.cs",
+          "sha256": "126c795fa1ca99cf15505c0776093899dd944bf7654dfee73451f4aa019935c3"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/KimiGirlOutfit.cs.meta",
+          "sha256": "d3c823aaba2cfd307b5c7fdfcbdcc443f03009bd0a057b9f8465b36067c0a312"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/KimiGirlFaceDetails.cs",
+          "sha256": "53bad54b2778c47ac2e3e19d035f0fe04aac4bd6b6665b3454ad6b058bc4e758"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/KimiGirlFaceDetails.cs.meta",
+          "sha256": "a677935737d705b3414cdafdfd85061cd71069000766fe32c8343af3346f7798"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/KimiGirlModularTools.cs",
+          "sha256": "fbef80205ad2f5e090eb6e0cea3af45f3705980d2de43c5b00044aeec106b94b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/KimiGirlModularTools.cs.meta",
+          "sha256": "3c66d386cc683c9d1b75d0211eaa0df657e5696cb690f5be87e0dfc984f40138"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/KimiGirlFaceReview.cs",
+          "sha256": "b64841545c5b6e0952fc12412f310e1ee479e3b55f9b47223c182f9fac86710c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/KimiGirlFaceReview.cs.meta",
+          "sha256": "862f47abefa3a5750dbc67169a51e9b89acfc802ab644fefe3790ef138a72acb"
+        },
+        {
+          "path": "scripts/kimi-girl-modular-assets.py",
+          "sha256": "5f1aaf88ccafc06548442113859111472b4c1e535b6321b225e76aa74f36aaea"
+        },
+        {
+          "path": "scripts/kimi-girl-modular-source.py",
+          "sha256": "c8b2a0706360c0fa77c9e96ef2ab876fe428b5a2dc501a71afc2f4c46793478f"
+        },
+        {
+          "path": "scripts/kimi-girl-modular-video.py",
+          "sha256": "b4c44c536b1a4a21e1a72d4d16d0e2ef81dabe1607cd9d1a5df7520db973e9d4"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/Accessories.asset",
+          "sha256": "2340c5df62fff728a74a6ebad7852545ae5969f510fbd29c7f0dc0a98d700cdf"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/Accessories.asset.meta",
+          "sha256": "b116e7116147e06927065b78a42fafcc450102425b2e126ccdfd7ab2e588589b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirlPalette.shader",
+          "sha256": "b08b434b02cc04d715b73f8661a4852a999fd9069db09339a615c035b17519bb"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirlPalette.shader.meta",
+          "sha256": "f0e201867e1d21ff1cde2417aa9307c709d09229f1bd0c923d347948ad848d4d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirl_Accessories.fbx",
+          "sha256": "92c3cf3c38e7e98d14425acc63ab3954c794f822d1508aaddc6439a67c8d3d23"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirl_Accessories.fbx.meta",
+          "sha256": "369cabddbe1af97433804b35adb1192620aa63fa359c0b26c83e29b3f3052fa1"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/Palette.mat",
+          "sha256": "d2342014c786d5a42616505ad0abca27098f6bc3453e805bd4567a3d41b83576"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/KimiGirlModular/Palette.mat.meta",
+          "sha256": "6db2676182d01587e2aad5ad25cfdcb8583cf35688ee91e8ed07d723f7f56c61"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/KimiGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/KimiGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/KimiGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/KimiGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/KimiGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/KimiGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/KimiGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/KimiGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/KimiGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirlPalette.shader",
+        "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/KimiGirlModular/KimiGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/KimiGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/KimiGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "fc0cfde2ba24b2af408de124d7bfeb21438394564c2f589ea47f1404658bfd61",
+      "semanticIntegration": true
+    },
+    {
+      "model": "qwen",
+      "zip": "/Users/jitian/.codex/worktrees/qwen-girl-modular/About Me/artifacts/qwen-girl-modular/QwenGirl-Modular-Delivery.zip",
+      "zipSha256": "7facab2c014d9a389fc4a2f8e14d72ffb92c11040c3c1166dadbd95afb45bf21",
+      "branch": "codex/qwen-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular.meta",
+          "sha256": "2aaa08f93e0cf22b6177c506ecedcb8076f1f92acc1a8f0ad2b238eed04e69a9"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab",
+          "sha256": "be460f916307d84ff025dccd275ff9131d5b687f6ea67d49e8c3aa6c234ea0ac"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab.meta",
+          "sha256": "ad4dff5947c8742bcf45d0354012e057939a6a1296d7ae9a4386a9c7021c881f"
+        },
+        {
+          "path": "docs/QWEN_GIRL_MODULAR.md",
+          "sha256": "2c9bba22c1d1d64d399e9b188501df181b1df639f6271bb3e123f93d2fa617e6"
+        },
+        {
+          "path": "scripts/package-qwen-girl.py",
+          "sha256": "7030553f8a303ab2d08f4df2d756dbf3aa6015a4e431190951ed7d7cf33cdb1b"
+        },
+        {
+          "path": "scripts/run-qwen-girl-audit.command",
+          "sha256": "79d0b0c3402dd414d757b831430b3b8671355c9f1e2c328d0acc08a1872a1b35"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs",
+          "sha256": "a4e6ca917c3494eed6afbbf6dcbb0152695ee52d0ef4f495b22476171ab61532"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs.meta",
+          "sha256": "6c221cac4fdff586f649955b3d7b0ef6e41b011375b97f4f464f51bc491cb454"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs",
+          "sha256": "dee2c70c66986a2c9cefe6ab23b39b50f7868162693fdd30d7ff6e1d86f3785f"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs.meta",
+          "sha256": "b552941fa3274c41efcbfcfc44eddfbba122ec73e9daf033b86aa64593a7595c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/QwenGirlModularTools.cs",
+          "sha256": "cc894cd507121e45017e875b6178a667b560ae607f817197a4e2d75a39c01abc"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/QwenGirlModularTools.cs.meta",
+          "sha256": "95b87721cdacd0d252df48e8d3404e8071c5ee658bcb7d08fe6c62c89fb07ca4"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/QwenGirlFaceReview.cs",
+          "sha256": "a821d820570288271221a6c2a86c9f62a4ae240663b55cb8f5b1b3a6d3f08031"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/QwenGirlFaceReview.cs.meta",
+          "sha256": "74b1602f0bef89f6906f6e11977eac78396b84c566f7eb25734ce8d406786f0d"
+        },
+        {
+          "path": "scripts/qwen-girl-modular-assets.py",
+          "sha256": "f38921434b08497a5a69d08f7f803eb914b50e21de0fd06949ba4598855d7474"
+        },
+        {
+          "path": "scripts/qwen-girl-modular-source.py",
+          "sha256": "b8363b88479aff05d974eb11a95d0eb3fba9d36d4c0f143eab6c463117376bb3"
+        },
+        {
+          "path": "scripts/qwen-girl-modular-video.py",
+          "sha256": "62a2302ea2ef352a17a70015f753d965098058af152fa4dc2018b78cc6d96443"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset",
+          "sha256": "932ae853855e84278277035502872fbe3769193516b2e29a4d88a4bb1a46591b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset.meta",
+          "sha256": "c4c76a7aafd46fd88563a28464fb51769f3d538216ef57d8cd38ac1cdd7baba9"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat",
+          "sha256": "98e2939bb9480355248b73b6157e3ec5afb7281ed71112613794c784a48effcb"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat.meta",
+          "sha256": "f56f53b69e50a72b221fdc1088e0d0f2b25acc31fcff7a66984edfef05e42b2a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader",
+          "sha256": "f86da81fb29870b616a9277815a62f5305f6654e4c385f5ec02a8c157edef98c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader.meta",
+          "sha256": "3a7ef610ab517fa0d9791d27722a5e72e07e8706153e74ae5eda406eb8e768bf"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx",
+          "sha256": "65e215ee5f114771a046fea03399119cea2319cb5753eb17a87900ad71513ffb"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx.meta",
+          "sha256": "a3df0caa7c21939be714620ef9d51597adc693e756b5b0c219ec80aca68c3d16"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/QwenGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat.meta",
+        "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader",
+        "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx.meta"
+      ],
+      "patchSha256": "fbf19c41b58770aff317c7bab0ca3b92970dd223be6009c864c2b329a23f99d1",
+      "semanticIntegration": true
+    },
+    {
+      "model": "minimax",
+      "zip": "/Users/jitian/.codex/worktrees/minimax-girl-modular/About Me/artifacts/minimax-girl-modular/MiniMaxGirl-Modular-Delivery.zip",
+      "zipSha256": "7cfd2c98e3e0cf3ac97772f00f8be2bc5e9954942c9bd88e11912932e7edc649",
+      "branch": "codex/minimax-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular.meta",
+          "sha256": "c63ed8db8a524a137214e923bc40c7cc47852b55c7b78c8191d2b59bd88229f4"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/MiniMaxGirlModular.prefab",
+          "sha256": "6318102cc71a9f5415e44f6aa0c2cfba6ff80a5a9cba3e3dafa145dc51b9d20a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/MiniMaxGirlModular.prefab.meta",
+          "sha256": "4574ef62d67f28e2a454da81cdba9c165f06b19f930aa4876b174f8d2cce9366"
+        },
+        {
+          "path": "docs/MINIMAX_GIRL_MODULAR.md",
+          "sha256": "95b3ac913808d9e6d9c87c0c8919fa6d4afdd975c8ac96c43bec95cc214cc130"
+        },
+        {
+          "path": "scripts/package-minimax-girl.py",
+          "sha256": "e87ce51865e90dbe56a57dc3b2796bcb652bdbc1137c1e2523cad3f86a2336c8"
+        },
+        {
+          "path": "scripts/run-minimax-girl-audit.command",
+          "sha256": "c614dff4bc7af84e5774072a51bfe4d6a5ccc3efa2413953a6347d754f8c25f7"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/MiniMaxGirlOutfit.cs",
+          "sha256": "6117f987cc59e317b2274df071bb58bfe6371459276309c12c231b1321df88c0"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/MiniMaxGirlOutfit.cs.meta",
+          "sha256": "34f2204962cf1fc37d7d4e9b42ddf1e475e4ede509ef444e6fc5559b223e3ff4"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/MiniMaxGirlFaceDetails.cs",
+          "sha256": "6c3604f3cfb178ea7b42635c805b30567d631cec4412a21b31524a0f8d3ec053"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/MiniMaxGirlFaceDetails.cs.meta",
+          "sha256": "0e562619b33d88848ee35b553e02dcc418cf2fcfc1a40bcd7cb3b7eb852c742f"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/MiniMaxGirlModularTools.cs",
+          "sha256": "17b7973a1522f1500d368de7bfd790e1a2fa6a19c8d4a0506213f2fbf5e3196c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/MiniMaxGirlModularTools.cs.meta",
+          "sha256": "e4371f152f7a48f7743643376e5fb1b24cd34738145f9180e82f2b5dda2d5d5c"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/MiniMaxGirlFaceReview.cs",
+          "sha256": "37f9ae139b21e953f320eeb9f93475a22e6429ed3e50a8442fca60fd67ce2c42"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/MiniMaxGirlFaceReview.cs.meta",
+          "sha256": "e2d4c4e555112ecc2a3336f01b44c7dc4050e5acf4efac6557774826044e6c34"
+        },
+        {
+          "path": "scripts/minimax-girl-modular-assets.py",
+          "sha256": "bedbc1084c41f72132820e262fdd83a7786e8e5d4635a147b210aebe33c70c12"
+        },
+        {
+          "path": "scripts/minimax-girl-modular-source.py",
+          "sha256": "6854541612bc3aa0ff65ae5746f757b5309c0f1daedeb276e6fd012958886c94"
+        },
+        {
+          "path": "scripts/minimax-girl-modular-video.py",
+          "sha256": "8031db3af9057447d5f3080bafd02a056440f3df151fac0a97f6dfb05391e06a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/Accessories.asset",
+          "sha256": "7c5750edad296af6882f294b89d99f763838e770df368dd8e9544d87c251e39a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/Accessories.asset.meta",
+          "sha256": "17e4ff1f0888b2307d2b10fc574640e29176326899151e4bd5296a288790a345"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirlPalette.shader",
+          "sha256": "ca02c48564ac3b8de1a43d68fad0adad1791e2d68dcea8c649aa98d1182e5b6b"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirlPalette.shader.meta",
+          "sha256": "1b725e6102acf09804b4076cf53afb2e31003062f458fda45072e22636442992"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirl_Accessories.fbx",
+          "sha256": "b361fff5620fcb67cadb5c1c8a32a2f46a1b84ab8ad36ff068d1632e83023018"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirl_Accessories.fbx.meta",
+          "sha256": "393b2995528a50270ed77b1bd8c5ed8f682528ab3a5750932c0731cc2fa91607"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/Palette.mat",
+          "sha256": "f47c91f515f89f632a8061a5724eda3b5d088ab3f15f78fb23426e508e411772"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/MiniMaxGirlModular/Palette.mat.meta",
+          "sha256": "d627583bc0aee89919a53fb39832e81f42ae0524ba04f334bb33326d7ab30dbc"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/MiniMaxGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/MiniMaxGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/MiniMaxGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/MiniMaxGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/MiniMaxGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/MiniMaxGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirlPalette.shader",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/MiniMaxGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/MiniMaxGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "1063a79530a225d18304018f603bae1886817e8f98760d1e678811bc458f3849",
+      "semanticIntegration": true
+    },
+    {
+      "model": "doubao",
+      "zip": "/Users/jitian/.codex/worktrees/doubao-girl-modular/About Me/artifacts/doubao-girl-modular/DoubaoGirl-Modular-Delivery.zip",
+      "zipSha256": "36b12a0910b80b7e52dc364c7b06ae3f0065346483ecc8ec8684a32a31a3199f",
+      "branch": "codex/doubao-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular.meta",
+          "sha256": "2570a8895108e1ffd3bf8eda7f0ddfca671f21af4a1a931ea184cd815f61c726"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/DoubaoGirlModular.prefab",
+          "sha256": "32d4b9d6ddaf49608f6afc513f072b44ca22890fe3c66d0fef0400164400ccdd"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/DoubaoGirlModular.prefab.meta",
+          "sha256": "ef565d5de3ee9e2c0f6d7088de5a5730ba6991cd0561063b61413d9734aca2da"
+        },
+        {
+          "path": "docs/DOUBAO_GIRL_MODULAR.md",
+          "sha256": "2275f4187a7c8173e61ec202a53da335dba83e458ca47eddb9b668e0ace67b8a"
+        },
+        {
+          "path": "scripts/package-doubao-girl.py",
+          "sha256": "52e33c2a46f3995d627590d82a27ed637f906426d8d60edb6925de191f3afe08"
+        },
+        {
+          "path": "scripts/run-doubao-girl-audit.command",
+          "sha256": "b9d10d4cf888e9789fac178717bae5d4a0939f9d2be7429cd733012bff399ac5"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DoubaoGirlOutfit.cs",
+          "sha256": "6a763cf29c806543f91a697d3e996643b167c10f3ff63b78b04de716b96c17d8"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DoubaoGirlOutfit.cs.meta",
+          "sha256": "b5b3db484bfd234fca5ef52bed91caecaa949c94cffcb51f6038f927f7832d73"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DoubaoGirlFaceDetails.cs",
+          "sha256": "12358c188126f960abf37d02899e0cd7d3f2d0c7c2132d90a663d066fdc3e35a"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DoubaoGirlFaceDetails.cs.meta",
+          "sha256": "48d98df2fecfd1db7b04036f1915c56cdf9cc5ad0dd1cceeab7187854d9f66ec"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/DoubaoGirlModularTools.cs",
+          "sha256": "6d6415406bc82a631bd23659956a79398a30403fa48411c8dc90b86cff3c2585"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/DoubaoGirlModularTools.cs.meta",
+          "sha256": "3ad460ba8d62deb4e28e857d291a11695a89a79a4a4335420e69cca745f972e7"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/DoubaoGirlFaceReview.cs",
+          "sha256": "9ce7e7c4e3d419f8a1c8508aafc975da57aada91c8c839530067c2ead3e2bd82"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/DoubaoGirlFaceReview.cs.meta",
+          "sha256": "22b486d2835290123604bffd021d0dae9df9a977e096eb3a265c237a3c7d5a71"
+        },
+        {
+          "path": "scripts/doubao-girl-modular-assets.py",
+          "sha256": "27135eb5d7e298cb7aa09fb03f1cdb3d653204187c78544e3693e09d62c94f4b"
+        },
+        {
+          "path": "scripts/doubao-girl-modular-source.py",
+          "sha256": "d4227f98d748376ffc9ce75a50e4e9926e3a0403a432c7321299c76dbf6a207e"
+        },
+        {
+          "path": "scripts/doubao-girl-modular-video.py",
+          "sha256": "64627faf307855c6126b3866c78b6ab1cd737d45a717b8777b7d0b6c46fcdcee"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/Accessories.asset",
+          "sha256": "e51196ccbb82a42fc362a1a5c1426ea39436244e99e57db143688b45428fa00d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/Accessories.asset.meta",
+          "sha256": "a7dad8639cac37343638a2218c4bc9ab8f06bfdc1183309722293a4ff8aa8ba3"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirlPalette.shader",
+          "sha256": "93dca9045ee3b2c1d335e1be7f43c5e8394d4ec3d04237627b4540d772e1a4a8"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirlPalette.shader.meta",
+          "sha256": "003052eea80a43662bf1c507d7215287b502bd4346ff01f0c4c2a06082d896de"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirl_Accessories.fbx",
+          "sha256": "737d16ce8941f1ded2182f890d6226ad44fb5f392df5482c5c23fd95c555787e"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirl_Accessories.fbx.meta",
+          "sha256": "efd210a8d12fd20855aa8347e0683baef3ce64bdba1c5b916eda55cca3601eab"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/Palette.mat",
+          "sha256": "908e78a13e8210d795064a48f9f56b2a94d312113ff361262214f5b545bbf222"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/DoubaoGirlModular/Palette.mat.meta",
+          "sha256": "d71fb8626f7175906592c6ad78b9c4e1cec95bd129f328f7e02cd9c19739e8a9"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/DoubaoGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/DoubaoGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/DoubaoGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/DoubaoGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/DoubaoGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/DoubaoGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/DoubaoGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirlPalette.shader",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/DoubaoGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/DoubaoGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "7f51f8d992755d8087b86681cb95805c5089443b5c47feb22ca1454559f54f12",
+      "semanticIntegration": true
+    },
+    {
+      "model": "glm",
+      "zip": "/Users/jitian/.codex/worktrees/glm-girl-modular/About Me/artifacts/glm-girl-modular/GLMGirl-Modular-Delivery.zip",
+      "zipSha256": "0690bfef70d36ccba140130c1ac883a085227bee2bce5feb6d0a54e59eebb8e7",
+      "branch": "codex/glm-girl-modular",
+      "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+      "verifiedNewFiles": [
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular.meta",
+          "sha256": "64f52bf4cf91f8ce1a3eb214199e645b63f911c5d46f960feb0232e070018f9d"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab",
+          "sha256": "f4ee0e6db5a696897b208d114bc761ad41019f3193f4d67a5419d16c347d9590"
+        },
+        {
+          "path": "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab.meta",
+          "sha256": "6597deb22d334d49731253a0044da074c2aa83ca6ccf250dbb0fe6a7de7667b4"
+        },
+        {
+          "path": "docs/GLM_GIRL_MODULAR.md",
+          "sha256": "f2de496a631d4446d0b0ae733267eb281b08f7a1c85bf7bdd808a7cab717028b"
+        },
+        {
+          "path": "scripts/package-glm-girl.py",
+          "sha256": "14bb93a0c5d236d3bfdc9545d3ff91209a1f424b831f1615d25867b4492993f3"
+        },
+        {
+          "path": "scripts/run-glm-girl-audit.command",
+          "sha256": "072312665e159dfe16076c94ffd354d21e4666f3e9510ca59b3fafd4248445b4"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs",
+          "sha256": "314da0f8a7bcb15000e175a2344aa91edf436531a29939c9652b75e8ce1109b1"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs.meta",
+          "sha256": "41a925bf9523d95ea94516ece61dfc0cceaf1f3f62a3f7928e0075f13f09d086"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs",
+          "sha256": "9e028dd9d5868539808c177de15e2fa195836c3f303dfa750d26a5b79f940f39"
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs.meta",
+          "sha256": "a63e662698c510083492e2e273a9768e3f69ec9d69b4b005e27ae8d4fb1c27cd"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GLMGirlModularTools.cs",
+          "sha256": "15bfac16fd1a088e5b3798ab4d592e308e2bb586632e1749d7fe02a138159c13"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GLMGirlModularTools.cs.meta",
+          "sha256": "99393365e712fb41a3e66eac2c066264c6a684db12f8cee1693514b3c9c5ee34"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GLMGirlFaceReview.cs",
+          "sha256": "fea760ad4625a3b2f6a89256a365b6b3057ac9277b304bff85442c9b19956283"
+        },
+        {
+          "path": "client/Assets/AboutMe/Editor/GLMGirlFaceReview.cs.meta",
+          "sha256": "1b28eec64fa4203fb39a4e17197c7a5a794afcf2400ac68dd4280648e38fc6b7"
+        },
+        {
+          "path": "scripts/glm-girl-modular-assets.py",
+          "sha256": "11ba2c981d5cd1d6c1f11a2a90ed9e990458acfe970515b3b364bac37fa3695c"
+        },
+        {
+          "path": "scripts/glm-girl-modular-source.py",
+          "sha256": "795026e8e78c7008b1cb2a0b5711778fd4847ed43cf35f22252c6c94ebe916c4"
+        },
+        {
+          "path": "scripts/glm-girl-modular-video.py",
+          "sha256": "dd933e06e20b6feebe507ba233886150b0a4a8db2e61ebf454bf84185368e8e8"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset",
+          "sha256": "0c6c4bb37a1c855644471b89920c544f895b8206807e225529f4483cfb6791f3"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset.meta",
+          "sha256": "753fb2e80ac4f2cae23db3ee3549a869e44bedafd877be12ee02a69b31676f41"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader",
+          "sha256": "b10b88daec6ab8b16dae5d77c0b7216bba29832fc5286492f0857d81262ca3fc"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader.meta",
+          "sha256": "d9dd6cde2b8fa3232e2f3cf2cdab6270e562106467f8ae51858faa48d823b7ed"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx",
+          "sha256": "7e971a32bc3f271a20ddc08fbd5a6aaab36647a51abdd2cecdc21ec25fa63a05"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx.meta",
+          "sha256": "f43d9815e7f5acce3424bf73d7a923fafb851bf756668cfdb552e6eb1a0ea2ed"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat",
+          "sha256": "1f16e43933f40c43509cbf6982aca85575ad455d35b1a4882a6a862b1cc31da6"
+        },
+        {
+          "path": "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat.meta",
+          "sha256": "50767b55868d884ffe2c24e3ae36c2435ec904be05ade5a476c6d8cde80fc2b5"
+        }
+      ],
+      "imported": [
+        "client/Assets/AboutMe/Art/GLMGirlModular.meta",
+        "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab",
+        "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab.meta",
+        "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs",
+        "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs.meta",
+        "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs",
+        "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs.meta",
+        "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset",
+        "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset.meta",
+        "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader",
+        "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader.meta",
+        "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx",
+        "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx.meta",
+        "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat",
+        "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat.meta"
+      ],
+      "patchSha256": "9261d85359c97fec96713d30eb1856e8a0db81383844f6cbb677b292bb8dd098",
+      "semanticIntegration": true
+    }
+  ]
+}

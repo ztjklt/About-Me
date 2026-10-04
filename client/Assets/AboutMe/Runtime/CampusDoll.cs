@@ -106,9 +106,18 @@ namespace AboutMe
         readonly List<GameObject> cosmetics=new List<GameObject>();
         DSGirlOutfit dsOutfit;
         ClaudeGirlOutfit claudeOutfit;
-        bool UsesModularOutfit=>Appearance!=null&&(Appearance.character=="ds"||Appearance.character=="claude");
-        float FaceMouthDrop=>Appearance?.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance?.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
-        float FaceBrowDrop=>Appearance?.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance?.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
+        GPTGirlOutfit gptOutfit;
+        GeminiGirlOutfit geminiOutfit;
+        GrokGirlOutfit grokOutfit;
+        KimiGirlOutfit kimiOutfit;
+        QwenGirlOutfit qwenOutfit;
+        MiniMaxGirlOutfit minimaxOutfit;
+        DoubaoGirlOutfit doubaoOutfit;
+        GLMGirlOutfit glmOutfit;
+
+        bool UsesModularOutfit=>Appearance!=null&&AISkinRegistry.SkinForCharacter(Appearance.character)!="normal";
+        float FaceMouthDrop=>Appearance?.character=="gpt"?GPTGirlFaceDetails.MouthDrop:Appearance?.character=="gemini"?GeminiGirlFaceDetails.MouthDrop:Appearance?.character=="grok"?GrokGirlFaceDetails.MouthDrop:Appearance?.character=="kimi"?KimiGirlFaceDetails.MouthDrop:Appearance?.character=="qwen"?QwenGirlFaceDetails.MouthDrop:Appearance?.character=="minimax"?MiniMaxGirlFaceDetails.MouthDrop:Appearance?.character=="doubao"?DoubaoGirlFaceDetails.MouthDrop:Appearance?.character=="glm"?GLMGirlFaceDetails.MouthDrop:Appearance?.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance?.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
+        float FaceBrowDrop=>Appearance?.character=="gpt"?GPTGirlFaceDetails.BrowDrop:Appearance?.character=="gemini"?GeminiGirlFaceDetails.BrowDrop:Appearance?.character=="grok"?GrokGirlFaceDetails.BrowDrop:Appearance?.character=="kimi"?KimiGirlFaceDetails.BrowDrop:Appearance?.character=="qwen"?QwenGirlFaceDetails.BrowDrop:Appearance?.character=="minimax"?MiniMaxGirlFaceDetails.BrowDrop:Appearance?.character=="doubao"?DoubaoGirlFaceDetails.BrowDrop:Appearance?.character=="glm"?GLMGirlFaceDetails.BrowDrop:Appearance?.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance?.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
         Transform toyLeftHandAttachment,toyRightHandAttachment;
         bool ragdoll,positionInitialized;string appearanceKey="";
         float walkPhase,moveBlend,runBlend,eatBlend,grabBlend,chargeBlend,struggleBlend,recovery,eatProgress,swallowTime;
@@ -189,6 +198,14 @@ namespace AboutMe
             if(!toyLeftHandAttachment||!toyRightHandAttachment)return;
             if(Appearance.character=="ds"&&!dsOutfit&&Resources.Load<GameObject>("CampusDoll/DSGirlModular"))dsOutfit=DSGirlOutfit.Attach(this);
             if(Appearance.character=="claude"&&!claudeOutfit&&Resources.Load<GameObject>("CampusDoll/ClaudeGirlModular"))claudeOutfit=ClaudeGirlOutfit.Attach(this);
+            if(Appearance.character=="gpt"&&!gptOutfit&&Resources.Load<GameObject>("CampusDoll/GPTGirlModular"))gptOutfit=GPTGirlOutfit.Attach(this);
+            if(Appearance.character=="gemini"&&!geminiOutfit&&Resources.Load<GameObject>("CampusDoll/GeminiGirlModular"))geminiOutfit=GeminiGirlOutfit.Attach(this);
+            if(Appearance.character=="grok"&&!grokOutfit&&Resources.Load<GameObject>("CampusDoll/GrokGirlModular"))grokOutfit=GrokGirlOutfit.Attach(this);
+            if(Appearance.character=="kimi"&&!kimiOutfit&&Resources.Load<GameObject>("CampusDoll/KimiGirlModular"))kimiOutfit=KimiGirlOutfit.Attach(this);
+            if(Appearance.character=="qwen"&&!qwenOutfit&&Resources.Load<GameObject>("CampusDoll/QwenGirlModular"))qwenOutfit=QwenGirlOutfit.Attach(this);
+            if(Appearance.character=="minimax"&&!minimaxOutfit&&Resources.Load<GameObject>("CampusDoll/MiniMaxGirlModular"))minimaxOutfit=MiniMaxGirlOutfit.Attach(this);
+            if(Appearance.character=="doubao"&&!doubaoOutfit&&Resources.Load<GameObject>("CampusDoll/DoubaoGirlModular"))doubaoOutfit=DoubaoGirlOutfit.Attach(this);
+            if(Appearance.character=="glm"&&!glmOutfit&&Resources.Load<GameObject>("CampusDoll/GLMGirlModular"))glmOutfit=GLMGirlOutfit.Attach(this);
             LeftHandAttachment=toyLeftHandAttachment;RightHandAttachment=toyRightHandAttachment;
             if(Skin)Skin.enabled=true;
             if(held)held.transform.SetParent(RightHandAttachment,false);
@@ -206,6 +223,54 @@ namespace AboutMe
             claudeOutfit.Release();claudeOutfit.gameObject.SetActive(false);
             if(Application.isPlaying)UnityEngine.Object.Destroy(claudeOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(claudeOutfit.gameObject);
             claudeOutfit=null;
+        }
+        void ClearGPTOutfit()
+        {
+            if(!gptOutfit)return;gptOutfit.Release();gptOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(gptOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(gptOutfit.gameObject);
+            gptOutfit=null;
+        }
+        void ClearGeminiOutfit()
+        {
+            if(!geminiOutfit)return;geminiOutfit.Release();geminiOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(geminiOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(geminiOutfit.gameObject);
+            geminiOutfit=null;
+        }
+        void ClearGrokOutfit()
+        {
+            if(!grokOutfit)return;grokOutfit.Release();grokOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(grokOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(grokOutfit.gameObject);
+            grokOutfit=null;
+        }
+        void ClearKimiOutfit()
+        {
+            if(!kimiOutfit)return;kimiOutfit.Release();kimiOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(kimiOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(kimiOutfit.gameObject);
+            kimiOutfit=null;
+        }
+        void ClearQwenOutfit()
+        {
+            if(!qwenOutfit)return;qwenOutfit.Release();qwenOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(qwenOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(qwenOutfit.gameObject);
+            qwenOutfit=null;
+        }
+        void ClearMiniMaxOutfit()
+        {
+            if(!minimaxOutfit)return;minimaxOutfit.Release();minimaxOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(minimaxOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(minimaxOutfit.gameObject);
+            minimaxOutfit=null;
+        }
+        void ClearDoubaoOutfit()
+        {
+            if(!doubaoOutfit)return;doubaoOutfit.Release();doubaoOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(doubaoOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(doubaoOutfit.gameObject);
+            doubaoOutfit=null;
+        }
+        void ClearGLMOutfit()
+        {
+            if(!glmOutfit)return;glmOutfit.Release();glmOutfit.gameObject.SetActive(false);
+            if(Application.isPlaying)UnityEngine.Object.Destroy(glmOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(glmOutfit.gameObject);
+            glmOutfit=null;
         }
         Rigidbody Bone(string name,Vector3 position,Vector3 size,Rigidbody parent,bool round=false,Vector3 center=default)
         {
@@ -230,14 +295,38 @@ namespace AboutMe
         {
             if(Appearance!=null&&Appearance.SameAs(requested))return;
             var a=AppearanceData.Resolve(requested);string key=a.character+"|"+JsonUtility.ToJson(a);if(key==appearanceKey)return;
-            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();
+            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();ClearGPTOutfit();ClearGeminiOutfit();ClearGrokOutfit();ClearKimiOutfit();ClearQwenOutfit();ClearMiniMaxOutfit();ClearDoubaoOutfit();ClearGLMOutfit();
             bool ds=a.character=="ds"&&Resources.Load<GameObject>("CampusDoll/DSGirlModular");
             bool claude=a.character=="claude"&&Resources.Load<GameObject>("CampusDoll/ClaudeGirlModular");
+            bool gpt=a.character=="gpt"&&Resources.Load<GameObject>("CampusDoll/GPTGirlModular");
+            if(!gpt&&a.character=="gpt"){a=a.Copy();a.character="normal";}
+            bool gemini=a.character=="gemini"&&Resources.Load<GameObject>("CampusDoll/GeminiGirlModular");
+            if(!gemini&&a.character=="gemini"){a=a.Copy();a.character="normal";}
+            bool grok=a.character=="grok"&&Resources.Load<GameObject>("CampusDoll/GrokGirlModular");
+            if(!grok&&a.character=="grok"){a=a.Copy();a.character="normal";}
+            bool kimi=a.character=="kimi"&&Resources.Load<GameObject>("CampusDoll/KimiGirlModular");
+            if(!kimi&&a.character=="kimi"){a=a.Copy();a.character="normal";}
+            bool qwen=a.character=="qwen"&&Resources.Load<GameObject>("CampusDoll/QwenGirlModular");
+            if(!qwen&&a.character=="qwen"){a=a.Copy();a.character="normal";}
+            bool minimax=a.character=="minimax"&&Resources.Load<GameObject>("CampusDoll/MiniMaxGirlModular");
+            if(!minimax&&a.character=="minimax"){a=a.Copy();a.character="normal";}
+            bool doubao=a.character=="doubao"&&Resources.Load<GameObject>("CampusDoll/DoubaoGirlModular");
+            if(!doubao&&a.character=="doubao"){a=a.Copy();a.character="normal";}
+            bool glm=a.character=="glm"&&Resources.Load<GameObject>("CampusDoll/GLMGirlModular");
+            if(!glm&&a.character=="glm"){a=a.Copy();a.character="normal";}
             if(!ds&&a.character=="ds"){a=a.Copy();a.character="normal";}
             if(!claude&&a.character=="claude"){a=a.Copy();a.character="normal";}
             Appearance=a;
             if(ds){a=a.Copy();a.hairColor="#354D91";a.top="shirt";a.topColor="#263765";a.bottom="skirt";a.bottomColor="#263765";a.shoes="canvas";a.shoeColor="#263765";a.headAccessory="none";a.bag="none";}
             if(claude){a=a.Copy();a.hairColor="#D66B30";a.top="shirt";a.topColor="#F2E5CA";a.bottom="skirt";a.bottomColor="#302A29";a.shoes="canvas";a.shoeColor="#302A29";a.headAccessory="none";a.bag="none";}
+            if(gpt){a=a.Copy();a.hairColor="#E7DFF0";a.top="shirt";a.topColor="#F6F0FA";a.bottom="skirt";a.bottomColor="#C1ACD8";a.shoes="canvas";a.shoeColor="#C1ACD8";a.headAccessory="none";a.bag="none";}
+            if(gemini){a=a.Copy();a.hairColor="#7E80D7";a.top="shirt";a.topColor="#302C62";a.bottom="skirt";a.bottomColor="#302C62";a.shoes="canvas";a.shoeColor="#302C62";a.headAccessory="none";a.bag="none";}
+            if(grok){a=a.Copy();a.hairColor="#EEC58F";a.top="shirt";a.topColor="#29232D";a.bottom="skirt";a.bottomColor="#29232D";a.shoes="canvas";a.shoeColor="#29232D";a.headAccessory="none";a.bag="none";}
+            if(kimi){a=a.Copy();a.hairColor="#D9CEEA";a.top="shirt";a.topColor="#302D4B";a.bottom="skirt";a.bottomColor="#302D4B";a.shoes="canvas";a.shoeColor="#302D4B";a.headAccessory="none";a.bag="none";}
+            if(qwen){a=a.Copy();a.hairColor="#858AD3";a.top="shirt";a.topColor="#F0EAF6";a.bottom="skirt";a.bottomColor="#7476B9";a.shoes="canvas";a.shoeColor="#3D386F";a.headAccessory="none";a.bag="none";}
+            if(minimax){a=a.Copy();a.hairColor="#E79570";a.top="shirt";a.topColor="#FFF1E8";a.bottom="skirt";a.bottomColor="#BF9F88";a.shoes="canvas";a.shoeColor="#F7E7DF";a.headAccessory="none";a.bag="none";}
+            if(doubao){a=a.Copy();a.skinColor="#FFD44B";a.hairColor="#59402C";a.top="shirt";a.topColor="#FFD44B";a.bottom="skirt";a.bottomColor="#FFD44B";a.shoes="canvas";a.shoeColor="#FFD44B";a.headAccessory="none";a.bag="none";}
+            if(glm){a=a.Copy();a.hairColor="#34313E";a.top="shirt";a.topColor="#F4F0F5";a.bottom="skirt";a.bottomColor="#383440";a.shoes="canvas";a.shoeColor="#EAE7EF";a.headAccessory="none";a.bag="none";}
             foreach(var go in cosmetics){if(!go)continue;go.SetActive(false);if(Application.isPlaying)UnityEngine.Object.Destroy(go);else UnityEngine.Object.DestroyImmediate(go);}cosmetics.Clear();
             if(!Asset("Head",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor))P("Round head and chin",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor);
             P("Chin",head,new Vector3(0,-.29f,.015f),new Vector3(.65f,.35f,.66f),a.skinColor);
@@ -246,13 +335,22 @@ namespace AboutMe
                 P("Ear",head,new Vector3(sign*.46f,-.04f,0),new Vector3(.18f,.26f,.16f),a.skinColor);
                 if(ds)DSGirlFaceDetails.AddEye(head,sign,face,cosmetics);
                 else if(claude)ClaudeGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(gpt)GPTGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(gemini)GeminiGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(grok)GrokGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(kimi)KimiGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(qwen)QwenGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(minimax)MiniMaxGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(doubao)DoubaoGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                else if(glm)GLMGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+
                 else
                 {
                     P("Eye white",head,new Vector3(sign*.185f,.055f,.417f),new Vector3(.19f*face.eyeWidth,.205f*face.eyeHeight,.07f),Paper);
                     P("Pupil",head,new Vector3(sign*.17f,.044f,.454f),new Vector3(.079f*face.pupil,.112f*face.eyeHeight,.032f),Ink);
                     P("Eye glint",head,new Vector3(sign*.17f-.019f,.044f+.029f*face.eyeHeight,.475f),Vector3.one*.024f,Paper);
                 }
-                var brow=P("Eyebrow",head,new Vector3(sign*.185f,.215f-FaceBrowDrop,.412f),new Vector3(.19f,.038f,.06f),a.hairColor);
+                var brow=P("Eyebrow",head,new Vector3(sign*.185f,.215f-FaceBrowDrop,gpt?GPTGirlFaceDetails.BrowDepth:kimi?KimiGirlFaceDetails.BrowDepth:qwen?QwenGirlFaceDetails.BrowDepth:minimax?MiniMaxGirlFaceDetails.BrowDepth:doubao?DoubaoGirlFaceDetails.BrowDepth:glm?GLMGirlFaceDetails.BrowDepth:.412f),gpt?GPTGirlFaceDetails.BrowSize:kimi?KimiGirlFaceDetails.BrowSize:qwen?QwenGirlFaceDetails.BrowSize:minimax?MiniMaxGirlFaceDetails.BrowSize:doubao?DoubaoGirlFaceDetails.BrowSize:glm?GLMGirlFaceDetails.BrowSize:new Vector3(.19f,.038f,.06f),gpt?GPTGirlFaceDetails.BrowColor:kimi?KimiGirlFaceDetails.BrowColor:qwen?QwenGirlFaceDetails.BrowColor:minimax?MiniMaxGirlFaceDetails.BrowColor:doubao?DoubaoGirlFaceDetails.BrowColor:glm?GLMGirlFaceDetails.BrowColor:a.hairColor);
                 if(sign<0)leftBrow=brow.transform;else rightBrow=brow.transform;
             }
             P("Nose",head,new Vector3(0,-.07f,.45f),new Vector3(.115f,.105f,.15f),"#"+ColorUtility.ToHtmlStringRGB(Color.Lerp(ToyFactory.ColorOf(a.skinColor),ToyFactory.ColorOf(Ink),.08f)));
@@ -263,7 +361,7 @@ namespace AboutMe
             Vector3 fallPosition=fallPivot.localPosition;Quaternion fallRotation=fallPivot.localRotation;fallPivot.localPosition=Vector3.zero;fallPivot.localRotation=Quaternion.identity;
             foreach(var bone in rest){current.Add((bone.t.localPosition,bone.t.localRotation));bone.t.localPosition=bone.p;bone.t.localRotation=bone.q;}
             var personalitySurface=root.GetComponent<PersonalitySkinSurface>()??root.AddComponent<PersonalitySkinSurface>();personalitySurface.Configure(a);
-            BuildClothes(a);if(!ds&&!claude){BuildHair(a);BuildAccessories(a);}
+            BuildClothes(a);if(gemini)GeminiGirlOutfit.AddBodyDetail(torso,a.skinColor,cosmetics);if(!UsesModularOutfit){BuildHair(a);BuildAccessories(a);}
             Skin=DollSkin.Build(root.transform,rest.ConvertAll(x=>x.t).ToArray(),cosmetics,mouth,leftBrow,rightBrow,leftArm,rightArm,leftForearm,rightForearm,torso);
             for(int i=0;i<rest.Count;i++){rest[i].t.localPosition=current[i].p;rest[i].t.localRotation=current[i].q;}
             fallPivot.localPosition=fallPosition;fallPivot.localRotation=fallRotation;
@@ -272,10 +370,10 @@ namespace AboutMe
         }
         void BuildClothes(AppearanceData a)
         {
-            bool modular=a.character=="ds"||a.character=="claude";
-            P("Shirt silhouette",torso,Vector3.zero,new Vector3(.88f,.88f,.59f),a.topColor);
+            bool modular=AISkinRegistry.SkinForCharacter(a.character)!="normal";
+            var bodySurface=P("Shirt silhouette",torso,Vector3.zero,new Vector3(.88f,.88f,.59f),a.topColor);if(a.character=="doubao")DoubaoGirlFaceDetails.PaintBody(bodySurface);
             P("Shirt hem",torso,new Vector3(0,-.37f,0),new Vector3(.78f,.10f,.5f),a.top=="varsity"?Paper:a.topColor,false);
-            P("Collar",torso,new Vector3(0,.39f,0),new Vector3(.35f,.085f,.32f),Paper);
+            P("Collar",torso,new Vector3(0,.39f,0),new Vector3(.35f,.085f,.32f),a.character=="doubao"?a.skinColor:Paper);
             if(a.top=="hoodie")
             {
                 P("Hood",torso,new Vector3(0,.37f,-.24f),new Vector3(.57f,.38f,.36f),a.topColor);
@@ -298,13 +396,13 @@ namespace AboutMe
             {
                 var lower=arm==leftArm?leftForearm:rightForearm;bool shortSleeve=a.top=="sport";
                 // A continuous weighted sleeve bridges shoulder, upper arm and elbow.
-                var sleeve=DollSkin.Sleeve(arm,torso,lower,shortSleeve,a.top=="varsity"?Paper:a.topColor);cosmetics.Add(sleeve);
+                var sleeve=DollSkin.Sleeve(arm,torso,lower,shortSleeve,a.character=="gemini"?"#F5EDFC":a.character=="kimi"?"#F0EAF6":a.character=="qwen"?"#3D386F":a.character=="minimax"?"#FFF1E8":a.character=="doubao"?"#FFD44B":a.character=="glm"?"#F4F0F5":a.top=="varsity"?Paper:a.topColor);cosmetics.Add(sleeve);
                 if(shortSleeve)cosmetics.Add(DollSkin.Sleeve(arm,torso,lower,false,a.skinColor,true));
-                P("Cuff",shortSleeve?arm:lower,new Vector3(0,shortSleeve?-.18f:-.16f,0),new Vector3(.29f,.075f,.31f),Paper);
+                P("Cuff",shortSleeve?arm:lower,new Vector3(0,shortSleeve?-.18f:-.16f,0),new Vector3(.29f,.075f,.31f),a.character=="doubao"?a.skinColor:Paper);
                 var hand=arm==leftArm?leftHand:rightHand;
                 P("Wrist",hand,new Vector3(0,.03f,-.008f),new Vector3(.19f,.16f,.19f),a.skinColor);
-                P("Mitten palm",hand,Vector3.zero,new Vector3(.27f,.24f,.25f),a.skinColor);
-                float side=arm==leftArm?1:-1;P("Thumb",hand,new Vector3(side*.125f,.05f,.052f),new Vector3(.12f,.17f,.13f),a.skinColor);
+                P("Mitten palm",hand,Vector3.zero,new Vector3(.27f,.24f,.25f),a.character=="doubao"?"#625C50":a.skinColor);
+                float side=arm==leftArm?1:-1;P("Thumb",hand,new Vector3(side*.125f,.05f,.052f),new Vector3(.12f,.17f,.13f),a.character=="doubao"?"#625C50":a.skinColor);
             }
             P("Waist",pelvis,new Vector3(0,-.06f,0),new Vector3(.67f,.24f,.48f),a.bottomColor);
             if(a.bottom=="skirt"&&!modular)P("Skirt",pelvis,new Vector3(0,-.14f,0),new Vector3(.87f,.35f,.64f),a.bottomColor,false);
@@ -313,10 +411,10 @@ namespace AboutMe
                 var shin=leg==leftLeg?leftShin:rightShin;
                 P("Thigh",leg,new Vector3(0,-.13f,0),new Vector3(.29f,.32f,.32f),a.skinColor);
                 P("Trouser thigh",leg,new Vector3(0,-.1f,0),new Vector3(.34f,.32f,.38f),a.bottomColor);
-                P("Lower leg",shin,new Vector3(0,-.1f,0),new Vector3(.29f,.31f,.32f),modular?Paper:a.bottomColor==""?a.skinColor:a.bottom=="trousers"?a.bottomColor:a.skinColor);
-                P("Sock",shin,new Vector3(0,-.14f,.02f),new Vector3(.30f,.16f,.34f),a.bottom=="trousers"?a.bottomColor:Paper);
+                P("Lower leg",shin,new Vector3(0,-.1f,0),new Vector3(.29f,.31f,.32f),a.character=="grok"?"#4E3943":a.character=="doubao"?a.skinColor:modular?Paper:a.bottomColor==""?a.skinColor:a.bottom=="trousers"?a.bottomColor:a.skinColor);
+                P("Sock",shin,new Vector3(0,-.14f,.02f),new Vector3(.30f,.16f,.34f),a.character=="doubao"?a.skinColor:a.bottom=="trousers"?a.bottomColor:Paper);
                 P("Shoe",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,modular?0:a.shoes=="boots"?.10f:.04f,-.01f),new Vector3(.37f,modular?.17f:a.shoes=="boots"?.39f:.25f,.59f),a.shoeColor);
-                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
+                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="gpt"?"#B2A2C8":a.character=="gemini"?"#7E80D7":a.character=="grok"?"#181820":a.character=="kimi"?"#B2A2C8":a.character=="qwen"?"#B2A2C8":a.character=="minimax"?"#D18E9B":a.character=="doubao"?"#EABD36":a.character=="glm"?"#35313E":a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
                 if(a.shoes!="boots")for(int n=0;n<2;n++)P("Laces",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,.132f,.02f+n*.09f),new Vector3(.23f,.028f,.025f),a.shoeColor==Paper?Ink:Paper,false);
                 if(a.shoes=="sneakers")P("Sneaker toe",leg==leftLeg?leftToe:rightToe,new Vector3(0,.06f,-.02f),new Vector3(.34f,.15f,.17f),Paper);
             }
@@ -551,8 +649,9 @@ namespace AboutMe
             mouth.localRotation=Quaternion.Euler(0,0,face.mouthTilt*(1-eatBlend));
             DollMouth.SetOpening(mouth,eatBlend,Appearance.expression=="joy"||Appearance.expression=="surprised");
             float lift=face.browLift*(1-eatBlend)+eatBlend*.15f-FaceBrowDrop*(1-eatBlend);
-            leftBrow.localPosition=new Vector3(-.185f-eatBlend*.085f,.215f+lift+face.asymmetry*(1-eatBlend),.412f-eatBlend*.03f);
-            rightBrow.localPosition=new Vector3(.185f+eatBlend*.085f,.215f+lift,.412f-eatBlend*.03f);
+            float browDepth=Mathf.Lerp(Appearance.character=="gpt"?GPTGirlFaceDetails.BrowDepth:Appearance.character=="kimi"?KimiGirlFaceDetails.BrowDepth:Appearance.character=="qwen"?QwenGirlFaceDetails.BrowDepth:Appearance.character=="minimax"?MiniMaxGirlFaceDetails.BrowDepth:Appearance.character=="doubao"?DoubaoGirlFaceDetails.BrowDepth:Appearance.character=="glm"?GLMGirlFaceDetails.BrowDepth:.412f,.382f,eatBlend);
+            leftBrow.localPosition=new Vector3(-.185f-eatBlend*.085f,.215f+lift+face.asymmetry*(1-eatBlend),browDepth);
+            rightBrow.localPosition=new Vector3(.185f+eatBlend*.085f,.215f+lift,browDepth);
             float angle=Mathf.Lerp(face.browAngle,-20,struggleBlend)*(1-eatBlend);
             leftBrow.localRotation=Quaternion.Euler(0,0,angle);rightBrow.localRotation=Quaternion.Euler(0,0,-angle);
             // A short deterministic blink, staggered by appearance, uses one morph and allocates nothing per frame.
@@ -608,7 +707,7 @@ namespace AboutMe
             hasPhysicalPose=p.bodyPose!=null;
             root.SetActive(!p.eliminated);if(p.eliminated)return;
             var requested=p.appearance??Appearance;
-            string character=p.characterSkin=="ds-girl"?"ds":p.characterSkin=="claude-girl"?"claude":"normal";
+            string character=AISkinRegistry.CharacterForSkin(p.characterSkin);
             if(requested!=null&&(Appearance==null||Appearance.character!=character||!Appearance.SameStyleAs(requested)))
             {var mapped=requested.Copy();mapped.character=character;ApplyAppearance(mapped);}
             dt=Mathf.Clamp(dt,0,.1f);
@@ -731,10 +830,19 @@ namespace AboutMe
             }
             if(dsOutfit)dsOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
             if(claudeOutfit)claudeOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(gptOutfit)gptOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(geminiOutfit)geminiOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(grokOutfit)grokOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(kimiOutfit)kimiOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(qwenOutfit)qwenOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(minimaxOutfit)minimaxOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(doubaoOutfit)doubaoOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+            if(glmOutfit)glmOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+
             if(camera)label.transform.rotation=camera.transform.rotation;
-            var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId;
+            var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId+"|"+p.equippedColor;
             if(visual!=equipmentKey){if(held)UnityEngine.Object.Destroy(held);visual=equipmentKey;if(!string.IsNullOrEmpty(p.equippedVisual)){held=ToyFactory.Item(p.equippedVisual,p.equippedColor,RightHandAttachment,p.equippedName,p.equippedEmblemPath,p.equippedEmblemCrop,p.equippedGeneratedBy,p.equippedWordText,p.equippedAbilityId);held.transform.localScale=Vector3.one*.60f;}}
-            if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=p.equippedVisual==TraitAbilityCatalog.VisualId?Quaternion.Euler(90,0,0):Quaternion.identity;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
+            if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=p.equippedVisual==TraitAbilityCatalog.VisualId?Quaternion.Euler(90,0,0):Quaternion.identity;if(p.equippedVisual==TraitAbilityCatalog.VisualId)held.transform.rotation=root.transform.rotation;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
         }
     }
 }

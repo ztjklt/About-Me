@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "skins": [
+    {
+      "brand": "deepseek",
+      "character": "ds",
+      "skin": "ds-girl",
+      "label": "DS 娘",
+      "english": "DS Girl"
+    },
+    {
+      "brand": "claude",
+      "character": "claude",
+      "skin": "claude-girl",
+      "label": "Claude 娘",
+      "english": "Claude Girl"
+    },
+    {
+      "brand": "gpt",
+      "character": "gpt",
+      "skin": "gpt-girl",
+      "label": "GPT 娘",
+      "english": "GPT Girl"
+    },
+    {
+      "brand": "gemini",
+      "character": "gemini",
+      "skin": "gemini-girl",
+      "label": "Gemini 娘",
+      "english": "Gemini Girl"
+    },
+    {
+      "brand": "grok",
+      "character": "grok",
+      "skin": "grok-girl",
+      "label": "Grok 娘",
+      "english": "Grok Girl"
+    },
+    {
+      "brand": "kimi",
+      "character": "kimi",
+      "skin": "kimi-girl",
+      "label": "Kimi 娘",
+      "english": "Kimi Girl"
+    },
+    {
+      "brand": "qwen",
+      "character": "qwen",
+      "skin": "qwen-girl",
+      "label": "千问娘",
+      "english": "Qwen Girl"
+    },
+    {
+      "brand": "minimax",
+      "character": "minimax",
+      "skin": "minimax-girl",
+      "label": "MiniMax 娘",
+      "english": "MiniMax Girl"
+    },
+    {
+      "brand": "doubao",
+      "character": "doubao",
+      "skin": "doubao-girl",
+      "label": "豆包娘",
+      "english": "Doubao Girl"
+    },
+    {
+      "brand": "glm",
+      "character": "glm",
+      "skin": "glm-girl",
+      "label": "GLM 娘",
+      "english": "GLM Girl"
+    }
+  ]
+}

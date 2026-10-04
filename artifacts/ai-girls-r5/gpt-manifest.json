@@ -1,0 +1,416 @@
+{
+  "branch": "codex/gpt-girl-modular",
+  "headIsNotDeliveryCommit": true,
+  "baseline": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-04",
+  "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+  "modified": [
+    {
+      "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+      "baselineSha256": "ebfac39678f840442ffc5f7b9002e08b6331d3910a60c964f5d105db9983f6c2",
+      "resultSha256": "bd999139e0cbb51b57ff654d4a0c460d7e9989c022b8961e57e0d4ddcc797df1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+      "baselineSha256": "abc486458ede6c1d81ebe33aafec905acb2a97690fbf66065838a29b56ebddd5",
+      "resultSha256": "5ab8781f44126494ee6a6f42ad400910c07614b9dc622236f019ffa12325780c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+      "baselineSha256": "1eb3f0005f272e9d5c44b296edc5bb5da4d9287ce188e4b712859a7eb5d84259",
+      "resultSha256": "33a40204fb0fe9c76a6e7167ed5fb2024909cfb13aed3181c3cd8b21d9b581c7"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+      "baselineSha256": "517e6f3747f05928f7f005c2e0b1945365d6dc4d9175b1f70cc77ad65edd4363",
+      "resultSha256": "c9d7de539ad7ff235a1e9967a6105b8262ca2f1e522b532e317d271ba39a1b69"
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular.meta",
+      "sha256": "548ec1f1e643e4c620d980368905c742eeefe3ffc4d15bb44d55925f2bce9b56"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab",
+      "sha256": "b45e931bbea66a5d7bb33f69da12efe7bfe602f07339e331d1e2038b46eb627b"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GPTGirlModular.prefab.meta",
+      "sha256": "4b11da24a19ad1b2e9a1f3346f5444482b68e2f5d3a4f911660a5a85c3a1b10c"
+    },
+    {
+      "path": "docs/GPT_GIRL_MODULAR.md",
+      "sha256": "c16bb3b85b0984d51127dd70aafb7efa3c0a8767768369e29f5db5db036c1c87"
+    },
+    {
+      "path": "scripts/package-gpt-girl.py",
+      "sha256": "d1f3b3a4d98a8766659696cc2ce2b69d7970ab4a94805e96eeeaa61ea49fdd01"
+    },
+    {
+      "path": "scripts/run-gpt-girl-audit.command",
+      "sha256": "d2f0652717a6d6b43fea1ceb1064e12ec9e52ad83b0fdba788c90a376ae5a103"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs",
+      "sha256": "63ca619a5a827f607fe9d3cb49fb69419a339ac56498f4f5e5f709572f7c6e3b"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GPTGirlOutfit.cs.meta",
+      "sha256": "caf5cc8c0cb7702218ffc54cc7e3d51ddcb8fde26dcae2b501663a05eaa7f741"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs",
+      "sha256": "dbdd01986ba70dfd9e8478824cd14b0d4753ad5c9138dd603c17f13867dcfd4c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GPTGirlFaceDetails.cs.meta",
+      "sha256": "4c36f5dc883663474ade4ea5efb0c5f990c673fede5785847f2ddc02dd75cc29"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GPTGirlModularTools.cs",
+      "sha256": "0ddf16e453d5de3192644b21c11ff82c06ed3b99a47061af7bf508bcc1b7c522"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GPTGirlModularTools.cs.meta",
+      "sha256": "2a686d0b100eb1b31f0fc95d22f72c422ae961a8ff4d06d5ef460301c7d18633"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GPTGirlFaceReview.cs",
+      "sha256": "e8d74f8cccba5d62616a2daab3121244d77ea5245fdc0f76253e2e8e2b5ae450"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GPTGirlFaceReview.cs.meta",
+      "sha256": "fe3acad5d6ed1f3db5ae7970ba60a63a4d7d92b4444f2a1a98a3335985f76554"
+    },
+    {
+      "path": "scripts/gpt-girl-modular-assets.py",
+      "sha256": "6bba849231ae02ea2d236adad551ff57c2c17f5184b8165b42f0105982ce495f"
+    },
+    {
+      "path": "scripts/gpt-girl-modular-source.py",
+      "sha256": "be14928de3f040cb55759f05ee56c89a1b81d698f6292d04ef9b902033daa4b0"
+    },
+    {
+      "path": "scripts/gpt-girl-modular-video.py",
+      "sha256": "c84010d1f3660528827aa273995341acf2990c71eea37de94c723e5058e5d81d"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset",
+      "sha256": "5749938dded5629bbb9dfcb9aa195f3e182c029fde7d9c485e06f498cc184c1b"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/Accessories.asset.meta",
+      "sha256": "799ac139eb208dae755db46783a514e6d3a9b5d19ed063ee5aacec99540ef27d"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader",
+      "sha256": "04b262a60001cad846654d53b8f59a596b2b56a9ef96a0cca4f2cb1ccb9edca8"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirlPalette.shader.meta",
+      "sha256": "076c263b264401a6f511fe4160a48ee428965a77a97b0529a724f58ad1a1bee9"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx",
+      "sha256": "ec256e342984be9e64e000403cc747ea173e2907161d2a0fea0a8bca1d2d6a14"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/GPTGirl_Accessories.fbx.meta",
+      "sha256": "be64b24059c19374c728465350900f76ba4b69ebe70ce60aa98934752af01fbd"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat",
+      "sha256": "d8833794b5b110c32ad507a7da98c36a7497a9060e50cbdb9febd8beac2550e2"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat.meta",
+      "sha256": "4e2d60d3245a0407f5f8d61c9be8429521ba46629dd8f60ebbaffdbf3f184dbd"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "GPTGirl_Modular.blend",
+      "sha256": "1717982ddd8777d91d3f6fa800c11cf243f2c8c54bbb4d53bacac98571279c6b"
+    },
+    {
+      "path": "reference.png",
+      "sha256": "385636d6cd330231519602c013497e2df0ed6a6d6c8e2838df226ce36e69dab7"
+    },
+    {
+      "path": "base-neutral.json",
+      "sha256": "a86353aa51648594e618049ddf0de769a61838b36239107ae6f616638f259eac"
+    },
+    {
+      "path": "gpt-base-neutral.json",
+      "sha256": "4d85c6c53a8901238340c2205513e61293493939073d556ee1f357593093d02e"
+    },
+    {
+      "path": "accessories.json",
+      "sha256": "4a774552fb8b000163767a465acf70bbc2279c4031750b09b1feff252947dc42"
+    },
+    {
+      "path": "mesh-statistics.json",
+      "sha256": "9db4b36ed50b85d02b331b38b44780be3ad76fb4ab816894abadd144ba94b2f4"
+    },
+    {
+      "path": "pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "authority-boundary.json",
+      "sha256": "7846617919ece9400473c80c6e8154405693943ff842a724c6225c441b86b011"
+    },
+    {
+      "path": "switch-validation.json",
+      "sha256": "bd679f2bbf6de1094c0eef2c21e2ba15a7724f64e325af4f04fe5649c25f47eb"
+    },
+    {
+      "path": "ds-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "claude-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "physics-parity.txt",
+      "sha256": "36736fa0473a005c1450420ebe1a5cd1177a2b61c2dd37113bfba8c87ddc094e"
+    },
+    {
+      "path": "physics-motion.mp4",
+      "sha256": "22191e33488460732a787cf6c2bb8df7f265a3e2f8184ea5d3c88dd86171f1c6"
+    },
+    {
+      "path": "mac-runtime.mp4",
+      "sha256": "e247939ec699ac2936c2838ee5fcd46001560076d6222ce951664e778a7aa00f"
+    },
+    {
+      "path": "runtime-validation.json",
+      "sha256": "a94b1945a5ab1e5198b201a942471a41acb3096ed913424f708031168a10cd6e"
+    },
+    {
+      "path": "perf-toy/metrics.json",
+      "sha256": "0c63d1b8b2b600562d747a646fbc06cf2dd0eb2efdabf31249c232520e9f5371"
+    },
+    {
+      "path": "perf-gpt/metrics.json",
+      "sha256": "aa0f45113254d2496c687382a52cb1ef9386699a96d5692b934afdb4cc5cc600"
+    },
+    {
+      "path": "runtime-capture/metrics.json",
+      "sha256": "6c7307139e6bf4e7f3df16dd973a39095ab344b9aded846894207900b8a85fdc"
+    },
+    {
+      "path": "build-mac.log",
+      "sha256": "12b1e71bebd6933d96670a7df1f1eb3c4f653a76ec1371059df4ef9cce332e2a"
+    },
+    {
+      "path": "build-web.log",
+      "sha256": "7f1987e8018e41fb0fe89d14e50227d3e08255ed6cebb4a12efc59d626f1d9f2"
+    },
+    {
+      "path": "final-review.log",
+      "sha256": "6983ad6a3de7e8d576427a8fafe7a4d67e7dcd32a1a50a56fbc63337d1eb5b91"
+    },
+    {
+      "path": "delivery-review.log",
+      "sha256": "142035b5399f30cbccd74fe12eec707fea530fd5ead1d5475557360fc41f38bc"
+    },
+    {
+      "path": "physics-review.log",
+      "sha256": "ce29cab955195f97091efd17399cd7c1eba35371b23ba2e8c65e53aaa6661128"
+    },
+    {
+      "path": "perf-toy/player.log",
+      "sha256": "fc5130f85c8ced9aeb6288dac1887da2436ea37a07318ecc434449e698d5d861"
+    },
+    {
+      "path": "perf-gpt/player.log",
+      "sha256": "b340ca144aec16defb6535edda8483c62b07c8ce36b19c771492b8dbdb4b10b3"
+    },
+    {
+      "path": "runtime-capture/player.log",
+      "sha256": "673a9e87f88777a56f37b7d32b131dd87454b0c009fa987641371154260bc6ba"
+    },
+    {
+      "path": "brow-revision/after-expression-determined.png",
+      "sha256": "a4e5b29bfcf24bfddd5c8a30f59334834cb6d714eb1977b9bdb8b93a3d772939"
+    },
+    {
+      "path": "brow-revision/after-expression-friendly.png",
+      "sha256": "a769fc14fb2900a07098d1092041475b912c27e27f876f105f72f5fbf44bdf02"
+    },
+    {
+      "path": "brow-revision/after-face-close.png",
+      "sha256": "8556de2fb0d099a9de336fb8637f312728b861d14b05ce3c58375cd0db83dd0a"
+    },
+    {
+      "path": "brow-revision/before-expression-friendly.png",
+      "sha256": "929535bc03211beade06698641c470a9d8ebc0330d6e717953ed89b97a6fdd34"
+    },
+    {
+      "path": "brow-revision/before-face-close.png",
+      "sha256": "d00e7962f42a8711394c67ac8af069ba54c809234d63b36b9bfb33567310b6e2"
+    },
+    {
+      "path": "brow-revision/review.log",
+      "sha256": "4f4ed001a08f74059f961239698a6749df456698e1768da12fc642085c2dc594"
+    },
+    {
+      "path": "brow-revision/validation.json",
+      "sha256": "89def4f773426d679e53a91f1d32cc89959f8642fc02eb57f82fef7e2d0333d3"
+    },
+    {
+      "path": "review/action-eat-side.png",
+      "sha256": "4062d1f0df423b475eda1ded9fcdd1a107f78b4215cf95d999fbddf49dcc942b"
+    },
+    {
+      "path": "review/action-eat.png",
+      "sha256": "97abf8fe3b775772c2734c89620a672e42be165ea1108c1b56874fe690fb9648"
+    },
+    {
+      "path": "review/action-fall.png",
+      "sha256": "5b009ce550527497b593fd1b6591fa5e6b1f47d2f0fa100bdc4848c9802e97d3"
+    },
+    {
+      "path": "review/action-grab-side.png",
+      "sha256": "c7af5d77d45ccb83e87a126197949d54b6f258fe70d77e652297c1a1e6f253d1"
+    },
+    {
+      "path": "review/action-grab.png",
+      "sha256": "b4004eb5693d783a334e6571e976710de32d5e5aa498d1c39e9385d28edeb51e"
+    },
+    {
+      "path": "review/action-heavy.png",
+      "sha256": "96a0ec073eec9b3ea80e08d2bfa19ccbde241e8ed6d71ca04a5ad6efa9f5202d"
+    },
+    {
+      "path": "review/action-hurt.png",
+      "sha256": "6e3951dd8863e607b9555469f3480d8dd43865d837ccc9bb94d0b28a235298fa"
+    },
+    {
+      "path": "review/action-idle.png",
+      "sha256": "87b099d7cd3e5f6be3d0ae11a2f59401316436e312dffd882196df40f0b231ec"
+    },
+    {
+      "path": "review/action-jump.png",
+      "sha256": "ac3919c8cb12db401d6a12a868006cf95c86fa99e163bf347152c870205a4844"
+    },
+    {
+      "path": "review/action-light.png",
+      "sha256": "e04c300b489384250454ec1bc1da50a0fc8bfc09c0b2e32d28d21efaceda7995"
+    },
+    {
+      "path": "review/action-recover.png",
+      "sha256": "3858c815725ac20812826cb07ec9ee0206c5e4d6686f3309a78024de2a7db7c7"
+    },
+    {
+      "path": "review/action-run.png",
+      "sha256": "e0a3f73f1079a80011cf1075923f6309ebcd9194f8ef361c94782cf3f1f8c6bc"
+    },
+    {
+      "path": "review/action-walk.png",
+      "sha256": "c5f84b5db4f656906f8e29aba5eed3f1a8cd4b568f3771711380dd8bc4227223"
+    },
+    {
+      "path": "review/actions-contact-sheet.jpg",
+      "sha256": "2ff6805cfd1fe185500f61dd03feba3bc1c2b93ab1cbf2c765bc9d051993162f"
+    },
+    {
+      "path": "review/back.png",
+      "sha256": "f82e2af7759cb8f1fa6be5f4467abaf3b729f8a7bcb885743b6984934ff6dfa7"
+    },
+    {
+      "path": "review/comparison.png",
+      "sha256": "5553bbcb58fd3da8260325d91ef873bd8516793a4b763b3a8917ebe8928be6d3"
+    },
+    {
+      "path": "review/extreme-reach.png",
+      "sha256": "6edf643dafdcebc7976eeff09358899c65f1f3cacfe324276080812aa481f23f"
+    },
+    {
+      "path": "review/front.png",
+      "sha256": "278a2f7b1fc1f313c7345145df066cb78d8d8daf8cdea7fd094a7eebce511cfa"
+    },
+    {
+      "path": "review/inverted.png",
+      "sha256": "f1ffd835bd01b404dd9b40092c46885eb659fccc6367f37fcd4958e7ec182df6"
+    },
+    {
+      "path": "review/mac-runtime.png",
+      "sha256": "fadaff5d46b01362ba2ca4d3953c78d68e5cc0b21e1f37215e48c4bc789e9fa5"
+    },
+    {
+      "path": "review/side.png",
+      "sha256": "70a29d3ed31531aaeae79eb041ef95c20f86e640e62401945dd609d2e660755f"
+    },
+    {
+      "path": "review/three-quarter.png",
+      "sha256": "e74d4f7032bc2cbb291c83f6978c0bb4c6df5947506cb69536ec2a6c6ef75c53"
+    },
+    {
+      "path": "face-review/action-eat-side.png",
+      "sha256": "4062d1f0df423b475eda1ded9fcdd1a107f78b4215cf95d999fbddf49dcc942b"
+    },
+    {
+      "path": "face-review/action-eat.png",
+      "sha256": "97abf8fe3b775772c2734c89620a672e42be165ea1108c1b56874fe690fb9648"
+    },
+    {
+      "path": "face-review/action-grab.png",
+      "sha256": "b4004eb5693d783a334e6571e976710de32d5e5aa498d1c39e9385d28edeb51e"
+    },
+    {
+      "path": "face-review/blink.png",
+      "sha256": "c355c50797f810f3e9e67a2001e092b472c81fb92fc5da4415251c9a3b9287b9"
+    },
+    {
+      "path": "face-review/expression-confident.png",
+      "sha256": "3a020df2ee0b94aa37a1bf451a151e864bb3a3795385a150f6a92cb1cfdda0f6"
+    },
+    {
+      "path": "face-review/expression-determined.png",
+      "sha256": "a4e5b29bfcf24bfddd5c8a30f59334834cb6d714eb1977b9bdb8b93a3d772939"
+    },
+    {
+      "path": "face-review/expression-friendly.png",
+      "sha256": "a769fc14fb2900a07098d1092041475b912c27e27f876f105f72f5fbf44bdf02"
+    },
+    {
+      "path": "face-review/expression-joy.png",
+      "sha256": "c831b076642b19bf1103e9d989f9958bfd44b4c7313d169b3184431491a1d3b8"
+    },
+    {
+      "path": "face-review/expression-sleepy.png",
+      "sha256": "2d3846c211daeecf1f96db644436c0673d730f54ac10bd248aa78f5aabba380b"
+    },
+    {
+      "path": "face-review/expression-surprised.png",
+      "sha256": "3e44520ec425b7a95e936a765a505a0c2339f48902e2e9fd182838e53f093d06"
+    },
+    {
+      "path": "face-review/face-close.png",
+      "sha256": "8556de2fb0d099a9de336fb8637f312728b861d14b05ce3c58375cd0db83dd0a"
+    },
+    {
+      "path": "face-review/face-validation.json",
+      "sha256": "98ea2d32fdc5d2cc24334a642dcca6422a493783f9c6e365a3d428b3ac3ecb83"
+    },
+    {
+      "path": "face-review/front.png",
+      "sha256": "278a2f7b1fc1f313c7345145df066cb78d8d8daf8cdea7fd094a7eebce511cfa"
+    },
+    {
+      "path": "face-review/pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "face-review/three-quarter.png",
+      "sha256": "e74d4f7032bc2cbb291c83f6978c0bb4c6df5947506cb69536ec2a6c6ef75c53"
+    }
+  ],
+  "patchCheckPassed": true,
+  "inheritedFilesChecked": 1466,
+  "unintendedInheritedChanges": [],
+  "scope": "Rendering candidate only. Authority/unlocks/default normal/normal playtest launcher unchanged. Dedicated local probe overlays only diagnostic PublicPlayer render snapshots."
+}

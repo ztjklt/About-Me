@@ -1,0 +1,388 @@
+{
+  "branch": "codex/glm-girl-modular",
+  "headIsNotDeliveryCommit": true,
+  "baseline": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+  "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+  "modified": [
+    {
+      "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+      "baselineSha256": "ebfac39678f840442ffc5f7b9002e08b6331d3910a60c964f5d105db9983f6c2",
+      "resultSha256": "15297000f6aa364a116e1477034bba6930f167da94e04e9d0e1cdbf928fe88eb"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+      "baselineSha256": "abc486458ede6c1d81ebe33aafec905acb2a97690fbf66065838a29b56ebddd5",
+      "resultSha256": "f12cfd1032f25b9106c2749a9c655f766a632df6cdfbb295dbdbd09e5b07457c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+      "baselineSha256": "1eb3f0005f272e9d5c44b296edc5bb5da4d9287ce188e4b712859a7eb5d84259",
+      "resultSha256": "f244fdd6ae86acb7cae39c4802b767c6c7c1713cfadc99eb82ba5eb5ea20eb0f"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+      "baselineSha256": "517e6f3747f05928f7f005c2e0b1945365d6dc4d9175b1f70cc77ad65edd4363",
+      "resultSha256": "86b270988a880e4429f5cb93546492adc2c1a504eca6a7d3ea095fe7fcd513e7"
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular.meta",
+      "sha256": "64f52bf4cf91f8ce1a3eb214199e645b63f911c5d46f960feb0232e070018f9d"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab",
+      "sha256": "f4ee0e6db5a696897b208d114bc761ad41019f3193f4d67a5419d16c347d9590"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GLMGirlModular.prefab.meta",
+      "sha256": "6597deb22d334d49731253a0044da074c2aa83ca6ccf250dbb0fe6a7de7667b4"
+    },
+    {
+      "path": "docs/GLM_GIRL_MODULAR.md",
+      "sha256": "f2de496a631d4446d0b0ae733267eb281b08f7a1c85bf7bdd808a7cab717028b"
+    },
+    {
+      "path": "scripts/package-glm-girl.py",
+      "sha256": "14bb93a0c5d236d3bfdc9545d3ff91209a1f424b831f1615d25867b4492993f3"
+    },
+    {
+      "path": "scripts/run-glm-girl-audit.command",
+      "sha256": "072312665e159dfe16076c94ffd354d21e4666f3e9510ca59b3fafd4248445b4"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs",
+      "sha256": "314da0f8a7bcb15000e175a2344aa91edf436531a29939c9652b75e8ce1109b1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GLMGirlOutfit.cs.meta",
+      "sha256": "41a925bf9523d95ea94516ece61dfc0cceaf1f3f62a3f7928e0075f13f09d086"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs",
+      "sha256": "9e028dd9d5868539808c177de15e2fa195836c3f303dfa750d26a5b79f940f39"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GLMGirlFaceDetails.cs.meta",
+      "sha256": "a63e662698c510083492e2e273a9768e3f69ec9d69b4b005e27ae8d4fb1c27cd"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GLMGirlModularTools.cs",
+      "sha256": "15bfac16fd1a088e5b3798ab4d592e308e2bb586632e1749d7fe02a138159c13"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GLMGirlModularTools.cs.meta",
+      "sha256": "99393365e712fb41a3e66eac2c066264c6a684db12f8cee1693514b3c9c5ee34"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GLMGirlFaceReview.cs",
+      "sha256": "fea760ad4625a3b2f6a89256a365b6b3057ac9277b304bff85442c9b19956283"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GLMGirlFaceReview.cs.meta",
+      "sha256": "1b28eec64fa4203fb39a4e17197c7a5a794afcf2400ac68dd4280648e38fc6b7"
+    },
+    {
+      "path": "scripts/glm-girl-modular-assets.py",
+      "sha256": "11ba2c981d5cd1d6c1f11a2a90ed9e990458acfe970515b3b364bac37fa3695c"
+    },
+    {
+      "path": "scripts/glm-girl-modular-source.py",
+      "sha256": "795026e8e78c7008b1cb2a0b5711778fd4847ed43cf35f22252c6c94ebe916c4"
+    },
+    {
+      "path": "scripts/glm-girl-modular-video.py",
+      "sha256": "dd933e06e20b6feebe507ba233886150b0a4a8db2e61ebf454bf84185368e8e8"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset",
+      "sha256": "0c6c4bb37a1c855644471b89920c544f895b8206807e225529f4483cfb6791f3"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/Accessories.asset.meta",
+      "sha256": "753fb2e80ac4f2cae23db3ee3549a869e44bedafd877be12ee02a69b31676f41"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader",
+      "sha256": "b10b88daec6ab8b16dae5d77c0b7216bba29832fc5286492f0857d81262ca3fc"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirlPalette.shader.meta",
+      "sha256": "d9dd6cde2b8fa3232e2f3cf2cdab6270e562106467f8ae51858faa48d823b7ed"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx",
+      "sha256": "7e971a32bc3f271a20ddc08fbd5a6aaab36647a51abdd2cecdc21ec25fa63a05"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/GLMGirl_Accessories.fbx.meta",
+      "sha256": "f43d9815e7f5acce3424bf73d7a923fafb851bf756668cfdb552e6eb1a0ea2ed"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat",
+      "sha256": "1f16e43933f40c43509cbf6982aca85575ad455d35b1a4882a6a862b1cc31da6"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat.meta",
+      "sha256": "50767b55868d884ffe2c24e3ae36c2435ec904be05ade5a476c6d8cde80fc2b5"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "host-load.json",
+      "sha256": "3b88326650703291fec1e39f5aa1ee90c32beef8fdfd7bf5460d56da1c6b51f0"
+    },
+    {
+      "path": "GLMGirl_Modular.blend",
+      "sha256": "e166dc7fb781330d71b9dde739629c0a5263770e7532227dde10d46c2f047687"
+    },
+    {
+      "path": "reference.png",
+      "sha256": "860b94e443589af4089227894fc31a089eb84675343de5c561c8b6ef92d31fda"
+    },
+    {
+      "path": "base-neutral.json",
+      "sha256": "a86353aa51648594e618049ddf0de769a61838b36239107ae6f616638f259eac"
+    },
+    {
+      "path": "glm-base-neutral.json",
+      "sha256": "edd88dbe2201647ab79c88e8fdc1033016a3b17b0defa2762cb3ac25c0482ede"
+    },
+    {
+      "path": "accessories.json",
+      "sha256": "c66f306c387f416018654f294c6e31f1c9b6acd857f9edf5ed5ece965bf61dce"
+    },
+    {
+      "path": "mesh-statistics.json",
+      "sha256": "7a673ea80e0c2893326a7bc246150f66c8a0c2504839865fd3ddb8ba4a42e7b6"
+    },
+    {
+      "path": "pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "authority-boundary.json",
+      "sha256": "7846617919ece9400473c80c6e8154405693943ff842a724c6225c441b86b011"
+    },
+    {
+      "path": "switch-validation.json",
+      "sha256": "e1d68e049b0eed472c96560c70b80ea6ac35d5a5a4f01c20dfce22411a06a7b4"
+    },
+    {
+      "path": "ds-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "claude-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "physics-parity.txt",
+      "sha256": "36736fa0473a005c1450420ebe1a5cd1177a2b61c2dd37113bfba8c87ddc094e"
+    },
+    {
+      "path": "physics-motion.mp4",
+      "sha256": "1e4db7c06db60b619251add3eec5175b83dfbd7f2b1327249fdc179a3018d9dd"
+    },
+    {
+      "path": "mac-runtime.mp4",
+      "sha256": "94a5561c5e8c6b53c857b67a9f2450130253d1c2375b2e651853e93c81f8ccbe"
+    },
+    {
+      "path": "runtime-validation.json",
+      "sha256": "9cc07ae543916974daf4f1f5315ce4f042a22f0064c06a6e0b28e292b850cb8f"
+    },
+    {
+      "path": "perf-toy/metrics.json",
+      "sha256": "c1be8f7c056ba2dc1139fac51eb35b76fcad558bd49fb878656f413584599c03"
+    },
+    {
+      "path": "perf-glm/metrics.json",
+      "sha256": "d6c992b40bbbb5098f07df56a38d6446c42de28c781495c729e43c002cb80623"
+    },
+    {
+      "path": "runtime-capture/metrics.json",
+      "sha256": "b8ff6e2a1ad9f805ff1140669863d124a8d0c698f12efbd29ff15a27a475537e"
+    },
+    {
+      "path": "build-mac.log",
+      "sha256": "0a9fc982ffa3ee7cff5a7dbd5a4404c7b061bb384cc2bcd5786c7eb3cf75e045"
+    },
+    {
+      "path": "build-web.log",
+      "sha256": "d199f007f7b192eddd1f302ecf73255bf0419c2fd98958e31c01af9326fcbfbc"
+    },
+    {
+      "path": "final-review.log",
+      "sha256": "c2b7197dac871f88d9b686290964eb0a082dfd801ae5c3380f7657336e067140"
+    },
+    {
+      "path": "physics-review.log",
+      "sha256": "67ce9af30c88f8120e67699ac124377712a492a89e7f4faefc9082f036734c73"
+    },
+    {
+      "path": "perf-toy/player.log",
+      "sha256": "19cc2d2ad7b30ba315b2f386a3f56949f75dda98257d469291e3e44c0ca27c76"
+    },
+    {
+      "path": "perf-glm/player.log",
+      "sha256": "d2d36e9c51ba935a7b4d82a3e11414b916360b04269667da4d83827e847a9082"
+    },
+    {
+      "path": "runtime-capture/player.log",
+      "sha256": "c60bee8fdbbf9b812695f6ccf48cfb93a1cedc4baccb2b9bf579eaf35f980e27"
+    },
+    {
+      "path": "review/action-eat-side.png",
+      "sha256": "7d4789706cd5867ea3fc956fa92cf534d4550f5193ff82e7aec6127f9f7f7a79"
+    },
+    {
+      "path": "review/action-eat.png",
+      "sha256": "46388053dca39b6d50096fdeddbac9484be155f090c0e702ef5c3d680d621be2"
+    },
+    {
+      "path": "review/action-fall.png",
+      "sha256": "c2544b36f412c4ffc66fc2d463176b816bdff2991397877ae9454aa008fe3509"
+    },
+    {
+      "path": "review/action-grab-side.png",
+      "sha256": "c362d6fa08c5ff0b52dea1cedd6aa527d0ccf07763df781ce80b55f9e75bb45e"
+    },
+    {
+      "path": "review/action-grab.png",
+      "sha256": "4424f0048376f100ca665d4fba3ab8bc55ad45b7302f343393d1ba0e4a5218a1"
+    },
+    {
+      "path": "review/action-heavy.png",
+      "sha256": "43da93fe21dea94888b996c22f37379446afeeb8e3332c1b198c7bd6aa48ecc9"
+    },
+    {
+      "path": "review/action-hurt.png",
+      "sha256": "bd69a727cd9c9c850906fbd1654f9bdafd0e26558e78ccaf80fd562a3aae2b2f"
+    },
+    {
+      "path": "review/action-idle.png",
+      "sha256": "aa13fdce2e2a29fd0060436ec4996fc48bc97a861ee50cbb956e20d8d5eb8a2f"
+    },
+    {
+      "path": "review/action-jump.png",
+      "sha256": "89d46e047dd884de9739fe8a1531da60bd5ed97cd93f59c83d744fe630f15acb"
+    },
+    {
+      "path": "review/action-light.png",
+      "sha256": "c5658d7e137445c4bfad47d69576c1d5920500decfbbe5c889ecc368a4fe2d90"
+    },
+    {
+      "path": "review/action-recover.png",
+      "sha256": "85c1708c582b372f451cc068e994b0728963ef152bb0f757719e8d133c2ce2f4"
+    },
+    {
+      "path": "review/action-run.png",
+      "sha256": "d218b7e6d4f4d8a87a7e4cc0b2bf09692d3d7a90161bd06df1e674adc94fe0f3"
+    },
+    {
+      "path": "review/action-walk.png",
+      "sha256": "c573f287070c228f2e7043a557fd820136700daf380990dcb16ce1b2d884533d"
+    },
+    {
+      "path": "review/actions-contact-sheet.jpg",
+      "sha256": "89569134c209038f563e9aa5c3975ddd4738871ec036b4b7dc3916041f01ad07"
+    },
+    {
+      "path": "review/back.png",
+      "sha256": "670aef8b90ad3315946ba5801887fb406acf577dd1be12c6f79391f6d4bed061"
+    },
+    {
+      "path": "review/comparison.png",
+      "sha256": "db82dce29dec146d4366c69a12a2046f0aa312bb2bf06587419c2627f531f8df"
+    },
+    {
+      "path": "review/extreme-reach.png",
+      "sha256": "7d0e8a37c3d7e98fb5b449eef8585167dcbd87f9acec68ca5d41d310a80a095f"
+    },
+    {
+      "path": "review/front.png",
+      "sha256": "963a1347db0769fdcbd98f052b135da3b2f8b6826b23f9b1281fdbbb1c4b49d0"
+    },
+    {
+      "path": "review/inverted.png",
+      "sha256": "d4ce1287f8304e3525da56a83ff754d5cd6a34b0b0d15be05b7ccce4aa429d1c"
+    },
+    {
+      "path": "review/mac-runtime.png",
+      "sha256": "71cb16086ee1e637dc0302bf3b118ceae4d5733cf84d7a644938ad5b2f98c015"
+    },
+    {
+      "path": "review/side.png",
+      "sha256": "f16c0052d71d523ec75fdf043f6509d9b574be4af27446db4d5b71643e6404d6"
+    },
+    {
+      "path": "review/three-quarter.png",
+      "sha256": "0f6ed4c0bd6c2dc4bbb18e1f25cfda772b84a0e305a70f52941703f9a7566656"
+    },
+    {
+      "path": "face-review/action-eat-side.png",
+      "sha256": "7d4789706cd5867ea3fc956fa92cf534d4550f5193ff82e7aec6127f9f7f7a79"
+    },
+    {
+      "path": "face-review/action-eat.png",
+      "sha256": "46388053dca39b6d50096fdeddbac9484be155f090c0e702ef5c3d680d621be2"
+    },
+    {
+      "path": "face-review/action-grab.png",
+      "sha256": "4424f0048376f100ca665d4fba3ab8bc55ad45b7302f343393d1ba0e4a5218a1"
+    },
+    {
+      "path": "face-review/blink.png",
+      "sha256": "11f0e84bd46f8fae78842a1dae6e0f7dab8fcd11178484d5bffb42d224a1c260"
+    },
+    {
+      "path": "face-review/expression-confident.png",
+      "sha256": "63d5c759508b161f0607faea833a5f6eabc41413ddc1fc705c5610f178677331"
+    },
+    {
+      "path": "face-review/expression-determined.png",
+      "sha256": "740f38807b68394d87ae7e1e08d7039b353299966134b97368ae64f42430c752"
+    },
+    {
+      "path": "face-review/expression-friendly.png",
+      "sha256": "3a39aeaeefd076d5e0a78c8f0f17dfed9e79c6dd85636e89eeac1627f4bb3daf"
+    },
+    {
+      "path": "face-review/expression-joy.png",
+      "sha256": "67e3b015f004384a9c032af3c28aee5baf8a3f898548f031c1f0afe9943a186a"
+    },
+    {
+      "path": "face-review/expression-sleepy.png",
+      "sha256": "5a39f696ae5273887495e7b16d01244c36c738a1a2f544085c100b3890daafeb"
+    },
+    {
+      "path": "face-review/expression-surprised.png",
+      "sha256": "ca3ca83f0d58fac92c0b46646a7e22d1f54d2b5ad273bc3115f71a6b3385aeb7"
+    },
+    {
+      "path": "face-review/face-close.png",
+      "sha256": "b0f69a53a7abd2ba4fc066f662027d4881f084b5423763cfd53595ceed8d4776"
+    },
+    {
+      "path": "face-review/face-validation.json",
+      "sha256": "98880ed0526eef543fb4d6ab40331c2ee11a9cc7d998334c34e076222e7e220c"
+    },
+    {
+      "path": "face-review/front.png",
+      "sha256": "963a1347db0769fdcbd98f052b135da3b2f8b6826b23f9b1281fdbbb1c4b49d0"
+    },
+    {
+      "path": "face-review/pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "face-review/three-quarter.png",
+      "sha256": "0f6ed4c0bd6c2dc4bbb18e1f25cfda772b84a0e305a70f52941703f9a7566656"
+    }
+  ],
+  "patchCheckPassed": true,
+  "inheritedFilesChecked": 1466,
+  "unintendedInheritedChanges": [],
+  "scope": "Rendering candidate only. Authority/unlocks/default normal/normal playtest launcher unchanged. Dedicated local probe overlays only diagnostic PublicPlayer render snapshots."
+}

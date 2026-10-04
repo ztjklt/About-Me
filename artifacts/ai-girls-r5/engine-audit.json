@@ -1,0 +1,17 @@
+{
+    "scope": "Unity Editor actual render, deterministic motion parity, shared authoritative Match physics; no human/network/device claim",
+    "skins": 11,
+    "poseFrames": 7260,
+    "switches": 220,
+    "physicsTicks": 420,
+    "maxBonePosition": 7.725644763922901e-7,
+    "maxBoneAngle": 0.0,
+    "maxGrip": 8.616943318884296e-7,
+    "physicsStates": [
+        "Standing",
+        "Falling",
+        "Grounded",
+        "GettingUp"
+    ],
+    "passed": true
+}

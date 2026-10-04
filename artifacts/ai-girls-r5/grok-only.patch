@@ -1,0 +1,157 @@
+--- a/client/Assets/AboutMe/Runtime/CampusDoll.cs
++++ b/client/Assets/AboutMe/Runtime/CampusDoll.cs
+@@ -107,9 +107,10 @@
+         DSGirlOutfit dsOutfit;
+         ClaudeGirlOutfit claudeOutfit;
+         GeminiGirlOutfit geminiOutfit;
+-        bool UsesModularOutfit=>Appearance.character=="ds"||Appearance.character=="claude"||Appearance.character=="gemini";
+-        float FaceMouthDrop=>Appearance.character=="gemini"?GeminiGirlFaceDetails.MouthDrop:Appearance.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
+-        float FaceBrowDrop=>Appearance.character=="gemini"?GeminiGirlFaceDetails.BrowDrop:Appearance.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
++        GrokGirlOutfit grokOutfit;
++        bool UsesModularOutfit=>Appearance.character=="ds"||Appearance.character=="claude"||Appearance.character=="gemini"||Appearance.character=="grok";
++        float FaceMouthDrop=>Appearance.character=="grok"?GrokGirlFaceDetails.MouthDrop:Appearance.character=="gemini"?GeminiGirlFaceDetails.MouthDrop:Appearance.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
++        float FaceBrowDrop=>Appearance.character=="grok"?GrokGirlFaceDetails.BrowDrop:Appearance.character=="gemini"?GeminiGirlFaceDetails.BrowDrop:Appearance.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
+         Transform toyLeftHandAttachment,toyRightHandAttachment;
+         bool ragdoll,positionInitialized;string appearanceKey="";
+         float walkPhase,moveBlend,runBlend,eatBlend,grabBlend,chargeBlend,struggleBlend,recovery,eatProgress,swallowTime;
+@@ -191,9 +192,17 @@
+             if(Appearance.character=="ds"&&!dsOutfit)dsOutfit=DSGirlOutfit.Attach(this);
+             if(Appearance.character=="claude"&&!claudeOutfit)claudeOutfit=ClaudeGirlOutfit.Attach(this);
+             if(Appearance.character=="gemini"&&!geminiOutfit)geminiOutfit=GeminiGirlOutfit.Attach(this);
++            if(Appearance.character=="grok"&&!grokOutfit)grokOutfit=GrokGirlOutfit.Attach(this);
+             LeftHandAttachment=toyLeftHandAttachment;RightHandAttachment=toyRightHandAttachment;
+             if(Skin)Skin.enabled=true;
+             if(held)held.transform.SetParent(RightHandAttachment,false);
++        }
++        void ClearGrokOutfit()
++        {
++            if(!grokOutfit)return;
++            grokOutfit.Release();grokOutfit.gameObject.SetActive(false);
++            if(Application.isPlaying)UnityEngine.Object.Destroy(grokOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(grokOutfit.gameObject);
++            grokOutfit=null;
+         }
+         void ClearGeminiOutfit()
+         {
+@@ -239,11 +248,12 @@
+         {
+             if(Appearance!=null&&Appearance.SameAs(requested))return;
+             var a=AppearanceData.Resolve(requested);string key=JsonUtility.ToJson(a);if(key==appearanceKey)return;
+-            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();ClearGeminiOutfit();
+-            bool ds=a.character=="ds",claude=a.character=="claude",gemini=a.character=="gemini",modular=ds||claude||gemini;
++            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();ClearGeminiOutfit();ClearGrokOutfit();
++            bool ds=a.character=="ds",claude=a.character=="claude",gemini=a.character=="gemini",grok=a.character=="grok",modular=ds||claude||gemini||grok;
+             if(ds){a=a.Copy();a.hairColor="#354D91";a.top="shirt";a.topColor="#263765";a.bottom="skirt";a.bottomColor="#263765";a.shoes="canvas";a.shoeColor="#263765";a.headAccessory="none";a.bag="none";}
+             if(claude){a=a.Copy();a.hairColor="#D66B30";a.top="shirt";a.topColor="#F2E5CA";a.bottom="skirt";a.bottomColor="#302A29";a.shoes="canvas";a.shoeColor="#302A29";a.headAccessory="none";a.bag="none";}
+             if(gemini){a=a.Copy();a.hairColor="#7E80D7";a.top="shirt";a.topColor="#302C62";a.bottom="skirt";a.bottomColor="#302C62";a.shoes="canvas";a.shoeColor="#302C62";a.headAccessory="none";a.bag="none";}
++            if(grok){a=a.Copy();a.hairColor="#EEC58F";a.top="shirt";a.topColor="#29232D";a.bottom="skirt";a.bottomColor="#29232D";a.shoes="canvas";a.shoeColor="#29232D";a.headAccessory="none";a.bag="none";}
+             foreach(var go in cosmetics){if(!go)continue;go.SetActive(false);if(Application.isPlaying)UnityEngine.Object.Destroy(go);else UnityEngine.Object.DestroyImmediate(go);}cosmetics.Clear();
+             if(!Asset("Head",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor))P("Round head and chin",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor);
+             P("Chin",head,new Vector3(0,-.29f,.015f),new Vector3(.65f,.35f,.66f),a.skinColor);
+@@ -253,6 +263,7 @@
+                 if(ds)DSGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                 else if(claude)ClaudeGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                 else if(gemini)GeminiGirlFaceDetails.AddEye(head,sign,face,cosmetics);
++                else if(grok)GrokGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                 else
+                 {
+                     P("Eye white",head,new Vector3(sign*.185f,.055f,.417f),new Vector3(.19f*face.eyeWidth,.205f*face.eyeHeight,.07f),Paper);
+@@ -278,10 +289,10 @@
+         }
+         void BuildClothes(AppearanceData a)
+         {
+-            bool modular=a.character=="ds"||a.character=="claude"||a.character=="gemini";
++            bool modular=a.character=="ds"||a.character=="claude"||a.character=="gemini"||a.character=="grok";
+             P("Shirt silhouette",torso,Vector3.zero,new Vector3(.88f,.88f,.59f),a.topColor);
+             P("Shirt hem",torso,new Vector3(0,-.37f,0),new Vector3(.78f,.10f,.5f),a.top=="varsity"?Paper:a.topColor,false);
+-            P("Collar",torso,new Vector3(0,.39f,0),new Vector3(.35f,.085f,.32f),a.character=="gemini"?"#302C62":Paper);
++            P("Collar",torso,new Vector3(0,.39f,0),new Vector3(.35f,.085f,.32f),a.character=="grok"?"#29232D":a.character=="gemini"?"#302C62":Paper);
+             if(a.top=="hoodie")
+             {
+                 P("Hood",torso,new Vector3(0,.37f,-.24f),new Vector3(.57f,.38f,.36f),a.topColor);
+@@ -319,11 +330,11 @@
+                 var shin=leg==leftLeg?leftShin:rightShin;
+                 P("Thigh",leg,new Vector3(0,-.13f,0),new Vector3(.29f,.32f,.32f),a.skinColor);
+                 P("Trouser thigh",leg,new Vector3(0,-.1f,0),new Vector3(.34f,.32f,.38f),a.bottomColor);
+-                P("Lower leg",shin,new Vector3(0,-.1f,0),new Vector3(.29f,.31f,.32f),modular?Paper:a.bottomColor==""?a.skinColor:a.bottom=="trousers"?a.bottomColor:a.skinColor);
+-                P("Sock",shin,new Vector3(0,-.14f,.02f),new Vector3(.30f,.16f,.34f),a.bottom=="trousers"?a.bottomColor:Paper);
++                P("Lower leg",shin,new Vector3(0,-.1f,0),new Vector3(.29f,.31f,.32f),a.character=="grok"?"#4E3943":modular?Paper:a.bottomColor==""?a.skinColor:a.bottom=="trousers"?a.bottomColor:a.skinColor);
++                P("Sock",shin,new Vector3(0,-.14f,.02f),new Vector3(.30f,.16f,.34f),a.character=="grok"?"#4E3943":a.bottom=="trousers"?a.bottomColor:Paper);
+                 P("Shoe",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,modular?0:a.shoes=="boots"?.10f:.04f,-.01f),new Vector3(.37f,modular?.17f:a.shoes=="boots"?.39f:.25f,.59f),a.shoeColor);
+-                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="gemini"?"#7E80D7":a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
+-                if(a.shoes!="boots")for(int n=0;n<2;n++)P("Laces",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,.132f,.02f+n*.09f),new Vector3(.23f,.028f,.025f),a.shoeColor==Paper?Ink:Paper,false);
++                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="grok"?"#181820":a.character=="gemini"?"#7E80D7":a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
++                if(a.shoes!="boots")for(int n=0;n<2;n++)P("Laces",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,.132f,.02f+n*.09f),new Vector3(.23f,.028f,.025f),a.character=="grok"?"#29232D":a.shoeColor==Paper?Ink:Paper,false);
+                 if(a.shoes=="sneakers")P("Sneaker toe",leg==leftLeg?leftToe:rightToe,new Vector3(0,.06f,-.02f),new Vector3(.34f,.15f,.17f),Paper);
+             }
+         }
+@@ -735,6 +746,7 @@
+             if(dsOutfit)dsOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+             if(claudeOutfit)claudeOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+             if(geminiOutfit)geminiOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
++            if(grokOutfit)grokOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+             if(camera)label.transform.rotation=camera.transform.rotation;
+             if(visual!=p.equippedVisual){if(held)UnityEngine.Object.Destroy(held);visual=p.equippedVisual;if(!string.IsNullOrEmpty(visual)){held=ToyFactory.Item(visual,p.equippedColor,RightHandAttachment);held.transform.localScale=Vector3.one*.60f;}}
+             if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=Quaternion.identity;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
+--- a/client/Assets/AboutMe/Runtime/DollSkin.cs
++++ b/client/Assets/AboutMe/Runtime/DollSkin.cs
+@@ -53,8 +53,9 @@
+                         bool dsEye=name.StartsWith("DS Eye ",StringComparison.Ordinal);
+                         bool claudeEye=name.StartsWith("Claude Eye ",StringComparison.Ordinal);
+                         bool geminiEye=name.StartsWith("Gemini Eye ",StringComparison.Ordinal);
+-                        bool styledEye=dsEye||claudeEye||geminiEye;
+-                        float eyeDrop=geminiEye?GeminiGirlFaceDetails.EyeDrop:claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
++                        bool grokEye=name.StartsWith("Grok Eye ",StringComparison.Ordinal);
++                        bool styledEye=dsEye||claudeEye||geminiEye||grokEye;
++                        float eyeDrop=grokEye?GrokGirlFaceDetails.EyeDrop:geminiEye?GeminiGirlFaceDetails.EyeDrop:claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
+                         bool isEye=styledEye||name=="Eye white"||name=="Pupil"||name=="Eye glint";
+                         if(name.StartsWith("Head(")||name=="Round head and chin")
+                         {
+--- a/client/Assets/AboutMe/Runtime/AppearanceData.cs
++++ b/client/Assets/AboutMe/Runtime/AppearanceData.cs
+@@ -18,7 +18,7 @@
+         public static AppearanceData Resolve(AppearanceData data,string color="#79CFC5",int outfit=0)
+         {
+             var result=data?.Copy()??new AppearanceData{top=outfit==1?"varsity":outfit==2?"sport":"hoodie",topColor=color};
+-            if(result.character!="ds"&&result.character!="claude"&&result.character!="gemini")result.character="toy";
++            if(result.character!="ds"&&result.character!="claude"&&result.character!="gemini"&&result.character!="grok")result.character="toy";
+             var defaults=new AppearanceData();
+             foreach(var slot in AppearanceCatalog.Data.slots)
+             {var value=result.Get(slot.id);if(!slot.options.Any(x=>x.id==value))result.Set(slot.id,defaults.Get(slot.id));}
+--- a/client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs
++++ b/client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs
+@@ -8,14 +8,14 @@
+     // Opt-in diagnostic build mode: actual Match physics and ordinary ToyWorld rendering.
+     public sealed class BodyPhysicsRuntimeProbe : MonoBehaviour
+     {
+-        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record,dsProbe,dsAll,claudeProbe,claudeAll,geminiProbe,geminiAll;
++        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record,dsProbe,dsAll,claudeProbe,claudeAll,geminiProbe,geminiAll,grokProbe,grokAll;
+         readonly List<float> frames=new List<float>();readonly List<double> physics=new List<double>();
+         void Start()
+         {
+-            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");dsProbe=args.Contains("--probe-ds");dsAll=args.Contains("--probe-ds-all");claudeProbe=args.Contains("--probe-claude");claudeAll=args.Contains("--probe-claude-all");geminiProbe=args.Contains("--probe-gemini");geminiAll=args.Contains("--probe-gemini-all");
++            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");dsProbe=args.Contains("--probe-ds");dsAll=args.Contains("--probe-ds-all");claudeProbe=args.Contains("--probe-claude");claudeAll=args.Contains("--probe-claude-all");geminiProbe=args.Contains("--probe-gemini");geminiAll=args.Contains("--probe-gemini-all");grokProbe=args.Contains("--probe-grok");grokAll=args.Contains("--probe-grok-all");
+             Screen.SetResolution(1280,720,false);QualitySettings.vSyncCount=0;Application.targetFrameRate=60;
+             network=GetComponent<GameNetwork>();match=new Match("V4-RUNTIME",new MatchRules{revealDuration=.01f,handInterval=999,finalTime=999});
+-            for(int i=0;i<6;i++){var p=GameNetwork.SampleProfile("v4-"+i,"V4 "+(i+1));p.appearance=AppearanceData.Demo(i);if(dsAll||dsProbe&&i==0)p.appearance.character="ds";if(claudeAll||claudeProbe&&i==0)p.appearance.character="claude";if(geminiAll||geminiProbe&&i==0)p.appearance.character="gemini";match.Add(p);match.Players[p.playerId].position=new Vector3((i%3-1)*2.8f,1,-4-(i/3)*3.2f);}
++            for(int i=0;i<6;i++){var p=GameNetwork.SampleProfile("v4-"+i,"V4 "+(i+1));p.appearance=AppearanceData.Demo(i);if(dsAll||dsProbe&&i==0)p.appearance.character="ds";if(claudeAll||claudeProbe&&i==0)p.appearance.character="claude";if(geminiAll||geminiProbe&&i==0)p.appearance.character="gemini";if(grokAll||grokProbe&&i==0)p.appearance.character="grok";match.Add(p);match.Players[p.playerId].position=new Vector3((i%3-1)*2.8f,1,-4-(i/3)*3.2f);}
+             match.EnableBodyPhysics();match.Phase=MatchPhase.Reveal;started=Time.unscaledTime;
+         }
+         void FixedUpdate()
+@@ -28,7 +28,7 @@
+         void Update()
+         {
+             if(match==null)return;float t=Time.unscaledTime-started;
+-            if((dsProbe||claudeProbe||geminiProbe)&&Camera.main)Camera.main.fieldOfView=22;
++            if((dsProbe||claudeProbe||geminiProbe||grokProbe)&&Camera.main)Camera.main.fieldOfView=22;
+             if(t>3)frames.Add(Time.unscaledDeltaTime*1000);
+             if(record&&t>=nextCapture)
+             {
+@@ -44,7 +44,7 @@
+                 ScreenCapture.CaptureScreenshot(Path.Combine(output,(capture++).ToString("D4")+".png"));
+             }
+             if(t<14)return;
+-            frames.Sort();physics.Sort();var report=new Report{device=SystemInfo.deviceModel,gpu=SystemInfo.graphicsDeviceName,frames=frames.Count,fps=1000/frames.Average(),p95FrameMs=frames[(int)(frames.Count*.95f)],meanPhysicsMs=physics.Average(),p95PhysicsMs=physics[(int)(physics.Count*.95f)],captureEnabled=record,characterSet=geminiAll?"six-gemini":geminiProbe?"one-gemini-five-toy":claudeAll?"six-claude":claudeProbe?"one-claude-five-toy":dsAll?"six-ds":dsProbe?"one-ds-five-toy":"six-toy"};
++            frames.Sort();physics.Sort();var report=new Report{device=SystemInfo.deviceModel,gpu=SystemInfo.graphicsDeviceName,frames=frames.Count,fps=1000/frames.Average(),p95FrameMs=frames[(int)(frames.Count*.95f)],meanPhysicsMs=physics.Average(),p95PhysicsMs=physics[(int)(physics.Count*.95f)],captureEnabled=record,characterSet=grokAll?"six-grok":grokProbe?"one-grok-five-toy":geminiAll?"six-gemini":geminiProbe?"one-gemini-five-toy":claudeAll?"six-claude":claudeProbe?"one-claude-five-toy":dsAll?"six-ds":dsProbe?"one-ds-five-toy":"six-toy"};
+             File.WriteAllText(Path.Combine(output,"metrics.json"),JsonUtility.ToJson(report,true));Debug.Log("V4_RUNTIME_COMPLETE "+JsonUtility.ToJson(report));Application.Quit();
+         }
+         [Serializable] class Report{public string device,gpu,characterSet;public int frames;public float fps,p95FrameMs;public double meanPhysicsMs,p95PhysicsMs;public bool captureEnabled;}

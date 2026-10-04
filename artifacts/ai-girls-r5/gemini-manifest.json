@@ -1,0 +1,383 @@
+{
+  "branch": "codex/gemini-girl-modular",
+  "headIsNotDeliveryCommit": true,
+  "baseline": "Claude modular delivery working-tree snapshot; NOT clean 545b4ce",
+  "modified": [
+    {
+      "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+      "baselineSha256": "a6ba25814b0a0ff4ec1fddab11a191f93f16ec9696817584604e53db94bcb712",
+      "resultSha256": "5aaa653d5e7546b1135e18e5a019530190c32c4160e5d4ae76a681af660a38d1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+      "baselineSha256": "1a8296768eb9c0fd4edaf2aec6e1d8bb3d8a7236be12f68d70bc9571d7ab3fc1",
+      "resultSha256": "dec73359ac0d301f643b6c1257f90d16ee44d8ea007eda54b2afdff1ed6971f1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+      "baselineSha256": "318fce9c285b0b44b2dc3782614d081a8372e7f65ed65ea41b2853e9c4682c85",
+      "resultSha256": "494654a2743dd848712feac3c20895320aac18a6a8af773747a3377104f76ea6"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+      "baselineSha256": "392ad15e37545f1815963cd840eabde0a00ee7dfba341c196a6a351a62b31a53",
+      "resultSha256": "25f083e1dda0061708d3bcaa0647906ea67e0bd7fd4ba1133a9470508149c281"
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular.meta",
+      "sha256": "98419c866ebe47fdf68ddfd81896aed06c740d206747674f97690705658d8d72"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab",
+      "sha256": "ace228c2d4ee373989d786db8ead90c5e452a8f3013f5603c524e592d242eee3"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GeminiGirlModular.prefab.meta",
+      "sha256": "bd0aa3be17f5a4f3901ca5c1ad2223624900390f90c323adbd22bc95abbfff37"
+    },
+    {
+      "path": "docs/GEMINI_GIRL_MODULAR.md",
+      "sha256": "cd1fa37841be23349f6bb941e030722239c529ef9b0621f0a9194c3363a7477a"
+    },
+    {
+      "path": "scripts/package-gemini-girl.py",
+      "sha256": "6faded3206626ed56514474a590122eb320a23d01b413e7d6c949977da06de70"
+    },
+    {
+      "path": "scripts/start-gemini-girl-preview.command",
+      "sha256": "094ded6b726f61997509418766f5d01d18d55bf9f4d9cf09d5443f0deaadbc1d"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs",
+      "sha256": "cce4f6a09cdb2d241cab9990ee8dfd9fc70f399b353c41ffd425c9e83b072f43"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GeminiGirlOutfit.cs.meta",
+      "sha256": "3ee9f34a9a43953d96724f588664d3d0b2503074c43f6aa8f5607329ab4b006f"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs",
+      "sha256": "8f9fdf2c3950cf71fde42445ed7f59f71d07b904cb963b8709242e0ddb462d85"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GeminiGirlFaceDetails.cs.meta",
+      "sha256": "035851bf9db1a6327611450f87225f8751c0ed9e8cec788a81d7a194242680ce"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GeminiGirlModularTools.cs",
+      "sha256": "ebe829a0d9dbf939b8e89d4e0aaddd889a17df4b8c73c746e45363f0f7781946"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GeminiGirlModularTools.cs.meta",
+      "sha256": "fb2229881f06be2ae6d9d0e8a64eb35e4744a3057f834f9aecc22f827aa27c57"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GeminiGirlFaceReview.cs",
+      "sha256": "58de901b6413117ff757aa08c7f69f80661e349b632fab458810368bd455dfbf"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GeminiGirlFaceReview.cs.meta",
+      "sha256": "8850c2a5cd02c4064fc9304859f9d8530fd418a98a091ce996e6b25254403ba2"
+    },
+    {
+      "path": "scripts/gemini-girl-modular-assets.py",
+      "sha256": "b279eedab3ca5860e3070cae61b0f650868a65dffe590eb56da0a307a8ef349b"
+    },
+    {
+      "path": "scripts/gemini-girl-modular-source.py",
+      "sha256": "29bc7d24c27b6c0a03b12979f8e53fd326cf1f39ab9ddbadfe2340a674de36b1"
+    },
+    {
+      "path": "scripts/gemini-girl-modular-video.py",
+      "sha256": "dfbce68cc5ed27310dcc1bf98cf791f0e68075f480413ec66cc753a438f7d402"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset",
+      "sha256": "b7f6d32062d4230afbd29bce63c7b2c248a2166c26bff534a2c08c7c60e7858e"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Accessories.asset.meta",
+      "sha256": "f02ed42d0b98a8db9621076fbd6c020a4752ce65890df54e4b79f5e804da6b70"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader",
+      "sha256": "2b4db3db7ca6aa6e1c6811118748fa832dd5ce38a0909b0715ca4184b0277983"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirlPalette.shader.meta",
+      "sha256": "a8a6ede6a1291a1062e96201a7bd4adf83dd0b1154034f66ee967f46afd2a0fb"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx",
+      "sha256": "12ed8aa685f8e2e284b6e0e0bfb6474f11a78ca0eb2cc4adddc1b0886fc130c1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/GeminiGirl_Accessories.fbx.meta",
+      "sha256": "2ac98291bb7c2ee10ec9cc8618c1590e47107fd4c488eaff71f2638a0e2c4ebd"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat",
+      "sha256": "c89bd9a9fbb8875032a045bd92fc0a9becd2e682f8d66100f63335338017c0b6"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat.meta",
+      "sha256": "db30dd6fe4ee0e46b0c34279c605a8dc77d292fa34720677a28a6915e4254f23"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "GeminiGirl_Modular.blend",
+      "sha256": "336abba146b373e198aea800736133f3138142b5e9b044ce850a3490f978153f"
+    },
+    {
+      "path": "reference.jpg",
+      "sha256": "57f76e0a6c7ffc622f167d1511fa19ca0adced1473d7549b415c646f3c0626bb"
+    },
+    {
+      "path": "base-neutral.json",
+      "sha256": "a86353aa51648594e618049ddf0de769a61838b36239107ae6f616638f259eac"
+    },
+    {
+      "path": "ds-base-neutral.json",
+      "sha256": "c117968add39b7b7bf84520df0f080e62f1c1d418ed78a38d8115e36c7acfebc"
+    },
+    {
+      "path": "gemini-base-neutral.json",
+      "sha256": "f8554f130a0a7cc6c02db3bc20bb62098bef2598b989a4c021c3983b8a7523ff"
+    },
+    {
+      "path": "accessories.json",
+      "sha256": "382ad5dea174cf3d92f019ac99f78c66fb42ae8119f9530cedef8360a75edc32"
+    },
+    {
+      "path": "mesh-statistics.json",
+      "sha256": "b45d394e17f61040c24cfa3d868f0782b601efce46e5306b4f14b9c2e04bd83a"
+    },
+    {
+      "path": "pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "ds-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "claude-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "switch-validation.json",
+      "sha256": "feddca7dd24198230e7cfe4e0260a604aa9a58432453822909aec07648a54b22"
+    },
+    {
+      "path": "physics-parity.txt",
+      "sha256": "36736fa0473a005c1450420ebe1a5cd1177a2b61c2dd37113bfba8c87ddc094e"
+    },
+    {
+      "path": "physics-motion.mp4",
+      "sha256": "01f1501b373fe33aa700a46393e818e05f332ec302ef11b7783e7f85fbcf278a"
+    },
+    {
+      "path": "mac-runtime.mp4",
+      "sha256": "94b599f54ce63133af201fa3f43a71682ac40504f410df0ce135ac058580c72d"
+    },
+    {
+      "path": "runtime-validation.json",
+      "sha256": "51543d4ebf51ae34591ed2c43d65cd23d7364f1486eb65ecc9f63cb75c8586bf"
+    },
+    {
+      "path": "perf-toy/metrics.json",
+      "sha256": "9ff6df72fd154f4f5eabeaba59fc4bc393f2cfb0f3fb50793f39a041177c9fd6"
+    },
+    {
+      "path": "perf-gemini/metrics.json",
+      "sha256": "10e212529c4c273c8927704e22387e222e2b2d3b4457dc84b606bcc9ed04c5c7"
+    },
+    {
+      "path": "runtime-capture/metrics.json",
+      "sha256": "9115f57dc8f056be31d1aa367e2dd9867bab7030591e15ca8054271ca04037b1"
+    },
+    {
+      "path": "build-mac.log",
+      "sha256": "fac4e2a564e9a291e7423e3d49b3a7881911ed9d422a3e2323af51f6191355d6"
+    },
+    {
+      "path": "build-web.log",
+      "sha256": "a0691e2dda086fd14b411cd5d3a11dceea3351f385a1d5da4ae27d6796b51deb"
+    },
+    {
+      "path": "final-review.log",
+      "sha256": "a1bca28cad02e7a2af10cef38d33bcd86e69beeccafd6f14252fa681a01eba51"
+    },
+    {
+      "path": "delivery-review.log",
+      "sha256": "9cbc485c9da7bfba0379b8fae87206f2ef3221c293aad2c144660efc5c00e0dc"
+    },
+    {
+      "path": "physics-review.log",
+      "sha256": "a50d3878f62ca9b4cfa24ea9fb6ac833b0842ddd87da37e757189062d074907d"
+    },
+    {
+      "path": "perf-toy/player.log",
+      "sha256": "dc30943d91bb93938997804da15b8a7df6d2911e643ceaf55bd94fb2f768945c"
+    },
+    {
+      "path": "perf-gemini/player.log",
+      "sha256": "c7609e7edb0d6296da09765f694bb93d0141a130d3599482cc3fd1ae0c92da3b"
+    },
+    {
+      "path": "runtime-capture/player.log",
+      "sha256": "9271d9224bc53a98d1a760a03eafd2f989acab4b31bb04ec0e4e3d21040b3736"
+    },
+    {
+      "path": "review/action-eat-side.png",
+      "sha256": "d3d68a60d51d333d7245dac148055f5007a6a80165d1857b3e8109e09c67b4dc"
+    },
+    {
+      "path": "review/action-eat.png",
+      "sha256": "478fb99a6e402d56213e7e07a5710448186872e774912d5885030676c1562834"
+    },
+    {
+      "path": "review/action-fall.png",
+      "sha256": "511616f78e99eab42959aa73955ca814ae9edfd6e78e7eee3374898c5aef3304"
+    },
+    {
+      "path": "review/action-grab-side.png",
+      "sha256": "538bcf9e827055998a22ae341a8d43651a7cecc86f95dee616935682c6863fd4"
+    },
+    {
+      "path": "review/action-grab.png",
+      "sha256": "4c84c076913090d4e4ea3f9866b4d7ed5ed38e62169611eb96a2f6ac2489dfb1"
+    },
+    {
+      "path": "review/action-heavy.png",
+      "sha256": "aa6f4f4d2d978cde12ba0c0e4ff5097ec937324afea19877975509c77af8a2f7"
+    },
+    {
+      "path": "review/action-hurt.png",
+      "sha256": "4f8ac26feef03401f25f6006dd334b84c83057d3a81dc7e5980dd6d3867a71d4"
+    },
+    {
+      "path": "review/action-idle.png",
+      "sha256": "7ed2832fbf449b662f6560331557d6a3adef68387fd5672b355de3a309bf0cba"
+    },
+    {
+      "path": "review/action-jump.png",
+      "sha256": "e9f6f59a64045ca22cdd85929a415428727121cb726a0359e4272baf8447522b"
+    },
+    {
+      "path": "review/action-light.png",
+      "sha256": "1870c8c1ba23b44bcec8661fbaf1dec85aa5bb6b20ad675c9a721f4981f9014d"
+    },
+    {
+      "path": "review/action-recover.png",
+      "sha256": "8350cfe7dd274e6d9d7f73de72b60e31aacddcbdc33dee447eb58f6d56c3e5f7"
+    },
+    {
+      "path": "review/action-run.png",
+      "sha256": "41af058aab4f8e63813f08836f21e0ef84c8f9299ca2a48b1e2585b3ad7a463b"
+    },
+    {
+      "path": "review/action-walk.png",
+      "sha256": "9b094bf118d27c18b86aea568eddb48cec9e5fbf0c19ea2699514f73ee1af26c"
+    },
+    {
+      "path": "review/actions-contact-sheet.jpg",
+      "sha256": "4395594c4a45ab81a5ee78a87444d749d737383d16106d1bbd2f39ce68751c97"
+    },
+    {
+      "path": "review/back.png",
+      "sha256": "a4fb0e261a020deac50ef6c38d338570088478496f4f4143f720f4326db2868c"
+    },
+    {
+      "path": "review/comparison.png",
+      "sha256": "6af1b2b9bacebbe2832d03716d401dfc353aa99ca32e59a4ffa843701410e34d"
+    },
+    {
+      "path": "review/extreme-reach.png",
+      "sha256": "b44404f04e29e7952019d8bd2ff0462aa1ace8ed75e96a547b93759869f8abf3"
+    },
+    {
+      "path": "review/front.png",
+      "sha256": "68d71fd88406786edae986181109996910ec675cdc7f0903aa8246cd86933ef2"
+    },
+    {
+      "path": "review/inverted.png",
+      "sha256": "5cdb1a2449915ab64dbc919b53734d5ff6486afa148ba87052002471eb9b5f0c"
+    },
+    {
+      "path": "review/side.png",
+      "sha256": "d1e34bb3fed91a3a5911b958e090cfea88c1188465cf94053654e7ebe757300f"
+    },
+    {
+      "path": "review/three-quarter.png",
+      "sha256": "404910c3aed10f9c815789dca3e9de213b91e056ff6fdfaa265d02c874a1b92f"
+    },
+    {
+      "path": "face-review/action-eat-side.png",
+      "sha256": "d3d68a60d51d333d7245dac148055f5007a6a80165d1857b3e8109e09c67b4dc"
+    },
+    {
+      "path": "face-review/action-eat.png",
+      "sha256": "478fb99a6e402d56213e7e07a5710448186872e774912d5885030676c1562834"
+    },
+    {
+      "path": "face-review/action-grab.png",
+      "sha256": "4c84c076913090d4e4ea3f9866b4d7ed5ed38e62169611eb96a2f6ac2489dfb1"
+    },
+    {
+      "path": "face-review/blink.png",
+      "sha256": "d23a86af021482ddc8c77b1e1dfc2fa3528fd39d5ccbecfd227e11e11add1640"
+    },
+    {
+      "path": "face-review/expression-confident.png",
+      "sha256": "5df760ea3ef493b8935f7d91a8821ff05ec3cf73518911f2e90b13884a273abe"
+    },
+    {
+      "path": "face-review/expression-determined.png",
+      "sha256": "bf156b857a5d9b83ce70269d5de78fc2d96556e6de908b714c1e49ffecdbf086"
+    },
+    {
+      "path": "face-review/expression-friendly.png",
+      "sha256": "ef3686f3786086d5faf71ab413c54b980271f61980012eba8362e195b461b1dd"
+    },
+    {
+      "path": "face-review/expression-joy.png",
+      "sha256": "c78278bd99f40d384f8e3f18c686c5f95b0991a56dd523eb5f8f410bf730f775"
+    },
+    {
+      "path": "face-review/expression-sleepy.png",
+      "sha256": "fbc8edf35a32d7aee014159496a86e6904dd816f12de5a426089139f16d771e3"
+    },
+    {
+      "path": "face-review/expression-surprised.png",
+      "sha256": "c14683ecb87622e4e0185f42198d237dd5563302db03e4afee9c42a18af3e205"
+    },
+    {
+      "path": "face-review/face-close.png",
+      "sha256": "75976dc56b3bc08274fd5d5df8ea9353ac9ab3cafb770379e501d92be9b2c9dc"
+    },
+    {
+      "path": "face-review/face-validation.json",
+      "sha256": "7d09a47fecb663af105de3a615e546f4eee48b94022de308c5a060550a5a551e"
+    },
+    {
+      "path": "face-review/front.png",
+      "sha256": "68d71fd88406786edae986181109996910ec675cdc7f0903aa8246cd86933ef2"
+    },
+    {
+      "path": "face-review/pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "face-review/three-quarter.png",
+      "sha256": "404910c3aed10f9c815789dca3e9de213b91e056ff6fdfaa265d02c874a1b92f"
+    }
+  ],
+  "patchCheckPassed": true,
+  "inheritedFilesChecked": 154,
+  "unintendedInheritedChanges": [],
+  "prerequisite": "Existing DS and Claude modular renderers; client owns Gemini unlock/select/save/server whitelist integration."
+}

@@ -1,0 +1,435 @@
+{
+  "branch": "codex/grok-girl-modular",
+  "headIsNotDeliveryCommit": true,
+  "baseline": "Gemini modular delivery working-tree snapshot; NOT clean 545b4ce",
+  "modified": [
+    {
+      "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+      "baselineSha256": "5aaa653d5e7546b1135e18e5a019530190c32c4160e5d4ae76a681af660a38d1",
+      "resultSha256": "4e53e26f8a1e02f86ae01ae334e8ae8e9756f179e1905ae8d10695daec5d1220"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+      "baselineSha256": "dec73359ac0d301f643b6c1257f90d16ee44d8ea007eda54b2afdff1ed6971f1",
+      "resultSha256": "bea77589606c7e100de4d942e52704487cff8cbbbb4692d0711d9ad2d27f0226"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+      "baselineSha256": "494654a2743dd848712feac3c20895320aac18a6a8af773747a3377104f76ea6",
+      "resultSha256": "27b9f0ae3604231c68000e8ddf47b22a08c8d95cb0756c23fc521a551c681088"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+      "baselineSha256": "25f083e1dda0061708d3bcaa0647906ea67e0bd7fd4ba1133a9470508149c281",
+      "resultSha256": "6d4189456485f15994428b6f4c0ed2afa26cd167a9ac8d45c592455cbfd13cfd"
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular.meta",
+      "sha256": "625ec8c139329077e5162f634f7898d3cadec493f0ef99af553bb560a7e7c3a6"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab",
+      "sha256": "ad21a525e9208ea82c796b3d907868b4a807e620ab7f1f216fe42ba51f43e8b9"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlModular.prefab.meta",
+      "sha256": "70546b18d84e7906f70c485fe93a303aca153c4ba16768c0d1dd74551dbd14eb"
+    },
+    {
+      "path": "docs/GROK_GIRL_MODULAR.md",
+      "sha256": "079fa5ee2329f047abbc4559d9258bf6b91814db7ae85f3fd006387a5e289216"
+    },
+    {
+      "path": "scripts/package-grok-girl.py",
+      "sha256": "8b3a4b3ba8f38b6bc2a49e196db2714801bb84955de740e224d024a1116425dc"
+    },
+    {
+      "path": "scripts/start-grok-girl-preview.command",
+      "sha256": "9e9df2014bed2de0088be2a9fb358e0f9ca731f6de7c50a0baecbe196cbcf31f"
+    },
+    {
+      "path": "scripts/grok-girl-display-axe.py",
+      "sha256": "64514654796dce52c8449798cfa040c260b5a5843a040e1b110d63760f555e6c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab",
+      "sha256": "7d2e8e5f56fc2e277460f037ea9c28d547aa18c0d6c44cb2b75baaf8052a2e88"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/GrokGirlDisplayAxe.prefab.meta",
+      "sha256": "7a61b802bf72311e35db8bcc911811fa6310aea60b139e77e3e881fd5b681e11"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs",
+      "sha256": "fef6ac6fadc4f9d3473d5748ef65c1e45e2d3bd3163673bcfcf3f778edf94e37"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GrokGirlOutfit.cs.meta",
+      "sha256": "338bb316967dc19c70f6749448012e4c4e052d0e8542d9959104fb23fe5c4785"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs",
+      "sha256": "cd5ebe9f9520d9d969bab221ba6d1800d75a458b7ea0b7bb0326fd288d663962"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/GrokGirlFaceDetails.cs.meta",
+      "sha256": "281f71c45711ce60f78741b8b1ea68b153a50b0a47f82d439b1f15cbc1ee2d3a"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GrokGirlModularTools.cs",
+      "sha256": "17d03281bd24f1c519bb04006063bbd62f9e41fc1bc927028d2de87fca3fac44"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GrokGirlModularTools.cs.meta",
+      "sha256": "7b1f8eff0b6cf3d637b3e99e293b181ec07a14f2255957cc1ebc9da6039c5a9f"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GrokGirlFaceReview.cs",
+      "sha256": "a70950c9c30ec171ea7a10288468e9f7a24122b1f5595ff0569bd48bfbc9ed90"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/GrokGirlFaceReview.cs.meta",
+      "sha256": "94a30da9b51c14683e136d75cf5fe03a87038f0b50c8f37cb15c91b53f1e6176"
+    },
+    {
+      "path": "scripts/grok-girl-modular-assets.py",
+      "sha256": "452b8c62c89965d052ffbcdc970ca938477a6f3bbc1f7b3f35e5302e255d9689"
+    },
+    {
+      "path": "scripts/grok-girl-modular-source.py",
+      "sha256": "81ab5ed004f1b9ba71f35bd185b9d0b28249f64723b180d024f0e43ce8af87ac"
+    },
+    {
+      "path": "scripts/grok-girl-modular-video.py",
+      "sha256": "ed4bc5a67b9906a8fe80bd9509652ca04e84bb19b657de4635166314d2450c8a"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset",
+      "sha256": "12902ac696921593e583e68072e55b40c5f00e450cc77ed1bae5362fab7a3ee5"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/Accessories.asset.meta",
+      "sha256": "4b49d8ba73672464a604ce5a08b9e85c8c0a8af55ee075cdd0d5b4312a25af6d"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset",
+      "sha256": "edcbb170f054bf51f750f70f879a86e723a514af6e43ad280c7b2284d633366e"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/DisplayAxe.asset.meta",
+      "sha256": "334145e4d1b6b76a8645eb75f5d5b9a59fdb5c27dc35708ec4d74ccf57629842"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader",
+      "sha256": "d665fa86814eb2bfcc0ff4d688db913c113053f0e0c3f40d6118404c9a6fe37e"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirlPalette.shader.meta",
+      "sha256": "fce4b40b5653f04b3c5644c4079d5ceebfb535249b9adfcf1532bdefbe9922d9"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx",
+      "sha256": "f455f8ad8be5d8905548124c25aed41e2e03714f010001a5f3eeb3db99021c74"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_Accessories.fbx.meta",
+      "sha256": "fa6648f79754f76b920b8fa1fbbf777e6e049344b5845b7887d9c2e0ae8e4a68"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx",
+      "sha256": "bce56c416dcf589c58207942c82feddb9c88d0b4c2520b81b0c4bd6b7ede98f2"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/GrokGirl_DisplayAxe.fbx.meta",
+      "sha256": "fac1a99d5107ca21f2520f6801513aff92d779a6d20675d9849cbbc21f779fa6"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat",
+      "sha256": "2fc228ba4358341b278eb06d95ece8c07449f50714864eea954ec3a1a79a8cf1"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat.meta",
+      "sha256": "af788ef650ea7b99d8b74002c9fc15b327e5d380e469473f57d138c402c41736"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "GrokGirl_Modular.blend",
+      "sha256": "08b9ef96abaf0581d09f5f256c9fe1eb962f93a4377b0c63caa576b06cf20364"
+    },
+    {
+      "path": "reference.jpg",
+      "sha256": "1b72f740b8b03acb1008d2ac106320984f9ec2f9b916990cedca75b329092376"
+    },
+    {
+      "path": "base-neutral.json",
+      "sha256": "a86353aa51648594e618049ddf0de769a61838b36239107ae6f616638f259eac"
+    },
+    {
+      "path": "ds-base-neutral.json",
+      "sha256": "c117968add39b7b7bf84520df0f080e62f1c1d418ed78a38d8115e36c7acfebc"
+    },
+    {
+      "path": "grok-base-neutral.json",
+      "sha256": "db6724a2e96c1a28f61202289335cb4c45f720a4b3ff8b27c50c37016df9696d"
+    },
+    {
+      "path": "accessories.json",
+      "sha256": "373f261579cb0e8cf0fb29e46d400fed27f0900589a5c7100348e52aa9db6737"
+    },
+    {
+      "path": "mesh-statistics.json",
+      "sha256": "66c8495ff765dfdedea31d40a2a20a3d33c858d071d65fc5167ec3d0a4dd25d6"
+    },
+    {
+      "path": "pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "ds-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "claude-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "switch-validation.json",
+      "sha256": "53feab7dba0b4a2bdf046465bbf3b1f3635fc038122ffff3baf408c42c52c2dd"
+    },
+    {
+      "path": "physics-parity.txt",
+      "sha256": "36736fa0473a005c1450420ebe1a5cd1177a2b61c2dd37113bfba8c87ddc094e"
+    },
+    {
+      "path": "physics-motion.mp4",
+      "sha256": "6a577530a9b8f18e35c03e0cc3ffd7acbde9b00fa89036d8d502df5e7aff9760"
+    },
+    {
+      "path": "mac-runtime.mp4",
+      "sha256": "a5c0dc01cfe4ece2b4d362a24fa70d3b5f55f7b9469c6dfce8905cf16611547d"
+    },
+    {
+      "path": "runtime-validation.json",
+      "sha256": "3e149bc10998d19bdf567436ec43c6de60e69ec259b205aeca43f23dd461e87b"
+    },
+    {
+      "path": "perf-toy/metrics.json",
+      "sha256": "8a4efc06c3210cce122534c34292b6aed96c2316b702b4dec9920867571cf461"
+    },
+    {
+      "path": "perf-grok/metrics.json",
+      "sha256": "0b0e9c12c88f94daf4bf1383900f40e293c68918efe69d8f3a2697959651dba1"
+    },
+    {
+      "path": "runtime-capture/metrics.json",
+      "sha256": "4b0ec8bce46b55adb72607add920ae339c8cdc47091b1279e953cdb534f78bef"
+    },
+    {
+      "path": "gemini-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "display-axe.json",
+      "sha256": "cbbd70fd86e2a45bafa263af3e15efa68297e52cdcfc6b45a110dd0280b4c79f"
+    },
+    {
+      "path": "display-axe-statistics.json",
+      "sha256": "e31d32108c1b510e7a8ce179999786ff0499c237d4ea74429424d954f1581ab9"
+    },
+    {
+      "path": "display-axe-validation.json",
+      "sha256": "6ce460a72faedc5e90abfb636ced606e1d54b8012e48992682a1d42f213adb53"
+    },
+    {
+      "path": "build-mac.log",
+      "sha256": "09d9f0f2a09f9a379124a7c153371924c7658cf7b230a184f46653017f722399"
+    },
+    {
+      "path": "build-web.log",
+      "sha256": "cf8af0a2937d7a1aaa622659bed563168a6c852f580ebc7083442d784060f167"
+    },
+    {
+      "path": "final-review.log",
+      "sha256": "1d730b6b400d23db7606672e04885e32980979cebd5e5703efa17d5cbd2ae6a7"
+    },
+    {
+      "path": "delivery-review.log",
+      "sha256": "a851faf2aef37e9d528ba8bde78a8e4d59e2d055a11a8e9f63a8dd450e32f450"
+    },
+    {
+      "path": "physics-review.log",
+      "sha256": "001efb9aeb5edb3925633a557f0115d42fe009346c760c854f4004c805748611"
+    },
+    {
+      "path": "perf-toy/player.log",
+      "sha256": "09fee13ea89eaa5855ae46c2bef9b177234993bea0eaac99f9996346bfa3029f"
+    },
+    {
+      "path": "perf-grok/player.log",
+      "sha256": "9cc66c34eab8dd968a4be9495b322f23cba72d09d5531a6e93fb6100593ce85f"
+    },
+    {
+      "path": "runtime-capture/player.log",
+      "sha256": "d09f458325e7032caabe3715b1405475345880694c40735b47dd5fb7fd2e0912"
+    },
+    {
+      "path": "review/action-eat-side.png",
+      "sha256": "3f4469ddc84fb78a5883995efcef0f845f1cafc16674ec5c2d76f0cc7892e7aa"
+    },
+    {
+      "path": "review/action-eat.png",
+      "sha256": "2992a5265667673d5f8bbdeb6bd408a88dee40fbce9d98f8c499638a18d5153f"
+    },
+    {
+      "path": "review/action-fall.png",
+      "sha256": "2983da5de50adb8a352214c4b32dbb1f712b47d1a6eae5521a954bac2d1de0f5"
+    },
+    {
+      "path": "review/action-grab-side.png",
+      "sha256": "f9e966d1ee6e4be702a99aab9abe195145c7b04e979d6bfd38713bebc0550cd8"
+    },
+    {
+      "path": "review/action-grab.png",
+      "sha256": "f86bca6d4a8968ad58c8fb8baf9edf3b73e2266f41a6b7378fedefc51a24ca61"
+    },
+    {
+      "path": "review/action-heavy.png",
+      "sha256": "b3bbf46a1fa0cfd70672ba8912384f56cc6671be96988185eca1e3b504d323b0"
+    },
+    {
+      "path": "review/action-hurt.png",
+      "sha256": "13a5eb4a5a00877500dcfe852e13986d84d15c0d17001d44c8215aaea1de0552"
+    },
+    {
+      "path": "review/action-idle.png",
+      "sha256": "7e7639ce1e9f243322751005af08f2cca63a14769fc191dc51ada56d9c35c4b0"
+    },
+    {
+      "path": "review/action-jump.png",
+      "sha256": "2952860f9241f1a160502a70b2c552c7feb8e4a91e3e055fbb76388eeb38ac2e"
+    },
+    {
+      "path": "review/action-light.png",
+      "sha256": "d6e5a8ade6df3de7efb83e547594b9ada318a0ec4609eb5f9241d4650bec7513"
+    },
+    {
+      "path": "review/action-recover.png",
+      "sha256": "8be154047437ffed11bdb0d72c1c00e70b1446663b59d21910116c2c9376cc1b"
+    },
+    {
+      "path": "review/action-run.png",
+      "sha256": "38c4bde1e691006a4f4065e5ad9100f91d2425552f8d9a1f11ab23e4441edead"
+    },
+    {
+      "path": "review/action-walk.png",
+      "sha256": "10830d4024ba37034a32fbdc0872d5e1346cd0c844d1f41ba31c2f12fa3dfec6"
+    },
+    {
+      "path": "review/actions-contact-sheet.jpg",
+      "sha256": "f5199091baee4eb315cf9c387581e6a8d44c19c208290bf18bcc147025e6aa17"
+    },
+    {
+      "path": "review/back.png",
+      "sha256": "10b4f234d3b11532dd55d30ce0aca62a9d74fee878faf1d14ca70bc5f8fab290"
+    },
+    {
+      "path": "review/comparison.png",
+      "sha256": "093566ba02724a58d2728afaba3621ee11c2a9f62f8cddd2df81a23c6bef8fd1"
+    },
+    {
+      "path": "review/display-axe.png",
+      "sha256": "91fff8a21fb0d03160141ed740d05d7ab17338f1011bb05e5a6aca6ab050905e"
+    },
+    {
+      "path": "review/extreme-reach.png",
+      "sha256": "68d05a4b38c2f1efb58700ab5d06f48c44b223c41b34054480e3b1efc1bddca6"
+    },
+    {
+      "path": "review/front.png",
+      "sha256": "9d259202ce1991e1c145f77bef83c18f336339a3c82cc7fa3bac8284f22ab2a8"
+    },
+    {
+      "path": "review/inverted.png",
+      "sha256": "56feb59caa58394a490ca64b6fbb108534e9da21de7ecdd8ea147067ca509431"
+    },
+    {
+      "path": "review/side.png",
+      "sha256": "26d59301626f4940a6f9d3532468ec3d1eef20c57f5f5f7ac103b95e83395ae6"
+    },
+    {
+      "path": "review/three-quarter.png",
+      "sha256": "f139836240d43e0e23360c3b6043f35f487b64f2670caa095d59bd7df083b4a9"
+    },
+    {
+      "path": "review/with-display-axe.png",
+      "sha256": "86bdc2a4905a4d0c3cf7f46a9a2a82b8f17c6c7a10d00c09857ce184b0109b43"
+    },
+    {
+      "path": "face-review/action-eat-side.png",
+      "sha256": "3f4469ddc84fb78a5883995efcef0f845f1cafc16674ec5c2d76f0cc7892e7aa"
+    },
+    {
+      "path": "face-review/action-eat.png",
+      "sha256": "2992a5265667673d5f8bbdeb6bd408a88dee40fbce9d98f8c499638a18d5153f"
+    },
+    {
+      "path": "face-review/action-grab.png",
+      "sha256": "f86bca6d4a8968ad58c8fb8baf9edf3b73e2266f41a6b7378fedefc51a24ca61"
+    },
+    {
+      "path": "face-review/blink.png",
+      "sha256": "3ef4496dc924cad0b9f8ec73259d6277e42b13de9c7a4024c0a0f944adf2fa52"
+    },
+    {
+      "path": "face-review/expression-confident.png",
+      "sha256": "a012e2993fc185b3492cb3c59c8233c4bd99f965735d8894fd8a651b37430a7a"
+    },
+    {
+      "path": "face-review/expression-determined.png",
+      "sha256": "dd08cd21fde94cae12bc7df17bdbea4ad9dcf67d3733c146428b06e333c02453"
+    },
+    {
+      "path": "face-review/expression-friendly.png",
+      "sha256": "ee716edb42fe5a384327c2b1ce4a7aa8c6f91e3f50b151b701a98b67dbe51ede"
+    },
+    {
+      "path": "face-review/expression-joy.png",
+      "sha256": "007dcde9cdecb87815ccd9ae53d82ac5e808e30862480b8c764f2caa9e711870"
+    },
+    {
+      "path": "face-review/expression-sleepy.png",
+      "sha256": "8d919d9ae80b0a42419056353c2ceb87f82614af9bbe97b52d6da50aa9600396"
+    },
+    {
+      "path": "face-review/expression-surprised.png",
+      "sha256": "9b9278a6043b88c59416818ad3669162e4a4c293d3d558fe8749ce23c6addb90"
+    },
+    {
+      "path": "face-review/face-close.png",
+      "sha256": "0a13d0accecdc1ce46a082c7dc773dccfda8ca8f6abe28720e6c23a6a2b04778"
+    },
+    {
+      "path": "face-review/face-validation.json",
+      "sha256": "b2fcbcd63ba1095a9d9105c656ac5d2787a14d3be4be876c4f2011237cb84c30"
+    },
+    {
+      "path": "face-review/front.png",
+      "sha256": "9d259202ce1991e1c145f77bef83c18f336339a3c82cc7fa3bac8284f22ab2a8"
+    },
+    {
+      "path": "face-review/pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "face-review/three-quarter.png",
+      "sha256": "f139836240d43e0e23360c3b6043f35f487b64f2670caa095d59bd7df083b4a9"
+    }
+  ],
+  "patchCheckPassed": true,
+  "inheritedFilesChecked": 179,
+  "unintendedInheritedChanges": [],
+  "prerequisite": "Existing DS, Claude and Gemini modular renderers; client owns Grok unlock/select/save/server whitelist integration."
+}

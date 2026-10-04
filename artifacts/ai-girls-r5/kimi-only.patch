@@ -1,0 +1,203 @@
+--- a/client/Assets/AboutMe/Runtime/CampusDoll.cs
++++ b/client/Assets/AboutMe/Runtime/CampusDoll.cs
+@@ -106,9 +106,10 @@
+         readonly List<GameObject> cosmetics=new List<GameObject>();
+         DSGirlOutfit dsOutfit;
+         ClaudeGirlOutfit claudeOutfit;
+-        bool UsesModularOutfit=>Appearance!=null&&(Appearance.character=="ds"||Appearance.character=="claude");
+-        float FaceMouthDrop=>Appearance?.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance?.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
+-        float FaceBrowDrop=>Appearance?.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance?.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
++        KimiGirlOutfit kimiOutfit;
++        bool UsesModularOutfit=>Appearance!=null&&(Appearance.character=="ds"||Appearance.character=="claude"||Appearance.character=="kimi");
++        float FaceMouthDrop=>Appearance?.character=="kimi"?KimiGirlFaceDetails.MouthDrop:Appearance?.character=="claude"?ClaudeGirlFaceDetails.MouthDrop:Appearance?.character=="ds"?DSGirlFaceDetails.MouthDrop:0;
++        float FaceBrowDrop=>Appearance?.character=="kimi"?KimiGirlFaceDetails.BrowDrop:Appearance?.character=="claude"?ClaudeGirlFaceDetails.BrowDrop:Appearance?.character=="ds"?DSGirlFaceDetails.BrowDrop:0;
+         Transform toyLeftHandAttachment,toyRightHandAttachment;
+         bool ragdoll,positionInitialized;string appearanceKey="";
+         float walkPhase,moveBlend,runBlend,eatBlend,grabBlend,chargeBlend,struggleBlend,recovery,eatProgress,swallowTime;
+@@ -189,6 +190,7 @@
+             if(!toyLeftHandAttachment||!toyRightHandAttachment)return;
+             if(Appearance.character=="ds"&&!dsOutfit&&Resources.Load<GameObject>("CampusDoll/DSGirlModular"))dsOutfit=DSGirlOutfit.Attach(this);
+             if(Appearance.character=="claude"&&!claudeOutfit&&Resources.Load<GameObject>("CampusDoll/ClaudeGirlModular"))claudeOutfit=ClaudeGirlOutfit.Attach(this);
++            if(Appearance.character=="kimi"&&!kimiOutfit&&Resources.Load<GameObject>("CampusDoll/KimiGirlModular"))kimiOutfit=KimiGirlOutfit.Attach(this);
+             LeftHandAttachment=toyLeftHandAttachment;RightHandAttachment=toyRightHandAttachment;
+             if(Skin)Skin.enabled=true;
+             if(held)held.transform.SetParent(RightHandAttachment,false);
+@@ -206,6 +208,13 @@
+             claudeOutfit.Release();claudeOutfit.gameObject.SetActive(false);
+             if(Application.isPlaying)UnityEngine.Object.Destroy(claudeOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(claudeOutfit.gameObject);
+             claudeOutfit=null;
++        }
++        void ClearKimiOutfit()
++        {
++            if(!kimiOutfit)return;
++            kimiOutfit.Release();kimiOutfit.gameObject.SetActive(false);
++            if(Application.isPlaying)UnityEngine.Object.Destroy(kimiOutfit.gameObject);else UnityEngine.Object.DestroyImmediate(kimiOutfit.gameObject);
++            kimiOutfit=null;
+         }
+         Rigidbody Bone(string name,Vector3 position,Vector3 size,Rigidbody parent,bool round=false,Vector3 center=default)
+         {
+@@ -230,14 +239,17 @@
+         {
+             if(Appearance!=null&&Appearance.SameAs(requested))return;
+             var a=AppearanceData.Resolve(requested);string key=a.character+"|"+JsonUtility.ToJson(a);if(key==appearanceKey)return;
+-            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();
++            appearanceKey=key;Appearance=a;face=DollExpression.For(a.expression);ClearDSOutfit();ClearClaudeOutfit();ClearKimiOutfit();
+             bool ds=a.character=="ds"&&Resources.Load<GameObject>("CampusDoll/DSGirlModular");
+             bool claude=a.character=="claude"&&Resources.Load<GameObject>("CampusDoll/ClaudeGirlModular");
++            bool kimi=a.character=="kimi"&&Resources.Load<GameObject>("CampusDoll/KimiGirlModular");
+             if(!ds&&a.character=="ds"){a=a.Copy();a.character="normal";}
+             if(!claude&&a.character=="claude"){a=a.Copy();a.character="normal";}
++            if(!kimi&&a.character=="kimi"){a=a.Copy();a.character="normal";}
+             Appearance=a;
+             if(ds){a=a.Copy();a.hairColor="#354D91";a.top="shirt";a.topColor="#263765";a.bottom="skirt";a.bottomColor="#263765";a.shoes="canvas";a.shoeColor="#263765";a.headAccessory="none";a.bag="none";}
+             if(claude){a=a.Copy();a.hairColor="#D66B30";a.top="shirt";a.topColor="#F2E5CA";a.bottom="skirt";a.bottomColor="#302A29";a.shoes="canvas";a.shoeColor="#302A29";a.headAccessory="none";a.bag="none";}
++            if(kimi){a=a.Copy();a.hairColor="#D9CEEA";a.top="shirt";a.topColor="#302D4B";a.bottom="skirt";a.bottomColor="#302D4B";a.shoes="canvas";a.shoeColor="#302D4B";a.headAccessory="none";a.bag="none";}
+             foreach(var go in cosmetics){if(!go)continue;go.SetActive(false);if(Application.isPlaying)UnityEngine.Object.Destroy(go);else UnityEngine.Object.DestroyImmediate(go);}cosmetics.Clear();
+             if(!Asset("Head",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor))P("Round head and chin",head,Vector3.zero,new Vector3(.97f,.98f,.9f),a.skinColor);
+             P("Chin",head,new Vector3(0,-.29f,.015f),new Vector3(.65f,.35f,.66f),a.skinColor);
+@@ -246,13 +258,14 @@
+                 P("Ear",head,new Vector3(sign*.46f,-.04f,0),new Vector3(.18f,.26f,.16f),a.skinColor);
+                 if(ds)DSGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                 else if(claude)ClaudeGirlFaceDetails.AddEye(head,sign,face,cosmetics);
++                else if(kimi)KimiGirlFaceDetails.AddEye(head,sign,face,cosmetics);
+                 else
+                 {
+                     P("Eye white",head,new Vector3(sign*.185f,.055f,.417f),new Vector3(.19f*face.eyeWidth,.205f*face.eyeHeight,.07f),Paper);
+                     P("Pupil",head,new Vector3(sign*.17f,.044f,.454f),new Vector3(.079f*face.pupil,.112f*face.eyeHeight,.032f),Ink);
+                     P("Eye glint",head,new Vector3(sign*.17f-.019f,.044f+.029f*face.eyeHeight,.475f),Vector3.one*.024f,Paper);
+                 }
+-                var brow=P("Eyebrow",head,new Vector3(sign*.185f,.215f-FaceBrowDrop,.412f),new Vector3(.19f,.038f,.06f),a.hairColor);
++                var brow=P("Eyebrow",head,new Vector3(sign*.185f,.215f-FaceBrowDrop,kimi?KimiGirlFaceDetails.BrowDepth:.412f),kimi?KimiGirlFaceDetails.BrowSize:new Vector3(.19f,.038f,.06f),kimi?KimiGirlFaceDetails.BrowColor:a.hairColor);
+                 if(sign<0)leftBrow=brow.transform;else rightBrow=brow.transform;
+             }
+             P("Nose",head,new Vector3(0,-.07f,.45f),new Vector3(.115f,.105f,.15f),"#"+ColorUtility.ToHtmlStringRGB(Color.Lerp(ToyFactory.ColorOf(a.skinColor),ToyFactory.ColorOf(Ink),.08f)));
+@@ -263,7 +276,7 @@
+             Vector3 fallPosition=fallPivot.localPosition;Quaternion fallRotation=fallPivot.localRotation;fallPivot.localPosition=Vector3.zero;fallPivot.localRotation=Quaternion.identity;
+             foreach(var bone in rest){current.Add((bone.t.localPosition,bone.t.localRotation));bone.t.localPosition=bone.p;bone.t.localRotation=bone.q;}
+             var personalitySurface=root.GetComponent<PersonalitySkinSurface>()??root.AddComponent<PersonalitySkinSurface>();personalitySurface.Configure(a);
+-            BuildClothes(a);if(!ds&&!claude){BuildHair(a);BuildAccessories(a);}
++            BuildClothes(a);if(!ds&&!claude&&!kimi){BuildHair(a);BuildAccessories(a);}
+             Skin=DollSkin.Build(root.transform,rest.ConvertAll(x=>x.t).ToArray(),cosmetics,mouth,leftBrow,rightBrow,leftArm,rightArm,leftForearm,rightForearm,torso);
+             for(int i=0;i<rest.Count;i++){rest[i].t.localPosition=current[i].p;rest[i].t.localRotation=current[i].q;}
+             fallPivot.localPosition=fallPosition;fallPivot.localRotation=fallRotation;
+@@ -272,7 +285,7 @@
+         }
+         void BuildClothes(AppearanceData a)
+         {
+-            bool modular=a.character=="ds"||a.character=="claude";
++            bool modular=a.character=="ds"||a.character=="claude"||a.character=="kimi";
+             P("Shirt silhouette",torso,Vector3.zero,new Vector3(.88f,.88f,.59f),a.topColor);
+             P("Shirt hem",torso,new Vector3(0,-.37f,0),new Vector3(.78f,.10f,.5f),a.top=="varsity"?Paper:a.topColor,false);
+             P("Collar",torso,new Vector3(0,.39f,0),new Vector3(.35f,.085f,.32f),Paper);
+@@ -298,7 +311,7 @@
+             {
+                 var lower=arm==leftArm?leftForearm:rightForearm;bool shortSleeve=a.top=="sport";
+                 // A continuous weighted sleeve bridges shoulder, upper arm and elbow.
+-                var sleeve=DollSkin.Sleeve(arm,torso,lower,shortSleeve,a.top=="varsity"?Paper:a.topColor);cosmetics.Add(sleeve);
++                var sleeve=DollSkin.Sleeve(arm,torso,lower,shortSleeve,a.character=="kimi"?"#F0EAF6":a.top=="varsity"?Paper:a.topColor);cosmetics.Add(sleeve);
+                 if(shortSleeve)cosmetics.Add(DollSkin.Sleeve(arm,torso,lower,false,a.skinColor,true));
+                 P("Cuff",shortSleeve?arm:lower,new Vector3(0,shortSleeve?-.18f:-.16f,0),new Vector3(.29f,.075f,.31f),Paper);
+                 var hand=arm==leftArm?leftHand:rightHand;
+@@ -316,7 +329,7 @@
+                 P("Lower leg",shin,new Vector3(0,-.1f,0),new Vector3(.29f,.31f,.32f),modular?Paper:a.bottomColor==""?a.skinColor:a.bottom=="trousers"?a.bottomColor:a.skinColor);
+                 P("Sock",shin,new Vector3(0,-.14f,.02f),new Vector3(.30f,.16f,.34f),a.bottom=="trousers"?a.bottomColor:Paper);
+                 P("Shoe",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,modular?0:a.shoes=="boots"?.10f:.04f,-.01f),new Vector3(.37f,modular?.17f:a.shoes=="boots"?.39f:.25f,.59f),a.shoeColor);
+-                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
++                P("Thick sole",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,-.09f,0),new Vector3(.38f,.095f,.58f),a.character=="kimi"?"#B2A2C8":a.character=="claude"?"#302A29":modular?"#1D294D":a.shoes=="boots"?Ink:Paper,false);
+                 if(a.shoes!="boots")for(int n=0;n<2;n++)P("Laces",leg==leftLeg?leftFoot:rightFoot,new Vector3(0,.132f,.02f+n*.09f),new Vector3(.23f,.028f,.025f),a.shoeColor==Paper?Ink:Paper,false);
+                 if(a.shoes=="sneakers")P("Sneaker toe",leg==leftLeg?leftToe:rightToe,new Vector3(0,.06f,-.02f),new Vector3(.34f,.15f,.17f),Paper);
+             }
+@@ -551,8 +564,9 @@
+             mouth.localRotation=Quaternion.Euler(0,0,face.mouthTilt*(1-eatBlend));
+             DollMouth.SetOpening(mouth,eatBlend,Appearance.expression=="joy"||Appearance.expression=="surprised");
+             float lift=face.browLift*(1-eatBlend)+eatBlend*.15f-FaceBrowDrop*(1-eatBlend);
+-            leftBrow.localPosition=new Vector3(-.185f-eatBlend*.085f,.215f+lift+face.asymmetry*(1-eatBlend),.412f-eatBlend*.03f);
+-            rightBrow.localPosition=new Vector3(.185f+eatBlend*.085f,.215f+lift,.412f-eatBlend*.03f);
++            float browDepth=Mathf.Lerp(Appearance.character=="kimi"?KimiGirlFaceDetails.BrowDepth:.412f,.382f,eatBlend);
++            leftBrow.localPosition=new Vector3(-.185f-eatBlend*.085f,.215f+lift+face.asymmetry*(1-eatBlend),browDepth);
++            rightBrow.localPosition=new Vector3(.185f+eatBlend*.085f,.215f+lift,browDepth);
+             float angle=Mathf.Lerp(face.browAngle,-20,struggleBlend)*(1-eatBlend);
+             leftBrow.localRotation=Quaternion.Euler(0,0,angle);rightBrow.localRotation=Quaternion.Euler(0,0,-angle);
+             // A short deterministic blink, staggered by appearance, uses one morph and allocates nothing per frame.
+@@ -608,7 +622,7 @@
+             hasPhysicalPose=p.bodyPose!=null;
+             root.SetActive(!p.eliminated);if(p.eliminated)return;
+             var requested=p.appearance??Appearance;
+-            string character=p.characterSkin=="ds-girl"?"ds":p.characterSkin=="claude-girl"?"claude":"normal";
++            string character=p.characterSkin=="kimi-girl"?"kimi":p.characterSkin=="ds-girl"?"ds":p.characterSkin=="claude-girl"?"claude":"normal";
+             if(requested!=null&&(Appearance==null||Appearance.character!=character||!Appearance.SameStyleAs(requested)))
+             {var mapped=requested.Copy();mapped.character=character;ApplyAppearance(mapped);}
+             dt=Mathf.Clamp(dt,0,.1f);
+@@ -731,6 +745,7 @@
+             }
+             if(dsOutfit)dsOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+             if(claudeOutfit)claudeOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
++            if(kimiOutfit)kimiOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
+             if(camera)label.transform.rotation=camera.transform.rotation;
+             var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath;
+             if(visual!=equipmentKey){if(held)UnityEngine.Object.Destroy(held);visual=equipmentKey;if(!string.IsNullOrEmpty(p.equippedVisual)){held=ToyFactory.Item(p.equippedVisual,p.equippedColor,RightHandAttachment,p.equippedName,p.equippedEmblemPath,p.equippedEmblemCrop,p.equippedGeneratedBy);held.transform.localScale=Vector3.one*.60f;}}
+--- a/client/Assets/AboutMe/Runtime/DollSkin.cs
++++ b/client/Assets/AboutMe/Runtime/DollSkin.cs
+@@ -56,8 +56,9 @@
+                         var delta=Vector3.zero;string name=part.name;
+                         bool dsEye=name.StartsWith("DS Eye ",StringComparison.Ordinal);
+                         bool claudeEye=name.StartsWith("Claude Eye ",StringComparison.Ordinal);
+-                        bool styledEye=dsEye||claudeEye;
+-                        float eyeDrop=claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
++                        bool kimiEye=name.StartsWith("Kimi Eye ",StringComparison.Ordinal);
++                        bool styledEye=dsEye||claudeEye||kimiEye;
++                        float eyeDrop=kimiEye?KimiGirlFaceDetails.EyeDrop:claudeEye?ClaudeGirlFaceDetails.EyeDrop:dsEye?DSGirlFaceDetails.EyeDrop:0;
+                         bool isEye=styledEye||name=="Eye white"||name=="Pupil"||name=="Eye glint";
+                         if(name.StartsWith("Head(")||name=="Round head and chin")
+                         {
+--- a/client/Assets/AboutMe/Runtime/AppearanceData.cs
++++ b/client/Assets/AboutMe/Runtime/AppearanceData.cs
+@@ -26,7 +26,7 @@
+             var defaults=new AppearanceData();
+             foreach(var slot in AppearanceCatalog.Data.slots)
+             {var value=result.Get(slot.id);if(!slot.options.Any(x=>x.id==value))result.Set(slot.id,defaults.Get(slot.id));}
+-            result.version=1;result.skinSeed=Mathf.Clamp(result.skinSeed,0,9999);result.character=result.character=="ds"||result.character=="claude"?result.character:"normal";return result;
++            result.version=1;result.skinSeed=Mathf.Clamp(result.skinSeed,0,9999);result.character=result.character=="ds"||result.character=="claude"||result.character=="kimi"?result.character:"normal";return result;
+         }
+         public static AppearanceData Demo(int i)
+         {
+--- a/client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs
++++ b/client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs
+@@ -8,11 +8,11 @@
+     // Opt-in diagnostic build mode: actual Match physics and ordinary ToyWorld rendering.
+     public sealed class BodyPhysicsRuntimeProbe : MonoBehaviour
+     {
+-        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record,dsProbe,dsAll,claudeProbe,claudeAll;
++        Match match;GameNetwork network;string output;float started,nextCapture;int capture,stage=-1;bool record,dsProbe,dsAll,claudeProbe,claudeAll,kimiAll;
+         readonly List<float> frames=new List<float>();readonly List<double> physics=new List<double>();
+         void Start()
+         {
+-            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");dsProbe=args.Contains("--probe-ds");dsAll=args.Contains("--probe-ds-all");claudeProbe=args.Contains("--probe-claude");claudeAll=args.Contains("--probe-claude-all");
++            var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--probe-output");output=at>=0&&at+1<args.Length?args[at+1]:Application.persistentDataPath;Directory.CreateDirectory(output);record=args.Contains("--probe-capture");dsProbe=args.Contains("--probe-ds");dsAll=args.Contains("--probe-ds-all");claudeProbe=args.Contains("--probe-claude");claudeAll=args.Contains("--probe-claude-all");kimiAll=args.Contains("--probe-kimi-all");
+             Screen.SetResolution(1280,720,false);QualitySettings.vSyncCount=0;Application.targetFrameRate=60;
+             network=GetComponent<GameNetwork>();match=new Match("V4-RUNTIME",new MatchRules{revealDuration=.01f,handInterval=999,finalTime=999});
+             for(int i=0;i<6;i++){var p=GameNetwork.SampleProfile("v4-"+i,"V4 "+(i+1));p.appearance=AppearanceData.Demo(i);if(dsAll||dsProbe&&i==0){p.appearance.character="ds";p.dsGirlUnlocked=true;p.characterSkin="ds-girl";}if(claudeAll||claudeProbe&&i==0){p.appearance.character="claude";p.claudeGirlUnlocked=true;p.characterSkin="claude-girl";}match.Add(p);match.Players[p.playerId].position=new Vector3((i%3-1)*2.8f,1,-4-(i/3)*3.2f);}
+@@ -23,7 +23,9 @@
+             if(match==null)return;float t=Time.unscaledTime-started;int section=(int)(t/4);
+             int i=0;foreach(var p in match.Players.Values){float sign=i++%2==0?1:-1;match.Receive(p.profile.playerId,new Command{sequence=p.sequence+1,x=section==0?sign*.45f:0,z=section==0?.5f:0,run=t>2&&t<4,yaw=section==0?sign*40:0});}
+             if(section!=stage){stage=section;if(section==1||section==2)foreach(var p in match.Players.Values)match.Hit(p,match.Players.Values.First(x=>x!=p),1,8,true,true);}
+-            match.Tick(Time.fixedDeltaTime);network.State=match.View(match.Players.Keys.First());if(t>3)physics.Add(match.BodyWorld.LastStepMs);
++            match.Tick(Time.fixedDeltaTime);network.State=match.View(match.Players.Keys.First());
++            // Opt-in local render audit only: trusted profiles and authority whitelists stay unchanged.
++            if(kimiAll)foreach(var p in network.State.players)p.characterSkin="kimi-girl";if(t>3)physics.Add(match.BodyWorld.LastStepMs);
+         }
+         void Update()
+         {
+@@ -32,10 +34,10 @@
+             if(t>3)frames.Add(Time.unscaledDeltaTime*1000);
+             if(record&&t>=nextCapture){nextCapture=t+.1f;ScreenCapture.CaptureScreenshot(Path.Combine(output,(capture++).ToString("D4")+".png"));}
+             if(t<14)return;
+-            frames.Sort();physics.Sort();var report=new Report{device=SystemInfo.deviceModel,gpu=SystemInfo.graphicsDeviceName,frames=frames.Count,fps=1000/frames.Average(),p95FrameMs=frames[(int)(frames.Count*.95f)],meanPhysicsMs=physics.Average(),p95PhysicsMs=physics[(int)(physics.Count*.95f)],captureEnabled=record};
++            frames.Sort();physics.Sort();var report=new Report{characterSet=kimiAll?"six-kimi":"six-original",device=SystemInfo.deviceModel,gpu=SystemInfo.graphicsDeviceName,frames=frames.Count,fps=1000/frames.Average(),p95FrameMs=frames[(int)(frames.Count*.95f)],meanPhysicsMs=physics.Average(),p95PhysicsMs=physics[(int)(physics.Count*.95f)],captureEnabled=record};
+             File.WriteAllText(Path.Combine(output,"metrics.json"),JsonUtility.ToJson(report,true));Debug.Log("V4_RUNTIME_COMPLETE "+JsonUtility.ToJson(report));Application.Quit();
+         }
+-        [Serializable] class Report{public string device,gpu;public int frames;public float fps,p95FrameMs;public double meanPhysicsMs,p95PhysicsMs;public bool captureEnabled;}
++        [Serializable] class Report{public string characterSet,device,gpu;public int frames;public float fps,p95FrameMs;public double meanPhysicsMs,p95PhysicsMs;public bool captureEnabled;}
+         void OnDestroy(){match?.Dispose();}
+     }
+ }

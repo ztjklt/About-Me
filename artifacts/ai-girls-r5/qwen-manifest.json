@@ -1,0 +1,388 @@
+{
+  "branch": "codex/qwen-girl-modular",
+  "headIsNotDeliveryCommit": true,
+  "baseline": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+  "sourceSnapshotSha256": "552bf40ed3ced6353c126d35eeb6fe0431ccc817e7b55686e06753fc68582fbc",
+  "modified": [
+    {
+      "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+      "baselineSha256": "ebfac39678f840442ffc5f7b9002e08b6331d3910a60c964f5d105db9983f6c2",
+      "resultSha256": "3bab8af3e80520f8f80654c26fa90a68e5990cb7627ab3493ee64b5e549da0fb"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+      "baselineSha256": "abc486458ede6c1d81ebe33aafec905acb2a97690fbf66065838a29b56ebddd5",
+      "resultSha256": "7ad0a446f7beaa88c4d642fd00d37ef67741ad8b468f22130b81af84f04fbf94"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+      "baselineSha256": "1eb3f0005f272e9d5c44b296edc5bb5da4d9287ce188e4b712859a7eb5d84259",
+      "resultSha256": "eef7b060c7b206dfa1d57491f2ea572f2c5d4eee15ab88bc6ea20d9529258c58"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+      "baselineSha256": "517e6f3747f05928f7f005c2e0b1945365d6dc4d9175b1f70cc77ad65edd4363",
+      "resultSha256": "f87bc88cf8948f5512e8efaf8180deccb84a605ba70861d358fd3eac38cd8885"
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular.meta",
+      "sha256": "2aaa08f93e0cf22b6177c506ecedcb8076f1f92acc1a8f0ad2b238eed04e69a9"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab",
+      "sha256": "be460f916307d84ff025dccd275ff9131d5b687f6ea67d49e8c3aa6c234ea0ac"
+    },
+    {
+      "path": "client/Assets/AboutMe/Resources/CampusDoll/QwenGirlModular.prefab.meta",
+      "sha256": "ad4dff5947c8742bcf45d0354012e057939a6a1296d7ae9a4386a9c7021c881f"
+    },
+    {
+      "path": "docs/QWEN_GIRL_MODULAR.md",
+      "sha256": "2c9bba22c1d1d64d399e9b188501df181b1df639f6271bb3e123f93d2fa617e6"
+    },
+    {
+      "path": "scripts/package-qwen-girl.py",
+      "sha256": "7030553f8a303ab2d08f4df2d756dbf3aa6015a4e431190951ed7d7cf33cdb1b"
+    },
+    {
+      "path": "scripts/run-qwen-girl-audit.command",
+      "sha256": "79d0b0c3402dd414d757b831430b3b8671355c9f1e2c328d0acc08a1872a1b35"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs",
+      "sha256": "a4e6ca917c3494eed6afbbf6dcbb0152695ee52d0ef4f495b22476171ab61532"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/QwenGirlOutfit.cs.meta",
+      "sha256": "6c221cac4fdff586f649955b3d7b0ef6e41b011375b97f4f464f51bc491cb454"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs",
+      "sha256": "dee2c70c66986a2c9cefe6ab23b39b50f7868162693fdd30d7ff6e1d86f3785f"
+    },
+    {
+      "path": "client/Assets/AboutMe/Runtime/QwenGirlFaceDetails.cs.meta",
+      "sha256": "b552941fa3274c41efcbfcfc44eddfbba122ec73e9daf033b86aa64593a7595c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/QwenGirlModularTools.cs",
+      "sha256": "cc894cd507121e45017e875b6178a667b560ae607f817197a4e2d75a39c01abc"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/QwenGirlModularTools.cs.meta",
+      "sha256": "95b87721cdacd0d252df48e8d3404e8071c5ee658bcb7d08fe6c62c89fb07ca4"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/QwenGirlFaceReview.cs",
+      "sha256": "a821d820570288271221a6c2a86c9f62a4ae240663b55cb8f5b1b3a6d3f08031"
+    },
+    {
+      "path": "client/Assets/AboutMe/Editor/QwenGirlFaceReview.cs.meta",
+      "sha256": "74b1602f0bef89f6906f6e11977eac78396b84c566f7eb25734ce8d406786f0d"
+    },
+    {
+      "path": "scripts/qwen-girl-modular-assets.py",
+      "sha256": "f38921434b08497a5a69d08f7f803eb914b50e21de0fd06949ba4598855d7474"
+    },
+    {
+      "path": "scripts/qwen-girl-modular-source.py",
+      "sha256": "b8363b88479aff05d974eb11a95d0eb3fba9d36d4c0f143eab6c463117376bb3"
+    },
+    {
+      "path": "scripts/qwen-girl-modular-video.py",
+      "sha256": "62a2302ea2ef352a17a70015f753d965098058af152fa4dc2018b78cc6d96443"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset",
+      "sha256": "932ae853855e84278277035502872fbe3769193516b2e29a4d88a4bb1a46591b"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/Accessories.asset.meta",
+      "sha256": "c4c76a7aafd46fd88563a28464fb51769f3d538216ef57d8cd38ac1cdd7baba9"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat",
+      "sha256": "98e2939bb9480355248b73b6157e3ec5afb7281ed71112613794c784a48effcb"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/Palette.mat.meta",
+      "sha256": "f56f53b69e50a72b221fdc1088e0d0f2b25acc31fcff7a66984edfef05e42b2a"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader",
+      "sha256": "f86da81fb29870b616a9277815a62f5305f6654e4c385f5ec02a8c157edef98c"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirlPalette.shader.meta",
+      "sha256": "3a7ef610ab517fa0d9791d27722a5e72e07e8706153e74ae5eda406eb8e768bf"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx",
+      "sha256": "65e215ee5f114771a046fea03399119cea2319cb5753eb17a87900ad71513ffb"
+    },
+    {
+      "path": "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx.meta",
+      "sha256": "a3df0caa7c21939be714620ef9d51597adc693e756b5b0c219ec80aca68c3d16"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "host-load.json",
+      "sha256": "7c0120adea8f429c48e5518af2ca1e6c9e4e13e1f86b8a5515c0973cd707dfbd"
+    },
+    {
+      "path": "QwenGirl_Modular.blend",
+      "sha256": "cabd57edc526f6fbf71e5d4524804ee3d27d6ff0fffa1a0d9e6e3c2146226526"
+    },
+    {
+      "path": "reference.png",
+      "sha256": "32138947ffca9a548cee91238a69e83862d7d61d85108114ed6f58f398178d48"
+    },
+    {
+      "path": "base-neutral.json",
+      "sha256": "a86353aa51648594e618049ddf0de769a61838b36239107ae6f616638f259eac"
+    },
+    {
+      "path": "qwen-base-neutral.json",
+      "sha256": "e0d9f217452126d2f1792e62a7790ad737d32130963c638be22c928c54d1cd99"
+    },
+    {
+      "path": "accessories.json",
+      "sha256": "7b3957f2b1c9faf91674978556f8cd7b47e06f255e7101bba132d41be3348129"
+    },
+    {
+      "path": "mesh-statistics.json",
+      "sha256": "7cac43a0425a80c3468b91eaf7dbfa559928859bbd69f54e469e4794166959bf"
+    },
+    {
+      "path": "pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "authority-boundary.json",
+      "sha256": "7846617919ece9400473c80c6e8154405693943ff842a724c6225c441b86b011"
+    },
+    {
+      "path": "switch-validation.json",
+      "sha256": "c11112e55c5143572c3f14d5a752ba68be06149f2d35f70007f8491a344056e4"
+    },
+    {
+      "path": "ds-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "claude-regression-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "physics-parity.txt",
+      "sha256": "36736fa0473a005c1450420ebe1a5cd1177a2b61c2dd37113bfba8c87ddc094e"
+    },
+    {
+      "path": "physics-motion.mp4",
+      "sha256": "1000609898f78ad84b39fa449b1744674639d269bd0c4eb422c2a31cf0158856"
+    },
+    {
+      "path": "mac-runtime.mp4",
+      "sha256": "3a1d147c40a258c988a6f72ea3243a91a224c59b33e8679b091012c29816ba16"
+    },
+    {
+      "path": "runtime-validation.json",
+      "sha256": "96d7d3fb9a4d16aa36ba1283bd4cde64329f305b21759f12e61ed6d3aab1a65f"
+    },
+    {
+      "path": "perf-toy/metrics.json",
+      "sha256": "013406df31f5cbb5a1b9805a7a6277732a7c8517454289a736eff8698e297bac"
+    },
+    {
+      "path": "perf-qwen/metrics.json",
+      "sha256": "bfbd131b43be5fcf1fb503cc4f6652e2317165b1e9054c349a4fe3b5ba7b51db"
+    },
+    {
+      "path": "runtime-capture/metrics.json",
+      "sha256": "5f2a5c15424a89604bb57539840941a19e9a4cd8318899b01a7f7ea2543830e1"
+    },
+    {
+      "path": "build-mac.log",
+      "sha256": "95f6998bf7eab6959206f046f9a9029faafab163726580ba2c1ebec0315e8ef1"
+    },
+    {
+      "path": "build-web.log",
+      "sha256": "2f5ce262910f42d82bc4c0789444c09ac66d972731f3ff3abeb1af6083627645"
+    },
+    {
+      "path": "final-review.log",
+      "sha256": "38a1a859434a29236621d3fcb3d557e7b0761f82a33ebabd57ac2961a030769f"
+    },
+    {
+      "path": "physics-review.log",
+      "sha256": "005d43c9de3fddaee5dbd50f73134c83a434a130fa97a27085b2095fd232b93c"
+    },
+    {
+      "path": "perf-toy/player.log",
+      "sha256": "e3ca65e63b76fd9f243318e15059f19292aba95e1265d85486c8344211742c71"
+    },
+    {
+      "path": "perf-qwen/player.log",
+      "sha256": "e28f27ef701def4a043684de393ba50b55a499c9b6758133079fb6fe19fdf86a"
+    },
+    {
+      "path": "runtime-capture/player.log",
+      "sha256": "dc533ff52f5d166efbb781366edd27cbc3a36b5a0561374efe8b5df443312f61"
+    },
+    {
+      "path": "review/action-eat-side.png",
+      "sha256": "dc294164a6e0b04780e665df8cf8f97b4b4e53e025c140c03711d2e08a17b52e"
+    },
+    {
+      "path": "review/action-eat.png",
+      "sha256": "f6f77a529521e8d006c90919ef469e0f6b9bd23a6a6534f5163613bd33bf2b41"
+    },
+    {
+      "path": "review/action-fall.png",
+      "sha256": "c754337fab5db3f656368da0dd05a8701a827132ad5fa5c100076150da17d2aa"
+    },
+    {
+      "path": "review/action-grab-side.png",
+      "sha256": "e103fed3f89c9e204b379074c4adbe455a11e1d307179bd2bb2625f18c637b8e"
+    },
+    {
+      "path": "review/action-grab.png",
+      "sha256": "ca2ccc3be651e57c8dc0eaa250469983379e40753d3666cc5c4080db34c37236"
+    },
+    {
+      "path": "review/action-heavy.png",
+      "sha256": "e751d535fd17af6eaab7ed21067beb2d2ea8594475b1af34853ab59de63ef788"
+    },
+    {
+      "path": "review/action-hurt.png",
+      "sha256": "a57243909c6b8b3557087dcee7093d569f2b1c611b3bda6a436452dd45acb425"
+    },
+    {
+      "path": "review/action-idle.png",
+      "sha256": "f3bf45ba49fd297e35861af752b7e752f14e3320457e59eb56993d7563c3fd35"
+    },
+    {
+      "path": "review/action-jump.png",
+      "sha256": "46775b826ce4e3e9b94ed48900cbb0e526b0076e9809a6f423e0ca219092e306"
+    },
+    {
+      "path": "review/action-light.png",
+      "sha256": "1fa1b6435635662e65173b7c38c028ff113a8050cc44e16ef3c13b33214ffeab"
+    },
+    {
+      "path": "review/action-recover.png",
+      "sha256": "262c12769a2e1e552a1f073bafc4beb60e0bc7fa02389af0bef69a936e15ac90"
+    },
+    {
+      "path": "review/action-run.png",
+      "sha256": "ea97b1e747b7c53602cb8f70ced4eeab1252aa8a28999d276cd84363e9983f15"
+    },
+    {
+      "path": "review/action-walk.png",
+      "sha256": "eb3bc4050c9f6eb15181292b022eb452b4c5792c42cc3e33923272a611e18477"
+    },
+    {
+      "path": "review/actions-contact-sheet.jpg",
+      "sha256": "acb4ce7032cda265e4739c8e2b79d21e764e91d34cab7d172f5513ac0b015753"
+    },
+    {
+      "path": "review/back.png",
+      "sha256": "e63d2921d17b95de4eb061d92bddb51b6bb940d090e87c8d825480700e5f5dae"
+    },
+    {
+      "path": "review/comparison.png",
+      "sha256": "17f5820e0e2756248b7203761828347991968afd3a81e108b50ec2c3856d71fd"
+    },
+    {
+      "path": "review/extreme-reach.png",
+      "sha256": "8dcb232c54d4907c3e3dbfbc5437ad753241fedcd8066973e26f2b7f2d25bd11"
+    },
+    {
+      "path": "review/front.png",
+      "sha256": "8e41b43d0724c740d5fda7df8fd0a96653626f395708c4fe08fdd25366f8bb1e"
+    },
+    {
+      "path": "review/inverted.png",
+      "sha256": "ea92cbbfc887575e3041820ab500d842d74c0da47d1d8e57c22f21a6914bc53e"
+    },
+    {
+      "path": "review/mac-runtime.png",
+      "sha256": "b85a426044ee515009d747ea636b9a2bb4137f4a41b460bb278eb65f11370178"
+    },
+    {
+      "path": "review/side.png",
+      "sha256": "65d8680922a4f39adf72bc52ddb796cb1b23e8973321498d61c5c178fe7563bb"
+    },
+    {
+      "path": "review/three-quarter.png",
+      "sha256": "fb5e412245eeb5db1918b33423fe3bea068b9af2862d9cb2380b9f66c375d0b3"
+    },
+    {
+      "path": "face-review/action-eat-side.png",
+      "sha256": "dc294164a6e0b04780e665df8cf8f97b4b4e53e025c140c03711d2e08a17b52e"
+    },
+    {
+      "path": "face-review/action-eat.png",
+      "sha256": "f6f77a529521e8d006c90919ef469e0f6b9bd23a6a6534f5163613bd33bf2b41"
+    },
+    {
+      "path": "face-review/action-grab.png",
+      "sha256": "ca2ccc3be651e57c8dc0eaa250469983379e40753d3666cc5c4080db34c37236"
+    },
+    {
+      "path": "face-review/blink.png",
+      "sha256": "0060d4fe46645b9380d86f0c00e4d7003f0cb06084a7cfe41a69d26960f01e11"
+    },
+    {
+      "path": "face-review/expression-confident.png",
+      "sha256": "2f5da7c52ba607df6561f00dc11ac871e67cd3d63a3b33bfe7335a538bb63884"
+    },
+    {
+      "path": "face-review/expression-determined.png",
+      "sha256": "84e34e8dfc5b2770a8eb1e397a2ae0b3ee2dfb01da71f6d2f7eff74a0d62634d"
+    },
+    {
+      "path": "face-review/expression-friendly.png",
+      "sha256": "0c7b954332970b09470824ee902a4045fdcd8d8a2e7622aa67e66a1774d1f66a"
+    },
+    {
+      "path": "face-review/expression-joy.png",
+      "sha256": "0ae847634c8b9f59b365265a70e6701cb47d57d9dae3adbefc4df0f0283d2ed7"
+    },
+    {
+      "path": "face-review/expression-sleepy.png",
+      "sha256": "b0ecd9201c53c3ea6e5d62d31190317a3963616f5c17efeddae1867f74e6ee17"
+    },
+    {
+      "path": "face-review/expression-surprised.png",
+      "sha256": "2c42cfc4a7ac3c6b4c5ec5c437bd0dd72c0931fa12bde8d6d2089d33fe845d3d"
+    },
+    {
+      "path": "face-review/face-close.png",
+      "sha256": "93f2378ea23c0053eec5ce8dc9b839359fa9cca5f2488e5e69183bce163f1c71"
+    },
+    {
+      "path": "face-review/face-validation.json",
+      "sha256": "e6db8c480d1e8ac17a24640cf8e8c4487283310a03d24e9976541c8367497fff"
+    },
+    {
+      "path": "face-review/front.png",
+      "sha256": "8e41b43d0724c740d5fda7df8fd0a96653626f395708c4fe08fdd25366f8bb1e"
+    },
+    {
+      "path": "face-review/pose-parity.json",
+      "sha256": "4b4583bd89b60283005a07df258b63563e9b94d905c2a5ccce69af6862ad95a7"
+    },
+    {
+      "path": "face-review/three-quarter.png",
+      "sha256": "fb5e412245eeb5db1918b33423fe3bea068b9af2862d9cb2380b9f66c375d0b3"
+    }
+  ],
+  "patchCheckPassed": true,
+  "inheritedFilesChecked": 1466,
+  "unintendedInheritedChanges": [],
+  "scope": "Rendering candidate only. Authority/unlocks/default normal/normal playtest launcher unchanged. Dedicated local probe overlays only diagnostic PublicPlayer render snapshots."
+}
