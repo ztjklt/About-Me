@@ -25,7 +25,7 @@ namespace AboutMe
     }
     public partial class Match
     {
-        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="gapped-cage");
+        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="gapped-cage"||e.mechanicId=="solid-shadow");
         static bool MachinePlatform(string id)=>id=="turntable-wheel"||id=="balance-plank"||id=="floor-elevator"||id=="seesaw-flip";
         static bool MachineDoor(string id)=>id=="timed-door"||id=="weight-switch";
         public static IEnumerable<MachineBox> MachineShapes(EffectState e,bool previous=false)
@@ -33,6 +33,7 @@ namespace AboutMe
             if(e.machine==null)yield break;var m=e.machine;float angle=previous?m.previousAngle:m.angle,height=previous?m.previousHeight:m.height;
             var yaw=Quaternion.LookRotation(e.velocity);var center=e.position;float baseY=center.y-.15f;
             MachineBox Box(string id,Vector3 offset,Vector3 size,Quaternion turn,bool support=false)=>new MachineBox{id=e.id+"/"+id,center=center+yaw*offset,size=size,rotation=yaw*turn,support=support};
+            if(e.mechanicId=="solid-shadow")yield return Box("player-only-shadow",new Vector3(0,.27f,0),new Vector3(1.6f,.16f,1.6f),Quaternion.identity,true);
             if(e.mechanicId=="gapped-cage")
             {yield return Box("door-back",new Vector3(0,.60f,-1.2f),new Vector3(2.8f,1.2f,.16f),Quaternion.identity);yield return Box("door-left",new Vector3(-1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);yield return Box("door-right",new Vector3(1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);}
             if(MachinePlatform(e.mechanicId))
@@ -50,13 +51,14 @@ namespace AboutMe
         public float SurfaceFloor(Vector3 p,float foot=1)
         {
             float floor=CampusGeometry.Floor(p,foot);
-            foreach(var box in MachineGeometry())if(box.Surface(p,foot,out var height)&&height<=p.y-foot+.45f&&height>floor)floor=height;
+            foreach(var box in MachineGeometry())if(!(box.id.Contains("/player-only")&&foot<.9f)&&box.Surface(p,foot,out var height)&&height<=p.y-foot+.45f&&height>floor)floor=height;
             return floor;
         }
         public bool MachineClear(Vector3 from,Vector3 to,string ignoreId=null)
         {
             foreach(var box in MachineGeometry())
             {
+                if(box.id.Contains("/player-only"))continue;
                 if(ignoreId!=null&&box.id.StartsWith(ignoreId+"/",StringComparison.Ordinal))continue;
                 var inverse=Quaternion.Inverse(box.rotation);var start=inverse*(from-box.center);var ray=inverse*(to-from);var half=box.size*.5f;float near=0,far=1;bool miss=false;
                 for(int axis=0;axis<3;axis++)
@@ -98,6 +100,7 @@ namespace AboutMe
         }
         void ActivateMachineButton(EffectState e,Player p)
         {
+            if(!TempoAllows(e)){Say("鼓圈内按钮等强拍：看圆环倒计时，再按 E / F。");return;}
             if(e.mechanicId=="timed-door"){e.machine.powered=true;e.machine.triggerAt=Time+1;e.machine.mode="open";CombatEvent("party_door_open",p);}
             if(e.mechanicId=="floor-elevator"&&!e.machine.used){e.machine.used=true;e.machine.mode="up";e.machine.triggerAt=0;CombatEvent("party_elevator_start",p);}
         }
@@ -171,7 +174,7 @@ namespace AboutMe
             if(d.id=="turntable-wheel")
             {
                 bool channel=m.operatorId!=""&&Players.TryGetValue(m.operatorId,out var op)&&op.connected&&!BodyLocked(op)&&Time>=op.staggerUntil&&!IsGrabbed(op)&&Time-op.lastInput<=.35f&&op.carrying==""&&op.grabbing==""&&op.publicProp==""&&op.input.x*op.input.x+op.input.z*op.input.z<.01f&&Vector3.Distance(op.position,button+Vector3.up*.85f)<1.65f;
-                m.powered=channel;if(!channel)m.operatorId="";if(channel)m.angle=Mathf.Repeat(m.angle+50*dt,360);
+                float vane=WindLinkedSpeed(e);m.powered=channel||Mathf.Abs(vane)>.01f;if(!channel)m.operatorId="";if(m.powered)m.angle=Mathf.Repeat(m.angle+(channel?50:vane)*dt,360);
             }
             if(d.id=="floor-elevator")
             {

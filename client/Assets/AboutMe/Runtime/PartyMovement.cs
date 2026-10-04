@@ -11,7 +11,7 @@ namespace AboutMe
         EffectState MovementFor(Player p)=>Effects.FirstOrDefault(e=>e.kind=="PartyMechanic"&&e.owner==p.profile.playerId&&SelfMovement(e.mechanicId)&&e.stage!="burst"&&e.stage!="ended");
         void CancelSelfMovement(Player p)
         {
-            CancelSelfFields(p);CancelSelfControl(p);
+            CancelSelfFields(p);CancelSelfControl(p);CancelSelfVirtual(p);
             foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.owner==p.profile.playerId&&SelfMovement(e.mechanicId)).ToArray())RemovePartyEffect(e);
             p.portalEntry="";p.portalStartedAt=0;
         }

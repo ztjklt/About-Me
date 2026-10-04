@@ -258,7 +258,7 @@ namespace AboutMe
             if (input.action == "cancel") { ReleaseSwingMomentum(p);CancelControlConsent(p);StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
             if(MachineBusy(p)&&input.action!="interact")return;
-            if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action)||ControlBlocks(p,input.action))return;
+            if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action)||ControlBlocks(p,input.action)||VirtualBlocks(p,input.action))return;
             switch (input.action)
             {
                 case "jump":
@@ -430,11 +430,12 @@ namespace AboutMe
                 if(propGuard!=0){prop.position=propFrom;if(propGuard==1){prop.velocity=Vector3.zero;prop.thrower="";}else prop.hitAfter=Time+.04f;continue;}prop.position=propNext;
                 if(prop.position.y<SurfaceFloor(prop.position,.6f)+.6f){prop.position.y=SurfaceFloor(prop.position,.6f)+.6f;prop.velocity=new Vector3(prop.velocity.x*.96f,0,prop.velocity.z*.96f);}
                 if(prop.position.y< -6){prop.position=new Vector3(0,1,-6);prop.velocity=Vector3.zero;}
+                prop.position=VirtualPublicMove(prop,propFrom,prop.position);
                 if(prop.velocity.magnitude>4&&Time>prop.hitAfter&&Players.TryGetValue(prop.thrower,out var thrower))
                 foreach(var p in Players.Values.Where(x=>x!=thrower&&!x.eliminated).ToArray())
                 if(Vector3.Distance(p.position,prop.position)<1.5f&&MachineClear(prop.position,p.position)){Hit(p,thrower,12,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
             }
-            TickLootCargo();
+            TickLootCargo();TickVirtualPublicForces(dt);
         }
         void ReleaseAllGrabs(Player target)
         {
@@ -628,6 +629,7 @@ namespace AboutMe
                     var target=Players.Values.Where(p=>p!=owner&&!p.eliminated).OrderBy(p=>Vector3.Distance(p.position,e.position)).FirstOrDefault();
                     if(target!=null)e.velocity=(target.position-e.position).normalized*6;
                 }
+                if(OrdinaryShot(e)&&VirtualShot(e,dt))continue;
                 if(e.kind=="ThrownDisc")
                 {
                     if(e.landed)continue;
@@ -759,7 +761,7 @@ namespace AboutMe
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
-                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=ControlStatus(p)??p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
+                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=VirtualStatus(p)??ControlStatus(p)??p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p)||HasControlRestraint(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),

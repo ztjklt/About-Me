@@ -7,13 +7,16 @@ namespace AboutMe
     public partial class Match
     {
         static bool SelfField(string id)=>id=="wet-trail"||id=="clean-rain"||id=="flame-fan";
-        static bool PartyDevice(EffectState e)=>e.kind=="PartyMechanic"&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="team-sling"||e.mechanicId=="gapped-cage"||e.mechanicId=="break-net"||e.mechanicId=="fuse-burst"||e.mechanicId=="relay-burst"||e.mechanicId=="remote-burst"||e.mechanicId=="proximity-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport"||e.mechanicId=="fan-volume"||e.mechanicId=="tractor-loose"||e.mechanicId=="loose-whirlpool"||e.mechanicId=="sand-sink"||e.mechanicId=="sticky-step"||e.mechanicId=="recover-screen"||e.mechanicId=="calm-dome"||e.mechanicId=="rhythm-gate"||e.mechanicId=="sponge-dry"||e.mechanicId=="carry-cradle"||e.mechanicId=="public-hot-potato"||e.mechanicId=="trip-line");
-        bool PartyHasBudget(PartyMechanic d)
+        static bool PartyDevice(EffectState e)=>e.kind=="PartyMechanic"&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||(PartyMechanicRegistry.Find(e.mechanicId)?.family=="virtual"&&e.mechanicId!="quantum-echo")||e.mechanicId=="team-sling"||e.mechanicId=="gapped-cage"||e.mechanicId=="break-net"||e.mechanicId=="fuse-burst"||e.mechanicId=="relay-burst"||e.mechanicId=="remote-burst"||e.mechanicId=="proximity-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport"||e.mechanicId=="fan-volume"||e.mechanicId=="tractor-loose"||e.mechanicId=="loose-whirlpool"||e.mechanicId=="sand-sink"||e.mechanicId=="sticky-step"||e.mechanicId=="recover-screen"||e.mechanicId=="calm-dome"||e.mechanicId=="rhythm-gate"||e.mechanicId=="sponge-dry"||e.mechanicId=="carry-cradle"||e.mechanicId=="public-hot-potato"||e.mechanicId=="trip-line");
+        bool PartyHasBudget(PartyMechanic d,string source="")
         {
-            int extra=d.id=="cluster-burst"?3:1;
+            bool portalFirst=d.id=="shot-portal"&&!Effects.Any(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"&&x.sourceInstance==source);
+            int extra=d.id=="cluster-burst"?3:portalFirst?2:1;
             if(Effects.Count(e=>e.kind=="PartyMechanic")+extra>24){Say("场上效果较多，请等一个效果结束再使用。");return false;}
             var probe=new EffectState{kind="PartyMechanic",mechanicId=d.id};
-            if(PartyDevice(probe)&&Effects.Count(PartyDevice)>=8){Say("场上公共装置已满，先拆除一个或等它结束。");return false;}
+            int units=Effects.Where(PartyDevice).Sum(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"?2:1);
+            int add=d.id=="shot-portal"?(Effects.Any(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"&&x.sourceInstance==source)?0:2):1;
+            if(PartyDevice(probe)&&units+add>8){Say("场上公共装置已满，先拆除一个或等它结束。");return false;}
             return true;
         }
         void CancelSelfFields(Player p)
@@ -56,11 +59,11 @@ namespace AboutMe
         {
             p.fieldStatus="";if(BodyLocked(p)||p.eliminated)return;
             if(Effects.Any(e=>e.kind=="PartyMechanic"&&e.owner==p.profile.playerId&&e.mechanicId=="flame-fan"))desired*=.5f;
-            var point=p.position;point.y=MotorY(p);bool wet=false;
+            var point=p.position;point.y=MotorY(p);bool wet=false;bool ice=OnPartyGround(p)&&FrozenAt(point,1);
             foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&PartyMechanicRegistry.Find(e.mechanicId)?.family=="field"))
             {
                 bool grounded=OnPartyGround(p);
-                if(e.mechanicId=="wet-trail"&&WetAt(e,point,1)&&grounded)wet=true;
+                if(e.mechanicId=="wet-trail"&&WetAt(e,point,1)&&grounded&&!ice)wet=true;
                 if(e.mechanicId=="fan-volume"&&FieldCone(e,point))desired+=e.velocity*2.2f;
                 if(e.mechanicId=="sand-sink")
                 {
@@ -83,12 +86,14 @@ namespace AboutMe
                     else {e.touchTimes.Remove(id+"distance");e.touchTimes.Remove(id+"hold");}
                 }
             }
-            if(wet)
+            if(ice)
+            {if(!p.wasWet)p.wetMomentum=Flat(p.velocity);p.wetMomentum=Vector3.MoveTowards(p.wetMomentum,desired,(desired.sqrMagnitude<.01f?.8f:3)*dt);desired=Vector3.ClampMagnitude(p.wetMomentum,Rules.runSpeed+2.2f);p.fieldStatus="凝结冰面 · 惯性转向 / 跳离 / 吸水垫";}
+            else if(wet)
             {
                 if(!p.wasWet)p.wetMomentum=Flat(p.velocity);
                 p.wetMomentum=Vector3.MoveTowards(p.wetMomentum,desired,(desired.sqrMagnitude<.01f?1.8f:6)*dt);desired=Vector3.ClampMagnitude(p.wetMomentum,Rules.runSpeed+2.2f);p.fieldStatus="湿滑地面 · 刹车变慢，跳起脱离";
             }
-            else p.wetMomentum=Vector3.zero;p.wasWet=wet;
+            else p.wetMomentum=Vector3.zero;p.wasWet=wet||ice;
         }
         bool FieldLoose(ref Vector3 velocity,Vector3 point,float foot,float dt)
         {

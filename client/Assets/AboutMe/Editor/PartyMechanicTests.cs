@@ -36,7 +36,7 @@ namespace AboutMe.Editor
             try
             {
                 Test("sixty bounded authoritative definitions with unique bindings",()=>{
-                    Check(Resources.Load<Shader>("PartyWarning")!=null,"warning ring shader missing");var all=PartyMechanicRegistry.All;Check(all.Length==70&&all.Select(x=>x.id).Distinct().Count()==70&&all.Select(x=>x.visualId).Distinct().Count()==70,"registry count/duplicates");
+                    Check(Resources.Load<Shader>("PartyWarning")!=null,"warning ring shader missing");var all=PartyMechanicRegistry.All;Check(all.Length==80&&all.Select(x=>x.id).Distinct().Count()==80&&all.Select(x=>x.visualId).Distinct().Count()==80,"registry count/duplicates");
                     Check(all.All(x=>x.windup>=(x.family=="guard"?.1f:.2f)&&x.cooldown>=4&&x.force<=8&&x.radius<=8),"budget exceeded");
                     foreach(var d in all.Where(x=>x.family=="blast")){var m=Make(d.id);Check(m.Item(m.Players["p0"].equipped).PublicCopy().asset.mechanicId==d.id,"public mechanic binding lost");Deploy(m);Check(m.Remaining("p0")==4,"deployment invented/consumed a life");}
                 });

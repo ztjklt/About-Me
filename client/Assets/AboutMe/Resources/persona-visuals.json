@@ -4495,6 +4495,63 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "levitating-hoop",
+      "label": "悬浮轨道环",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/levitating-hoop",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#83DAD9",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "puzzle-piece",
+      "label": "拼图块",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/puzzle-piece",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#F8BC4E",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "paper-windmill",
+      "label": "纸风车",
+      "templateId": "Deployable",
+      "resourcePath": "PersonaProps/paper-windmill",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#BD9265",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

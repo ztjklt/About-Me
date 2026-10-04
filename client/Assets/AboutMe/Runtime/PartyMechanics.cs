@@ -35,6 +35,7 @@ namespace AboutMe
             var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
             if((definition.id=="timed-door"||definition.id=="wind-up-cart")&&active.Length==1)return true;
+            if(definition.id=="shot-portal"&&active.Length==1&&active[0].stage=="portal_wait")return true;
             if(definition.id=="trip-line"&&active.Length==1&&active[0].stage=="line_wait")return true;
             if(definition.id=="impact-bank"&&active.Any(e=>e.stage=="banked"&&GuardAlive(e)))return true;
             if(definition.id=="paired-teleport"&&active.Length==1&&active[0].stage=="portal_wait")return true;
@@ -52,7 +53,8 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
-            if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d,item.id)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="virtual")return TryVirtualMechanic(p,item,d);
             if(d.family=="control")return TryControlMechanic(p,item,d);
             if(d.family=="machinery")return TryMachineMechanic(p,item,d);
             if(d.family=="loot")return TryLootMechanic(p,item,d);
@@ -120,7 +122,7 @@ namespace AboutMe
                 Props.RemoveAll(x=>x.id==e.targetId);
             }
             foreach(var p in Players.Values)if(p.portalEntry==e.id)p.portalEntry="";
-            if(e.mechanicId=="paired-teleport")
+            if(e.mechanicId=="paired-teleport"||e.mechanicId=="shot-portal")
                 foreach(var other in Effects.Where(x=>x!=e&&x.sourceInstance==e.sourceInstance&&x.mechanicId==e.mechanicId).ToArray())
                 {Effects.Remove(other);foreach(var p in Players.Values)if(p.portalEntry==other.id)p.portalEntry="";}
             if(e.mechanicId=="trip-line")foreach(var other in Effects.Where(x=>x!=e&&x.mechanicId==e.mechanicId&&x.sourceInstance==e.sourceInstance).ToArray())Effects.Remove(other);
@@ -160,6 +162,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="virtual"){TickVirtual(e,owner,d,dt);return;}
             if(d.family=="control"){TickControl(e,owner,d,dt);return;}
             if(d.family=="machinery"){TickMachine(e,owner,d,dt);return;}
             if(d.family=="loot"){TickLoot(e,owner,d,dt);return;}

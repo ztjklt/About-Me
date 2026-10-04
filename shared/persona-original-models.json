@@ -2059,7 +2059,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "frost-lock"
     },
     {
       "id": "popcorn-bucket",
@@ -16204,7 +16205,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "light-lattice"
     },
     {
       "id": "accordion",
@@ -17453,7 +17455,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "quantum-echo"
     },
     {
       "id": "guzheng",
@@ -21130,7 +21133,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "pixel-stamp"
     },
     {
       "id": "felting-pad",
@@ -22653,7 +22657,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "vector-arrow"
     },
     {
       "id": "molecular-model",
@@ -24705,7 +24710,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "heartbeat-tempo"
     },
     {
       "id": "balance-ball",
@@ -26722,7 +26728,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "shot-portal"
     },
     {
       "id": "circuit-breadboard",
@@ -30988,6 +30995,437 @@
       "source": "About Me original assembly geometry",
       "stage": "model_with_authoritative_mechanic",
       "mechanicId": "team-sling"
+    },
+    {
+      "id": "levitating-hoop",
+      "label": "悬浮轨道环",
+      "templateId": "Utility",
+      "color": "#83DAD9",
+      "keywords": [
+        "科幻磁悬浮",
+        "未来",
+        "悬浮轨道环"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.62,
+            "y": 0.62,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#83DAD9"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.68,
+            "y": 0.12,
+            "z": 0.38
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#34445D"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.24,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.12,
+            "z": 0.28
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#8D87ED"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.24,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.12,
+            "z": 0.28
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#8D87ED"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.24,
+            "y": -0.14,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.045,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#EFCD5C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.24,
+            "y": -0.14,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.045,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#EFCD5C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.24,
+            "y": -0.14,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.045,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#EFCD5C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.24,
+            "y": -0.14,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.045,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#EFCD5C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "virtual-gravity"
+    },
+    {
+      "id": "puzzle-piece",
+      "label": "拼图块",
+      "templateId": "Utility",
+      "color": "#F8BC4E",
+      "keywords": [
+        "拼图",
+        "jigsaw",
+        "拼图块"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.1,
+            "z": 0.4
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F8BC4E"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.23,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.1,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F8BC4E"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.23
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.1,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F8BC4E"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.11,
+            "y": 0.056,
+            "z": -0.11
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#7850B5"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": 0.056,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#7850B5"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": 0.056,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.014,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#7850B5"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "solid-shadow"
+    },
+    {
+      "id": "paper-windmill",
+      "label": "纸风车",
+      "templateId": "Deployable",
+      "color": "#BD9265",
+      "keywords": [
+        "风车",
+        "童年",
+        "纸风车"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.15,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.68,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#BD9265"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.19,
+            "z": 0.04
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.08,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CF5E"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.33999999999999997,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -25
+          },
+          "color": "#F39E98"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.19,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -115
+          },
+          "color": "#88D5C5"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 1.8369701987210297e-17,
+            "y": 0.04000000000000001,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -205
+          },
+          "color": "#9EABF0"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15,
+            "y": 0.18999999999999997,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -295
+          },
+          "color": "#F3D778"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "weather-vane"
     }
   ]
 }

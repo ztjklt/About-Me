@@ -61,6 +61,7 @@ namespace AboutMe
             if(d.id=="ground-anchor"&&!OnPartyGround(owner)){RemovePartyEffect(e);return;}
             if(d.id=="sponge-dry"&&e.stage!="saturated")
             {
+                DryFrozenPoints(e,owner);
                 foreach(var wet in Effects.Where(x=>x.kind=="PartyMechanic"&&x.mechanicId=="wet-trail"&&x.path!=null).ToArray())
                 {
                     var points=wet.path.ToList();

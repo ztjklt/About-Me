@@ -5444,6 +5444,81 @@
         "讨厌折叠桌",
         "不擅长折叠桌"
       ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "levitating-hoop",
+      "label": "悬浮轨道环",
+      "color": "#83DAD9",
+      "evidenceTerms": [
+        "科幻磁悬浮",
+        "未来",
+        "悬浮轨道环"
+      ],
+      "excludeTerms": [
+        "不喜欢科幻磁悬浮",
+        "不会科幻磁悬浮",
+        "讨厌科幻磁悬浮",
+        "不擅长科幻磁悬浮",
+        "不喜欢未来",
+        "不会未来",
+        "讨厌未来",
+        "不擅长未来",
+        "不喜欢悬浮轨道环",
+        "不会悬浮轨道环",
+        "讨厌悬浮轨道环",
+        "不擅长悬浮轨道环"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "puzzle-piece",
+      "label": "拼图块",
+      "color": "#F8BC4E",
+      "evidenceTerms": [
+        "拼图",
+        "jigsaw",
+        "拼图块"
+      ],
+      "excludeTerms": [
+        "不喜欢拼图",
+        "不会拼图",
+        "讨厌拼图",
+        "不擅长拼图",
+        "不喜欢jigsaw",
+        "不会jigsaw",
+        "讨厌jigsaw",
+        "不擅长jigsaw",
+        "不喜欢拼图块",
+        "不会拼图块",
+        "讨厌拼图块",
+        "不擅长拼图块"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "paper-windmill",
+      "label": "纸风车",
+      "color": "#BD9265",
+      "evidenceTerms": [
+        "风车",
+        "童年",
+        "纸风车"
+      ],
+      "excludeTerms": [
+        "不喜欢风车",
+        "不会风车",
+        "讨厌风车",
+        "不擅长风车",
+        "不喜欢童年",
+        "不会童年",
+        "讨厌童年",
+        "不擅长童年",
+        "不喜欢纸风车",
+        "不会纸风车",
+        "讨厌纸风车",
+        "不擅长纸风车"
+      ]
     }
   ]
 }
