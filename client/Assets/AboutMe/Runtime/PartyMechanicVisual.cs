@@ -60,6 +60,7 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.Find(e.mechanicId);if(d==null)return;
             transform.position=e.position;
+            if(d.family=="control"){PresentControl(e,d,now,camera,state);return;}
             if(d.family=="machinery"){PresentMachinery(e,d,now,camera,state);return;}
             if(d.family=="movement"){PresentMovement(e,d,now,camera,state);return;}
             if(d.family=="loot"){PresentLoot(e,d,now,camera,state);return;}

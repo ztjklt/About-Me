@@ -4476,6 +4476,25 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "camp-fold-table",
+      "label": "露营折桌",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/camp-fold-table",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#B67B4C",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

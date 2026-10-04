@@ -9,7 +9,7 @@ namespace AboutMe.Editor
     public static class OriginalPersonaModelTools
     {
         const string Folder="Assets/AboutMe/Resources/PersonaProps";
-        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();PartyLootTests.Run();PartyMachineryTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
+        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();PartyLootTests.Run();PartyMachineryTests.Run();PartyControlTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
         public static void Build()
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);

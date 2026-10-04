@@ -255,10 +255,10 @@ namespace AboutMe
             if (!Active || p.eliminated) return;
             if (input.action == "escape") input.escapeHeld=true;
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
-            if (input.action == "cancel") { StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
+            if (input.action == "cancel") { ReleaseSwingMomentum(p);CancelControlConsent(p);StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
             if(MachineBusy(p)&&input.action!="interact")return;
-            if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action))return;
+            if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action)||ControlBlocks(p,input.action))return;
             switch (input.action)
             {
                 case "jump":
@@ -288,7 +288,7 @@ namespace AboutMe
         {
             var target = Item(id);
             if (target == null || target.ownerId != p.profile.playerId || target.state != ItemState.Inventory || Time < p.switchUntil) return;
-            StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
+            StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
             SetAction(p,"equip");
             var current = Item(p.equipped); if (current != null) current.state = ItemState.Inventory;
             p.equipped = target.id; target.state = ItemState.Equipped; p.switchUntil = Time + Rules.switchDuration;
@@ -350,7 +350,7 @@ namespace AboutMe
                 if (p.grabbing!="") desired *= Rules.grabMoveScale;
                 else if (grabbed) desired *= Rules.grabbedMoveScale;
                 if (!stunned) GuardYaw(p,dt);
-                PartyMotor(p,ref desired,dt);
+                PartyMotor(p,ref desired,dt);ControlMotor(p,ref desired,dt);
                 if(!stunned)FieldMotor(p,ref desired,dt);else {p.fieldStatus="";p.wasWet=false;p.wetMomentum=Vector3.zero;}
                 if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);if(!stunned)MachineMotor(p,ref desired,dt);
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
@@ -361,7 +361,7 @@ namespace AboutMe
                     if(Mathf.Abs(old.y-(oldSurface+1))<.10f&&p.verticalSpeed<=0){p.fallOriginHeight=oldSurface;p.airborne=false;}
                     next=MoveOnMachines(old,CampusGeometry.Move(old,next));if(BlockedByBarricade(next))next=old;
                     var travelled=next-old;travelled.y=0;p.locomotionSpeed=dt>0?Mathf.Min(desired.magnitude,Mathf.Max(0,Vector3.Dot(travelled,desired.normalized)/dt)):0;
-                    p.verticalSpeed-=Rules.gravity*dt;PartyVertical(p);next.y+=p.verticalSpeed*dt;
+                    p.verticalSpeed-=Rules.gravity*dt;PartyVertical(p);ControlVertical(p,dt);next.y+=p.verticalSpeed*dt;
                     float surface=SurfaceFloor(next),floor=surface+1;
                     if(BodyWorld!=null&&desired.sqrMagnitude>.01f&&!BodyLocked(p)&&p.verticalSpeed<=0)
                     {
@@ -412,7 +412,7 @@ namespace AboutMe
             if(BodyWorld==null)foreach(var player in Players.Values)player.velocity=Vector3.ClampMagnitude((player.position-player.tickOrigin)/dt,30);
             foreach (var item in Items.Where(x => x.state == ItemState.Ground))
             {
-                bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=MachineLoose(ref item.velocity,item.position,.35f,dt);
+                bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=MachineLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=ControlLoose(ref item.velocity,item.position,dt);
                 item.velocity += Vector3.down * Rules.gravity * dt; item.position = MoveOnMachines(item.position,CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f),.15f,.35f);
                 float ground = SurfaceFloor(item.position,.35f) + .35f;
                 if(item.position.y < ground) { item.position.y=ground; item.velocity=new Vector3(item.velocity.x*.9f,Mathf.Abs(item.velocity.y)*.25f,item.velocity.z*.9f); if(!beltDriven&&!fieldDriven&&item.velocity.magnitude<.5f)item.velocity=Vector3.zero; }
@@ -424,7 +424,7 @@ namespace AboutMe
             foreach(var prop in Props)
             {
                 if(prop.holder!=""&&Players.TryGetValue(prop.holder,out var holder)) {prop.position=holder.position+Forward(holder);prop.velocity=Vector3.zero;continue;}
-                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);MachineLoose(ref prop.velocity,prop.position,.6f,dt);
+                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);MachineLoose(ref prop.velocity,prop.position,.6f,dt);if(!prop.id.StartsWith("device-",StringComparison.Ordinal)&&(prop.visual=="box"||prop.visual=="trash"))ControlLoose(ref prop.velocity,prop.position,dt);
                 prop.velocity+=Vector3.down*Rules.gravity*dt;var propFrom=prop.position;var propNext=MoveOnMachines(prop.position,CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f),.35f,.6f);
                 int propGuard=prop.velocity.magnitude>4&&prop.thrower!=""?GuardShot(prop.id,ref propFrom,ref prop.velocity,ref prop.thrower,ref prop.pushScale,prop.guardTouches,propNext):0;
                 if(propGuard!=0){prop.position=propFrom;if(propGuard==1){prop.velocity=Vector3.zero;prop.thrower="";}else prop.hitAfter=Time+.04f;continue;}prop.position=propNext;
@@ -446,6 +446,7 @@ namespace AboutMe
             (asset.templateId=="Projectile" || asset.visualId=="football-cc0");
         void ResolveAttack(Player p, bool heavy, float charge)
         {
+            BreakBubbleOnAttack(p);
             var equipped=Item(p.equipped); string template=equipped?.asset.templateId ?? "Unarmed";
             p.nextAttack=Time+(heavy?Rules.heavyInterval:Rules.lightInterval);
             var carriedProp=Props.Find(x=>x.id==p.publicProp);
@@ -700,7 +701,7 @@ namespace AboutMe
         }
         public void Interact(Player p,string targetId=null)
         {
-            if(TryMachineInteraction(p,targetId))return;
+            if(TryControlInteraction(p,targetId)||TryMachineInteraction(p,targetId))return;
             if(p.interaction!="") { Interrupt(p); return; }
             if(IsGrabbed(p)) return;
             ReleaseGrab(p); CancelAction(p); p.chargingSince=-1;
@@ -758,10 +759,10 @@ namespace AboutMe
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
-                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
+                        portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=ControlStatus(p)??p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
                         equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
-                        carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
+                        carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p)||HasControlRestraint(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
                 ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
                 inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),

@@ -131,13 +131,13 @@ namespace AboutMe
             {
                 if(p.eliminated)continue;
                 if(Time-p.lastInput>.35f){p.input.escapeHeld=false;ResetEscape(p);}
-                if(!IsGrabbed(p)&&!HasStickyCharge(p))ResetEscape(p);
+                if(!IsGrabbed(p)&&!HasStickyCharge(p)&&!HasControlRestraint(p))ResetEscape(p);
                 else if(p.input.escapeHeld)
                 {
                     if(p.escapeStartedAt<0)p.escapeStartedAt=Time;
                     p.escapeReleasedAt=-1;p.escapeCharge=Mathf.Min(Rules.escapeDuration,p.escapeCharge+dt);
                     if(p.escapeCharge+.0001f>=Rules.escapeDuration)
-                    {if(HasStickyCharge(p))RemoveStickyCharges(p);ReleaseAllGrabs(p);CancelAction(p);SetAction(p,"escape");}
+                    {if(HasStickyCharge(p))RemoveStickyCharges(p);RemoveControlRestraints(p);ReleaseAllGrabs(p);CancelAction(p);SetAction(p,"escape");}
                 }
                 else
                 {

@@ -53,6 +53,7 @@ namespace AboutMe
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
             if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="control")return TryControlMechanic(p,item,d);
             if(d.family=="machinery")return TryMachineMechanic(p,item,d);
             if(d.family=="loot")return TryLootMechanic(p,item,d);
             if(d.family=="guard")return TryGuardMechanic(p,item,d);
@@ -159,6 +160,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="control"){TickControl(e,owner,d,dt);return;}
             if(d.family=="machinery"){TickMachine(e,owner,d,dt);return;}
             if(d.family=="loot"){TickLoot(e,owner,d,dt);return;}
             if(d.family=="guard"){TickGuard(e,owner,d,dt);return;}

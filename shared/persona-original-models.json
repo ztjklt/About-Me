@@ -351,7 +351,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "bubble-lift"
     },
     {
       "id": "pool-noodle",
@@ -4418,7 +4419,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "water-jet"
     },
     {
       "id": "swim-lane-rope",
@@ -5106,7 +5108,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "gapped-cage"
     },
     {
       "id": "pool-scoop-net",
@@ -5364,7 +5367,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "skate-arc"
     },
     {
       "id": "kayak-paddle",
@@ -8061,7 +8065,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "lasso-loop"
     },
     {
       "id": "djembe",
@@ -15955,7 +15960,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "anchor-swing"
     },
     {
       "id": "harp",
@@ -20548,7 +20554,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "break-net"
     },
     {
       "id": "fabric-scissors",
@@ -24104,7 +24111,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "momentum-pass"
     },
     {
       "id": "paddleboard-racket",
@@ -24381,7 +24389,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "body-bank"
     },
     {
       "id": "score-flipboard",
@@ -30752,6 +30761,233 @@
       "source": "About Me original assembly geometry",
       "stage": "model_with_authoritative_mechanic",
       "mechanicId": "wind-up-cart"
+    },
+    {
+      "id": "camp-fold-table",
+      "label": "露营折桌",
+      "templateId": "Cushion",
+      "color": "#B67B4C",
+      "keywords": [
+        "露营桌",
+        "户外料理",
+        "露营折桌",
+        "折叠桌"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.225,
+            "y": 0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.035,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.075,
+            "y": 0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.035,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.075,
+            "y": 0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.035,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.225,
+            "y": 0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.035,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.17,
+            "y": -0.02,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.4,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -24
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.17,
+            "y": -0.02,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.4,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -24
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.17,
+            "y": -0.02,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.4,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 24
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.17,
+            "y": -0.02,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.4,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 24
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.52,
+            "y": 0.03,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.52,
+            "y": 0.03,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.176,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.012,
+            "z": 0.51
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "team-sling"
     }
   ]
 }

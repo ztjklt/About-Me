@@ -25,7 +25,7 @@ namespace AboutMe
     }
     public partial class Match
     {
-        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery";
+        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="gapped-cage");
         static bool MachinePlatform(string id)=>id=="turntable-wheel"||id=="balance-plank"||id=="floor-elevator"||id=="seesaw-flip";
         static bool MachineDoor(string id)=>id=="timed-door"||id=="weight-switch";
         public static IEnumerable<MachineBox> MachineShapes(EffectState e,bool previous=false)
@@ -33,6 +33,8 @@ namespace AboutMe
             if(e.machine==null)yield break;var m=e.machine;float angle=previous?m.previousAngle:m.angle,height=previous?m.previousHeight:m.height;
             var yaw=Quaternion.LookRotation(e.velocity);var center=e.position;float baseY=center.y-.15f;
             MachineBox Box(string id,Vector3 offset,Vector3 size,Quaternion turn,bool support=false)=>new MachineBox{id=e.id+"/"+id,center=center+yaw*offset,size=size,rotation=yaw*turn,support=support};
+            if(e.mechanicId=="gapped-cage")
+            {yield return Box("door-back",new Vector3(0,.60f,-1.2f),new Vector3(2.8f,1.2f,.16f),Quaternion.identity);yield return Box("door-left",new Vector3(-1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);yield return Box("door-right",new Vector3(1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);}
             if(MachinePlatform(e.mechanicId))
             {
                 bool tilt=e.mechanicId=="balance-plank"||e.mechanicId=="seesaw-flip";
@@ -72,7 +74,7 @@ namespace AboutMe
             {
                 if(box.support)continue;var sample=next;sample.y=next.y-foot+.8f;
                 // Safe doors are solid for the whole body height. Low rods remain physical and jumpable.
-                if(box.id.EndsWith("/door",StringComparison.Ordinal)&&box.Contains(sample,radius))return old;
+                if(box.id.Contains("/door")&&box.Contains(sample,radius))return old;
             }
             return next;
         }
