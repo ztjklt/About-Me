@@ -12,12 +12,21 @@ OTHER_SUBJECT = re.compile(r'(?:朋友|同学|室友|别人|其他人|他们|她
 SELF_SUBJECT = re.compile(r'(?:我|本人|自己)')
 SHARED_SUBJECT = re.compile(r'(?:我|本人|自己)(?:和|跟|与)(?:朋友|同学|室友|别人)')
 
+# Exact first-person statements emitted by the optional English questionnaire.
+ENGLISH_LIKES = re.compile(
+    r"\bI\s+(?P<negative>do\s+not\s+|don't\s+|never\s+)?"
+    r"(?P<verb>like|love|prefer|use|dislike|hate)\s+"
+    r"(?P<first>deep\s*seek|claude)(?![A-Za-z])"
+    r"(?:\s*(?:and|,)\s*(?P<second>deep\s*seek|claude)(?![A-Za-z]))?", re.I)
+ENGLISH_UNCERTAIN = re.compile(r"\b(?:if|perhaps|maybe|suppose|supposing)\s*$", re.I)
+
 
 def liked_brands(introduction: str) -> dict[str, bool]:
     """Accept explicit positive likes; each brand's latest mention wins."""
     stance = {'deepseek': False, 'claude': False}
     if not isinstance(introduction, str):
         return stance
+    events = []
     for match in LIKE_BRANDS.finditer(introduction):
         clause = CLAUSE_BREAK.split(introduction[:match.start()])[-1]
         suffix = introduction[match.end():]
@@ -33,7 +42,19 @@ def liked_brands(introduction: str) -> dict[str, bool]:
         positive = not bool(NEGATIVE_PREFIX.search(clause))
         for brand in (match.group('first'), match.group('second')):
             if brand:
-                stance[re.sub(r'\s+', '', brand).lower()] = positive
+                events.append((match.start(), re.sub(r'\s+', '', brand).lower(), positive))
+    for match in ENGLISH_LIKES.finditer(introduction):
+        prefix = introduction[:match.start()]
+        suffix = introduction[match.end():]
+        # Conditional/quoted mentions and questions are not preferences.
+        if ENGLISH_UNCERTAIN.search(prefix) or (prefix.rstrip().endswith(('"', '“', "'"))) or re.match(r'\s*[?？]', suffix):
+            continue
+        positive = not match.group('negative') and match.group('verb').lower() not in ('dislike', 'hate')
+        for brand in (match.group('first'), match.group('second')):
+            if brand:
+                events.append((match.start(), re.sub(r'\s+', '', brand).lower(), bool(positive)))
+    for _, brand, positive in sorted(events):
+        stance[brand] = positive
     return stance
 
 
