@@ -190,7 +190,7 @@ namespace AboutMe
             }
             profile=GameNetwork.SampleProfile(net.Token,nickname.text);
             if(savedSkin!=null&&net.CosmeticToken!="")
-            {profile.dsGirlUnlocked=savedSkin.dsGirlUnlocked;profile.claudeGirlUnlocked=savedSkin.claudeGirlUnlocked;profile.characterSkin=savedSkin.characterSkin;}
+            {profile.dsGirlUnlocked=savedSkin.dsGirlUnlocked;profile.claudeGirlUnlocked=savedSkin.claudeGirlUnlocked;profile.unlockedCharacterSkins=savedSkin.unlockedCharacterSkins;profile.characterSkin=savedSkin.characterSkin;}
             DisplayProfile();
             net.Status="已载入练习道具（非 AI）";
             TryAutoJoin();
