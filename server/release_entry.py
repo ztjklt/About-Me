@@ -1,4 +1,4 @@
-"""Local release diagnostics; the 049312f API and generation protocol remain unchanged."""
+"""Local release diagnostics; backward-compatible generation API with explicit controlled word ability choices."""
 import hashlib
 import json
 import os
