@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "sourceImage": "/Users/jitian/.codex/generated_images/01a1056c-36f2-7531-8d19-8b98b3216cb3/exec-07c75322-036e-49f9-9e3b-7d739748be1f.png",
+  "assetPath": "client/Assets/AboutMe/Resources/IntroductionUI/mascot-drawer-r3.png",
+  "sha256": "9f7814f15ce67b7c7a338b1090b78c1dad408da7567e999ac5fb97e3aa97833a",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "alpha": "0..255 RGBA",
+  "unityImportMaxTextureSize": 512,
+  "prompt": "artifacts/playtest-introduction-r3/mascot-drawer-r3-prompt.txt"
+}

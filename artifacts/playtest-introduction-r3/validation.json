@@ -1,0 +1,26 @@
+{
+  "releaseId": "playtest-introduction-r3",
+  "result": "passed",
+  "ports": [
+    8088,
+    7788
+  ],
+  "clientAuthoritySameBinary": true,
+  "apiIdentityAndHashes": true,
+  "validationServicesCleaned": true,
+  "oldPlaytestProcessesUntouched": true,
+  "timestamp": "2026-10-04T16:54:19.597544+00:00",
+  "engineChecks": 44,
+  "engineResolutions": [
+    [
+      1280,
+      720
+    ],
+    [
+      960,
+      600
+    ]
+  ],
+  "apiTests": 17,
+  "apiTestsScope": "ASGI routing/save and brand parser tests; model provider mocked"
+}
