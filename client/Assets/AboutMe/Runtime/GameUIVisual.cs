@@ -93,41 +93,25 @@ namespace AboutMe
         void BuildHome()
         {
             home=ArtPanel(artboard,"Introduction",0,0,1600,900,Color.clear,false,false);
-
-            studioCard=ArtPanel(home,"Persona studio",900,34,650,872,UITheme.Paper,true,true);studioCard.gameObject.AddComponent<UIReveal>();
-            var mascotFrame=ArtPanel(studioCard,"Clay mascot cameo",486,22,134,143,UITheme.Mint,false,false);
-            mascotFrame.GetComponent<Image>().raycastTarget=false;
-            MenuSprite(mascotFrame,"Workshop mascot","StartMenu2D/mascot-open",-5,-13,144,178);
-            Accent(studioCard,473,22,42,11,-16,UITheme.Yellow);
-            Accent(studioCard,582,152,34,9,24,UITheme.Pink);
-            Tape(studioCard,"PERSONA WORKSHOP",30,24,216,38,UITheme.Mint);
-            ArtText(studioCard,"先介绍一下，你是谁？",30,72,575,45,31,UITheme.Ink,FontStyle.Bold);
-            StepBadge(studioCard,"1",30,126,UITheme.Yellow);ArtText(studioCard,"写下关于你的线索",70,127,260,34,18,UITheme.Ink,FontStyle.Bold);
-            ArtText(studioCard,"昵称",30,168,120,25,15,UITheme.Muted,FontStyle.Bold);
-            ArtText(studioCard,"房间",314,168,120,25,15,UITheme.Muted,FontStyle.Bold);
-            nickname=ArtField(studioCard,30,195,268,50,"你的名字",false);nickname.text=PlayerPrefs.GetString("nickname","玩家");
-            room=ArtField(studioCard,314,195,306,50,"房间码 · 留空创建",false);
-            ArtText(studioCard,"自我介绍",30,257,200,25,15,UITheme.Muted,FontStyle.Bold);introCounter=ArtText(studioCard,"0 / 1200",450,257,170,25,14,UITheme.Muted,FontStyle.Bold,TextAnchor.UpperRight);
-            ArtButton(studioCard,"选择题模式",236,253,174,28,OpenIntroductionQuestionnaire,UITheme.Yellow,UITheme.Ink);
-            introduction=ArtField(studioCard,30,284,590,128,"我来自哪里、喜欢什么、有什么特别经历……",true);introduction.text=PlayerPrefs.GetString("introduction","");
-            introduction.characterLimit=1200;introduction.onValueChanged.AddListener(value=>introCounter.text=value.Length+" / 1200");introCounter.text=introduction.text.Length+" / 1200";
-            StepBadge(studioCard,"2",30,428,UITheme.Pink);ArtText(studioCard,"设计人物外观（不影响 Persona）",70,429,350,34,18,UITheme.Ink,FontStyle.Bold);
-            var record=ArtButton(studioCard,"录音介绍",30,470,174,48,ToggleRecording,UITheme.Field,UITheme.Ink,"mic");recordLabel=record.GetComponentInChildren<Text>();recordStyle=record.GetComponent<StickerButton>();
-            string[] colors={"#79CFC5","#F3AFC2","#FFD773","#9FAFF2"};
-            for(int i=0;i<colors.Length;i++)
-            {
-                string choice=colors[i];var chip=ColorChip(studioCard,choice,222+i*53,473,42,()=>{SetDraftColor(choice);});colorStyles.Add(chip);
-            }
-            var outfitButton=ArtButton(studioCard,"我的衣橱",451,470,169,48,OpenWardrobe,UITheme.Field,UITheme.Ink,"status");outfitText=outfitButton.GetComponentInChildren<Text>();
-            BuildExpressionChoices(studioCard);
-            generate=ArtButton(studioCard,"生成 Persona",30,578,270,48,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper,"status");generateStyle=generate.GetComponent<StickerButton>();
-            ArtButton(studioCard,"解锁彩蛋",316,578,304,48,()=>StartCoroutine(UnlockCosmetics()),UITheme.Mint,UITheme.Ink,"status");
-            var profileCard=ArtPanel(studioCard,"Persona result",30,636,590,150,UITheme.Field,true,false);
-            BuildPersonaResults(profileCard);
-            join=ArtButton(studioCard,"进入房间",30,792,230,36,()=>StartCoroutine(EnterWithAppearance()),UITheme.Mint,UITheme.Ink,"ready");
-            ArtButton(studioCard,"本地样例（无需 AI）",30,836,260,28,LoadPracticePersona,UITheme.Yellow,UITheme.Ink,"status");
-            var service=ArtPanel(studioCard,"AI service status",306,836,314,28,UITheme.Field,true,false);aiServiceSurface=service.GetComponent<Image>();ArtIcon(service,"status",10,3,21,UITheme.Ink);aiServiceText=ArtText(service,"正在检查 AI 服务…",39,0,265,28,14,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            RefreshColorSelection();
+            studioCard=ArtPanel(home,"Persona studio",672,28,900,836,UITheme.Paper,true,true);
+            Tape(studioCard,"PERSONA WORKSHOP",28,24,216,38,UITheme.Mint);
+            ArtText(studioCard,"先介绍一下，你是谁？",28,78,830,48,31,UITheme.Ink,FontStyle.Bold);
+            ArtText(studioCard,"昵称",28,143,180,24,15,UITheme.Muted,FontStyle.Bold);
+            nickname=ArtField(studioCard,28,176,400,50,"你的名字",false);nickname.text=PlayerPrefs.GetString("nickname","玩家");
+            room=ArtField(studioCard,28,176,400,50,"房间码 · 留空创建",false);
+            ArtText(studioCard,"自我介绍",28,248,230,24,15,UITheme.Muted,FontStyle.Bold);
+            introCounter=ArtText(studioCard,"0 / 1200",278,248,150,24,14,UITheme.Muted,FontStyle.Bold,TextAnchor.UpperRight);
+            introduction=ArtScrollableField(studioCard,28,283,400,250,"我来自哪里、喜欢什么、有什么特别经历……");
+            introduction.characterLimit=1200;introduction.text=PlayerPrefs.GetString("introduction","");
+            introduction.onValueChanged.AddListener(value=>introCounter.text=value.Length+" / 1200");introCounter.text=introduction.text.Length+" / 1200";
+            ArtRaisedButton(studioCard,"选择题模式",464,152,184,154,OpenIntroductionQuestionnaire,UITheme.Yellow,UITheme.Ink);
+            var outfitButton=ArtRaisedButton(studioCard,"我的衣橱",674,152,184,154,OpenWardrobe,UITheme.Mint,UITheme.Ink);outfitText=outfitButton.GetComponentInChildren<Text>();
+            BuildSavedCharacterCard();
+            BuildPersonaResults(ArtPanel(studioCard,"Persona result",28,565,830,174,UITheme.Field,true,false));
+            generate=ArtButton(studioCard,"AI生成",28,763,156,46,()=>StartCoroutine(Generate()),UITheme.Ink,UITheme.Paper);generateStyle=generate.GetComponent<StickerButton>();
+            ArtButton(studioCard,"本地样例",200,763,140,46,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
+            join=ArtButton(studioCard,"保存",634,763,102,46,()=>SaveDraft(true),UITheme.Mint,UITheme.Ink);
+            ArtButton(studioCard,"返回",752,763,106,46,()=>ShowPage(MenuPage.Main),UITheme.Field,UITheme.Ink);
         }
 
         void BuildSettings()
@@ -156,7 +140,7 @@ namespace AboutMe
         {
             GameLocalization.SetEnglish(english);if(startMenuStage)startMenuStage.ApplyLanguage();RefreshSettingLabels();
             lastInventory="";lastLobbyVisual="";lastResultVisual="";
-            RefreshMenuSummary();if(displayedGenerationTerms.Length>0)DisplayGenerationTerms(displayedGenerationTerms);
+            RefreshMenuSummary();RefreshQuestionnaireOptions();RefreshSavedCharacterCard();if(displayedGenerationTerms.Length>0)DisplayGenerationTerms(displayedGenerationTerms);
         }
         void RefreshSettingLabels()
         {
@@ -308,14 +292,14 @@ namespace AboutMe
             bool next=Application.isMobilePlatform||platform.IsWeChat||Screen.height<=600||Screen.width/(float)Mathf.Max(1,Screen.height)<1.48f;
             if(!force&&next==compactLayout)return;compactLayout=next;
             if(startMenuStage)startMenuStage.SetCompact(compactLayout);
-            if(draftLibrary){draftLibrary.localScale=Vector3.one*(compactLayout?.94f:1);}
+            if(draftLibrary){draftLibrary.localScale=Vector3.one;}
             if(compactLayout)
             {
-                if(homeHero)Place(homeHero,22,24,800,830);Place(studioCard,830,14,738,872);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
+                if(homeHero)Place(homeHero,22,24,800,830);Place(studioCard,672,28,900,836);Place(lobbyCard,28,28,700,834);Place(hotbar,348,788,904,92);
             }
             else
             {
-                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,900,14,650,872);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
+                if(homeHero)Place(homeHero,42,32,825,820);Place(studioCard,672,28,900,836);Place(lobbyCard,44,42,676,816);Place(hotbar,380,795,840,84);
             }
         }
 

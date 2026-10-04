@@ -148,47 +148,30 @@ namespace AboutMe
         void BuildDraftLibrary()
         {
             if(homeHero)homeHero.gameObject.SetActive(false);
-            var library=draftLibrary=ArtPanel(home,"Introduction draft library",45,34,800,820,UITheme.Paper,true,true);
-            var notebookFrame=ArtPanel(library,"Clay notebook display",541,57,209,138,UITheme.Yellow,false,false);
-            notebookFrame.GetComponent<Image>().raycastTarget=false;
-            MenuSprite(library,"Story notebook","StartMenu2D/arm-book",487,43,284,160);
-            Accent(library,519,68,47,10,-19,UITheme.Pink);
-            Accent(library,699,173,34,9,23,UITheme.Mint);
-            Tape(library,"MY INTRODUCTIONS",30,24,260,38,UITheme.Yellow);
-            ArtText(library,"自我介绍预设",30,75,660,84,34,UITheme.Ink,FontStyle.Bold);
-            ArtButton(library,"返回菜单",30,735,174,55,()=>ShowPage(MenuPage.Main),UITheme.Field,UITheme.Ink,"exit");
-            ArtText(library,"切换草稿不替换 Persona",30,146,530,44,20,UITheme.Muted);
-            draftName=ArtField(library,30,212,500,55,"草稿名称",false);draftName.characterLimit=24;
-            ArtButton(library,"保存草稿",551,212,199,55,()=>SaveDraft(true),UITheme.Mint,UITheme.Ink);
-            ArtButton(library,"新建草稿",30,287,190,52,NewDraft,UITheme.Yellow,UITheme.Ink);
-            ArtButton(library,"删除草稿",240,287,190,52,DeleteDraft,UITheme.Field,UITheme.Ink);
-            draftHeading=ArtText(library,"",30,360,720,40,18,UITheme.Muted);
-            var viewport=ArtPanel(library,"Draft scroll",30,410,720,300,UITheme.Field,false,false);viewport.gameObject.AddComponent<RectMask2D>();
-            string[] keepsakes={"book-single","cactus-small-a","pillow-a"};
-            Color[] keepsakeColors={UITheme.Yellow,UITheme.Mint,UITheme.Pink};
-            for(int i=0;i<keepsakes.Length;i++)
-            {
-                var sticker=ArtPanel(viewport,"Persona keepsake sticker",82+i*218,126,145,137,keepsakeColors[i],false,false);
-                sticker.GetComponent<Image>().raycastTarget=false;
-                sticker.localRotation=Quaternion.Euler(0,0,i==1?4:-5);
-                MenuSprite(sticker,"Persona keepsake · "+keepsakes[i],"PersonaThumbs/"+keepsakes[i],20,6,105,105);
-            }
-            draftList=ArtRect(viewport,"Draft list",Vector2.zero,new Vector2(710,300));
+            var library=draftLibrary=ArtPanel(home,"Introduction draft library",28,28,616,836,UITheme.Paper,true,true);
+            Tape(library,"MY INTRODUCTIONS",28,24,260,38,UITheme.Yellow);
+            ArtText(library,"自我介绍预设",28,84,550,48,31,UITheme.Ink,FontStyle.Bold);
+            ArtText(library,"切换草稿不替换 Persona",28,142,550,30,17,UITheme.Muted);
+            MenuSprite(library,"Persona drawer","IntroductionUI/mascot-drawer-r3",335,178,245,245);
+            ArtText(library,"为每个自己留一个抽屉",28,204,288,70,24,UITheme.Ink,FontStyle.Bold);
+            draftName=ArtField(library,28,304,288,48,"草稿名称",false);draftName.characterLimit=24;
+            ArtButton(library,"新建",28,374,100,42,NewDraft,UITheme.Yellow,UITheme.Ink);
+            ArtButton(library,"删除",146,374,100,42,DeleteDraft,UITheme.Field,UITheme.Ink);
+            draftHeading=ArtText(library,"",28,454,550,28,17,UITheme.Muted);
+            var viewport=ArtPanel(library,"Draft scroll",28,494,560,284,Color.clear,false,false);viewport.GetComponent<Image>().raycastTarget=true;viewport.gameObject.AddComponent<RectMask2D>();
+            draftList=ArtRect(viewport,"Draft list",Vector2.zero,new Vector2(560,284));
             var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=draftList;scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=30;
             try{drafts=JsonUtility.FromJson<IntroductionDrafts>(PlayerPrefs.GetString("introductionDrafts",""));}catch(Exception){}
             if(drafts==null||drafts.items==null||drafts.items.Count==0)
             {drafts=new IntroductionDrafts();drafts.items.Add(new IntroductionDraft{id=Guid.NewGuid().ToString("N"),name="我的第一份介绍",nickname=nickname.text,introduction=introduction.text});drafts.selected=drafts.items[0].id;}
             SelectDraft(drafts.items.Any(d=>d.id==drafts.selected)?drafts.selected:drafts.items[0].id,false);
-            // This is now a dedicated editor, not an implicit room entry.
-            join.GetComponentInChildren<Text>().text="保存草稿，返回菜单";join.onClick.RemoveAllListeners();join.onClick.AddListener(()=>ShowPage(MenuPage.Main));
-            generate.GetComponentInChildren<Text>().text="生成并替换当前 Persona";
             nickname.characterLimit=24;
-            var roomLabel=studioCard.GetComponentsInChildren<Text>().FirstOrDefault(t=>t.text=="房间");if(roomLabel)roomLabel.gameObject.SetActive(false);
-            Place((RectTransform)nickname.transform,30,195,590,50);foreach(var text in nickname.GetComponentsInChildren<Text>())text.rectTransform.sizeDelta=new Vector2(562,40);
+
         }
-        void PersistDrafts(){PlayerPrefs.SetString("introductionDrafts",JsonUtility.ToJson(drafts));PlayerPrefs.Save();}
+        void PersistDrafts(){if(Environment.GetCommandLineArgs().Contains("--introduction-ui-audit"))return;PlayerPrefs.SetString("introductionDrafts",JsonUtility.ToJson(drafts));PlayerPrefs.Save();}
         void SaveDraft(bool notify)
         {
+            if(Environment.GetCommandLineArgs().Contains("--introduction-ui-audit"))return;
             if(drafts==null)return;var draft=drafts.items.Find(d=>d.id==drafts.selected);if(draft==null)return;
             draft.name=string.IsNullOrWhiteSpace(draftName.text)?"未命名介绍":draftName.text.Trim();draft.nickname=nickname.text;draft.introduction=introduction.text;PersistDrafts();RefreshDrafts();
             if(notify)net.Status="草稿已保存；当前 Persona 未改变。";
@@ -211,8 +194,9 @@ namespace AboutMe
         void RefreshDrafts()
         {
             foreach(Transform child in draftList)Destroy(child.gameObject);
-            int i=0;foreach(var d in drafts.items){string id=d.id;ArtButton(draftList,(d.id==drafts.selected?"●  ":"")+d.name,8,8+i++*66,690,54,()=>{if(!busy)SelectDraft(id);},d.id==drafts.selected?UITheme.Mint:UITheme.Paper,UITheme.Ink);}
-            draftList.sizeDelta=new Vector2(710,Mathf.Max(300,16+i*66));draftHeading.text="已保存 "+drafts.items.Count+" 份 · 点击切换";
+            int i=0;foreach(var d in drafts.items){string id=d.id;ArtButton(draftList,(d.id==drafts.selected?"●\n":"▰\n")+d.name,8+(i%3)*184,8+(i/3)*134,172,116,()=>{if(!busy)SelectDraft(id);},d.id==drafts.selected?UITheme.Mint:UITheme.Paper,UITheme.Ink);i++;}
+            draftList.sizeDelta=new Vector2(560,Mathf.Max(284,16+((i+2)/3)*134));draftHeading.text="已保存 "+drafts.items.Count+" 份 · 点击切换";
+
         }
         static string ShortPersonaName(string name)=>string.IsNullOrEmpty(name)?"—":name.Length<=(GameLocalization.English?16:4)?name:name.Substring(0,GameLocalization.English?15:3)+"…";
         void OnApplicationPause(bool paused){if(paused){SaveDraft(false);ResetMovement();if(net)Send("cancel");}}

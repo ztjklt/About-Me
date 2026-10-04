@@ -166,7 +166,7 @@ namespace AboutMe
             }
         }
         void DisplayProfile()
-        {LoadAppearance();EndGenerationPoll();DisplayGenerationTerms(ProfileGenerationTerms());CacheProfile();}
+        {LoadAppearance();EndGenerationPoll();DisplayGenerationTerms(ProfileGenerationTerms());CacheProfile();RefreshSavedCharacterCard();}
 
         void LoadPracticePersona()
         {
@@ -412,6 +412,7 @@ namespace AboutMe
         }
         void Update()
         {
+            if(savedCharacterCamera)savedCharacterCamera.enabled=savedCharacterCard&&savedCharacterCard.gameObject.activeInHierarchy;
             if(net==null)return;
             if(traitLab&&traitLab.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))CloseTraitLab();return;}
             if(introductionQuestionnaire&&introductionQuestionnaire.gameObject.activeSelf)

@@ -25,19 +25,19 @@ namespace AboutMe
 
         void BuildPersonaResults(RectTransform card)
         {
-            profileText=ArtText(card,"生成后，关键词会在这里显示结果。",12,6,370,22,15,UITheme.Muted,FontStyle.Bold);
-            generationScrollHint=ArtText(card,"左右拖动 / 滚轮查看更多",386,8,192,20,12,UITheme.Muted,FontStyle.Normal,TextAnchor.UpperRight);
-            var viewport=ArtRect(card,"Generation results viewport",new Vector2(12,-32),new Vector2(566,108));
+            profileText=ArtText(card,"生成后，关键词会在这里显示结果。",12,6,510,22,15,UITheme.Muted,FontStyle.Bold);
+            generationScrollHint=ArtText(card,"左右拖动 / 滚轮查看更多",602,8,216,20,12,UITheme.Muted,FontStyle.Normal,TextAnchor.UpperRight);
+            var viewport=ArtRect(card,"Generation results viewport",new Vector2(12,-32),new Vector2(806,132));
             var surface=viewport.gameObject.AddComponent<Image>();surface.color=Color.clear;surface.raycastTarget=true;
             viewport.gameObject.AddComponent<RectMask2D>();
-            generationResultContent=ArtRect(viewport,"Generation results content",Vector2.zero,new Vector2(566,108));
+            generationResultContent=ArtRect(viewport,"Generation results content",Vector2.zero,new Vector2(806,132));
             generationTermGrid=generationResultContent;
             generationResultScroll=viewport.gameObject.AddComponent<PersonaResultScrollRect>();
             generationResultScroll.viewport=viewport;generationResultScroll.content=generationResultContent;
             generationResultScroll.horizontal=true;generationResultScroll.vertical=false;
             generationResultScroll.movementType=ScrollRect.MovementType.Clamped;generationResultScroll.scrollSensitivity=35;
-            var track=ArtPanel(card,"Generation results scrollbar",12,142,566,6,new Color(0,0,0,.12f),false,false);
-            var handle=ArtPanel(track,"Scrollbar handle",0,0,566,6,UITheme.Muted,false,false);
+            var track=ArtPanel(card,"Generation results scrollbar",12,164,806,6,new Color(0,0,0,.12f),false,false);
+            var handle=ArtPanel(track,"Scrollbar handle",0,0,806,6,UITheme.Muted,false,false);
             handle.sizeDelta=Vector2.zero;handle.anchoredPosition=Vector2.zero;
             var scrollbar=track.gameObject.AddComponent<Scrollbar>();scrollbar.handleRect=handle;
             scrollbar.targetGraphic=handle.GetComponent<Image>();scrollbar.direction=Scrollbar.Direction.LeftToRight;
@@ -59,28 +59,29 @@ namespace AboutMe
             int i=0;
             foreach(var term in terms)
             {
-                var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i/2)*282,(i%2)*57,272,50,GenerationTermColor(term.status),true,false);
-                bool university=term.kind=="university";
-                var title=ArtText(card,term.term,10,2,university?207:252,22,17,Color.white,FontStyle.Bold);
-                title.horizontalOverflow=HorizontalWrapMode.Wrap;title.resizeTextForBestFit=true;title.resizeTextMinSize=13;title.resizeTextMaxSize=17;
+                var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i/2)*144,(i%2)*67,134,61,GenerationTermColor(term.status),false,false);
+                var click=card.gameObject.AddComponent<Button>();click.onClick.AddListener(()=>ShowGenerationTermDetail(term));
+                var title=ArtText(card,term.term,8,3,118,32,15,Color.white,FontStyle.Bold);title.horizontalOverflow=HorizontalWrapMode.Wrap;title.resizeTextMinSize=12;
                 string state=term.status=="ready"?"正常":term.status=="failed"?"未生成":"处理中";
-                var detail=ArtText(card,state+" · "+(term.reason??""),10,23,252,20,12,Color.white);
-                detail.resizeTextForBestFit=true;detail.resizeTextMinSize=9;detail.resizeTextMaxSize=12;
-                if(university)
-                {
-                    float progress=term.status=="ready"?1:Mathf.Clamp(term.progress,0,.95f);
-                    ArtText(card,Mathf.RoundToInt(progress*100)+"%",219,5,43,18,12,Color.white,FontStyle.Bold);
-                    var track=ArtPanel(card,"University progress track",10,44,252,4,new Color(0,0,0,.25f),false,false);
-                    var fill=ArtPanel(track,"University progress fill",0,0,252*progress,4,
-                        term.status=="failed"?new Color(1,.70f,.70f):new Color(.66f,1,.81f),false,false);
-                    fill.GetComponent<Image>().raycastTarget=false;
-                }
+                float progress=term.status=="ready"?1:Mathf.Clamp(term.progress,0,.95f);
+                ArtText(card,state+(term.kind=="university"?" · "+Mathf.RoundToInt(progress*100)+"%":" · 查看"),8,36,118,20,12,Color.white);
+                if(term.kind=="university")ArtPanel(card,"University progress",8,58,118*progress,3,UITheme.Mint,false,false).GetComponent<Image>().raycastTarget=false;
                 i++;
             }
-            generationResultContent.sizeDelta=new Vector2(Mathf.Max(566,((terms.Length+1)/2)*282-10),108);
-            generationScrollHint.gameObject.SetActive(terms.Length>4);
+            generationResultContent.sizeDelta=new Vector2(Mathf.Max(806,((terms.Length+1)/2)*144-10),132);
+            generationScrollHint.gameObject.SetActive(terms.Length>10);
             Canvas.ForceUpdateCanvases();
             if(changed){generationResultScroll.StopMovement();generationResultScroll.horizontalNormalizedPosition=0;}
+        }
+
+        RectTransform generationTermDetail;
+        void ShowGenerationTermDetail(GenerationTerm term)
+        {
+            if(generationTermDetail)Destroy(generationTermDetail.gameObject);
+            generationTermDetail=ArtPanel(studioCard,"Result detail",450,352,408,194,UITheme.Paper,true,true);
+            var fullDetail=ArtScrollableField(generationTermDetail,14,12,378,122,"");fullDetail.readOnly=true;fullDetail.characterLimit=0;fullDetail.text=term.term+"\n"+GameLocalization.Text(term.reason??"")+"\n"+GameLocalization.Text(term.stage??"");
+            ArtButton(generationTermDetail,"关闭",290,145,102,34,()=>Destroy(generationTermDetail.gameObject),UITheme.Field,UITheme.Ink);
+            if(term.status=="failed")ArtButton(generationTermDetail,"重试生成",14,145,160,34,()=>{Destroy(generationTermDetail.gameObject);if(!busy)StartCoroutine(Generate());},UITheme.Mint,UITheme.Ink);
         }
 
         GenerationTerm[] ProfileGenerationTerms()

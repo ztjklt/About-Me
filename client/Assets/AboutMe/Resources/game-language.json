@@ -4902,7 +4902,7 @@
     },
     {
       "zh": "返回",
-      "en": "Return"
+      "en": "Back"
     },
     {
       "zh": "返回主菜单",
@@ -5598,7 +5598,7 @@
     },
     {
       "zh": "草稿已整理，可继续编辑；追加前不会修改原介绍。",
-      "en": "Your draft is ready to edit. Your original introduction stays unchanged until you append it."
+      "en": "Draft ready to edit. Your original introduction stays unchanged until you append."
     },
     {
       "zh": "没有新内容可追加，原介绍保持不变。",
@@ -5619,6 +5619,126 @@
     {
       "zh": "左右拖动 / 滚轮查看更多",
       "en": "Drag sideways or scroll for more"
+    },
+    {
+      "zh": "本地样例",
+      "en": "Sample"
+    },
+    {
+      "zh": "AI生成",
+      "en": "Generate"
+    },
+    {
+      "zh": "新建",
+      "en": "New"
+    },
+    {
+      "zh": "删除",
+      "en": "Delete"
+    },
+    {
+      "zh": "为每个自己留一个抽屉",
+      "en": "A drawer for every side of you"
+    },
+    {
+      "zh": "当前已保存角色",
+      "en": "Saved character"
+    },
+    {
+      "zh": "尚未生成角色",
+      "en": "No character yet"
+    },
+    {
+      "zh": "生成后展示真实角色与道具",
+      "en": "Generate to see your character and Persona"
+    },
+    {
+      "zh": "角色卡",
+      "en": "Character card"
+    },
+    {
+      "zh": "其他 / 自己填写",
+      "en": "Other / write your own"
+    },
+    {
+      "zh": "你会如何描述自己的性格？",
+      "en": "How would you describe your personality?"
+    },
+    {
+      "zh": "我的性格是",
+      "en": "My personality is "
+    },
+    {
+      "zh": "喜欢哪种人物表情？",
+      "en": "Which character expression do you like?"
+    },
+    {
+      "zh": "我喜欢的人物表情是",
+      "en": "My preferred character expression is "
+    },
+    {
+      "zh": "喜欢使用哪个 AI？",
+      "en": "Which AI do you like using?"
+    },
+    {
+      "zh": "应用表情与性格到衣橱预览",
+      "en": "Preview mood & traits in wardrobe"
+    },
+    {
+      "zh": "草稿尚未加入原介绍。\nAI 偏好须保存介绍后识别，只有支持的角色可用。",
+      "en": "Draft has not been added.\nSave your introduction to recognize AI preferences; only supported characters are available."
+    },
+    {
+      "zh": "已加入衣橱预览，尚未保存。打开衣橱可 AI 推荐穿搭并保存。自填表情只写入介绍。",
+      "en": "Wardrobe preview updated, not saved. Open wardrobe to request an AI outfit and save. Custom moods only go into your introduction."
+    },
+    {
+      "zh": "整理后超过 1200 字，请缩短答案；所有答案和现有草稿保持不变。",
+      "en": "Over 1200 characters. Shorten your answers; all answers and the existing draft remain intact."
+    },
+    {
+      "zh": "问答性格可用于 AI 推荐，表情先预览。只有点击保存穿搭后才替换当前外观。\nAI 偏好写入介绍后保存，按支持名单识别角色；其他 AI 不保证有对应模型。",
+      "en": "Questionnaire traits guide AI recommendations; moods are previews. Save outfit to apply changes.\nSave AI preferences in your introduction to recognize supported characters. Other AI may not have a model."
+    },
+    {
+      "zh": "AI 角色套装固定；普通穿搭仍保留。",
+      "en": "AI character outfit is fixed; your normal outfit is retained."
+    },
+    {
+      "zh": "查看",
+      "en": "Details"
+    },
+    {
+      "zh": "重试生成",
+      "en": "Retry generation"
+    },
+    {
+      "zh": "保存穿搭与AI 角色解锁",
+      "en": "Save outfit and AI character unlocks"
+    },
+    {
+      "zh": "AI 角色套装固定；切回普通穿搭后可推荐。",
+      "en": "AI character outfit fixed; can recommend after switching back to normal outfit."
+    },
+    {
+      "zh": "AI 角色套装；保存后生效。",
+      "en": "AI character outfit; takes effect after saving."
+    },
+    {
+      "zh": "AI 角色资格已更新，请在衣橱中选择并保存。",
+      "en": "AI character qualification updated, please select and save in wardrobe."
+    },
+    {
+      "zh": "新AI 角色已解锁；选择外观并保存。",
+      "en": "New AI character unlocked; choose appearance and save."
+    },
+    {
+      "zh": "解锁AI 角色",
+      "en": "Unlock AI character"
+    },
+    {
+      "zh": "请在真实角色衣橱保存AI 角色选择，再载入练习道具。",
+      "en": "Please save the AI character selection in the real character wardrobe, then load practice props."
     }
   ]
 }

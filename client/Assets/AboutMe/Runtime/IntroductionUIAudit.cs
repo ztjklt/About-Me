@@ -44,7 +44,7 @@ namespace AboutMe
         {
             yield return new WaitForSecondsRealtime(1);
             ui=GameUI.UI;Check(ui!=null,"running client UI available");
-            bool originalEnglish=GameLocalization.English;GameLocalization.SetEnglish(false);
+            int originalReduceMotion=PlayerPrefs.GetInt("reduceMotion",0);bool originalEnglish=GameLocalization.English;GameLocalization.SetEnglish(false);
             var terms=Enumerable.Range(0,21).Select(i=>new GenerationTerm{term="结果 "+(i+1).ToString("00"),status=i%3==0?"failed":"ready",reason=i%3==0?"未找到匹配道具":"已保存道具",kind="prop"}).ToArray();
             Call("DisplayGenerationTerms",terms,"complete");yield return null;
             var scroll=Field<ScrollRect>("generationResultScroll");
@@ -60,7 +60,7 @@ namespace AboutMe
             var hits=new List<RaycastResult>();EventSystem.current.RaycastAll(pointer,hits);
             Check(hits.Count>0&&ExecuteEvents.GetEventHandler<IDragHandler>(hits[0].gameObject)==scroll.gameObject,"card raycast routes finger drag to result scroll");
             scroll.OnInitializePotentialDrag(pointer);scroll.OnBeginDrag(pointer);pointer.position=point+Vector2.left*300;scroll.OnDrag(pointer);scroll.OnEndDrag(pointer);scroll.StopMovement();
-            Check(scroll.content.anchoredPosition.x< -100,"touch pointer drag moves results without buttons");
+            Check(scroll.content.anchoredPosition.x< -100,"pointer drag moves clickable results without activation");
             scroll.horizontalNormalizedPosition=1;yield return null;Canvas.ForceUpdateCanvases();
             var last=(RectTransform)scroll.content.GetChild(20);var corners=new Vector3[4];last.GetWorldCorners(corners);var viewportCorners=new Vector3[4];scroll.viewport.GetWorldCorners(viewportCorners);
             Check(corners[0].x>=viewportCorners[0].x-.1f&&corners[2].x<=viewportCorners[2].x+.1f,"last result fully visible at horizontal end");
@@ -71,7 +71,7 @@ namespace AboutMe
             ScreenCapture.CaptureScreenshot(Path.Combine(output,"results-last.png"));yield return new WaitForSecondsRealtime(.2f);
 
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);
-            Check(GameUI.IntroductionQuestions.Length==10&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==40,"ten questions and forty choices");
+            Check(GameUI.IntroductionQuestions.Length==13&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==40,"thirteen questions; original forty catalog choices retained");
             Check(GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).All(v=>catalog.items.Any(i=>i.visualId==v)),"all choices map to current catalog");
             Check(GameUI.BuildQuestionnaireIntroduction(new bool[40])=="","all questions may be skipped");
             var intro=Field<InputField>("introduction");string original="  我来自这里，喜欢篮球。\n原稿保留！  ";intro.text=original;
@@ -108,6 +108,37 @@ namespace AboutMe
             Field<RectTransform>("settings").gameObject.SetActive(false);
             typeof(GameUI).GetField("optionsOpen",Flags).SetValue(ui,false);GameLocalization.SetEnglish(false);
             yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"original-input-preserved.png"));yield return new WaitForSecondsRealtime(.3f);
+            Call("ShowGenerationTermDetail",new GenerationTerm{term="一个很长很长的完整大学名称与完整Persona关键词",reason=new string('因',350),status="failed"});
+            var fullDetail=Field<RectTransform>("generationTermDetail").GetComponentInChildren<InputField>();Check(fullDetail.text.Contains("完整Persona关键词")&&fullDetail.text.Length>350,"clicked result detail preserves complete long name and reason");
+            UnityEngine.Object.Destroy(Field<RectTransform>("generationTermDetail").gameObject);
+            Call("ShowPage",MenuPage.Presets);
+            intro.text=original;Call("OpenIntroductionQuestionnaire");
+            var others=Field<List<InputField>>("questionnaireOther");Check(others.Count==13,"every question including mood/personality/AI has free text");
+            others[0].text="我喜欢中文输入与长篇故事";others[12].text="不存在模型的自定义AI";
+            Call("CreateQuestionnaireDraft");Check(draft.text.Contains(others[0].text)&&draft.text.Contains(others[12].text),"self-written answers appear unchanged in editable draft");
+            Check(intro.text==original&&ReferenceEquals(profile,Field<Profile>("profile")),"custom answers do not mutate introduction or Persona");
+            var saved=JsonUtility.ToJson(profile);Call("ToggleQuestionnaireAnswer",46);Call("ToggleQuestionnaireAnswer",48);Call("ToggleQuestionnaireAnswer",40);Call("ApplyQuestionnaireAppearance");
+            Check(Field<AppearanceData>("appearanceDraft").expression=="confident","questionnaire mood selects existing real expression ID");
+            Check(Field<InputField>("personalityInput").text.Contains("热情"),"questionnaire traits enter existing AI wardrobe input");
+            Check(JsonUtility.ToJson(profile)==saved,"wardrobe pending preview does not save or replace actual appearance");
+            Call("CloseIntroductionQuestionnaire");Call("OpenWardrobe");yield return null;
+            Check(intro.text==original,"opening wardrobe preserves original introduction");
+            Call("CycleAppearance","top",1);Check(JsonUtility.ToJson(profile)==saved,"manual wardrobe cycle is preview only");
+            ScreenCapture.CaptureScreenshot(Path.Combine(output,"wardrobe-r3.png"));yield return new WaitForSecondsRealtime(.3f);
+            Call("CloseWardrobe");Check(intro.text==original,"closing wardrobe preserves original introduction");
+            Call("RefreshSavedCharacterCard",true);Check(Field<ToyActor>("savedCharacterActor")!=null&&Field<ToyActor>("savedCharacterActor").held!=null,"current profile preview renders actual actor and actual Persona asset");
+            Check(Field<ToyActor>("savedCharacterActor").Appearance.expression!=Field<AppearanceData>("appearanceDraft").expression,"saved avatar card does not silently show unsaved mood");
+            var detail=Field<RectTransform>("savedCharacterDetails");detail.gameObject.SetActive(true);yield return null;detail.gameObject.SetActive(false);Check(intro.text==original,"expanded identity card leaves introduction unchanged");
+            intro.text=new string('长',1200);intro.ActivateInputField();yield return null;yield return null;
+            var textScroll=intro.transform.parent.GetComponent<ScrollRect>();Check(textScroll.content.rect.height>textScroll.viewport.rect.height&&intro.text.Length==1200,"half-width long input retains complete 1200 characters with scroll overflow");
+            textScroll.verticalNormalizedPosition=0;yield return null;Check(textScroll.content.anchoredPosition.y>0,"long introduction scroll reaches final lines");
+            intro.DeactivateInputField();intro.text=original;
+            PlayerPrefs.SetInt("reduceMotion",1);var style=Field<Button>("generate").GetComponent<StickerButton>();style.OnPointerClick(new PointerEventData(EventSystem.current));yield return null;Check(style.transform.localScale==Vector3.one,"reduce-motion keeps buttons static");PlayerPrefs.SetInt("reduceMotion",originalReduceMotion);
+            scroll.horizontalNormalizedPosition=1;yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"studio-r3.png"));yield return new WaitForSecondsRealtime(.3f);
+            Call("OpenIntroductionQuestionnaire");GameLocalization.SetEnglish(true);Call("RefreshQuestionnaireOptions");yield return null;
+            var aiAnswers=new bool[54];aiAnswers[52]=aiAnswers[53]=true;var englishAI=GameUI.BuildQuestionnaireIntroduction(aiAnswers);Check(englishAI.Contains("DeepSeek")&&englishAI.Contains("Claude")&&!englishAI.Any(c=>c>='\u4e00'&&c<='\u9fff'),"English AI questionnaire draft stays pure English without recognition codewords");
+            ScreenCapture.CaptureScreenshot(Path.Combine(output,"questionnaire-r3-english.png"));yield return new WaitForSecondsRealtime(.3f);
+            Call("CloseIntroductionQuestionnaire");GameLocalization.SetEnglish(false);
             GameLocalization.SetEnglish(originalEnglish);
         }
     }
