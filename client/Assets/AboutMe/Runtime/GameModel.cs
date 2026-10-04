@@ -743,7 +743,7 @@ namespace AboutMe
                 var original=Players[item.ownerId];
                 Eaten.Add(new EatRecord {eater=p.profile.nickname,owner=original.profile.nickname,persona=item.asset.name,visual=item.asset.visualId,eaterId=p.profile.playerId,ownerId=item.ownerId,assetId=item.asset.assetId,instanceId=item.id});
                 Say(p.profile.nickname+" 吃掉了 "+original.profile.nickname+" 的「"+item.asset.name+"」！");
-                if(Remaining(item.ownerId)==0) { original.eliminated=true;Interrupt(original);ReleaseAllGrabs(original);CancelAction(original);Say(original.profile.nickname+" 失去了全部自我"); }
+                if(Remaining(item.ownerId)==0) { original.eliminated=true;ReleaseBorrowedWord(original);Interrupt(original);ReleaseAllGrabs(original);CancelAction(original);Say(original.profile.nickname+" 失去了全部自我"); }
             }
             item.carrierId="";p.carrying="";p.interaction="";
             if(p.equipped=="")EquipFirst(p);
