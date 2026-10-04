@@ -70,7 +70,7 @@ namespace AboutMe
             ScreenCapture.CaptureScreenshot(Path.Combine(output,"results-last.png"));yield return new WaitForSecondsRealtime(.2f);
 
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);
-            Check(GameUI.IntroductionQuestions.Length==15&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==40,"fifteen questions; original forty catalog choices retained");
+            Check(GameUI.IntroductionQuestions.Length==16&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==40,"sixteen questions; original forty catalog choices retained");
             Check(GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).All(v=>catalog.items.Any(i=>i.visualId==v)),"all choices map to current catalog");
             Check(GameUI.BuildQuestionnaireIntroduction(new bool[40])=="","all questions may be skipped");
             var intro=Field<InputField>("introduction");string original="  我来自这里，喜欢篮球。\n原稿保留！  ";intro.text=original;
@@ -112,7 +112,7 @@ namespace AboutMe
             UnityEngine.Object.Destroy(Field<RectTransform>("generationTermDetail").gameObject);
             Call("ShowPage",MenuPage.Presets);
             intro.text=original;Call("OpenIntroductionQuestionnaire");
-            var others=Field<List<InputField>>("questionnaireOther");Check(others.Count==15,"every question including mood/personality/AI/MBTI/ability has free text");
+            var others=Field<List<InputField>>("questionnaireOther");Check(others.Count==16,"every question including mood/personality/AI/MBTI/ability has free text");
             others[0].text="我喜欢中文输入与长篇故事";others[12].text="不存在模型的自定义AI";
             Call("CreateQuestionnaireDraft");Check(draft.text.Contains(others[0].text)&&draft.text.Contains(others[12].text),"self-written answers appear unchanged in editable draft");
             Check(intro.text==original&&ReferenceEquals(profile,Field<Profile>("profile")),"custom answers do not mutate introduction or Persona");

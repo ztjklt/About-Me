@@ -153,7 +153,7 @@ namespace AboutMe
                     string[] colors={"#77C8BD","#F5C0CF","#FFE08D"};
                     for(int i=0;i<3;i++){var actor=new ToyActor("preview-"+i,colors[i],i,actorRoot);actors["preview-"+i]=actor;actor.root.transform.position=new Vector3((i-1)*3,1,0);}
                 }
-                int index=0;foreach(var a in actors.Values)a.Draw(new PublicPlayer{id="preview",nickname="",color="#77C8BD",remaining=0,position=new Vector3((index++-1)*3,1,0),yaw=180,connected=true,stability=100,appearance=index==1?PreviewAppearance:AppearanceData.Demo(index-1),characterSkin=index==1&&PreviewAppearance.character=="ds"?"ds-girl":"normal",equippedVisual=index==1?"basketball":index==2?"cat":"computer",equippedColor="#FF934F",interaction="",grabbing=""},ViewCamera);
+                int index=0;foreach(var a in actors.Values)a.Draw(new PublicPlayer{id="preview",nickname="",color="#77C8BD",remaining=0,position=new Vector3((index++-1)*3,1,0),yaw=180,connected=true,stability=100,appearance=index==1?PreviewAppearance:AppearanceData.Demo(index-1),characterSkin=index==1?AISkinRegistry.SkinForCharacter(PreviewAppearance.character):"normal",equippedVisual=index==1?"basketball":index==2?"cat":"computer",equippedColor="#FF934F",interaction="",grabbing=""},ViewCamera);
                 return;
             }
             if(ViewCamera&&!ViewCamera.enabled)ViewCamera.enabled=true;
