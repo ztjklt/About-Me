@@ -184,7 +184,7 @@ def main():
             chosen = 'gpt-girl' if index == 0 else 'gemini-girl'
             if profile.get('characterSkin') != chosen or set(profile.get('unlockedCharacterSkins', [])) != published_skins:
                 raise RuntimeError('QA profiles must retain active GPT/Gemini choices and all ten real qualifications')
-            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'appearanceRevision': profile.get('appearanceRevision'), 'characterSkin': profile.get('characterSkin'), 'unlockedCharacterSkins': sorted(profile.get('unlockedCharacterSkins', [])), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in words]}
+            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'appearanceRevision': profile.get('appearanceRevision'), 'characterSkin': profile.get('characterSkin'), 'unlockedCharacterSkins': sorted(profile.get('unlockedCharacterSkins', [])), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in words], 'revealedWords': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in profile.get('personas', [])[:2] if w.get('visualId') == 'trait-word']}
             if env.get('GAME_SERVER_KEY'):
                 public = request(api, '/internal/verify', {'token': token}, key=env['GAME_SERVER_KEY'])
                 if private_keys(public):
@@ -264,8 +264,17 @@ def main():
         expected_assets = {(p['playerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for p in profile_evidence for w in p['words']}
         for report in (a, b):
             seen = {(w['ownerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for w in report['assets']}
-            if any(seen.get(key) != value for key, value in expected_assets.items()):
-                raise RuntimeError('Client did not observe all generated word IDs/fields in reveal')
+            # The production wire contract exposes all of one's own inventory, but only
+            # Items.Take(2) per other owner during Reveal. Remaining opponents' assets
+            # stay private until actually dropped/carried; never require a wider leak.
+            required = {key:value for key,value in expected_assets.items() if key[0] == report['playerId']}
+            for profile in profile_evidence:
+                if profile['playerId'] != report['playerId']:
+                    required.update({(profile['playerId'], w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId']) for w in profile['revealedWords']})
+            if any(seen.get(key) != value for key, value in required.items()):
+                raise RuntimeError('Client is missing own inventory or publicly revealed Take(2) word IDs/fields')
+            if any(expected_assets.get(key) != value for key,value in seen.items()):
+                raise RuntimeError('An actually visible word asset differs from authenticated API fields')
         actual = {(w['ownerId'],w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId']) for w in a['assets']}
         for w in b['assets']:
             key = (w['ownerId'], w['assetId'])
