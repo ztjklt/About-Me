@@ -32,7 +32,7 @@ namespace AboutMe
             viewport.gameObject.AddComponent<RectMask2D>();
             generationResultContent=ArtRect(viewport,"Generation results content",Vector2.zero,new Vector2(566,108));
             generationTermGrid=generationResultContent;
-            generationResultScroll=viewport.gameObject.AddComponent<ScrollRect>();
+            generationResultScroll=viewport.gameObject.AddComponent<PersonaResultScrollRect>();
             generationResultScroll.viewport=viewport;generationResultScroll.content=generationResultContent;
             generationResultScroll.horizontal=true;generationResultScroll.vertical=false;
             generationResultScroll.movementType=ScrollRect.MovementType.Clamped;generationResultScroll.scrollSensitivity=35;
