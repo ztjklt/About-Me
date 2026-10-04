@@ -10,15 +10,24 @@ namespace AboutMe
     [Serializable] class ProbePlayerSkin { public string playerId,characterSkin; }
     [Serializable] class ProbeSkinDefinition { public string skin=""; }
     [Serializable] class ProbeSkinCatalog { public ProbeSkinDefinition[] skins=Array.Empty<ProbeSkinDefinition>(); }
-    [Serializable] class WordProbeAsset { public string assetId,instanceId,ownerId,wordCategory,wordText,abilityId; }
+    [Serializable] class WordProbeAsset { public string assetId,instanceId,ownerId,wordCategory,wordText,abilityId,color; }
     [Serializable] class WordProbeObservation { public string instanceId,ownerId,holderId,state,abilityId;public int ownerRemaining;public float time,cooldown; }
+    [Serializable] class ProbePublicFrame
+    {
+        public string playerId,actionKind,wordCategory,wordText,abilityId,color,instanceId,ownerId;
+        public int serverTick,actionId,remaining;public float time,cooldown;public bool borrowed,modelVerified,heldWordMeshVerified;
+    }
+    [Serializable] class ProbeModelEvidence
+    {
+        public string playerId,characterSkin,resourcePath,meshName;public int vertices,bones,frames,reconnectFrames;public bool verified;
+    }
     [Serializable] class WordProbeReport
     {
         public int protocolVersion,physicalFrames,players,groundWordInstances,borrowCommands,useCommands;
         public bool passed,realApiIdentity,privacyChecked,reconnectRequested,reconnectValidated;
         public string playerId,room,matchId,failure;
         public string[] identities,abilityIds,effectAbilityIds;
-        public WordProbeAsset[] assets;public WordProbeObservation[] observations;public ProbePlayerSkin[] playerSkins,reconnectPlayerSkins;
+        public WordProbeAsset[] assets;public WordProbeObservation[] observations;public ProbePlayerSkin[] playerSkins,reconnectPlayerSkins;public ProbePublicFrame[] publicFrames;public ProbeModelEvidence[] modelInstances;
     }
     // Explicit test client, never substituted for a real person in normal play.
     public class NetworkProbe : MonoBehaviour
@@ -33,6 +42,9 @@ namespace AboutMe
         readonly HashSet<string> wordOwners=new HashSet<string>(),wordEffects=new HashSet<string>(),groundWords=new HashSet<string>();
         readonly Dictionary<string,string> playerSkins=new Dictionary<string,string>(),reconnectSkins=new Dictionary<string,string>();
         HashSet<string> knownSkins;
+        readonly Dictionary<string,ToyActor> probeActors=new Dictionary<string,ToyActor>();
+        readonly Dictionary<string,ProbeModelEvidence> modelEvidence=new Dictionary<string,ProbeModelEvidence>();
+        readonly List<ProbePublicFrame> publicFrames=new List<ProbePublicFrame>();int lastPublicTick=-1;Transform probeActorRoot;
         readonly List<WordProbeObservation> wordObservations=new List<WordProbeObservation>();
         void Start()
         {
@@ -136,7 +148,7 @@ namespace AboutMe
                 var d=PartyMechanicRegistry.ForAsset(item.asset);
                 if(d==null||d.id!=item.asset.abilityId||item.asset.mechanicId!=d.id||string.IsNullOrEmpty(item.asset.wordText)||string.IsNullOrEmpty(item.asset.assetId))return false;
                 wordOwners.Add(item.ownerId);
-                wordAssets[item.id]=new WordProbeAsset{assetId=item.asset.assetId,instanceId=item.id,ownerId=item.ownerId,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=d.id};
+                wordAssets[item.id]=new WordProbeAsset{assetId=item.asset.assetId,instanceId=item.id,ownerId=item.ownerId,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=d.id,color=item.asset.color};
                 if(item.state==ItemState.Ground)groundWords.Add(item.id);
                 string state=item.state+":"+item.carrierId;
                 if(!wordStates.TryGetValue(item.id,out var previous)||previous!=state){
@@ -150,8 +162,47 @@ namespace AboutMe
                 if(PartyMechanicRegistry.Find(e.mechanicId)==null||e.mechanicId!=e.abilityId||string.IsNullOrEmpty(e.sourceInstance))return false;
                 wordEffects.Add(e.mechanicId);
             }
+            return ObservePublicModels(s);
+        }
+        bool ObservePublicModels(Snapshot s)
+        {
+            if(s.serverTick==lastPublicTick)return true;lastPublicTick=s.serverTick;
+            if(!probeActorRoot)probeActorRoot=new GameObject("Word probe actual public ToyActors").transform;
+            foreach(var p in s.players.Where(p=>!p.eliminated)){
+                if(!probeActors.TryGetValue(p.id,out var actor)){actor=new ToyActor("word-probe-"+p.id,p.color,p.outfit,probeActorRoot,p.appearance);probeActors.Add(p.id,actor);}
+                actor.DrawAt(p,null,.02f,UnityEngine.Time.unscaledTime,s.simulationTime);
+                bool modelVerified=actor.Appearance?.character==AISkinRegistry.CharacterForSkin(p.characterSkin);
+                if(!modelEvidence.TryGetValue(p.id,out var proof)){proof=new ProbeModelEvidence{playerId=p.id,characterSkin=p.characterSkin};modelEvidence.Add(p.id,proof);}
+                if(p.characterSkin!="normal"){
+                    var definition=AISkinRegistry.All.FirstOrDefault(d=>d.skin==p.characterSkin);
+                    if(definition==null)return false;
+                    proof.resourcePath="CampusDoll/"+definition.english.Replace(" ","")+"Modular";
+                    var source=Resources.Load<GameObject>(proof.resourcePath);if(!source)return false;
+                    var sourceMeshes=source.GetComponentsInChildren<SkinnedMeshRenderer>(true).Where(r=>r.sharedMesh).Select(r=>r.sharedMesh).ToArray();
+                    var actual=actor.root.GetComponentsInChildren<SkinnedMeshRenderer>(true).FirstOrDefault(r=>r.sharedMesh&&sourceMeshes.Contains(r.sharedMesh)&&r.enabled&&r.gameObject.activeInHierarchy&&r.rootBone==actor.pelvis);
+                    modelVerified&=actual&&actual.sharedMesh.vertexCount>0&&actual.bones.Length>0&&actual.bones.All(b=>b&&b.IsChildOf(actor.root.transform));
+                    if(actual){proof.meshName=actual.sharedMesh.name;proof.vertices=actual.sharedMesh.vertexCount;proof.bones=actual.bones.Length;}
+                }
+                if(!modelVerified)return false;
+                proof.verified=true;proof.frames++;if(reconnected&&!reconnecting)proof.reconnectFrames++;
+                var equipped=s.inventory.FirstOrDefault(i=>i.state==ItemState.Equipped&&(i.ownerId==p.id&&string.IsNullOrEmpty(i.carrierId)||i.carrierId==p.id));
+                bool heldVerified=p.equippedVisual!=TraitAbilityCatalog.VisualId;
+                if(p.equippedVisual==TraitAbilityCatalog.VisualId){
+                    if(!ColorUtility.TryParseHtmlString(p.equippedColor,out var color))return false;
+                    var metadata=actor.held?actor.held.GetComponent<ThickWordMetadata>():null;
+                    var mesh=actor.held?actor.held.GetComponent<MeshFilter>():null;
+                    var renderer=actor.held?actor.held.GetComponent<MeshRenderer>():null;
+                    heldVerified=metadata&&metadata.Text==p.equippedWordText&&metadata.AbilityId==p.equippedAbilityId&&mesh&&mesh.sharedMesh&&mesh.sharedMesh.vertexCount>0&&mesh.sharedMesh.bounds.size.z>=ThickWordVisual.Depth*.9f&&renderer&&renderer.sharedMaterial&&Vector4.Distance(renderer.sharedMaterial.color,color)<.01f;
+                    if(!heldVerified)return false;
+                }
+                // Public observations only: no opponent inventory or private profile/source is copied into this trace.
+                publicFrames.Add(new ProbePublicFrame{playerId=p.id,serverTick=s.serverTick,time=s.time,actionId=p.actionId,actionKind=p.actionKind,remaining=p.remaining,
+                    wordCategory=p.equippedWordCategory,wordText=p.equippedWordText,abilityId=p.equippedAbilityId,color=p.equippedColor,cooldown=p.mechanicCooldown,
+                    instanceId=equipped?.id??"",ownerId=equipped?.ownerId??"",borrowed=equipped!=null&&equipped.ownerId!=p.id,modelVerified=modelVerified,heldWordMeshVerified=heldVerified});
+            }
             return true;
         }
+        void OnDestroy(){if(probeActorRoot)Destroy(probeActorRoot.gameObject);}
         void DriveWords(Snapshot s,PublicPlayer me,float now)
         {
             if(me.eliminated){net.Send();return;}
@@ -183,7 +234,7 @@ namespace AboutMe
             if(string.IsNullOrEmpty(wordOutput))return;
             var r=new WordProbeReport{passed=passed,failure=failure,protocolVersion=s.protocolVersion,physicalFrames=physicalFrames,players=s.players.Length,playerId=s.you,room=s.room,matchId=s.matchId,
                 realApiIdentity=!net.Sample,privacyChecked=privacyChecked,reconnectRequested=reconnectRequested,reconnectValidated=reconnectValidated,useCommands=wordUseCommands,borrowCommands=wordBorrowCommands,
-                groundWordInstances=groundWords.Count,identities=s.players.Select(p=>p.id).ToArray(),assets=wordAssets.Values.OrderBy(a=>a.instanceId).ToArray(),abilityIds=wordAssets.Values.Select(a=>a.abilityId).Distinct().OrderBy(x=>x).ToArray(),effectAbilityIds=wordEffects.OrderBy(x=>x).ToArray(),observations=wordObservations.ToArray(),playerSkins=playerSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray(),reconnectPlayerSkins=reconnectSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray()};
+                groundWordInstances=groundWords.Count,identities=s.players.Select(p=>p.id).ToArray(),assets=wordAssets.Values.OrderBy(a=>a.instanceId).ToArray(),abilityIds=wordAssets.Values.Select(a=>a.abilityId).Distinct().OrderBy(x=>x).ToArray(),effectAbilityIds=wordEffects.OrderBy(x=>x).ToArray(),observations=wordObservations.ToArray(),playerSkins=playerSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray(),publicFrames=publicFrames.ToArray(),modelInstances=modelEvidence.Values.ToArray(),reconnectPlayerSkins=reconnectSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray()};
             File.WriteAllText(wordOutput,JsonUtility.ToJson(r,true));
         }
     }

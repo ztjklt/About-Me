@@ -146,7 +146,7 @@ def main():
                     raise RuntimeError('AI preference must not automatically select a character skin')
                 texts = ['热情', '温柔', '专注', '理性', '好奇', '活力'] if index == 0 else ['温柔', '热情', '专注', '理性', '好奇', '活力']
                 source_intro = '。'.join('我的性格是' + text for text in texts) + '。' + preference
-                baseline_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in profile.get('personas', []) if w.get('visualId') == 'trait-word']
+                baseline_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId', 'color')} for w in profile.get('personas', []) if w.get('visualId') == 'trait-word']
                 # First save only the explicitly self-stated preferences. Qualification must leave the normal face selected.
                 qualified = request(api, '/profiles/me/appearance', {'appearance': profile.get('appearance') or {},
                     'expectedRevision': profile['appearanceRevision'], 'introduction': source_intro}, token=token)
@@ -157,7 +157,7 @@ def main():
                 request(api, '/profiles/me/appearance', {'appearance': qualified.get('appearance') or {},
                     'expectedRevision': qualified['appearanceRevision'], 'introduction': source_intro, 'characterSkin': chosen}, token=token)
                 saved = request(api, '/profiles/me', token=token)
-                saved_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in saved.get('personas', []) if w.get('visualId') == 'trait-word']
+                saved_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId', 'color')} for w in saved.get('personas', []) if w.get('visualId') == 'trait-word']
                 if saved.get('characterSkin') != chosen or set(saved.get('unlockedCharacterSkins', [])) != published_skins or saved['appearanceRevision'] <= qualified['appearanceRevision'] or saved_words != baseline_words:
                     raise RuntimeError('Active AI skin selection was not saved with qualifications and original word assets')
                 profiles[index] = saved
@@ -184,7 +184,7 @@ def main():
             chosen = 'gpt-girl' if index == 0 else 'gemini-girl'
             if profile.get('characterSkin') != chosen or set(profile.get('unlockedCharacterSkins', [])) != published_skins:
                 raise RuntimeError('QA profiles must retain active GPT/Gemini choices and all ten real qualifications')
-            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'appearanceRevision': profile.get('appearanceRevision'), 'characterSkin': profile.get('characterSkin'), 'unlockedCharacterSkins': sorted(profile.get('unlockedCharacterSkins', [])), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in words], 'revealedWords': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in profile.get('personas', [])[:2] if w.get('visualId') == 'trait-word']}
+            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'appearanceRevision': profile.get('appearanceRevision'), 'characterSkin': profile.get('characterSkin'), 'unlockedCharacterSkins': sorted(profile.get('unlockedCharacterSkins', [])), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId', 'color')} for w in words], 'revealedWords': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId', 'color')} for w in profile.get('personas', [])[:2] if w.get('visualId') == 'trait-word']}
             if env.get('GAME_SERVER_KEY'):
                 public = request(api, '/internal/verify', {'token': token}, key=env['GAME_SERVER_KEY'])
                 if private_keys(public):
@@ -261,25 +261,69 @@ def main():
                 raise RuntimeError('Public client AI skins do not match explicitly saved API choices')
         if {p['playerId']: p['characterSkin'] for p in a.get('reconnectPlayerSkins', [])} != expected_skins:
             raise RuntimeError('Reconnect did not retain both verified AI skin choices')
-        expected_assets = {(p['playerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for p in profile_evidence for w in p['words']}
+        expected_assets = {(p['playerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId'], w['color']) for p in profile_evidence for w in p['words']}
         for report in (a, b):
-            seen = {(w['ownerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for w in report['assets']}
+            seen = {(w['ownerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId'], w['color']) for w in report['assets']}
             # The production wire contract exposes all of one's own inventory, but only
             # Items.Take(2) per other owner during Reveal. Remaining opponents' assets
             # stay private until actually dropped/carried; never require a wider leak.
             required = {key:value for key,value in expected_assets.items() if key[0] == report['playerId']}
             for profile in profile_evidence:
                 if profile['playerId'] != report['playerId']:
-                    required.update({(profile['playerId'], w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId']) for w in profile['revealedWords']})
+                    required.update({(profile['playerId'], w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId'],w['color']) for w in profile['revealedWords']})
             if any(seen.get(key) != value for key, value in required.items()):
                 raise RuntimeError('Client is missing own inventory or publicly revealed Take(2) word IDs/fields')
             if any(expected_assets.get(key) != value for key,value in seen.items()):
                 raise RuntimeError('An actually visible word asset differs from authenticated API fields')
-        actual = {(w['ownerId'],w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId']) for w in a['assets']}
+        actual = {(w['ownerId'],w['assetId']): (w['wordCategory'],w['wordText'],w['abilityId'],w['color']) for w in a['assets']}
         for w in b['assets']:
             key = (w['ownerId'], w['assetId'])
-            if key in actual and actual[key] != (w['wordCategory'],w['wordText'],w['abilityId']):
+            if key in actual and actual[key] != (w['wordCategory'],w['wordText'],w['abilityId'],w['color']):
                 raise RuntimeError('Client word asset fields disagree')
+        expected_public_words = {(w['wordCategory'],w['wordText'],w['abilityId'],w['color']) for p in profile_evidence for w in p['words']}
+        for report in (a, b):
+            frames = report.get('publicFrames', [])
+            models = report.get('modelInstances', [])
+            if {m['playerId']:m['characterSkin'] for m in models if m.get('verified') and m.get('vertices', 0) > 0 and m.get('bones', 0) > 0} != expected_skins:
+                raise RuntimeError('Missing actual peer ToyActor resource mesh/bone binding instances')
+            if report['reconnectRequested'] and not all(m.get('reconnectFrames', 0) > 0 for m in models):
+                raise RuntimeError('Real model instances not verified after reconnect')
+            if not frames or not all(f.get('modelVerified') and f.get('heldWordMeshVerified') for f in frames):
+                raise RuntimeError('Model/held physical word instance verification failed')
+            if not any(f.get('actionId', 0) > 0 and f.get('actionKind') != 'idle' for f in frames):
+                raise RuntimeError('No actual public action observed')
+            if any(f.get('wordText') and (f['wordCategory'],f['wordText'],f['abilityId'],f['color']) not in expected_public_words for f in frames):
+                raise RuntimeError('Public equipped text/ability/color differs from authenticated word assets')
+        public_keys = ('actionId','actionKind','remaining','wordCategory','wordText','abilityId','color','cooldown','time')
+        public_a = {(f['serverTick'], f['playerId']): f for f in a['publicFrames']}
+        public_b = {(f['serverTick'], f['playerId']): f for f in b['publicFrames']}
+        common = public_a.keys() & public_b.keys()
+        if not common:
+            raise RuntimeError('No shared public server ticks observed by both clients')
+        if any(any(public_a[key].get(field) != public_b[key].get(field) for field in public_keys) for key in common):
+            raise RuntimeError('Peer equipped words/colors/actions/remaining/cooldown disagree at identical server ticks')
+        result['matchingPublicFramePairs'] = len(common)
+        result['modelInstanceScope'] = 'Headless genuine ToyActor imported Resource meshes and bone bindings driven by public snapshots; not pixel rendering'
+        result['publicActions'] = sorted({f['actionKind'] for report in (a, b) for f in report['publicFrames']})
+        borrowed_checks = []
+        all_frames = [f for report in (a, b) for f in report['publicFrames']]
+        for report in (a, b):
+            for observation in report['observations']:
+                if not observation.get('holderId') or observation['holderId'] == observation['ownerId']:
+                    continue
+                prior = [f for f in all_frames if f['playerId'] == observation['ownerId'] and f['instanceId'] == observation['instanceId'] and f['time'] <= observation['time'] and f['cooldown'] > 0]
+                if not prior:
+                    continue
+                before = max(prior, key=lambda f:f['time'])
+                if before['remaining'] != observation['ownerRemaining']:
+                    raise RuntimeError('Observed borrowing changed owner remaining count')
+                # Compare expiry times rather than requiring identical samples at different wire ticks.
+                expiry_difference = abs(before['time'] + before['cooldown'] - observation['time'] - observation['cooldown'])
+                if observation['cooldown'] <= 0 or expiry_difference > .4:
+                    raise RuntimeError('Observed positive instance cooldown was reset across holder transfer')
+                borrowed_checks.append({'instanceId': observation['instanceId'], 'ownerId': observation['ownerId'],
+                    'holderId': observation['holderId'], 'ownerRemaining': observation['ownerRemaining'], 'remainingCooldown': observation['cooldown'], 'expiryDifference': expiry_difference})
+        result['borrowCooldownChecks'] = borrowed_checks
         result['observedEffectAbilities'] = sorted(set(a['effectAbilityIds']) | set(b['effectAbilityIds']))
         if not {'flame-fan', 'bubble-lift'} <= set(result['observedEffectAbilities']):
             raise RuntimeError('Missing formal flame/bubble effects from authenticated word instances')
