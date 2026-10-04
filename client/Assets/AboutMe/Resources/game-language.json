@@ -5739,6 +5739,10 @@
     {
       "zh": "请在真实角色衣橱保存AI 角色选择，再载入练习道具。",
       "en": "Please save the AI character selection in the real character wardrobe, then load practice props."
+    },
+    {
+      "zh": "我喜欢",
+      "en": "I like "
     }
   ]
 }
