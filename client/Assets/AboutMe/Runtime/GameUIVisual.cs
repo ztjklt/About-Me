@@ -108,7 +108,7 @@ namespace AboutMe
             nickname=ArtField(studioCard,30,195,268,50,"你的名字",false);nickname.text=PlayerPrefs.GetString("nickname","玩家");
             room=ArtField(studioCard,314,195,306,50,"房间码 · 留空创建",false);
             ArtText(studioCard,"自我介绍",30,257,200,25,15,UITheme.Muted,FontStyle.Bold);introCounter=ArtText(studioCard,"0 / 1200",450,257,170,25,14,UITheme.Muted,FontStyle.Bold,TextAnchor.UpperRight);
-            ArtButton(studioCard,"选择题模式",236,255,174,26,OpenIntroductionQuestionnaire,UITheme.Yellow,UITheme.Ink);
+            ArtButton(studioCard,"选择题模式",236,253,174,28,OpenIntroductionQuestionnaire,UITheme.Yellow,UITheme.Ink);
             introduction=ArtField(studioCard,30,284,590,128,"我来自哪里、喜欢什么、有什么特别经历……",true);introduction.text=PlayerPrefs.GetString("introduction","");
             introduction.characterLimit=1200;introduction.onValueChanged.AddListener(value=>introCounter.text=value.Length+" / 1200");introCounter.text=introduction.text.Length+" / 1200";
             StepBadge(studioCard,"2",30,428,UITheme.Pink);ArtText(studioCard,"设计人物外观（不影响 Persona）",70,429,350,34,18,UITheme.Ink,FontStyle.Bold);
