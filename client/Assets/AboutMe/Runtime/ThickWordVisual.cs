@@ -93,10 +93,10 @@ namespace AboutMe
                 model=new GameObject("Thick word · "+text);model.transform.SetParent(parent,false);
                 model.AddComponent<MeshFilter>().sharedMesh=word.mesh;
                 model.AddComponent<MeshRenderer>().sharedMaterial=ToyFactory.Material(color);
-                var collider=model.AddComponent<BoxCollider>();collider.center=word.mesh.bounds.center;collider.size=word.mesh.bounds.size;
+                var collider=model.AddComponent<BoxCollider>();collider.center=word.mesh.bounds.center;collider.size=word.mesh.bounds.size;collider.isTrigger=true;
                 var grip=new GameObject("Grip");grip.transform.SetParent(model.transform,false);
                 var meta=model.AddComponent<ThickWordMetadata>();meta.Text=text;meta.AbilityId=abilityId??"";
-                var visual=model.AddComponent<PersonaVisualMeta>();visual.visualId="trait-word";visual.source="AboutMeFont.otf genuine CFF glyph outlines";visual.license="Bundled font license retained in source distribution";visual.colliderRadius=word.mesh.bounds.extents.magnitude;visual.swallowScale=.6f;
+                var visual=model.AddComponent<PersonaVisualMeta>();visual.visualId="trait-word";visual.source="AboutMeFont.otf genuine CFF glyph outlines";visual.license="OFL-1.1; bundled Noto Sans CJK SC notices";visual.colliderRadius=word.mesh.bounds.extents.magnitude;visual.swallowScale=.6f;
                 model.AddComponent<ThickWordMeshLease>().Key=text;
                 TrimWords();reason="";return true;
             }
