@@ -1,9 +1,9 @@
 {
     "environment": "2022.3.62t11 / macOS Editor batchmode",
-    "utc": "2026-10-04T18:42:18.4459660Z",
+    "utc": "2026-10-04T19:06:35.7507030Z",
     "scope": "Production Match commands and 50 Hz ticks; deterministic explicit profiles, flat geometric campus fixture. Not real AI, network transport, rendered mesh, human play, six-player performance or mobile acceptance.",
-    "runtimeSnapshot": "bcacfebf8d76d7263131137f14b97015189e68524bec8f1c53df9e0066851d3f",
-    "passed": 17,
+    "runtimeSnapshot": "f9ce337379264e3550305a9360d3a384547d5345d9d05be3860868bba818cb1a",
+    "passed": 18,
     "failed": 0,
     "cases": [
         {
@@ -78,6 +78,11 @@
         },
         {
             "name": "release, inventory equip and disconnect terminate holder flame",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "borrower elimination returns borrowed word for original recovery",
             "status": "passed",
             "actual": "production Match assertions passed"
         },
