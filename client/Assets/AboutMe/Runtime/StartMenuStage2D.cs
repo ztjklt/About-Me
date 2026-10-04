@@ -79,15 +79,12 @@ namespace AboutMe
         public void ApplyLanguage()
         {
             if(buttons==null)return;
-            string[] chinese={"单人游戏","多人游戏","自我介绍预设","设置"};
-            for(int i=0;i<buttons.Length;i++)
+            // Opening artwork stays English in both interface languages.
+            foreach(var button in buttons)
             {
-                var style=buttons[i].GetComponent<StickerButton>();if(!style)continue;
-                style.BaseColor=GameLocalization.English?Color.white:Color.clear;style.SetState(UIVisualState.Normal);
-                var label=style.Label;label.gameObject.SetActive(!GameLocalization.English);label.text=chinese[i];
-                label.color=UITheme.Yellow;label.fontSize=42;label.resizeTextMaxSize=42;label.resizeTextMinSize=30;
-                label.rectTransform.anchorMin=Vector2.zero;label.rectTransform.anchorMax=Vector2.one;label.rectTransform.offsetMin=Vector2.zero;label.rectTransform.offsetMax=Vector2.zero;
-                if(!label.GetComponent<Outline>()){var outline=label.gameObject.AddComponent<Outline>();outline.effectColor=UITheme.Ink;outline.effectDistance=new Vector2(3,-3);}
+                var style=button.GetComponent<StickerButton>();if(!style)continue;
+                style.BaseColor=Color.white;style.SetState(UIVisualState.Normal);
+                if(style.Label)style.Label.gameObject.SetActive(false);
             }
         }
 

@@ -172,7 +172,7 @@ namespace AboutMe
     {
         float time;
         public void Play(){if(PlayerPrefs.GetInt("reduceMotion",0)==1)return;time=.42f;transform.localScale=Vector3.one*.88f;}
-        void Update(){if(time<=0)return;time-=Time.unscaledDeltaTime;float t=1-Mathf.Clamp01(time/.42f);transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.09f);if(time<=0)transform.localScale=Vector3.one;}
+        void Update(){if(PlayerPrefs.GetInt("reduceMotion",0)==1){time=0;transform.localScale=Vector3.one;return;}if(time<=0)return;time-=Time.unscaledDeltaTime;float t=1-Mathf.Clamp01(time/.42f);transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.09f);if(time<=0)transform.localScale=Vector3.one;}
     }
 
     public class UISafeArtboard : MonoBehaviour

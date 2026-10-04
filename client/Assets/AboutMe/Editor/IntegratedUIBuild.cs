@@ -5,6 +5,15 @@ namespace AboutMe.Editor
 {
     public static class IntegratedUIBuild
     {
+        public static void Web()
+        {
+            var build=BuildPipeline.BuildPlayer(new BuildPlayerOptions{
+                scenes=Array.ConvertAll(EditorBuildSettings.scenes,s=>s.path),
+                locationPathName=Environment.GetEnvironmentVariable("ABOUTME_WEB_OUTPUT"),
+                target=BuildTarget.WebGL,
+                options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
+            if(build.summary.result!=BuildResult.Succeeded)throw new Exception("Integrated UI Web build failed");
+        }
         public static void Mac()
         {
             // The copied delivery snapshot already contains generated, validated scenes.

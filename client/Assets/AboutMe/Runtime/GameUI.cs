@@ -361,6 +361,11 @@ namespace AboutMe
             for(int i=0;i<4;i++)if(down?Input.GetKeyDown(directionKeys[i]):Input.GetKey(directionKeys[i]))mask|=1<<i;
             return mask;
         }
+        void ApplyCameraLook(Vector2 delta,Vector2 gain)
+        {
+            world.CameraYaw+=delta.x*gain.x*cameraSensitivity;
+            world.CameraPitch=Mathf.Clamp(world.CameraPitch-delta.y*gain.y*cameraSensitivity,10,65);
+        }
         void UpdateBattleCamera(bool allowed)
         {
             bool desktop=!(touch&&touch.gameObject.activeSelf);
@@ -395,8 +400,7 @@ namespace AboutMe
                     if(webDragCamera&&Input.GetMouseButton(1))
                     {
                         var delta=Input.mousePosition-webDragPosition;webDragPosition=Input.mousePosition;
-                        world.CameraYaw+=delta.x*.22f*cameraSensitivity;
-                        world.CameraPitch=Mathf.Clamp(world.CameraPitch-delta.y*.18f*cameraSensitivity,10,65);
+                        ApplyCameraLook(delta,new Vector2(.22f,.18f));
                     }
                     return;
                 }
@@ -407,8 +411,7 @@ namespace AboutMe
                 Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;skipMouseFrame=true;
             }
             if(skipMouseFrame){skipMouseFrame=false;return;}
-            world.CameraYaw+=Input.GetAxis("Mouse X")*3*cameraSensitivity;
-            world.CameraPitch=Mathf.Clamp(world.CameraPitch-Input.GetAxis("Mouse Y")*2*cameraSensitivity,10,65);
+            ApplyCameraLook(new Vector2(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y")),new Vector2(3,2));
         }
         void Update()
         {

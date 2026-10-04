@@ -69,7 +69,7 @@ namespace AboutMe
                 var p=particles[i];float age=clock-p.born;if(age>=p.life){p.t.gameObject.SetActive(false);pool.Enqueue(p.t.gameObject);particles.RemoveAt(i);continue;}
                 p.t.position=p.origin+p.velocity*age+Vector3.down*age*age;p.t.localScale=p.scale*(1-age/p.life);p.t.Rotate(Vector3.one,Time.unscaledDeltaTime*220);
             }
-            if(camera&&clock<shakeEnd)camera.transform.position+=camera.transform.right*Mathf.Sin(clock*110)*shake*(shakeEnd-clock)/.16f;
+            if(camera&&clock<shakeEnd&&ShakeStrength>0)camera.transform.position+=camera.transform.right*Mathf.Sin(clock*110)*shake*(shakeEnd-clock)/.16f;
         }
     }
 }

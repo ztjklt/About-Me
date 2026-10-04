@@ -265,7 +265,7 @@ namespace AboutMe
             var pad=ArtPanel(touch,"Move joystick",54,592,224,224,new Color(1,1,1,.52f),true,true);movePad=pad.gameObject.AddComponent<TouchPad>();
             movePad.Knob=ArtPanel(pad,"Joystick center",66,66,92,92,new Color(UITheme.Mint.r,UITheme.Mint.g,UITheme.Mint.b,.78f),true,false);
             ArtText(pad,"移动",68,174,88,27,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
-            var look=ArtPanel(touch,"Camera zone",360,196,1200,330,new Color(1,1,1,.01f),false,false);look.GetComponent<Image>().raycastTarget=true;var lookPad=look.gameObject.AddComponent<TouchPad>();lookPad.CameraPad=true;lookPad.OnLook=d=>{world.CameraYaw+=d.x*.12f*cameraSensitivity;world.CameraPitch=Mathf.Clamp(world.CameraPitch-d.y*.1f*cameraSensitivity,10,65);};
+            var look=ArtPanel(touch,"Camera zone",360,196,1200,330,new Color(1,1,1,.01f),false,false);look.GetComponent<Image>().raycastTarget=true;var lookPad=look.gameObject.AddComponent<TouchPad>();lookPad.CameraPad=true;lookPad.OnLook=d=>ApplyCameraLook(d,new Vector2(.12f,.1f));
             ArtButton(touch,"使用",1270,556,118,76,()=>Send("use_item"),UITheme.Yellow,UITheme.Ink,"attack");
             ArtButton(touch,"跳跃",1402,556,118,76,()=>Send("jump"),UITheme.Purple,UITheme.Ink,"jump");
             ArtButton(touch,"抓人",1138,648,118,76,()=>Send("grab"),UITheme.Mint,UITheme.Ink,"grab");
@@ -483,6 +483,7 @@ namespace AboutMe
         IEnumerator CaptureUIPreview(string path)
         {
             yield return new WaitForSecondsRealtime(.8f);
+            while(settingsAuditRunning)yield return null;
             yield return new WaitForEndOfFrame();yield return new WaitForEndOfFrame();
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
             ScreenCapture.CaptureScreenshot(path);
