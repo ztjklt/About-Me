@@ -424,6 +424,8 @@ namespace AboutMe
         {
             if(net==null)return;
             if(traitLab&&traitLab.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))CloseTraitLab();return;}
+            if(introductionQuestionnaire&&introductionQuestionnaire.gameObject.activeSelf)
+            {ApplyAdaptiveLayout();if(Input.GetKeyDown(KeyCode.Escape))CloseIntroductionQuestionnaire();return;}
             generate.interactable=!busy;join.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
             var state=net.State;
             UpdateSelectionBackground(state);
