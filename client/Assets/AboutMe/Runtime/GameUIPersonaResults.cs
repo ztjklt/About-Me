@@ -15,6 +15,8 @@ namespace AboutMe
     public partial class GameUI
     {
         RectTransform generationResultContent,generationTermGrid;
+        ScrollRect generationResultScroll;
+        Text generationScrollHint;
         Coroutine generationPoll;
         string activeGenerationId;
         GenerationTerm[] displayedGenerationTerms=Array.Empty<GenerationTerm>();
@@ -23,12 +25,24 @@ namespace AboutMe
 
         void BuildPersonaResults(RectTransform card)
         {
-            card.gameObject.AddComponent<RectMask2D>();
-            generationResultContent=ArtRect(card,"Generation results content",new Vector2(12,-6),new Vector2(566,100));
-            profileText=ArtText(generationResultContent,"生成后，关键词会在这里显示结果。",0,0,554,22,15,UITheme.Muted,FontStyle.Bold);
-            generationTermGrid=ArtRect(generationResultContent,"Extracted keyword cards",new Vector2(0,-29),new Vector2(554,0));
-            var scroll=card.gameObject.AddComponent<ScrollRect>();scroll.viewport=card;scroll.content=generationResultContent;
-            scroll.horizontal=false;scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=24;
+            profileText=ArtText(card,"生成后，关键词会在这里显示结果。",12,6,370,22,15,UITheme.Muted,FontStyle.Bold);
+            generationScrollHint=ArtText(card,"左右拖动 / 滚轮查看更多",386,8,192,20,12,UITheme.Muted,FontStyle.Normal,TextAnchor.UpperRight);
+            var viewport=ArtRect(card,"Generation results viewport",new Vector2(12,-32),new Vector2(566,108));
+            var surface=viewport.gameObject.AddComponent<Image>();surface.color=Color.clear;surface.raycastTarget=true;
+            viewport.gameObject.AddComponent<RectMask2D>();
+            generationResultContent=ArtRect(viewport,"Generation results content",Vector2.zero,new Vector2(566,108));
+            generationTermGrid=generationResultContent;
+            generationResultScroll=viewport.gameObject.AddComponent<ScrollRect>();
+            generationResultScroll.viewport=viewport;generationResultScroll.content=generationResultContent;
+            generationResultScroll.horizontal=true;generationResultScroll.vertical=false;
+            generationResultScroll.movementType=ScrollRect.MovementType.Clamped;generationResultScroll.scrollSensitivity=35;
+            var track=ArtPanel(card,"Generation results scrollbar",12,142,566,6,new Color(0,0,0,.12f),false,false);
+            var handle=ArtPanel(track,"Scrollbar handle",0,0,566,6,UITheme.Muted,false,false);
+            handle.sizeDelta=Vector2.zero;handle.anchoredPosition=Vector2.zero;
+            var scrollbar=track.gameObject.AddComponent<Scrollbar>();scrollbar.handleRect=handle;
+            scrollbar.targetGraphic=handle.GetComponent<Image>();scrollbar.direction=Scrollbar.Direction.LeftToRight;
+            generationResultScroll.horizontalScrollbar=scrollbar;
+            generationResultScroll.horizontalScrollbarVisibility=ScrollRect.ScrollbarVisibility.AutoHide;
         }
 
         void DisplayGenerationTerms(GenerationTerm[] terms,string phase="complete")
@@ -36,6 +50,7 @@ namespace AboutMe
             if(!generationTermGrid)return;
             foreach(Transform child in generationTermGrid)Destroy(child.gameObject);
             terms=terms??Array.Empty<GenerationTerm>();
+            bool changed=!displayedGenerationTerms.Select(t=>t.term).SequenceEqual(terms.Select(t=>t.term));
             displayedGenerationTerms=terms;
             int ready=terms.Count(x=>x.status=="ready"),failed=terms.Count(x=>x.status=="failed");
             profileText.text=phase=="extracting"?"正在提取学校、兴趣和经历…":
@@ -44,7 +59,7 @@ namespace AboutMe
             int i=0;
             foreach(var term in terms)
             {
-                var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i%2)*282,(i/2)*57,272,50,GenerationTermColor(term.status),true,false);
+                var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i/2)*282,(i%2)*57,272,50,GenerationTermColor(term.status),true,false);
                 bool university=term.kind=="university";
                 var title=ArtText(card,term.term,10,2,university?207:252,22,17,Color.white,FontStyle.Bold);
                 title.horizontalOverflow=HorizontalWrapMode.Wrap;title.resizeTextForBestFit=true;title.resizeTextMinSize=13;title.resizeTextMaxSize=17;
@@ -62,10 +77,10 @@ namespace AboutMe
                 }
                 i++;
             }
-            int height=((terms.Length+1)/2)*57;
-            generationTermGrid.sizeDelta=new Vector2(554,height);
-            generationResultContent.sizeDelta=new Vector2(566,Mathf.Max(100,35+height));
+            generationResultContent.sizeDelta=new Vector2(Mathf.Max(566,((terms.Length+1)/2)*282-10),108);
+            generationScrollHint.gameObject.SetActive(terms.Length>4);
             Canvas.ForceUpdateCanvases();
+            if(changed){generationResultScroll.StopMovement();generationResultScroll.horizontalNormalizedPosition=0;}
         }
 
         GenerationTerm[] ProfileGenerationTerms()
