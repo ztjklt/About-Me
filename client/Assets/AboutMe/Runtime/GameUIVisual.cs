@@ -132,31 +132,46 @@ namespace AboutMe
 
         void BuildSettings()
         {
-            settings=ArtPanel(artboard,"Settings modal",0,0,1600,900,Color.clear,false,false);Stretch(settings);settings.GetComponent<Image>().raycastTarget=true;
-            var card=ArtPanel(settings,"Connection settings card",438,154,724,592,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
-            Tape(card,"CONNECTION KIT",32,26,204,38,UITheme.Purple);
-            ArtText(card,"连接与服务",32,74,560,49,33,UITheme.Ink,FontStyle.Bold);
-            ArtButton(card,"关闭",630,28,60,42,()=>{optionsOpen=false;settings.gameObject.SetActive(false);},UITheme.Field,UITheme.Ink,"exit");
-            ArtText(card,"游戏服务器 WebSocket 地址",32,142,630,26,16,UITheme.Muted,FontStyle.Bold);
-            endpoint=ArtField(card,32,174,660,54,"wss://game.example.com",false);endpoint.text=PlayerPrefs.GetString("endpoint",net.Endpoint);
-            ArtText(card,"AI / 角色服务地址",32,250,630,26,16,UITheme.Muted,FontStyle.Bold);
-            api=ArtField(card,32,282,660,54,"https://api.example.com",false);api.text=PlayerPrefs.GetString("api",net.ApiUrl);
-            var note=ArtPanel(card,"Secret note",32,360,660,58,UITheme.Yellow,true,false);
-            ArtIcon(note,"status",18,10,38,UITheme.Ink);ArtText(note,"密钥仅保存在服务端",68,3,570,48,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
-            ArtButton(card,"保存设置",32,468,316,58,SaveConnectionSettings,UITheme.Mint,UITheme.Ink,"ready");
-            Place(card,438,54,724,790);
-            foreach(var button in card.GetComponentsInChildren<Button>())if(button.name=="Button · 保存设置")Place((RectTransform)button.transform,32,698,224,58);
-            var sensitivity=ArtButton(card,"",32,460,256,54,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
-            var touchButton=ArtButton(card,"",32,534,256,54,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();RefreshSettingLabels();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
-            var music=ArtButton(card,"",370,534,322,54,()=>{float volume=BattleMusic.SavedVolume;PlayerPrefs.SetFloat("battleMusicVolume",volume<.05f?.16f:volume<.22f?.30f:volume<.4f?.50f:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);musicSettingLabel=music.GetComponentInChildren<Text>();
-            var motion=ArtButton(card,"",32,608,322,54,()=>{reduceMotion=!reduceMotion;PlayerPrefs.SetInt("reduceMotion",reduceMotion?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);motionSettingLabel=motion.GetComponentInChildren<Text>();
-            var shake=ArtButton(card,"",370,608,322,54,()=>{float v=PlayerPrefs.GetFloat("hitShake",.3f);PlayerPrefs.SetFloat("hitShake",v<.1f?.3f:v<.6f?1:0);RefreshSettingLabels();},UITheme.Field,UITheme.Ink);shakeSettingLabel=shake.GetComponentInChildren<Text>();
-
+            settings=ArtPanel(artboard,"Settings modal",0,0,1600,900,new Color(.05f,.07f,.12f,.52f),false,false);Stretch(settings);settings.GetComponent<Image>().raycastTarget=true;
+            var card=ArtPanel(settings,"Player settings card",350,90,900,720,UITheme.Paper,true,true);card.gameObject.AddComponent<UIReveal>();
+            ArtText(card,"游戏设置",36,28,650,60,34,UITheme.Ink,FontStyle.Bold);
+            ArtButton(card,"关闭设置",730,28,134,50,()=>{optionsOpen=false;settings.gameObject.SetActive(false);PlayerPrefs.Save();},UITheme.Field,UITheme.Ink,"exit");
+            ArtText(card,"画面与操作",36,108,820,32,19,UITheme.Muted,FontStyle.Bold);
+            var sensitivity=ArtButton(card,"",36,154,828,60,()=>{cameraSensitivity=cameraSensitivity>=2?.5f:cameraSensitivity+.5f;PlayerPrefs.SetFloat("cameraSensitivity",cameraSensitivity);SavePlayerSettings();},UITheme.Field,UITheme.Ink);sensitivityLabel=sensitivity.GetComponentInChildren<Text>();
+            var touchButton=ArtButton(card,"",36,230,828,60,()=>{touchMode=(touchMode+1)%3;PlayerPrefs.SetInt("touchMode",touchMode);RefreshTouchVisibility();SavePlayerSettings();},UITheme.Field,UITheme.Ink);touchSettingLabel=touchButton.GetComponentInChildren<Text>();
+            var motion=ArtButton(card,"",36,306,828,60,()=>{reduceMotion=!reduceMotion;PlayerPrefs.SetInt("reduceMotion",reduceMotion?1:0);SavePlayerSettings();},UITheme.Field,UITheme.Ink);motionSettingLabel=motion.GetComponentInChildren<Text>();
+            ArtText(card,"音效与反馈",36,388,820,32,19,UITheme.Muted,FontStyle.Bold);
+            var music=ArtButton(card,"",36,434,402,60,()=>{PlayerPrefs.SetFloat("battleMusicVolume",BattleMusic.SavedVolume<.05f?.30f:0);SavePlayerSettings();},UITheme.Field,UITheme.Ink);musicSettingLabel=music.GetComponentInChildren<Text>();
+            var shake=ArtButton(card,"",462,434,402,60,()=>{float v=PlayerPrefs.GetFloat("hitShake",.3f);PlayerPrefs.SetFloat("hitShake",v<.1f?.3f:v<.6f?1:0);SavePlayerSettings();},UITheme.Field,UITheme.Ink);shakeSettingLabel=shake.GetComponentInChildren<Text>();
+            ArtText(card,"语言",36,532,230,50,22,UITheme.Ink,FontStyle.Bold);
+            chineseLanguageButton=ArtButton(card,"中文",300,524,270,60,()=>SetGameLanguage(false),UITheme.Field,UITheme.Ink);
+            englishLanguageButton=ArtButton(card,"English",594,524,270,60,()=>SetGameLanguage(true),UITheme.Field,UITheme.Ink);
+            ArtText(card,"设置即时生效，自动保存。",36,628,828,40,17,UITheme.Muted);
         }
 
         Text sensitivityLabel,touchSettingLabel,musicSettingLabel,motionSettingLabel,shakeSettingLabel;
+        Button chineseLanguageButton,englishLanguageButton;
+        void SavePlayerSettings(){PlayerPrefs.Save();RefreshSettingLabels();}
+        void SetGameLanguage(bool english)
+        {
+            GameLocalization.SetEnglish(english);if(startMenuStage)startMenuStage.ApplyLanguage();RefreshSettingLabels();
+            lastInventory="";lastLobbyVisual="";lastResultVisual="";
+            RefreshMenuSummary();if(displayedGenerationTerms.Length>0)DisplayGenerationTerms(displayedGenerationTerms);
+        }
         void RefreshSettingLabels()
-        {sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];if(musicSettingLabel){float volume=BattleMusic.SavedVolume;musicSettingLabel.text="战斗音乐 · "+(volume<.05f?"关闭":volume<.22f?"轻柔":volume<.4f?"标准":"响亮");}motionSettingLabel.text="减少动态 · "+(reduceMotion?"开启":"关闭");if(shakeSettingLabel)shakeSettingLabel.text="打击震动 · "+(PlayerPrefs.GetFloat("hitShake",.3f)<.1f?"关闭":PlayerPrefs.GetFloat("hitShake",.3f)<.6f?"轻微":"明显");if(startMenuStage)startMenuStage.SetMotionEnabled(!reduceMotion);}
+        {
+            sensitivityLabel.text="镜头灵敏度 · "+cameraSensitivity.ToString("0.0")+" 倍";
+            touchSettingLabel.text="触控按钮 · "+new[]{"自动","显示","隐藏"}[touchMode];
+            musicSettingLabel.text=GameLocalization.English?"Battle music · "+(BattleMusic.SavedVolume<.05f?"Off":"On"):"战斗音乐 · "+(BattleMusic.SavedVolume<.05f?"关闭":"开启");
+            motionSettingLabel.text=GameLocalization.English?"Reduce motion · "+(reduceMotion?"On":"Off"):"减少动态 · "+(reduceMotion?"开启":"关闭");
+            float shake=PlayerPrefs.GetFloat("hitShake",.3f);shakeSettingLabel.text=GameLocalization.English?"Impact shake · "+(shake<.1f?"Off":shake<.6f?"Low":"Strong"):"打击震动 · "+(shake<.1f?"关闭":shake<.6f?"轻微":"明显");
+            chineseLanguageButton.GetComponentInChildren<Text>().text=(GameLocalization.English?"":"✓ ")+"中文";
+            englishLanguageButton.GetComponentInChildren<Text>().text=(GameLocalization.English?"✓ ":"")+"English";
+            chineseLanguageButton.GetComponent<StickerButton>().SetState(GameLocalization.English?UIVisualState.Normal:UIVisualState.Selected);
+            englishLanguageButton.GetComponent<StickerButton>().SetState(GameLocalization.English?UIVisualState.Selected:UIVisualState.Normal);
+            if(startMenuStage)startMenuStage.SetMotionEnabled(!reduceMotion);
+            GameLocalization.Refresh();
+        }
         void BuildLobby()
         {
             lobby=ArtPanel(artboard,"Friend room",0,0,1600,900,Color.clear,false,false);
@@ -213,6 +228,7 @@ namespace AboutMe
                 slots.Add(button);slotStyles.Add(button.GetComponent<StickerButton>());
             }
             ArtButton(hotbar,"背包",714,12,114,60,ToggleBag,UITheme.Purple,UITheme.Ink,"bag");
+            ArtButton(hud,"设置",1300,28,126,46,OpenSettings,UITheme.Paper,UITheme.Ink,"settings");
             ArtButton(hud,"退出",1440,28,126,46,Leave,UITheme.Paper,UITheme.Ink,"exit");
             reconnectButton=ArtButton(hud,"重连",1440,86,126,42,()=>{if(!Mirror.NetworkClient.active)net.Connect();else net.Status=Mirror.NetworkClient.isConnected?"当前连接正常，无需重连。":"正在连接，请稍候。";},UITheme.Field,UITheme.Ink,"status");
         }
@@ -314,7 +330,7 @@ namespace AboutMe
             {
                 var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
                 if(!string.IsNullOrEmpty(me.fieldStatus))mechanicHint.text=me.fieldStatus+" · "+mechanicHint.text;
-                hudText.text=me.eliminated?"观战中 · Tab 切换玩家":me.nickname;
+                hudText.text=me.eliminated?"观战中 · Tab 切换玩家":GameLocalization.Protect(me.nickname);
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
                 float stability=Mathf.Clamp01(me.stability/100f);stabilityFill.rectTransform.anchorMax=new Vector2(stability,1);stabilityFill.color=stability<.35f?UITheme.Red:stability<.7f?UITheme.Yellow:UITheme.Mint;
                 bool interacting=!string.IsNullOrEmpty(me.interaction),dragging=!string.IsNullOrEmpty(me.grabbing);hudProgress.gameObject.SetActive(interacting||me.grabbed||me.sticky||dragging||me.portalProgress>0);
@@ -336,7 +352,7 @@ namespace AboutMe
             {
                 bool occupied=i<state.players.Length;var card=playerCards[i];card.gameObject.SetActive(true);
                 if(!occupied){playerAvatars[i].color=UITheme.Field;playerNames[i].text="等待朋友…";playerNames[i].color=UITheme.Muted;playerMeta[i].text="空位";playerReadyMarks[i].gameObject.SetActive(false);continue;}
-                var p=state.players[i];playerAvatars[i].color=ToyFactory.ColorOf(p.color);playerNames[i].color=UITheme.Ink;playerNames[i].text=(p.id==state.host?"♛  ":"")+p.nickname;
+                var p=state.players[i];playerAvatars[i].color=ToyFactory.ColorOf(p.color);playerNames[i].color=UITheme.Ink;playerNames[i].text=(p.id==state.host?"♛  ":"")+GameLocalization.Protect(p.nickname);
                 playerMeta[i].text="Persona × "+p.remaining+(p.connected?"":"  ·  离线");playerMeta[i].color=p.connected?UITheme.Muted:UITheme.Red;
                 playerReadyMarks[i].gameObject.SetActive(p.ready);playerReadyMarks[i].color=p.ready?UITheme.Green:UITheme.Muted;
                 card.GetComponent<Image>().color=p.ready?Color.Lerp(UITheme.Mint,UITheme.Paper,.72f):UITheme.Field;
@@ -348,13 +364,13 @@ namespace AboutMe
             if(state.phase!=MatchPhase.Finished)return;
             string signature=state.matchId+"|"+state.winner+"|"+string.Join("|",state.eaten.Select(e=>e.instanceId));if(signature==lastResultVisual)return;lastResultVisual=signature;
             var ids=state.winners!=null&&state.winners.Length>0?state.winners:new[]{state.winner};
-            var names=state.players.Where(p=>ids.Contains(p.id)).Select(p=>p.nickname);
+            var names=state.players.Where(p=>ids.Contains(p.id)).Select(p=>GameLocalization.Protect(p.nickname));
             winnerText.text=string.Join("、",names)+(ids.Length>1?" · 并列获胜":" · 获胜")+"\n"+(state.endReason=="timeout"?"时间到 · 吞噬数优先，同分比较剩余":"最后一名存活者");winnerText.fontSize=22;
             foreach(Transform child in resultContent)Destroy(child.gameObject);
             if(state.rankings!=null)foreach(var rank in state.rankings)
             {
                 var row=ArtPanel(resultContent,"Rank "+rank.rank,0,0,1040,60,rank.eliminated?UITheme.Field:UITheme.Mint,true,false);
-                ArtText(row,rank.rank+"  "+rank.nickname+"   吞噬 "+rank.eaten+"   剩余 "+rank.remaining+(rank.eliminated?" · 已淘汰":""),18,6,1000,48,20,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);AddLayoutHeight(row,60);
+                ArtText(row,rank.rank+"  "+GameLocalization.Protect(rank.nickname)+"   吞噬 "+rank.eaten+"   剩余 "+rank.remaining+(rank.eliminated?" · 已淘汰":""),18,6,1000,48,20,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);AddLayoutHeight(row,60);
             }
             if(state.eaten.Length==0)
             {
@@ -364,7 +380,7 @@ namespace AboutMe
             {
                 var record=state.eaten[i];var row=ArtPanel(resultContent,"Eaten record "+(i+1),0,0,1040,68,i%2==0?UITheme.Field:Color.Lerp(UITheme.Pink,UITheme.Paper,.76f),true,false);
                 ArtText(row,(i+1).ToString("00"),16,12,52,43,18,UITheme.Muted,FontStyle.Bold,TextAnchor.MiddleCenter);
-                ArtIcon(row,"attack",75,16,35,UITheme.Ink);ArtText(row,record.eater+"  吃掉了  "+record.owner+" 的「"+record.persona+"」",126,8,885,52,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);AddLayoutHeight(row,68);
+                ArtIcon(row,"attack",75,16,35,UITheme.Ink);ArtText(row,GameLocalization.Protect(record.eater)+"  吃掉了  "+GameLocalization.Protect(record.owner)+" 的「"+GameLocalization.PersonaName(record.persona,record.visual)+"」",126,8,885,52,18,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);AddLayoutHeight(row,68);
             }
         }
 
@@ -381,7 +397,7 @@ namespace AboutMe
                 var well=ArtPanel(card,"Persona thumbnail",10,12,92,92,Color.Lerp(ToyFactory.ColorOf(item.asset.color),UITheme.Paper,.7f),true,false);
                 var itemImage=ArtIcon(well,thumbnail?"":IconForTemplate(item.asset.templateId),6,6,80,thumbnail?Color.white:ToyFactory.ColorOf(item.asset.color));
                 if(thumbnail)itemImage.sprite=thumbnail;
-                ArtText(card,item.asset.name,109,10,199,40,18,UITheme.Ink,FontStyle.Bold);
+                ArtText(card,GameLocalization.PersonaName(item.asset),109,10,199,40,18,UITheme.Ink,FontStyle.Bold);
                 ArtText(card,(PartyMechanicRegistry.ForVisual(item.asset.visualId)?.label??TemplateLabel(item.asset.templateId)),109,51,195,22,13,UITheme.Muted,FontStyle.Bold);
                 var mechanic=PartyMechanicRegistry.ForVisual(item.asset.visualId);
                 if(mechanic!=null)ArtText(card,mechanic.hint,10,99,298,46,14,UITheme.Muted);
@@ -471,7 +487,7 @@ namespace AboutMe
                 net.Status="生成结果界面预览";return;
             }
             if(previewKind=="presets"||previewKind=="solo"||previewKind=="multiplayer"){ShowPage(previewKind=="presets"?MenuPage.Presets:previewKind=="solo"?MenuPage.Solo:MenuPage.Multiplayer);return;}
-            if(previewKind=="settings"){OpenSettings();net.Status="连接设置预览";RefreshTouchVisibility();return;}
+            if(previewKind=="settings"){OpenSettings();net.Status="";RefreshTouchVisibility();return;}
             bool lobbyPreview=previewKind=="lobby"||previewKind=="lobby-ds"||previewKind=="qr";
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);var players=Enumerable.Range(0,lobbyPreview?6:3).Select(i=>new PublicPlayer{id="preview-"+i,nickname=new[]{"小宇宙","海盐汽水","凌晨三点","社团王牌","猫派代表","最后一页"}[i],color=catalog.items[i].color,remaining=Mathf.Max(1,8-i),position=Match.Spawn(i),yaw=i*55,stability=100-i*17,ready=i!=4,connected=i!=5,equippedName=catalog.items[i].label,equippedVisual=catalog.items[i].visualId,equippedColor=catalog.items[i].color,characterSkin=i==0&&previewKind.EndsWith("-ds")?"ds-girl":"normal",interaction=i==0&&(previewKind=="hud"||previewKind=="hud-ds")?"eat":"",progress=.62f}).ToArray();
             var inventory=catalog.items.Select((x,i)=>new PublicPersonaInstance{id="preview-item-"+i,ownerId="preview-0",asset=new PublicPersonaAsset{assetId="asset-"+i,name=x.label,templateId=x.templateId,visualId=x.visualId,color=x.color},state=i==0?ItemState.Equipped:ItemState.Inventory}).ToArray();
@@ -528,7 +544,7 @@ namespace AboutMe
         }
         Text ArtText(Transform parent,string value,float x,float y,float width,float height,int size,Color color,FontStyle style=FontStyle.Normal,TextAnchor alignment=TextAnchor.UpperLeft)
         {
-            var rect=ArtRect(parent,"Text · "+(value.Length>16?value.Substring(0,16):value),new Vector2(x,-y),new Vector2(width,height));var label=rect.gameObject.AddComponent<Text>();label.font=font;label.fontSize=size;label.color=color;label.text=value;label.fontStyle=style;label.alignment=alignment;label.supportRichText=false;label.raycastTarget=false;label.horizontalOverflow=HorizontalWrapMode.Wrap;label.verticalOverflow=VerticalWrapMode.Truncate;return label;
+            var rect=ArtRect(parent,"Text · "+(value.Length>16?value.Substring(0,16):value),new Vector2(x,-y),new Vector2(width,height));var label=rect.gameObject.AddComponent<Text>();label.font=font;label.fontSize=size;label.color=color;label.text=value;label.fontStyle=style;label.alignment=alignment;label.supportRichText=false;label.raycastTarget=false;label.horizontalOverflow=HorizontalWrapMode.Wrap;label.verticalOverflow=VerticalWrapMode.Truncate;label.resizeTextForBestFit=true;label.resizeTextMinSize=Mathf.Max(11,size-7);label.resizeTextMaxSize=size;rect.gameObject.AddComponent<LocalizedLabel>().Configure(label);return label;
         }
         Button ArtButton(Transform parent,string label,float x,float y,float width,float height,Action action,Color background,Color foreground,string icon="")
         {
@@ -541,7 +557,7 @@ namespace AboutMe
         {
             var rect=ArtPanel(parent,"Input · "+placeholder,x,y,width,height,UITheme.Field,true,false);var input=rect.gameObject.AddComponent<InputField>();input.targetGraphic=rect.GetComponent<Image>();
             var text=ArtText(rect,"",14,5,width-28,height-10,18,UITheme.Ink,FontStyle.Normal,multiline?TextAnchor.UpperLeft:TextAnchor.MiddleLeft);var hint=ArtText(rect,placeholder,14,5,width-28,height-10,18,UITheme.Muted,FontStyle.Normal,multiline?TextAnchor.UpperLeft:TextAnchor.MiddleLeft);
-            input.textComponent=text;input.placeholder=hint;input.characterLimit=multiline?8000:256;input.lineType=multiline?InputField.LineType.MultiLineNewline:InputField.LineType.SingleLine;
+            text.GetComponent<LocalizedLabel>().enabled=false;input.textComponent=text;input.placeholder=hint;input.characterLimit=multiline?8000:256;input.lineType=multiline?InputField.LineType.MultiLineNewline:InputField.LineType.SingleLine;
             input.contentType=InputField.ContentType.Standard;input.inputType=InputField.InputType.Standard;input.characterValidation=InputField.CharacterValidation.None;input.keyboardType=TouchScreenKeyboardType.Default;
             rect.gameObject.AddComponent<IMEInputBridge>().Configure(input);return input;
         }

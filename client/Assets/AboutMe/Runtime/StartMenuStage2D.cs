@@ -53,7 +53,7 @@ namespace AboutMe
             string[] labels={"SINGLE\nPLAYER","MULTIPLAYER","INTRO\nPRESETS","SETTINGS"};
             string[] assets={"solo","multi","intro","settings"};
             for(int i=0;i<buttons.Length;i++)StyleBubble(i,labels[i],assets[i]);
-            configured=true;SetCompact(false);ResetForInitialDisplay();
+            configured=true;SetCompact(false);ApplyLanguage();ResetForInitialDisplay();
         }
 
         void StyleBubble(int index,string label,string asset)
@@ -74,6 +74,21 @@ namespace AboutMe
             style.BaseColor=Color.white;style.HoverScale=1.055f;
             if(style.Icon)style.Icon.gameObject.SetActive(false);
             if(style.Label)style.Label.gameObject.SetActive(false);
+        }
+
+        public void ApplyLanguage()
+        {
+            if(buttons==null)return;
+            string[] chinese={"单人游戏","多人游戏","自我介绍预设","设置"};
+            for(int i=0;i<buttons.Length;i++)
+            {
+                var style=buttons[i].GetComponent<StickerButton>();if(!style)continue;
+                style.BaseColor=GameLocalization.English?Color.white:Color.clear;style.SetState(UIVisualState.Normal);
+                var label=style.Label;label.gameObject.SetActive(!GameLocalization.English);label.text=chinese[i];
+                label.color=UITheme.Yellow;label.fontSize=42;label.resizeTextMaxSize=42;label.resizeTextMinSize=30;
+                label.rectTransform.anchorMin=Vector2.zero;label.rectTransform.anchorMax=Vector2.one;label.rectTransform.offsetMin=Vector2.zero;label.rectTransform.offsetMax=Vector2.zero;
+                if(!label.GetComponent<Outline>()){var outline=label.gameObject.AddComponent<Outline>();outline.effectColor=UITheme.Ink;outline.effectDistance=new Vector2(3,-3);}
+            }
         }
 
         static LayerMotion Motion(RectTransform rect,float parallax,float amplitude,float rotation,float period,float phase)

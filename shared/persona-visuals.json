@@ -4628,6 +4628,63 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "fiber-spool",
+      "label": "光纤线盘",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/fiber-spool",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#626A90",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "rocket-model",
+      "label": "火箭模型",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/rocket-model",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#DCE1E4",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "balloon-dog",
+      "label": "气球狗",
+      "templateId": "Cushion",
+      "resourcePath": "PersonaProps/balloon-dog",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#E596B4",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

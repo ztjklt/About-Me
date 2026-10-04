@@ -49,7 +49,8 @@ namespace AboutMe
         public static GameUI UI;
         GameNetwork net;ToyWorld world;PlatformBridge platform;BattleMusic battleMusic;
         Font font;RectTransform canvas,home,lobby,hud,results,settings,bag,touch;
-        InputField nickname,introduction,room,endpoint,api;
+        InputField nickname,introduction,room;
+        string endpoint,api;
         Text status,profileText,lobbyText,hudText,eventText,resultText,resultEventText,bagText,recordLabel;
         Button generate,ready,start,join;
         readonly List<Button> slots=new List<Button>();
@@ -70,29 +71,33 @@ namespace AboutMe
         void OnApplicationFocus(bool focus){hasFocus=focus;if(!focus){cursorReleased=true;ReleaseCursor();ResetMovement();if(net)Send("cancel");}}
         public void Build(GameNetwork network,ToyWorld toyWorld)
         {
+            var languageArgs=Environment.GetCommandLineArgs();int languageIndex=Array.IndexOf(languageArgs,"--language");
+            if(languageIndex>=0&&languageIndex+1<languageArgs.Length)GameLocalization.SetEnglish(languageArgs[languageIndex+1]=="en");
             UI=this;net=network;world=toyWorld;platform=gameObject.AddComponent<PlatformBridge>();
             favorites.AddRange(PlayerPrefs.GetString("favorites","").Split(',').Where(x=>x!=""));
             font=Resources.Load<Font>("AboutMeFont");if(!font)font=Font.CreateDynamicFontFromOSFont(new[]{"PingFang SC","Arial","Microsoft YaHei"},20);
+            endpoint=net.Endpoint;api=net.ApiUrl;
             BuildArtUI();BuildMenus();battleMusic=gameObject.AddComponent<BattleMusic>();
             var configuredApi=Environment.GetEnvironmentVariable("ABOUTME_API_URL");
-            if(!string.IsNullOrWhiteSpace(configuredApi))api.text=configuredApi.Trim().TrimEnd('/');
+            if(!string.IsNullOrWhiteSpace(configuredApi))api=configuredApi.Trim().TrimEnd('/');
             var sessionEndpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");
             if(Application.platform==RuntimePlatform.WebGLPlayer)
             {
                 var webEndpoint=WebGameEndpoint(Application.absoluteURL);
                 if(webEndpoint!=null)sessionEndpoint=webEndpoint;
                 var webApi=WebApiEndpoint(Application.absoluteURL);
-                if(webApi!=null)api.text=webApi;
+                if(webApi!=null)api=webApi;
                 else if(Uri.TryCreate(Application.absoluteURL,UriKind.Absolute,out var page)
                     &&page.Scheme==Uri.UriSchemeHttps
-                    &&Uri.TryCreate(api.text,UriKind.Absolute,out var service)
-                    &&service.IsLoopback)api.text="";
+                    &&Uri.TryCreate(api,UriKind.Absolute,out var service)
+                    &&service.IsLoopback)api="";
             }
-            if(sessionEndpoint!=null)endpoint.text=sessionEndpoint;
-            net.Endpoint=endpoint.text;net.ApiUrl=api.text;
+            if(sessionEndpoint!=null)endpoint=sessionEndpoint;
+            net.Endpoint=endpoint;net.ApiUrl=api;
             net.Token=SavedTokenForApi();if(net.Token!=""&&net.ApiUrl!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
+            int settingsAudit=Array.IndexOf(languageArgs,"--settings-audit");if(settingsAudit>=0&&settingsAudit+1<languageArgs.Length)StartCoroutine(AuditPlayerSettings(languageArgs[settingsAudit+1]));
         }
         RectTransform inventoryContent;
         static string WebGameEndpoint(string absoluteUrl)
@@ -208,8 +213,8 @@ namespace AboutMe
             if(busy)yield break;
             if(string.IsNullOrWhiteSpace(introduction.text)||introduction.text.Trim().Length<3){net.Status="请先写至少 3 个字的自我介绍。";yield break;}
             if(introduction.text.Length>1200){net.Status="自我介绍最多 1200 字，请精简后再生成。";yield break;}
-            net.ApiUrl=api.text.Trim().TrimEnd('/');
-            if(net.ApiUrl==""){net.Status="AI 服务尚未开放，请先在连接设置中填写服务地址。";yield break;}
+            net.ApiUrl=api.Trim().TrimEnd('/');
+            if(net.ApiUrl==""){net.Status="角色生成暂时不可用，请稍后重试。";yield break;}
             if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 暂不可用，请稍后重试，或选择练习道具。";yield break;}
             busy=true;SaveDraft(false);net.Status="正在把你变成游戏内容…";
             string generationToken=SavedTokenForApi();
@@ -246,7 +251,7 @@ namespace AboutMe
         }
         IEnumerator CheckService()
         {
-            net.ApiUrl=api.text.Trim().TrimEnd('/');
+            net.ApiUrl=api.Trim().TrimEnd('/');
             if(net.ApiUrl=="")
             {
                 aiCapabilityKnown=true;aiConfigured=false;asrCapabilityKnown=true;asrConfigured=false;
@@ -265,21 +270,6 @@ namespace AboutMe
             }
         }
         void SetAIServiceStatus(string value,Color color){if(aiServiceText)aiServiceText.text=value;if(aiServiceSurface)aiServiceSurface.color=color;}
-        void SaveConnectionSettings()
-        {
-            var nextApi=api.text.Trim().TrimEnd('/');
-            var apiChanged=net.ApiUrl!=nextApi;
-            net.Endpoint=endpoint.text.Trim();net.ApiUrl=nextApi;
-            if(apiChanged)
-            {
-                aiCapabilityKnown=false;asrCapabilityKnown=false;asrConfigured=false;
-                if(!net.Sample){net.Token=SavedTokenForApi();profile=null;RefreshMenuSummary();}
-            }
-            PlayerPrefs.SetString("endpoint",net.Endpoint);PlayerPrefs.SetString("api",net.ApiUrl);PlayerPrefs.Save();
-            settings.gameObject.SetActive(false);optionsOpen=false;net.Status="连接设置已保存";
-            if(apiChanged&&!net.Sample&&net.Token!="")StartCoroutine(LoadProfile());
-            StartCoroutine(CheckService());
-        }
         void Fail(UnityWebRequest request,string operation="请求")
         {
             busy=false;
@@ -292,7 +282,7 @@ namespace AboutMe
             if(Uri.TryCreate(request.url,UriKind.Absolute,out var uri))
             {path=uri.AbsolutePath;address=uri.Host+(uri.IsDefaultPort?"":":"+uri.Port);}
             if(request.result==UnityWebRequest.Result.ConnectionError)
-                net.Status=operation+"失败：无法连接 "+address+"。请启动本机 API，或在设置中核对服务地址。";
+                net.Status=operation+"失败：服务暂时不可用，请稍后重试。";
             else net.Status=operation+"失败（HTTP "+request.responseCode+"）："+(detail==""?"请稍后重试。":detail);
             Debug.LogWarning("ABOUTME_API_FAILURE op="+operation+" path="+path+" status="+request.responseCode+" result="+request.result+" detail="+detail);
         }
@@ -319,7 +309,7 @@ namespace AboutMe
             if(profile==null||profile.personas.Length==0){ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或明确选择样例测试";return;}
             if(!net.Sample&&string.IsNullOrEmpty(net.Token))
             {ShowPage(MenuPage.Presets);net.Status="登录已过期；请重新生成 Persona 后联机，缓存角色仍可单人练习。";return;}
-            net.Nickname=nickname.text;net.RoomCode=(requestedRoom??CurrentRoomCode()).Trim().ToUpperInvariant();SetRoomCode(net.RoomCode);net.Endpoint=endpoint.text.Trim();net.Connect();
+            net.Nickname=nickname.text;net.RoomCode=(requestedRoom??CurrentRoomCode()).Trim().ToUpperInvariant();SetRoomCode(net.RoomCode);net.Endpoint=endpoint.Trim();net.Connect();
         }
         void Leave(){net.Close();lastInventory="";lastEvent=0;lastEventMatch="";lastResultVisual="";inventoryOpen=false;inventoryWasOpened=false;bag.gameObject.SetActive(false);ShowPage(MenuPage.Main);}
         void ToggleBag()
@@ -343,7 +333,7 @@ namespace AboutMe
             if(!asrCapabilityKnown||!asrConfigured){net.Status="语音识别尚未配置，请使用文字或图片介绍。";yield break;}
             if(net.Token==""||net.Sample)
             {
-                busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');
+                busy=true;net.ApiUrl=api.Trim().TrimEnd('/');
                 using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/sessions",JsonUtility.ToJson(new SessionRequest{nickname=nickname.text})))
                 {
                     yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){Fail(req);yield break;}
@@ -453,7 +443,7 @@ namespace AboutMe
                 {
                     lastEvent=state.events.Last().id;
                     var line=state.events.Last().text;
-                    eventText.text=line;if(resultEventText)resultEventText.text=line;
+                    SetGeneratedDisplay(eventText,line);if(resultEventText)SetGeneratedDisplay(resultEventText,line);
                     if(resultEventLine)resultEventLine.gameObject.SetActive(true);
                     toastPulse.Play();
                 }
@@ -465,7 +455,7 @@ namespace AboutMe
                     for(int i=0;i<slots.Count;i++)
                     {
                         bool filled=i<quick.Length;slots[i].interactable=filled;
-                        slots[i].GetComponentInChildren<Text>().text=filled?(i+1)+"\n"+ShortPersonaName(quick[i].asset.name):(i+1)+"\n—";
+                        slots[i].GetComponentInChildren<Text>().text=filled?(i+1)+"\n"+ShortPersonaName(GameLocalization.PersonaName(quick[i].asset)):(i+1)+"\n—";
                         if(i<slotThumbnails.Count)
                         {
                             var image=slotThumbnails[i];var item=filled?quick[i]:null;

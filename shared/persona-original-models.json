@@ -15018,7 +15018,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "item-sorter"
     },
     {
       "id": "saxophone",
@@ -20801,7 +20802,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "crumble-tiles"
     },
     {
       "id": "paper-cutter",
@@ -28381,7 +28383,8 @@
       ],
       "license": "project-original",
       "source": "About Me original assembly geometry",
-      "stage": "model_with_existing_template"
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "low-gravity-zone"
     },
     {
       "id": "map-scroll",
@@ -32128,6 +32131,589 @@
       "source": "About Me original assembly geometry",
       "stage": "model_with_authoritative_mechanic",
       "mechanicId": "public-twin-rope"
+    },
+    {
+      "id": "fiber-spool",
+      "label": "光纤线盘",
+      "templateId": "Utility",
+      "color": "#626A90",
+      "keywords": [
+        "通信工程",
+        "光纤",
+        "光纤线盘"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.43,
+            "y": 0.5,
+            "z": 0.43
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#626A90"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.25
+          },
+          "scale": {
+            "x": 0.63,
+            "y": 0.045,
+            "z": 0.63
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#85BCCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.25
+          },
+          "scale": {
+            "x": 0.63,
+            "y": 0.045,
+            "z": 0.63
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#85BCCB"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.16
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E1C486"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E1C486"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E1C486"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E1C486"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E1C486"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.36,
+            "y": -0.24,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.035,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 30,
+            "z": -18
+          },
+          "color": "#D0AC75"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "cargo-winch"
+    },
+    {
+      "id": "rocket-model",
+      "label": "火箭模型",
+      "templateId": "Cushion",
+      "color": "#DCE1E4",
+      "keywords": [
+        "航天",
+        "火箭",
+        "火箭模型"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.57,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#DCE1E4"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.4,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.24,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E68876"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.32,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.12,
+            "z": 0.17
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#3F4F68"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0.11
+          },
+          "scale": {
+            "x": 0.095,
+            "y": 0.095,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#7FBDCD"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0.0,
+            "y": -0.24,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.27,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E68876"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0.13856406460551018,
+            "y": -0.24,
+            "z": -0.07999999999999997
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.27,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 120,
+            "z": 0
+          },
+          "color": "#E68876"
+        },
+        {
+          "shape": "wedge",
+          "position": {
+            "x": -0.13856406460551016,
+            "y": -0.24,
+            "z": -0.08000000000000007
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.27,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 240,
+            "z": 0
+          },
+          "color": "#E68876"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "public-launcher"
+    },
+    {
+      "id": "balloon-dog",
+      "label": "气球狗",
+      "templateId": "Cushion",
+      "color": "#E596B4",
+      "keywords": [
+        "气球艺术",
+        "聚会气球",
+        "气球狗"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.38,
+            "z": 0.15
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.2,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.27,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -30
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.31,
+            "y": 0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.19,
+            "z": 0.13
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.22,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.24,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 25
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.12,
+            "y": -0.15,
+            "z": -0.065
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.29,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 10
+          },
+          "color": "#DE8DAC"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.12,
+            "y": -0.15,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.29,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 10
+          },
+          "color": "#DE8DAC"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.12,
+            "y": -0.15,
+            "z": -0.065
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.29,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -10
+          },
+          "color": "#DE8DAC"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.12,
+            "y": -0.15,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.29,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -10
+          },
+          "color": "#DE8DAC"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.24,
+            "y": 0.32,
+            "z": -0.045
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.2,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.24,
+            "y": 0.32,
+            "z": 0.045
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.2,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.17,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.16,
+            "z": 0.16
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E596B4"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.17,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.16,
+            "z": 0.16
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#E596B4"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "cooperative-pump"
     }
   ]
 }

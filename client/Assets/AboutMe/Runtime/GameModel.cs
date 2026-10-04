@@ -147,6 +147,7 @@ namespace AboutMe
         [NonSerialized] public Dictionary<string,float> touchTimes=new Dictionary<string,float>();
         public Vector3 position, velocity;
         public float remaining, damage, force, nextHit, radius = .7f;
+        public float[] arenaTimers;
         public int health, bounces;
         public float pushScale=1;
         [NonSerialized] public HashSet<string> guardTouches=new HashSet<string>();
@@ -258,6 +259,7 @@ namespace AboutMe
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
             if (input.action == "cancel") { ReleaseSwingMomentum(p);CancelControlConsent(p);StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
+            if(ArenaOperatorAction(p,input.action))return;
             if(MachineBusy(p)&&input.action!="interact")return;
             if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action)||ControlBlocks(p,input.action)||VirtualBlocks(p,input.action)||LinkBlocks(p,input.action))return;
             switch (input.action)
@@ -354,7 +356,7 @@ namespace AboutMe
                 if (!stunned) GuardYaw(p,dt);
                 PartyMotor(p,ref desired,dt);ControlMotor(p,ref desired,dt);
                 if(!stunned)FieldMotor(p,ref desired,dt);else {p.fieldStatus="";p.wasWet=false;p.wetMomentum=Vector3.zero;}
-                if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);if(!stunned)MachineMotor(p,ref desired,dt);if(!stunned)LinkMotor(p,ref desired,dt);
+                if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);if(!stunned)MachineMotor(p,ref desired,dt);if(!stunned)LinkMotor(p,ref desired,dt);if(!stunned)ArenaMotor(p,ref desired);
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
                 if(!(BodyWorld!=null&&BodyLocked(p)))
                 {
@@ -363,7 +365,7 @@ namespace AboutMe
                     if(Mathf.Abs(old.y-(oldSurface+1))<.10f&&p.verticalSpeed<=0){p.fallOriginHeight=oldSurface;p.airborne=false;}
                     next=MoveOnMachines(old,CampusGeometry.Move(old,next));if(BlockedByBarricade(next))next=old;
                     var travelled=next-old;travelled.y=0;p.locomotionSpeed=dt>0?Mathf.Min(desired.magnitude,Mathf.Max(0,Vector3.Dot(travelled,desired.normalized)/dt)):0;
-                    p.verticalSpeed-=Rules.gravity*dt;PartyVertical(p);ControlVertical(p,dt);next.y+=p.verticalSpeed*dt;
+                    p.verticalSpeed-=ArenaGravityAt(p.position)*dt;PartyVertical(p);ControlVertical(p,dt);next.y+=p.verticalSpeed*dt;
                     LinkVertical(p,ref next);RescueLink(p,ref next);
                     float surface=SurfaceFloor(next),floor=surface+1;
                     if(BodyWorld!=null&&desired.sqrMagnitude>.01f&&!BodyLocked(p)&&p.verticalSpeed<=0)
@@ -416,7 +418,7 @@ namespace AboutMe
             foreach (var item in Items.Where(x => x.state == ItemState.Ground))
             {
                 bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=MachineLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=ControlLoose(ref item.velocity,item.position,dt);
-                item.velocity += Vector3.down * Rules.gravity * dt; item.position = MoveOnMachines(item.position,CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f),.15f,.35f);
+                item.velocity += Vector3.down * ArenaGravityAt(item.position) * dt; item.position = MoveOnMachines(item.position,CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f),.15f,.35f);
                 float ground = SurfaceFloor(item.position,.35f) + .35f;
                 if(item.position.y < ground) { item.position.y=ground; item.velocity=new Vector3(item.velocity.x*.9f,Mathf.Abs(item.velocity.y)*.25f,item.velocity.z*.9f); if(!beltDriven&&!fieldDriven&&item.velocity.magnitude<.5f)item.velocity=Vector3.zero; }
                 if(CampusGeometry.Outside(item.position))
@@ -427,9 +429,9 @@ namespace AboutMe
             foreach(var prop in Props)
             {
                 if(prop.holder!=""&&Players.TryGetValue(prop.holder,out var holder)) {prop.position=holder.position+Forward(holder);prop.velocity=Vector3.zero;continue;}
-                if(LinkPublicHeld(prop)){prop.velocity=Vector3.zero;continue;}
+                if(LinkPublicHeld(prop)||ArenaPublicHeld(prop)){prop.velocity=Vector3.zero;continue;}
                 PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);MachineLoose(ref prop.velocity,prop.position,.6f,dt);if(!prop.id.StartsWith("device-",StringComparison.Ordinal)&&(prop.visual=="box"||prop.visual=="trash"))ControlLoose(ref prop.velocity,prop.position,dt);
-                prop.velocity+=Vector3.down*Rules.gravity*dt;var propFrom=prop.position;var propNext=MoveOnMachines(prop.position,CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f),.35f,.6f);
+                prop.velocity+=Vector3.down*ArenaGravityAt(prop.position)*dt;var propFrom=prop.position;var propNext=MoveOnMachines(prop.position,CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f),.35f,.6f);
                 int propGuard=prop.velocity.magnitude>4&&prop.thrower!=""?GuardShot(prop.id,ref propFrom,ref prop.velocity,ref prop.thrower,ref prop.pushScale,prop.guardTouches,propNext):0;
                 if(propGuard!=0){prop.position=propFrom;if(propGuard==1){prop.velocity=Vector3.zero;prop.thrower="";}else prop.hitAfter=Time+.04f;continue;}prop.position=propNext;
                 if(prop.position.y<SurfaceFloor(prop.position,.6f)+.6f){prop.position.y=SurfaceFloor(prop.position,.6f)+.6f;prop.velocity=new Vector3(prop.velocity.x*.96f,0,prop.velocity.z*.96f);}

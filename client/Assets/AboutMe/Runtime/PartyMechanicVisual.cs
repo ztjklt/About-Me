@@ -14,7 +14,7 @@ namespace AboutMe
             var circle=new GameObject("Visible warning circle");circle.transform.SetParent(root.transform,false);v.ring=circle.AddComponent<LineRenderer>();
             v.ring.useWorldSpace=false;v.ring.loop=true;v.ring.positionCount=64;v.ring.startWidth=v.ring.endWidth=.10f;
             if(!warningMaterial)warningMaterial=new Material(Resources.Load<Shader>("PartyWarning"));v.ring.sharedMaterial=warningMaterial;
-            var text=new GameObject("Public countdown");text.transform.SetParent(root.transform,false);v.label=text.AddComponent<TextMesh>();v.label.font=Resources.Load<Font>("AboutMeFont");v.label.fontSize=42;v.label.characterSize=.045f;v.label.anchor=TextAnchor.MiddleCenter;v.label.color=new Color(.18f,.12f,.13f);
+            var text=new GameObject("Public countdown");text.transform.SetParent(root.transform,false);v.label=GameLocalization.AddMesh(text);v.label.font=Resources.Load<Font>("AboutMeFont");v.label.fontSize=42;v.label.characterSize=.045f;v.label.anchor=TextAnchor.MiddleCenter;v.label.color=new Color(.18f,.12f,.13f);
             if(v.label.font)v.label.GetComponent<MeshRenderer>().sharedMaterial=v.label.font.material;
             return root;
         }

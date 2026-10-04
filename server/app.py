@@ -665,7 +665,7 @@ def image_mime(data):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
+    return {'ok': True, 'playerSettingsLanguage': 'settings-language-v1', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
             'universityProgress': True, 'domesticPriority': True, 'latestUI': 'four-bubbles-e5470e2', 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
@@ -983,3 +983,12 @@ def save_appearance(body: AppearanceSave, authorization: str | None = Header(def
             (json.dumps(profile),time.time(),player_id,previous)).rowcount
     if not changed:raise HTTPException(409, '角色已更新，请重新载入后保存')
     return profile
+
+
+from server.display_language import DisplayLanguageRequest, translate_display
+
+@app.post('/display-language')
+async def display_language(body: DisplayLanguageRequest, request: Request, authorization: str | None = Header(default=None)):
+    authenticate(authorization)
+    enforce_quota(request, 'ai')
+    return {'text': await translate_display(body.text)}

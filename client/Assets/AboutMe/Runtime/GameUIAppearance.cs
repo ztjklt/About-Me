@@ -139,8 +139,8 @@ namespace AboutMe
         }
         IEnumerator EnsureAppearanceSession()
         {
-            net.ApiUrl=api.text.Trim().TrimEnd('/');
-            if(net.ApiUrl==""){busy=false;net.Status="请先在连接设置中填写角色服务地址。";yield break;}
+            net.ApiUrl=api.Trim().TrimEnd('/');
+            if(net.ApiUrl==""){busy=false;net.Status="角色服务暂时不可用，请稍后重试。";yield break;}
             net.Token=SavedTokenForApi();
             if(!string.IsNullOrEmpty(net.Token))
             {
@@ -179,7 +179,7 @@ namespace AboutMe
             using(var req=GameNetwork.ApiRequest(net.ApiUrl+"/appearance/personality-skin",JsonUtility.ToJson(new AppearanceRecommendRequest{introduction=description.Length>=3?description:traits,personality=traits,appearance=appearanceDraft}),net.Token))
             {
                 yield return req.SendWebRequest();if(req.result!=UnityWebRequest.Result.Success){wardrobeNote.text="推荐未完成，保留当前穿搭；可继续手动搭配。";Fail(req);yield break;}
-                var result=JsonUtility.FromJson<AppearanceRecommendation>(req.downloadHandler.text);appearanceDraft=AppearanceData.Resolve(result.appearance);appearanceDirty=true;wardrobeNote.text=result.reason;net.Status="性格皮肤已生成"+(result.traits?.Length>0?" · "+string.Join(" / ",result.traits):"")+"；满意后保存。";RefreshAppearancePreview();
+                var result=JsonUtility.FromJson<AppearanceRecommendation>(req.downloadHandler.text);appearanceDraft=AppearanceData.Resolve(result.appearance);appearanceDirty=true;SetGeneratedDisplay(wardrobeNote,result.reason);net.Status="性格皮肤已生成"+(result.traits?.Length>0?" · "+string.Join(" / ",result.traits):"")+"；满意后保存。";RefreshAppearancePreview();
             }
             busy=false;
         }
@@ -190,7 +190,7 @@ namespace AboutMe
             {
                 if(profile!=null)profile.appearance=appearanceDraft.Copy();net.SampleAppearance=appearanceDraft.Copy();PlayerPrefs.SetString("sampleAppearance",JsonUtility.ToJson(appearanceDraft));PlayerPrefs.Save();appearanceDirty=false;net.Status="样例穿搭已保存到本机。";yield break;
             }
-            busy=true;net.ApiUrl=api.text.Trim().TrimEnd('/');yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
+            busy=true;net.ApiUrl=api.Trim().TrimEnd('/');yield return EnsureAppearanceSession();if(!busy||string.IsNullOrEmpty(net.Token))yield break;
             string intro=string.IsNullOrWhiteSpace(introduction.text)?null:introduction.text.Trim();
             for(int attempt=0;attempt<2;attempt++)
             {

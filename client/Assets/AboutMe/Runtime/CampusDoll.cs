@@ -158,7 +158,7 @@ namespace AboutMe
             toyLeftHandAttachment=LeftHandAttachment;toyRightHandAttachment=RightHandAttachment;
             RefreshCharacterVisual();PhysicalBones=ActiveDollRig.Bones(this);
             var text=new GameObject("Name");text.transform.SetParent(root.transform,false);text.transform.localPosition=Vector3.up*1.77f;
-            label=text.AddComponent<TextMesh>();label.anchor=TextAnchor.MiddleCenter;label.characterSize=.05f;label.fontSize=64;label.color=ToyFactory.ColorOf(Ink);
+            label=GameLocalization.AddMesh(text);label.anchor=TextAnchor.MiddleCenter;label.characterSize=.05f;label.fontSize=64;label.color=ToyFactory.ColorOf(Ink);
             var font=Resources.Load<Font>("AboutMeFont");if(font){label.font=font;text.GetComponent<MeshRenderer>().sharedMaterial=font.material;}
         }
         Transform Joint(string name,Transform parent,Vector3 position)
@@ -722,7 +722,7 @@ namespace AboutMe
             StrikeTrajectory(activeAction,elapsedAction,p.actionVariant);
             if(holdingContact)SetGrabContact(p.grabAnchor);
             if(lastNickname!=p.nickname||lastRemaining!=p.remaining||lastConnected!=p.connected)
-            {lastNickname=p.nickname;lastRemaining=p.remaining;lastConnected=p.connected;label.text=string.IsNullOrEmpty(p.nickname)?"":p.nickname+" · "+p.remaining+(p.connected?"":" [离线]");}
+            {lastNickname=p.nickname;lastRemaining=p.remaining;lastConnected=p.connected;label.text=string.IsNullOrEmpty(p.nickname)?"":GameLocalization.Protect(p.nickname)+" · "+p.remaining+(p.connected?"":" [离线]");}
             if(hasPhysicalPose)
             {
                 fallPivot.localPosition=Vector3.zero;fallPivot.localRotation=Quaternion.identity;

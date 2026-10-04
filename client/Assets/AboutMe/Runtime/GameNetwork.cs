@@ -92,7 +92,7 @@ namespace AboutMe
             if(transport!=null&&transport.ClientConnected())
             {queuedConnect=StartCoroutine(ConnectAfterClose());return;}
             try { State=null;sequence=0;Status="正在连接…";StartClient(new Uri(Endpoint)); }
-            catch(Exception e) { Status="连接地址无效："+e.Message; }
+            catch(Exception e) { Status="暂时无法连接游戏，请稍后重试。";Debug.LogWarning("ABOUTME_CONNECTION_INVALID "+e.GetType().Name); }
         }
         IEnumerator ConnectAfterClose()
         {
@@ -133,7 +133,7 @@ namespace AboutMe
             NetworkClient.Ready();
             NetworkClient.Send(new HelloMessage{token=Token,cosmeticToken=Sample?CosmeticToken:"",room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":3,"+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
         }
-        public override void OnClientDisconnect() { if(State!=null)Status="连接已断开，可使用原凭据重连";else if(queuedConnect==null&&Status.StartsWith("正在连接"))Status="连接失败，请检查服务器地址后重新创建或加入房间。"; base.OnClientDisconnect(); }
+        public override void OnClientDisconnect() { if(State!=null)Status="连接已断开，可使用原凭据重连";else if(queuedConnect==null&&Status.StartsWith("正在连接"))Status="连接失败，请稍后重新创建或加入房间。"; base.OnClientDisconnect(); }
         void Hello(NetworkConnectionToClient conn,HelloMessage hello)
         {
             if(pending.Contains(conn.connectionId)||seats.ContainsKey(conn.connectionId))return;

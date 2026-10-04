@@ -9,6 +9,7 @@ namespace AboutMe
     {
         public string id,visualId,label,hint,family;
         public float cooldown,windup,lifetime,radius,damage,force;
+        public bool countsTowardDistinctMechanics=true;
     }
     [Serializable] public class PartyMechanics {public int version;public PartyMechanic[] items;}
     public static class PartyMechanicRegistry
@@ -55,6 +56,7 @@ namespace AboutMe
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
             if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d,item.id)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="arena")return TryArenaMechanic(p,item,d);
             if(d.family=="link")return TryLinkMechanic(p,item,d);
             if(d.family=="virtual")return TryVirtualMechanic(p,item,d);
             if(d.family=="control")return TryControlMechanic(p,item,d);
@@ -116,7 +118,7 @@ namespace AboutMe
         bool PartyClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from+Vector3.up*.35f,to+Vector3.up*.1f)&&MachineClear(from+Vector3.up*.35f,to+Vector3.up*.1f);
         void RemovePartyEffect(EffectState e)
         {
-            if(e.machine!=null)BodyWorld?.RemoveMachine(e.id);
+            if(e.machine!=null)BodyWorld?.RemoveMachine(e.id);ReleaseArenaCargo(e);
             vaultedShots.Remove(e.id);foreach(var rider in Players.Values)if(rider.linkRide==e.id)rider.linkRide="";
             if(e.targetId.StartsWith("device-",StringComparison.Ordinal))
             {
@@ -165,6 +167,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="arena"){TickArena(e,owner,d,dt);return;}
             if(d.family=="link"){TickLinks(e,owner,d,dt);return;}
             if(d.family=="virtual"){TickVirtual(e,owner,d,dt);return;}
             if(d.family=="control"){TickControl(e,owner,d,dt);return;}

@@ -44,6 +44,7 @@ namespace AboutMe
         {
             yield return new WaitForSecondsRealtime(1);
             ui=GameUI.UI;Check(ui!=null,"running client UI available");
+            bool originalEnglish=GameLocalization.English;GameLocalization.SetEnglish(false);
             var terms=Enumerable.Range(0,21).Select(i=>new GenerationTerm{term="结果 "+(i+1).ToString("00"),status=i%3==0?"failed":"ready",reason=i%3==0?"未找到匹配道具":"已保存道具",kind="prop"}).ToArray();
             Call("DisplayGenerationTerms",terms,"complete");yield return null;
             var scroll=Field<ScrollRect>("generationResultScroll");
@@ -83,6 +84,12 @@ namespace AboutMe
             Check(intro.text==original,"close and reopen preserve original text byte for byte");
             Check(ReferenceEquals(profile,Field<Profile>("profile"))&&net.Token==token&&Field<bool>("busy")==busy,"choices and draft do not replace Persona or initiate generation");
             var draft=Field<InputField>("questionnaireDraft");draft.text="我喜欢摄影。\n我也喜欢猫。";
+            GameLocalization.SetEnglish(true);yield return null;GameLocalization.Refresh();
+            Check(intro.text==original&&draft.text=="我喜欢摄影。\n我也喜欢猫。","language redraw preserves original and editable draft byte for byte");
+            Check(!Field<RectTransform>("introductionQuestionnaire").GetComponentsInChildren<Text>().Where(t=>t!=draft.textComponent).Any(t=>t.text.Any(c=>c>='\u4e00'&&c<='\u9fff')),"questionnaire controls fully translated to English");
+            Call("CreateQuestionnaireDraft");Check(draft.text.Contains("gaming")||draft.text.Contains("Playing games")||draft.text.Contains("play"),"English choices create editable English interest draft");
+            ScreenCapture.CaptureScreenshot(Path.Combine(output,"questionnaire-english.png"));yield return new WaitForSecondsRealtime(.2f);
+            GameLocalization.SetEnglish(false);draft.text="我喜欢摄影。\n我也喜欢猫。";
             Call("AppendQuestionnaireDraft");string merged=intro.text;
             Check(merged.StartsWith(original)&&merged.Contains("我也喜欢猫"),"edited draft appends while preserving original prefix");
             Call("OpenIntroductionQuestionnaire");Call("AppendQuestionnaireDraft");Check(intro.text==merged,"repeat append does not duplicate sentences");
@@ -95,7 +102,13 @@ namespace AboutMe
             yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"questionnaire.png"));yield return new WaitForSecondsRealtime(.3f);
             Call("CloseIntroductionQuestionnaire");
             Check(Field<Button>("generate").gameObject.activeInHierarchy&&intro.gameObject.activeInHierarchy,"original free input and generate button remain available");
+            Check(catalog.items.Length==274,"latest 274 prop catalog preserved");
+            Call("OpenSettings");GameLocalization.SetEnglish(true);GameLocalization.Refresh();
+            Check(Field<RectTransform>("settings").gameObject.activeInHierarchy&&Field<Text>("sensitivityLabel").text.Contains("Camera"),"latest English player settings retained");
+            Field<RectTransform>("settings").gameObject.SetActive(false);
+            typeof(GameUI).GetField("optionsOpen",Flags).SetValue(ui,false);GameLocalization.SetEnglish(false);
             yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"original-input-preserved.png"));yield return new WaitForSecondsRealtime(.3f);
+            GameLocalization.SetEnglish(originalEnglish);
         }
     }
 }

@@ -12,7 +12,8 @@
       "damage": 32,
       "force": 8,
       "hint": "碰到人或地面爆开；自己也会被波及",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "fuse-burst",
@@ -25,7 +26,8 @@
       "damage": 32,
       "force": 8,
       "hint": "2.4 秒后爆开；G 捡起，使用键扔回去",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "remote-burst",
@@ -38,7 +40,8 @@
       "damage": 32,
       "force": 8,
       "hint": "再按使用键引爆；捡走或击打两次可拆除",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "proximity-burst",
@@ -51,7 +54,8 @@
       "damage": 28,
       "force": 7,
       "hint": "地面进入警戒圈 0.6 秒后爆开；离开或跳过可躲避",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "cone-burst",
@@ -64,7 +68,8 @@
       "damage": 30,
       "force": 8,
       "hint": "向前 60° 冲击；侧后方安全，使用者会后退",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "sticky-burst",
@@ -77,7 +82,8 @@
       "damage": 28,
       "force": 7,
       "hint": "命中后黏住；按住 Q 0.7 秒可撕掉",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "vacuum-burst",
@@ -90,7 +96,8 @@
       "damage": 30,
       "force": 7,
       "hint": "落地先吸入 0.5 秒再爆开；移动离开或击打拆除",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "relay-burst",
@@ -103,7 +110,8 @@
       "damage": 24,
       "force": 6,
       "hint": "连放最多 3 个；只在相邻 4 米内接力，可搬走中间节点",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "cluster-burst",
@@ -116,7 +124,8 @@
       "damage": 12,
       "force": 2.6,
       "hint": "三个落点分别预警、分别爆开；总冲力受限",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "ring-burst",
@@ -129,7 +138,8 @@
       "damage": 28,
       "force": 7,
       "hint": "冲击环沿地面扩散；跳过薄环可躲开",
-      "family": "blast"
+      "family": "blast",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "spring-pad",
@@ -142,7 +152,8 @@
       "damage": 0,
       "force": 2,
       "hint": "F 放弹床，所有人可踩；可绕开或击打两次拆除",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "uppercut-piston",
@@ -155,7 +166,8 @@
       "damage": 18,
       "force": 2,
       "hint": "近距离向上顶起；侧绕避开，落点可预测",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "pogo-hop",
@@ -168,7 +180,8 @@
       "damage": 0,
       "force": 0,
       "hint": "落地自动再跳；空中不能使用或吞噬，Q 停止",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "inflate-shove",
@@ -181,7 +194,8 @@
       "damage": 0,
       "force": 3,
       "hint": "前摇可被打断；短时撑大挤开周围人，自己被反推",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "stomp-pulse",
@@ -194,7 +208,8 @@
       "damage": 20,
       "force": 5,
       "hint": "先跳起再 F，落地触发一次；跳过脉冲可躲避",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "short-dash",
@@ -207,7 +222,8 @@
       "damage": 0,
       "force": 2,
       "hint": "沿输入方向滑冲；撞人撞墙会停，冲后不能立即吞噬",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "grapple-anchor",
@@ -220,7 +236,8 @@
       "damage": 0,
       "force": 0,
       "hint": "瞄准前方箱子或垃圾桶；Q 松开，锚点被搬走会中断",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "glide-open",
@@ -233,7 +250,8 @@
       "damage": 0,
       "force": 0,
       "hint": "空中 F 减缓下降；不能攻击吞噬，Q 收拢",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "belt-floor",
@@ -246,7 +264,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 放运输带，双方和地面道具都会被运送；跳开或拆除",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "paired-teleport",
@@ -259,7 +278,8 @@
       "damage": 0,
       "force": 0,
       "hint": "两次 F 放入口出口，主动走进后 0.6 秒传送；Q 取消",
-      "family": "movement"
+      "family": "movement",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "wet-trail",
@@ -272,7 +292,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 后走动留下湿迹；松开输入会滑行，跳起脱离",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "sand-sink",
@@ -285,7 +306,8 @@
       "damage": 0,
       "force": 0,
       "hint": "沙地逐渐减速；跳离或绕行恢复",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "sticky-step",
@@ -298,7 +320,8 @@
       "damage": 0,
       "force": 0,
       "hint": "地面迈步才会短停；跳起脱离，喷雨清除",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "fan-volume",
@@ -311,7 +334,8 @@
       "damage": 0,
       "force": 0,
       "hint": "固定锥形风推动人物和松散物；侧绕、墙挡、拆风扇",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "loose-whirlpool",
@@ -324,7 +348,8 @@
       "damage": 0,
       "force": 0,
       "hint": "仅旋转推动地面道具；角色不受吸力，抓起即可脱离",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "tractor-loose",
@@ -337,7 +362,8 @@
       "damage": 0,
       "force": 0,
       "hint": "吸近地面道具后停住；不自动回收，抓起或拆线圈",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "polarity-push",
@@ -350,7 +376,8 @@
       "damage": 0,
       "force": 0,
       "hint": "瞄准一个公共箱桶，预告后推开；抓住目标使其失效",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "item-push-wave",
@@ -363,7 +390,8 @@
       "damage": 0,
       "force": 0,
       "hint": "低波只推动地面道具，人物不被推；抓起或高处可避",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "clean-rain",
@@ -376,7 +404,8 @@
       "damage": 0,
       "force": 0,
       "hint": "前方喷雨清掉胶和黏附爆风；不删除 Persona 生命",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "flame-fan",
@@ -389,7 +418,8 @@
       "damage": 12,
       "force": 2,
       "hint": "前方两次轻削韧、只推一次；侧绕或墙体挡火",
-      "family": "field"
+      "family": "field",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "front-shield",
@@ -402,7 +432,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 举盾挡两次正面弹体；侧后方 / 近战 / 抓取可破",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "timed-reflect",
@@ -415,7 +446,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 后短窗反射首枚弹体；伤害不免近战，失败有硬直",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "ground-anchor",
@@ -428,7 +460,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 定住水平拖拽；不能走跳，近战削韧与竖直击飞有效",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "impact-bank",
@@ -441,7 +474,8 @@
       "damage": 0,
       "force": 6,
       "hint": "吸首个非致倒水平冲量，F 再用返还；正常削韧且只存一次",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "ribbon-cover",
@@ -454,7 +488,8 @@
       "damage": 0,
       "force": 0,
       "hint": "挡一次后方弹体；正面、近战和抓取有效",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "recover-screen",
@@ -467,7 +502,8 @@
       "damage": 0,
       "force": 0,
       "hint": "地面屏挡一枚穿面的弹体，双方可走穿；不加速回收",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "calm-dome",
@@ -480,7 +516,8 @@
       "damage": 0,
       "force": 0,
       "hint": "穿过罩面的弹体水平推力降至35%；削韧、竖直与抓取保持",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "wind-deflector",
@@ -493,7 +530,8 @@
       "damage": 0,
       "force": 0,
       "hint": "前方扇风转偏弹体一次；归属不变，不推人物，不挡爆风",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "rhythm-gate",
@@ -506,7 +544,8 @@
       "damage": 0,
       "force": 0,
       "hint": "每秒开0.35秒，其余时段挡弹；双方走穿，按节拍选时机",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "sponge-dry",
@@ -519,7 +558,8 @@
       "damage": 0,
       "force": 0,
       "hint": "吸掉邻近最多两片湿迹；对胶无效，吸满消散，可两击拆",
-      "family": "guard"
+      "family": "guard",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "own-item-beacon",
@@ -532,7 +572,9 @@
       "damage": 0,
       "force": 0,
       "hint": "F 只给本人指向最近的自己的地面生命；仍需原回收操作",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": false,
+      "auditReason": "保留有用的私有定位辅助，但不把物品信息显示当成独立对抗机制计入100种"
     },
     {
       "id": "tongs-place",
@@ -545,7 +587,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 把附近地面生命移到身侧；受击打断，不回收不改原主",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "carry-cradle",
@@ -558,7 +601,8 @@
       "damage": 0,
       "force": 0,
       "hint": "盘最多载两件地面生命；G 搬盘减速，旁人仍能直接回收或吞噬",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "loose-radar",
@@ -571,7 +615,9 @@
       "damage": 0,
       "force": 0,
       "hint": "F 给本人标近处可见地面物，最多六件；墙后 / 持有 / 库存不显示",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": false,
+      "auditReason": "保留有用的私有定位辅助，但不把物品信息显示当成独立对抗机制计入100种"
     },
     {
       "id": "public-hot-potato",
@@ -584,7 +630,8 @@
       "damage": 20,
       "force": 3,
       "hint": "G 抓公共包；F 邀请别人 G 自愿接，再 F 扔出，Q 丢地；超时小爆风",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "rescue-tow",
@@ -597,7 +644,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 缓拖自己最近的地面生命；别人抓起 / 隔墙断，最后仍需 E 回收",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "float-lift",
@@ -610,7 +658,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 将最近地面生命托高0.6米，仍可被正常回收吞噬；持有即泡破",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "mischief-swap-props",
@@ -623,7 +672,8 @@
       "damage": 0,
       "force": 0,
       "hint": "预告0.6秒后交换两个无人持有的公共物；人物与生命不参与，拿走取消",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "gentle-push-clear",
@@ -636,7 +686,8 @@
       "damage": 0,
       "force": 2,
       "hint": "F 轻推附近倒地角色向安全平地；不削韧、不改起身时间、不能推向边缘",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "trip-line",
@@ -649,7 +700,8 @@
       "damage": 4,
       "force": 0.7,
       "hint": "F 放两端，跑步跨线轻失衡一次；步行 / 跳过安全，两击拆端点",
-      "family": "loot"
+      "family": "loot",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "step-switch",
@@ -662,7 +714,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 放压力板和风扇，任何人站板上才吹；离板即停，跳开或拆除",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "weight-switch",
@@ -675,7 +728,8 @@
       "damage": 0,
       "force": 0,
       "hint": "仅公共箱桶压板开门；人踩或地面生命无效，搬箱关门，重叠延合",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "turntable-wheel",
@@ -688,7 +742,8 @@
       "damage": 0,
       "force": 0,
       "hint": "到摇柄按 E 开始持续摇转台；走动 / 受击 / Q 停止，旁人可抢摇",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "timed-door",
@@ -701,7 +756,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 放门，再 F 开1秒；所有人可 E 按门侧按钮，有人或物重叠延后关闭",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "rotating-sweep",
@@ -714,7 +770,8 @@
       "damage": 5,
       "force": 1.5,
       "hint": "预告0.7秒后低杆扫动；跳过安全，接触1.2秒免重复，根部可拆",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "balance-plank",
@@ -727,7 +784,8 @@
       "damage": 0,
       "force": 0,
       "hint": "角色 / 公共箱桶位置改变倾角，上限12度；放物配平 / 跳离，生命不增加重量",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "floor-elevator",
@@ -740,7 +798,8 @@
       "damage": 0,
       "force": 0,
       "hint": "任何人 E 按侧按钮可启动一次升1.2米再返回，携带地面生命但不改原主",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "rotary-gate",
@@ -753,7 +812,8 @@
       "damage": 0,
       "force": 0,
       "hint": "走向杆推动十字门转动，另一臂带动公共箱桶；停推即刹，跳过或绕开",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "wind-up-cart",
@@ -766,7 +826,8 @@
       "damage": 0,
       "force": 0,
       "hint": "F 放车，再 F 放行；G 可搬车重新朝向，撞公共门 / 升降按钮一次后停，可 Q 放车",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "seesaw-flip",
@@ -779,7 +840,8 @@
       "damage": 0,
       "force": 0,
       "hint": "两端都有人时较重一端触发另一端起跳；公共箱桶可加重，轻端须站稳，跳离可避",
-      "family": "machinery"
+      "family": "machinery",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "lasso-loop",
@@ -792,7 +854,8 @@
       "radius": 3.8,
       "damage": 0,
       "force": 0,
-      "hint": "前方近角色套索，双方有输入并拉扯；按住Q、急转或绕墙断绳"
+      "hint": "前方近角色套索，双方有输入并拉扯；按住Q、急转或绕墙断绳",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "break-net",
@@ -805,7 +868,8 @@
       "radius": 1.1,
       "damage": 0,
       "force": 0,
-      "hint": "投网命中后仍可网内移动攻击；按住Q或两击拆网"
+      "hint": "投网命中后仍可网内移动攻击；按住Q或两击拆网",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "bubble-lift",
@@ -818,7 +882,8 @@
       "radius": 3.5,
       "damage": 0,
       "force": 0,
-      "hint": "泡泡接触后缓升0.7米，可自由漂移；按住Q、攻击或抓取戳破"
+      "hint": "泡泡接触后缓升0.7米，可自由漂移；按住Q、攻击或抓取戳破",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "gapped-cage",
@@ -831,7 +896,8 @@
       "radius": 2,
       "damage": 0,
       "force": 0,
-      "hint": "U形三面软笼，前方绿色出口；可跳出，两击拆除"
+      "hint": "U形三面软笼，前方绿色出口；可跳出，两击拆除",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "water-jet",
@@ -844,7 +910,8 @@
       "radius": 4,
       "damage": 0,
       "force": 0,
-      "hint": "持续前方推角色与地面物，自己承受反向后坐；侧绕、墙挡、Q停止"
+      "hint": "持续前方推角色与地面物，自己承受反向后坐；侧绕、墙挡、Q停止",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "team-sling",
@@ -857,7 +924,8 @@
       "radius": 2,
       "damage": 0,
       "force": 0,
-      "hint": "放置者留位，第二人在支架按E同意；预告0.45秒后抛举，离开/Q取消"
+      "hint": "放置者留位，第二人在支架按E同意；预告0.45秒后抛举，离开/Q取消",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "body-bank",
@@ -870,7 +938,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "先移动，下一次碰墙或人物按法线反弹自己，随后0.2秒硬直"
+      "hint": "先移动，下一次碰墙或人物按法线反弹自己，随后0.2秒硬直",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "momentum-pass",
@@ -883,7 +952,8 @@
       "radius": 3,
       "damage": 0,
       "force": 0,
-      "hint": "滚动物撞公共箱桶传70%动量、原球减速；不推真实生命和人物"
+      "hint": "滚动物撞公共箱桶传70%动量、原球减速；不推真实生命和人物",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "skate-arc",
@@ -896,7 +966,8 @@
       "radius": 2,
       "damage": 0,
       "force": 0,
-      "hint": "惯性前进，输入55度/秒弧线转向；Q刹车，撞人双方小失衡"
+      "hint": "惯性前进，输入55度/秒弧线转向；Q刹车，撞人双方小失衡",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "anchor-swing",
@@ -909,7 +980,8 @@
       "radius": 5,
       "damage": 0,
       "force": 0,
-      "hint": "选静止公共箱桶作锚，切线输入绕锚摆荡；Q松绳、搬锚或碰障碍结束"
+      "hint": "选静止公共箱桶作锚，切线输入绕锚摆荡；Q松绳、搬锚或碰障碍结束",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "shot-portal",
@@ -922,7 +994,8 @@
       "radius": 0.8,
       "damage": 0,
       "force": 0,
-      "hint": "放两个2–8米光框，仅普通攻击弹体穿门；每对仅一次，两击拆除"
+      "hint": "放两个2–8米光框，仅普通攻击弹体穿门；每对仅一次，两击拆除",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "pixel-stamp",
@@ -935,7 +1008,8 @@
       "radius": 1.5,
       "damage": 0,
       "force": 0,
-      "hint": "3×3凸起亮格每秒翻转，亮格弹跳暗格安全；可拆"
+      "hint": "3×3凸起亮格每秒翻转，亮格弹跳暗格安全；可拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "vector-arrow",
@@ -948,7 +1022,8 @@
       "radius": 1.6,
       "damage": 0,
       "force": 0,
-      "hint": "普通弹体进入转向场按固定箭头转向，速度守恒，每颗仅转一次"
+      "hint": "普通弹体进入转向场按固定箭头转向，速度守恒，每颗仅转一次",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "quantum-echo",
@@ -961,7 +1036,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "录1秒行走路径，回响只推普通公共箱桶；Q取消"
+      "hint": "录1秒行走路径，回响只推普通公共箱桶；Q取消",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "light-lattice",
@@ -974,7 +1050,8 @@
       "radius": 1.5,
       "damage": 0,
       "force": 0,
-      "hint": "光栅拦截普通无主箱桶，人、弹体、Persona可穿；两击拆"
+      "hint": "光栅拦截普通无主箱桶，人、弹体、Persona可穿；两击拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "virtual-gravity",
@@ -987,7 +1064,8 @@
       "radius": 2.4,
       "damage": 0,
       "force": 0,
-      "hint": "局部侧向力只作用普通无主公共箱桶，速度封顶；可拆"
+      "hint": "局部侧向力只作用普通无主公共箱桶，速度封顶；可拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "solid-shadow",
@@ -1000,7 +1078,8 @@
       "radius": 0.8,
       "damage": 0,
       "force": 0,
-      "hint": "空地放0.5米高支点，仅人物可站，消失前闪烁0.8秒；两击拆"
+      "hint": "空地放0.5米高支点，仅人物可站，消失前闪烁0.8秒；两击拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "weather-vane",
@@ -1013,7 +1092,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "连接已有转台，公共风驱动，无风停止，手摇优先；两击拆"
+      "hint": "连接已有转台，公共风驱动，无风停止，手摇优先；两击拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "heartbeat-tempo",
@@ -1026,7 +1106,8 @@
       "radius": 4,
       "damage": 0,
       "force": 0,
-      "hint": "附近公共按钮每1.4秒有0.25秒可按窗口，玩家移动攻击不受限"
+      "hint": "附近公共按钮每1.4秒有0.25秒可按窗口，玩家移动攻击不受限",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "frost-lock",
@@ -1039,7 +1120,8 @@
       "radius": 4,
       "damage": 0,
       "force": 0,
-      "hint": "最多六处已有湿迹结冰，低刹车高惯性，跳离或海绵擦；无湿迹不耗冷却"
+      "hint": "最多六处已有湿迹结冰，低刹车高惯性，跳离或海绵擦；无湿迹不耗冷却",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "zipline-build",
@@ -1052,7 +1134,8 @@
       "radius": 1.2,
       "damage": 0,
       "force": 0,
-      "hint": "两次F连2–6米锚，双方端点E坐，方向输入可减速、Q松开"
+      "hint": "两次F连2–6米锚，双方端点E坐，方向输入可减速、Q松开",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "wall-cling",
@@ -1065,7 +1148,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "近校园实体墙1.5秒保持原高度、可侧移，跳离/Q、受击或被抓结束"
+      "hint": "近校园实体墙1.5秒保持原高度、可侧移，跳离/Q、受击或被抓结束",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "safety-tether",
@@ -1078,7 +1162,8 @@
       "radius": 6,
       "damage": 0,
       "force": 0,
-      "hint": "地面绑原锚，首次危险下坠拉回，仍掉一件真实生命，断绳后必须回收"
+      "hint": "地面绑原锚，首次危险下坠拉回，仍掉一件真实生命，断绳后必须回收",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "item-scale",
@@ -1091,7 +1176,8 @@
       "radius": 2,
       "damage": 0,
       "force": 0,
-      "hint": "真实Ground Persona压两盘，重盘下降轻盘升起，E取走改变平衡"
+      "hint": "真实Ground Persona压两盘，重盘下降轻盘升起，E取走改变平衡",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "rope-bridge",
@@ -1104,7 +1190,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "两次F连合法锚点，6段实体窄桥支持双向行走和地面物，会小摇晃"
+      "hint": "两次F连合法锚点，6段实体窄桥支持双向行走和地面物，会小摇晃",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "public-clamp",
@@ -1117,7 +1204,8 @@
       "radius": 1,
       "damage": 0,
       "force": 0,
-      "hint": "固定一件未持有普通箱桶，抵挡风和吸力；抓起立即解夹，两击拆"
+      "hint": "固定一件未持有普通箱桶，抵挡风和吸力；抓起立即解夹，两击拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "projectile-fork",
@@ -1130,7 +1218,8 @@
       "radius": 1.1,
       "damage": 0,
       "force": 0,
-      "hint": "普通攻击弹体前面分两条±25度路线，各半伤害冲力，不能再分裂"
+      "hint": "普通攻击弹体前面分两条±25度路线，各半伤害冲力，不能再分裂",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "shot-vault",
@@ -1143,7 +1232,8 @@
       "radius": 1.1,
       "damage": 0,
       "force": 0,
-      "hint": "捕获一颗普通弹体0.65秒，附近任意玩家E瞄准释放，保留原攻击者和已命中记录"
+      "hint": "捕获一颗普通弹体0.65秒，附近任意玩家E瞄准释放，保留原攻击者和已命中记录",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "public-twin-rope",
@@ -1156,7 +1246,8 @@
       "radius": 5,
       "damage": 0,
       "force": 0,
-      "hint": "两件无主公共箱桶系绳，拉一个带另一个；墙断、6米断、两击拆"
+      "hint": "两件无主公共箱桶系绳，拉一个带另一个；墙断、6米断、两击拆",
+      "countsTowardDistinctMechanics": true
     },
     {
       "id": "consent-swap",
@@ -1169,7 +1260,92 @@
       "radius": 2,
       "damage": 0,
       "force": 0,
-      "hint": "两人两侧E同意，0.45秒预告交换站位，移动/Q/受击/落点堵塞取消"
+      "hint": "两人两侧E同意，0.45秒预告交换站位，移动/Q/受击/落点堵塞取消",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "crumble-tiles",
+      "visualId": "origami-crane",
+      "label": "踩后消失地块",
+      "family": "arena",
+      "cooldown": 14,
+      "windup": 0.3,
+      "lifetime": 8,
+      "radius": 2.6,
+      "damage": 0,
+      "force": 0,
+      "hint": "六片实体纸台，落脚后0.45秒变黄再消失；跳离避开，每片不复生",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "low-gravity-zone",
+      "visualId": "globe",
+      "label": "公共低重力区",
+      "family": "arena",
+      "cooldown": 13,
+      "windup": 0.3,
+      "lifetime": 7,
+      "radius": 3,
+      "damage": 0,
+      "force": 0,
+      "hint": "区内人物和松散物重力降至35%，跳跃更高；出区、墙挡、两击拆恢复",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "cargo-winch",
+      "visualId": "fiber-spool",
+      "label": "公共载物绞盘",
+      "family": "arena",
+      "cooldown": 14,
+      "windup": 0.3,
+      "lifetime": 9,
+      "radius": 2,
+      "damage": 0,
+      "force": 0,
+      "hint": "E接管绞盘，W/S升降原公共箱桶，Q/E松手；任何人G可取走",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "public-launcher",
+      "visualId": "rocket-model",
+      "label": "公共物发射器",
+      "family": "arena",
+      "cooldown": 15,
+      "windup": 0.3,
+      "lifetime": 10,
+      "radius": 2,
+      "damage": 0,
+      "force": 0,
+      "hint": "持普通箱桶近处E装载，空手E瞄准蓄力后F发射；G可夺载物，Q停瞄准",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "item-sorter",
+      "visualId": "piano-keyboard",
+      "label": "原主分流台",
+      "family": "arena",
+      "cooldown": 13,
+      "windup": 0.3,
+      "lifetime": 7,
+      "radius": 2,
+      "damage": 0,
+      "force": 0,
+      "hint": "地面真实Persona按原主分向左右，每件一次；任意玩家E反转，不回收不吞噬",
+      "countsTowardDistinctMechanics": true
+    },
+    {
+      "id": "cooperative-pump",
+      "visualId": "balloon-dog",
+      "label": "交替充气台",
+      "family": "arena",
+      "cooldown": 14,
+      "windup": 0.3,
+      "lifetime": 9,
+      "radius": 2,
+      "damage": 0,
+      "force": 0,
+      "hint": "两人两侧交替E充气升台，单人连续按无效；停泵漏气，平台托人和原道具",
+      "countsTowardDistinctMechanics": true
     }
   ]
 }

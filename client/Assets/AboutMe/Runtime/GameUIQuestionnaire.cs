@@ -41,7 +41,9 @@ namespace AboutMe
             {
                 var selected=new List<string>();
                 foreach(var label in question.labels){if(answers!=null&&index<answers.Length&&answers[index])selected.Add(label);index++;}
-                if(selected.Count>0)sentences.Add(question.prefix+string.Join("、",selected)+"。");
+                if(selected.Count>0)sentences.Add(GameLocalization.Text(question.prefix)+
+                    string.Join(GameLocalization.English?", ":"、",selected.Select(GameLocalization.Text))+
+                    (GameLocalization.English?".":"。"));
             }
             return string.Join("\n",sentences);
         }
@@ -52,7 +54,8 @@ namespace AboutMe
             var added=(draft??"").Split(new[]{'。','；','\n','\r'},StringSplitOptions.RemoveEmptyEntries)
                 .Select(s=>s.Trim()).Where(s=>s.Length>0).Distinct().Where(s=>!original.Contains(s)).ToArray();
             if(added.Length==0)return original;
-            return original+(original.Length==0||original.EndsWith("\n")?"":"\n")+string.Join("。\n",added)+"。";
+            return original+(original.Length==0||original.EndsWith("\n")?"":"\n")+string.Join("\n",added.Select(s=>
+                s.EndsWith(".")||s.EndsWith("!")||s.EndsWith("?")||s.EndsWith("！")||s.EndsWith("？")?s:s+"。"));
         }
 
         void OpenIntroductionQuestionnaire()

@@ -45,7 +45,7 @@ namespace AboutMe
             ArtText(multiplayerCard,"2–6 人 · 两人即可开局",40,496,650,40,20,UITheme.Muted);
             ArtButton(multiplayerCard,"练习道具（非 AI）",40,600,230,56,LoadPracticePersona,UITheme.Yellow,UITheme.Ink);
             ArtButton(multiplayerCard,"自我介绍",292,600,210,56,()=>ShowPage(MenuPage.Presets),UITheme.Purple,UITheme.Ink);
-            ArtButton(multiplayerCard,"连接设置",524,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
+            ArtButton(multiplayerCard,"设置",524,600,210,56,OpenSettings,UITheme.Field,UITheme.Ink,"settings");
             BuildDraftLibrary();ApplyAdaptiveLayout(true);
             LoadCachedProfile();ShowPage(MenuPage.Main);statusPill.SetAsLastSibling();
         }
@@ -120,7 +120,7 @@ namespace AboutMe
         }
         void RefreshMenuSummary()
         {
-            string summary=profile?.personas?.Length>0?(net.Sample?"练习角色（非 AI）":"当前角色："+profile.nickname)+"\nPersona × "+profile.personas.Length+"\n"+string.Join(" / ",profile.personas.Select(p=>p.name)):"还没有 Persona。\n先填写自我介绍，或使用练习道具开始。";
+            string summary=profile?.personas?.Length>0?(net.Sample?"练习角色（非 AI）":"当前角色："+GameLocalization.Protect(profile.nickname))+"\nPersona × "+profile.personas.Length+"\n"+string.Join(" / ",profile.personas.Select(p=>GameLocalization.PersonaName(p))):"还没有 Persona。\n先填写自我介绍，或使用练习道具开始。";
             if(soloSummary)soloSummary.text=summary;if(multiSummary)multiSummary.text=summary;
             if(soloStart)soloStart.interactable=profile?.personas?.Length>0&&!busy;
         }
@@ -214,7 +214,7 @@ namespace AboutMe
             int i=0;foreach(var d in drafts.items){string id=d.id;ArtButton(draftList,(d.id==drafts.selected?"●  ":"")+d.name,8,8+i++*66,690,54,()=>{if(!busy)SelectDraft(id);},d.id==drafts.selected?UITheme.Mint:UITheme.Paper,UITheme.Ink);}
             draftList.sizeDelta=new Vector2(710,Mathf.Max(300,16+i*66));draftHeading.text="已保存 "+drafts.items.Count+" 份 · 点击切换";
         }
-        static string ShortPersonaName(string name)=>string.IsNullOrEmpty(name)?"—":name.Length<=4?name:name.Substring(0,3)+"…";
+        static string ShortPersonaName(string name)=>string.IsNullOrEmpty(name)?"—":name.Length<=(GameLocalization.English?16:4)?name:name.Substring(0,GameLocalization.English?15:3)+"…";
         void OnApplicationPause(bool paused){if(paused){SaveDraft(false);ResetMovement();if(net)Send("cancel");}}
         void OnApplicationQuit(){SaveDraft(false);}
     }

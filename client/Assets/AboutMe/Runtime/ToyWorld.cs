@@ -42,7 +42,7 @@ namespace AboutMe
                     Shape("disc",PrimitiveType.Cylinder,t,Vector3.zero,new Vector3(.8f,.08f,.8f),color);
                     var crest=Shape("crest",PrimitiveType.Cylinder,t,Vector3.up*.095f,new Vector3(.48f,.018f,.48f),"#FFF1D2");
                     var school=new GameObject("school name");school.transform.SetParent(t,false);school.transform.localPosition=new Vector3(0,.122f,0);school.transform.localRotation=Quaternion.Euler(90,0,0);
-                    var schoolText=school.AddComponent<TextMesh>();var shortName=(label??"").Replace("校徽圆盘","").Replace("校徽","");if(shortName.Length>6)shortName=shortName.Substring(0,6);
+                    var schoolText=GameLocalization.AddMesh(school);var shortName=(label??"").Replace("校徽圆盘","").Replace("校徽","");if(shortName.Length>6)shortName=shortName.Substring(0,6);
                     schoolText.text=shortName;schoolText.anchor=TextAnchor.MiddleCenter;schoolText.alignment=TextAlignment.Center;schoolText.characterSize=.075f;schoolText.fontSize=52;schoolText.color=ColorOf("#263248");
                     var schoolFont=Resources.Load<Font>("AboutMeFont");if(schoolFont){schoolText.font=schoolFont;school.GetComponent<MeshRenderer>().sharedMaterial=schoolFont.material;}
                     if(UniversityCrestTexture.ValidPath(emblemPath))UniversityCrestTexture.Attach(t,emblemPath,school);
