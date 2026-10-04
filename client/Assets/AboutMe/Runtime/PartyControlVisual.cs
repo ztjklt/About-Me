@@ -10,7 +10,7 @@ namespace AboutMe
         {if(!rope){var go=new GameObject("Public control tether");go.transform.SetParent(transform,false);rope=go.AddComponent<LineRenderer>();rope.sharedMaterial=warningMaterial;rope.startWidth=rope.endWidth=.065f;rope.useWorldSpace=true;}rope.gameObject.SetActive(true);rope.loop=loop;rope.positionCount=points.Length;rope.SetPositions(points);rope.startColor=rope.endColor=color;}
         void PresentControl(EffectState e,PartyMechanic d,float now,Camera camera,Snapshot state)
         {
-            var color=e.stage=="attached"?new Color(.9f,.4f,.18f):new Color(.2f,.65f,.9f);color.a=.92f;ring.startColor=ring.endColor=color;
+            var color=d.id=="bubble-lift"?new Color(1,.56f,.75f):e.stage=="attached"?new Color(.9f,.4f,.18f):new Color(.2f,.65f,.9f);color.a=.92f;ring.startColor=ring.endColor=color;
             float y=CampusGeometry.Floor(e.position,.1f)+.06f-e.position.y;ring.positionCount=64;ring.loop=true;
             for(int i=0;i<64;i++){float a=i*Mathf.PI*2/64;ring.SetPosition(i,new Vector3(Mathf.Cos(a)*e.radius,y,Mathf.Sin(a)*e.radius));}
             ring.gameObject.SetActive(e.stage!="flying"&&d.id!="water-jet"&&d.id!="anchor-swing"&&d.id!="body-bank");
@@ -22,8 +22,7 @@ namespace AboutMe
             {var anchor=state.props.FirstOrDefault(p=>p.id==e.targetId);if(anchor!=null&&owner!=null)ControlRope(new[]{owner.position+Vector3.up*.2f,anchor.position},color);}
             if(d.id=="break-net"&&e.stage=="attached")
             {var points=new Vector3[17];for(int i=0;i<16;i++){float a=i*Mathf.PI*2/16;points[i]=e.position+new Vector3(Mathf.Cos(a)*e.radius,Mathf.Sin(i*Mathf.PI/2)*.35f+.4f,Mathf.Sin(a)*e.radius);}points[16]=points[0];ControlRope(points,color);}
-            if(d.id=="bubble-lift"&&target!=null)
-            {model.transform.localPosition=Vector3.up*.9f;model.transform.localScale=Vector3.one*.65f;var points=Enumerable.Range(0,33).Select(i=>target.position+new Vector3(Mathf.Cos(i*Mathf.PI*2/32)*.85f,Mathf.Sin(i*Mathf.PI*2/32)*.85f+.25f,0)).ToArray();ControlRope(points,color);}
+            if(d.id=="bubble-lift"){model.SetActive(false);ring.gameObject.SetActive(false);PresentFriendlyBubble(e,target,camera);}
             if(d.id=="gapped-cage")
             {
                 var boxes=Match.MachineShapes(e).ToArray();if(controlParts==null)controlParts=boxes.Select(x=>ToyFactory.Shape("U cage with open front",PrimitiveType.Cube,transform,Vector3.zero,Vector3.one,"#77BDDB")).ToArray();

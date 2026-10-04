@@ -256,7 +256,7 @@ namespace AboutMe
         void BuildStatus()
         {
             statusPill=ArtPanel(artboard,"Status toast",46,838,650,46,UITheme.Paper,true,true);statusSurface=statusPill.GetComponent<Image>();
-            statusPill.gameObject.AddComponent<UIPulse>();ArtIcon(statusPill,"status",14,9,28,UITheme.Ink);status=ArtText(statusPill,"",52,4,582,38,15,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);statusPill.gameObject.SetActive(false);
+            statusPill.gameObject.AddComponent<UIPulse>();ArtIcon(statusPill,"status",14,9,28,UITheme.Ink);status=ArtText(statusPill,"",52,4,582,38,15,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);status.horizontalOverflow=HorizontalWrapMode.Wrap;status.resizeTextForBestFit=true;status.resizeTextMinSize=10;status.resizeTextMaxSize=15;statusPill.gameObject.SetActive(false);
         }
 
         void BuildArtTouch()
@@ -413,7 +413,7 @@ namespace AboutMe
 
         void UpdateStatusVisual()
         {
-            string value=net?.Status??"";if(value==lastStatus)return;lastStatus=value;status.text=value;statusPill.gameObject.SetActive(!string.IsNullOrEmpty(value));if(string.IsNullOrEmpty(value))return;
+            string value=net?.Status??"";if(net?.State!=null&&value.StartsWith("能力已选择")){net.Status="";value="";}if(value==lastStatus)return;lastStatus=value;status.text=value;statusPill.gameObject.SetActive(!string.IsNullOrEmpty(value));if(string.IsNullOrEmpty(value))return;
             Color color=UITheme.Paper;
             if(value.Contains("失败")||value.Contains("错误")||value.Contains("无效")||value.Contains("没有")||value.Contains("尚未"))color=UITheme.Red;
             else if(value.Contains("正在")||value.Contains("连接"))color=UITheme.Purple;

@@ -164,7 +164,7 @@ namespace AboutMe
                 if(!actors.TryGetValue(p.id,out var actor)){actor=new ToyActor(p.id,p.color,p.outfit,actorRoot,p.appearance);actor.root.transform.position=p.position;actors[p.id]=actor;}
                 if(state.eaten!=null){var consumed=state.eaten.LastOrDefault(x=>x.eaterId==p.id);if(consumed!=null)actor.ConfirmSwallow(consumed.instanceId);}
                 actor.Draw(p,ViewCamera,state.simulationTime);
-                var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId;
+                var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId+"|"+p.equippedColor;
                 if(!cameraSkins.TryGetValue(p.id,out var cached)||cached.skin!=actor.Skin||cached.equipped!=equipmentKey)
                     cameraSkins[p.id]=(actor.Skin,equipmentKey,actor.root.GetComponentsInChildren<Renderer>(true),cached.hidden);
             }

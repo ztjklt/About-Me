@@ -28,14 +28,14 @@ namespace AboutMe
         IEnumerator Run()
         {
             yield return new WaitForSecondsRealtime(1);ui=GameUI.UI;net=GameNetwork.Game;world=FindObjectOfType<ToyWorld>();
-            GameLocalization.SetEnglish(false);var original="  我的性格是热情；我喜欢的人物表情是友好微笑；\n我的 MBTI 是 ENFP；我喜欢篮球。  ";Get<InputField>("introduction").text=original;
-            var fixture=JsonUtility.FromJson<Profile>(File.ReadAllText(Path.Combine(output,"profile-fixture.json")));Set("profile",fixture);net.Sample=false;
+            GameLocalization.SetEnglish(false);var original="我的性格是热情；我喜欢的人物表情是友好微笑；我的 MBTI 是 ENFP；我喜欢篮球。";Get<InputField>("introduction").text=original;
+            var fixture=JsonUtility.FromJson<Profile>(File.ReadAllText(Path.Combine(output,"profile-fixture.json")));Set("profile",fixture);Get<InputField>("nickname").text=fixture.nickname;net.Sample=false;
             Call("DisplayGenerationTerms",fixture.generationTerms,"complete");Call("RefreshSavedCharacterCard",true);yield return null;
             Check(fixture.personas.Any(a=>a.wordText=="热情")&&fixture.personas.Any(a=>a.wordText=="友好微笑"),"API validated heat and friendly-smile fixture assets available");
             var model=Get<ToyActor>("savedCharacterActor").held;var mesh=model.GetComponent<MeshFilter>().sharedMesh;
             Check(mesh.bounds.size.z>=.159f&&model.GetComponentsInChildren<TextMesh>().Length==0,"saved profile preview uses actual caps and sidewall mesh with thickness");
             Check(model.GetComponent<BoxCollider>()!=null,"word preview carries bounded collision geometry");yield return Shot("introduction-words-zh");
-            Call("OpenIntroductionQuestionnaire");Call("ToggleQuestionnaireAnswer",54);Call("ToggleQuestionnaireAnswer",70);Call("CreateQuestionnaireDraft");
+            Call("OpenIntroductionQuestionnaire");Call("ToggleQuestionnaireAnswer",GameUI.IntroductionQuestions.Take(13).Sum(q=>q.labels.Length));Call("ToggleQuestionnaireAnswer",GameUI.IntroductionQuestions.Take(14).Sum(q=>q.labels.Length));Call("CreateQuestionnaireDraft");
             var draft=Get<InputField>("questionnaireDraft");Check(draft.text.Contains("ENFP"),"optional MBTI selection included in editable draft");
             Check(Get<InputField>("introduction").text==original&&ReferenceEquals(Get<Profile>("profile"),fixture),"MBTI ability draft leaves original and saved Persona unchanged");
             var panel=Get<RectTransform>("introductionQuestionnaire");var form=panel.GetComponentsInChildren<ScrollRect>().First(s=>s.horizontal==false&&s.content.GetComponentsInChildren<Button>().Length>20);form.verticalNormalizedPosition=0;
@@ -58,16 +58,18 @@ namespace AboutMe
                 match.Phase=MatchPhase.Reveal;match.Tick(.02f);match.Time=10;match.Props.Clear();
                 var a=match.Players["w0"];var b=match.Players["w1"];var c=match.Players["w2"];
                 a.position=new Vector3(-6,1,-22);b.position=a.position+Vector3.forward*2;c.position=a.position+Vector3.right*5;a.yaw=0;b.yaw=180;c.yaw=270;foreach(var p in match.Players.Values){p.motorHeight=1;p.lastInput=match.Time;}
-                world.CameraYaw=155;world.CameraPitch=20;
+                world.CameraYaw=135;world.CameraPitch=20;
                 void Input(string id,string action="",string item="",float x=0){var p=match.Players[id];match.Receive(id,new Command{sequence=p.sequence+1,action=action,itemId=item,yaw=p.yaw,x=x});}
                 void Tick(float sec){for(int n=0;n<Mathf.CeilToInt(sec/.02f);n++){foreach(var p in match.Players.Values)Input(p.profile.playerId);match.Tick(.02f);}net.State=match.View("w0");}
-                net.State=match.View("w0");yield return new WaitForSecondsRealtime(.5f);yield return Shot("battle-held-word");
+                Input("w0","equip",match.Items.First(i=>i.ownerId=="w0"&&i.asset.wordText=="热情").id);Tick(.4f);net.State=match.View("w0");yield return new WaitForSecondsRealtime(.5f);yield return Shot("battle-held-word");
                 Input("w0","use_item");Tick(.36f);Check(match.Effects.Any(e=>e.mechanicId=="flame-fan"&&e.visual=="trait-word"),"real held word dispatches formal flame-fan");Tick(.22f);
                 Check(b.stability<100,"formal flame word damages target within cone");yield return new WaitForSecondsRealtime(.1f);yield return Shot("battle-flame-word");
                 match.Drop(a,1);var flame=match.Items.First(i=>i.ownerId=="w0"&&i.asset.wordText=="热情");flame.position=a.position+Vector3.right*.6f;flame.velocity=Vector3.zero;Tick(.02f);
                 Check(!match.Effects.Any(e=>e.mechanicId=="flame-fan"&&e.owner=="w0"),"drop immediately ends holder-dependent flame");yield return null;yield return Shot("battle-dropped-word");
                 var bubble=match.Items.First(i=>i.ownerId=="w0"&&i.asset.wordText=="友好微笑");a.switchUntil=0;Input("w0","equip",bubble.id);b.position=a.position+Vector3.forward*2.4f;b.staggerUntil=0;b.bodyMode=BodyMode.Standing;b.bodyProtectedUntil=0;Tick(.4f);Input("w0","use_item");Tick(.7f);
-                Check(match.Effects.Any(e=>e.mechanicId=="bubble-lift"&&e.stage=="attached"),"formal bubble word attaches and lifts opponent");Check(b.motorHeight>1.15f,"formal bubble lifts actual authoritative character");yield return null;yield return Shot("battle-bubble-word");
+                Check(match.Effects.Any(e=>e.mechanicId=="bubble-lift"&&e.stage=="attached"),"formal bubble word attaches and lifts opponent");Check(b.motorHeight>1.15f,"formal bubble lifts actual authoritative character");yield return null;
+                var actors=(Dictionary<string,ToyActor>)typeof(ToyWorld).GetField("actors",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(world);Check(actors["w0"].held.GetComponent<ThickWordMetadata>().Text=="友好微笑","held model refreshes distinct text within same trait-word visual");
+                Check(!Get<RectTransform>("statusPill").gameObject.activeSelf,"editor pending-confirmation hint cleared on battle entry");yield return Shot("battle-bubble-word");
                 net.State=null;
             }
             using(var perf=new Match("WORD6QA",new MatchRules{revealDuration=.01f,handInterval=9999,finalTime=9999}))
