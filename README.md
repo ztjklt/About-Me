@@ -2,7 +2,7 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前为完整 `playtest-introduction-r3`：紧凑介绍／衣橱、真实角色与Persona预览、13题每题自填、横向小结果卡；直接输入、玩家设置／中英文及274道具／96机制保留。独立端口8088／7788，新独立数据库（不自动迁移旧API账号），启动核对包哈希与匹配服务身份。详见 [R3整合交付](docs/INTRODUCTION_STUDIO_R3_DELIVERY.md)。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-trait-r5`，保留全部R4设置与274道具/96机制，新增真正厚字性格/表情/16可选MBTI、六原能力及8已交付AI模型（衣橱共11选项）。同源Mac/Web Release，独立8091/7791，逐文件hash及配套服务身份核对；详见 [R5交付与验收范围](docs/TRAIT_PERSONA_R5_DELIVERY.md)。
 
 ## 2026-09-24 当前 DS 娘与真实 AI 整合候选
 
