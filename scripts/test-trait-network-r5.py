@@ -59,6 +59,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--api', required=True)
+    parser.add_argument('--ai-skins-catalog', type=Path, default=Path(__file__).resolve().parents[1] / 'shared/ai-skins.json')
     parser.add_argument('--port', type=int, default=7793)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--env-file', type=Path, help='Optional private environment configuration; never copied into evidence')
@@ -96,6 +97,10 @@ def main():
     logs = []
     tokens = []
     try:
+        skin_catalog = json.loads(args.ai_skins_catalog.read_text())
+        published_skins = {row['skin'] for row in skin_catalog['skins']}
+        if len(published_skins) != 10 or not {'gpt-girl', 'gemini-girl'} <= published_skins:
+            raise RuntimeError('Shared AI skin catalog does not match ten published choices')
         health = request(api, '/health')
         if not health.get('traitWordPersonas') or health.get('partyMechanicsCount') != 96:
             raise RuntimeError('API does not match R5 word/96-mechanic capability contract')
@@ -132,6 +137,32 @@ def main():
                 raise RuntimeError('Ability cache update did not preserve identity/save revision')
             result['abilityChange'] = {'playerId': profiles[0]['playerId'], 'assetId': changed['assetId'], 'wordText': '理性',
                 'before': original['abilityId'], 'after': changed['abilityId'], 'beforeRevision': old_revision, 'afterRevision': profiles[0]['revision']}
+        if not args.token_file:
+            result['skinChoices'] = []
+            preference = '我喜欢DeepSeek。我喜欢Claude。我喜欢GPT。我喜欢Gemini。我喜欢Grok。我喜欢Kimi。我喜欢千问。我喜欢MiniMax。我喜欢豆包。我喜欢GLM。'
+            for index, token in enumerate(tokens):
+                profile = profiles[index]
+                if profile.get('characterSkin') != 'normal':
+                    raise RuntimeError('AI preference must not automatically select a character skin')
+                texts = ['热情', '温柔', '专注', '理性', '好奇', '活力'] if index == 0 else ['温柔', '热情', '专注', '理性', '好奇', '活力']
+                source_intro = '。'.join('我的性格是' + text for text in texts) + '。' + preference
+                baseline_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in profile.get('personas', []) if w.get('visualId') == 'trait-word']
+                # First save only the explicitly self-stated preferences. Qualification must leave the normal face selected.
+                qualified = request(api, '/profiles/me/appearance', {'appearance': profile.get('appearance') or {},
+                    'expectedRevision': profile['appearanceRevision'], 'introduction': source_intro}, token=token)
+                qualified = request(api, '/profiles/me', token=token)
+                if qualified.get('characterSkin') != 'normal' or set(qualified.get('unlockedCharacterSkins', [])) != published_skins:
+                    raise RuntimeError('Explicit preferences did not qualify all ten skins while keeping normal selected')
+                chosen = 'gpt-girl' if index == 0 else 'gemini-girl'
+                request(api, '/profiles/me/appearance', {'appearance': qualified.get('appearance') or {},
+                    'expectedRevision': qualified['appearanceRevision'], 'introduction': source_intro, 'characterSkin': chosen}, token=token)
+                saved = request(api, '/profiles/me', token=token)
+                saved_words = [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in saved.get('personas', []) if w.get('visualId') == 'trait-word']
+                if saved.get('characterSkin') != chosen or set(saved.get('unlockedCharacterSkins', [])) != published_skins or saved['appearanceRevision'] <= qualified['appearanceRevision'] or saved_words != baseline_words:
+                    raise RuntimeError('Active AI skin selection was not saved with qualifications and original word assets')
+                profiles[index] = saved
+                result['skinChoices'].append({'playerId': saved['playerId'], 'before': 'normal', 'after': chosen,
+                    'qualificationKeptNormal': True, 'unlockedCharacterSkins': sorted(saved['unlockedCharacterSkins']), 'appearanceRevision': saved['appearanceRevision']})
         if args.qa_token_output:
             private_path = args.qa_token_output.resolve()
             if private_path == out or out in private_path.parents:
@@ -150,11 +181,16 @@ def main():
             required_ability = 'flame-fan' if index == 0 else 'bubble-lift'
             if not any(w['abilityId'] == required_ability for w in words):
                 raise RuntimeError(f'QA identity {index + 1} requires a real generated {required_ability} asset')
-            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in words]}
+            chosen = 'gpt-girl' if index == 0 else 'gemini-girl'
+            if profile.get('characterSkin') != chosen or set(profile.get('unlockedCharacterSkins', [])) != published_skins:
+                raise RuntimeError('QA profiles must retain active GPT/Gemini choices and all ten real qualifications')
+            entry = {'playerId': profile['playerId'], 'revision': profile.get('revision'), 'appearanceRevision': profile.get('appearanceRevision'), 'characterSkin': profile.get('characterSkin'), 'unlockedCharacterSkins': sorted(profile.get('unlockedCharacterSkins', [])), 'words': [{k:w.get(k) for k in ('assetId', 'wordCategory', 'wordText', 'abilityId')} for w in words]}
             if env.get('GAME_SERVER_KEY'):
                 public = request(api, '/internal/verify', {'token': token}, key=env['GAME_SERVER_KEY'])
                 if private_keys(public):
                     raise RuntimeError('Authority verification response leaks private profile fields')
+                if public.get('characterSkin') != profile['characterSkin'] or set(public.get('unlockedCharacterSkins', [])) != published_skins:
+                    raise RuntimeError('Authority verification did not retain verified AI skin and qualifications')
                 entry['authorityPrivacyChecked'] = True
             profile_evidence.append(entry)
         result['profiles'] = profile_evidence
@@ -163,7 +199,7 @@ def main():
             previous = {p['playerId']: p for p in prior['profiles']}
             for entry in profile_evidence:
                 before = previous.get(entry['playerId'])
-                if not before or before['revision'] != entry['revision'] or sorted(before['words'], key=lambda w: w['assetId']) != sorted(entry['words'], key=lambda w: w['assetId']):
+                if not before or any(before.get(key) != entry.get(key) for key in ('revision', 'appearanceRevision', 'characterSkin', 'unlockedCharacterSkins')) or sorted(before['words'], key=lambda w: w['assetId']) != sorted(entry['words'], key=lambda w: w['assetId']):
                     raise RuntimeError('API restart did not retain exact word assets/abilities/revision')
             result.update(passed=True, persistenceVerified=True, baseline=str(args.verify_after_restart.resolve()),
                           scope='Authenticated GET after caller-owned API restart; identical assets, ability IDs and saved revisions; no client/authority run')
@@ -219,6 +255,12 @@ def main():
             raise RuntimeError('Clients did not observe the same room/match/identities')
         if not a.get('reconnectValidated') or not all(r.get('privacyChecked') and r.get('physicalFrames', 0) >= 10 for r in (a, b)):
             raise RuntimeError('Missing actual reconnect/privacy/body pose evidence')
+        expected_skins = {p['playerId']: p['characterSkin'] for p in profile_evidence}
+        for report in (a, b):
+            if {p['playerId']: p['characterSkin'] for p in report.get('playerSkins', [])} != expected_skins:
+                raise RuntimeError('Public client AI skins do not match explicitly saved API choices')
+        if {p['playerId']: p['characterSkin'] for p in a.get('reconnectPlayerSkins', [])} != expected_skins:
+            raise RuntimeError('Reconnect did not retain both verified AI skin choices')
         expected_assets = {(p['playerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for p in profile_evidence for w in p['words']}
         for report in (a, b):
             seen = {(w['ownerId'], w['assetId']): (w['wordCategory'], w['wordText'], w['abilityId']) for w in report['assets']}

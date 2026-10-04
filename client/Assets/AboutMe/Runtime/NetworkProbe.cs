@@ -7,6 +7,9 @@ using UnityEngine;
 namespace AboutMe
 {
     [Serializable] class ProbeEventSnapshot { public int id;public string text;public MatchPhase phase;public float time; }
+    [Serializable] class ProbePlayerSkin { public string playerId,characterSkin; }
+    [Serializable] class ProbeSkinDefinition { public string skin=""; }
+    [Serializable] class ProbeSkinCatalog { public ProbeSkinDefinition[] skins=Array.Empty<ProbeSkinDefinition>(); }
     [Serializable] class WordProbeAsset { public string assetId,instanceId,ownerId,wordCategory,wordText,abilityId; }
     [Serializable] class WordProbeObservation { public string instanceId,ownerId,holderId,state,abilityId;public int ownerRemaining;public float time,cooldown; }
     [Serializable] class WordProbeReport
@@ -15,7 +18,7 @@ namespace AboutMe
         public bool passed,realApiIdentity,privacyChecked,reconnectRequested,reconnectValidated;
         public string playerId,room,matchId,failure;
         public string[] identities,abilityIds,effectAbilityIds;
-        public WordProbeAsset[] assets;public WordProbeObservation[] observations;
+        public WordProbeAsset[] assets;public WordProbeObservation[] observations;public ProbePlayerSkin[] playerSkins,reconnectPlayerSkins;
     }
     // Explicit test client, never substituted for a real person in normal play.
     public class NetworkProbe : MonoBehaviour
@@ -28,6 +31,8 @@ namespace AboutMe
         readonly Dictionary<string,WordProbeAsset> wordAssets=new Dictionary<string,WordProbeAsset>();
         readonly Dictionary<string,string> wordStates=new Dictionary<string,string>();
         readonly HashSet<string> wordOwners=new HashSet<string>(),wordEffects=new HashSet<string>(),groundWords=new HashSet<string>();
+        readonly Dictionary<string,string> playerSkins=new Dictionary<string,string>(),reconnectSkins=new Dictionary<string,string>();
+        HashSet<string> knownSkins;
         readonly List<WordProbeObservation> wordObservations=new List<WordProbeObservation>();
         void Start()
         {
@@ -118,6 +123,13 @@ namespace AboutMe
         bool ObserveWords(Snapshot s)
         {
             if(s.protocolVersion!=TraitAbilityCatalog.ProtocolVersion)return false;
+            if(knownSkins==null){var catalog=Resources.Load<TextAsset>("ai-skins");if(!catalog)return false;var definitions=JsonUtility.FromJson<ProbeSkinCatalog>(catalog.text);if(definitions?.skins==null)return false;knownSkins=new HashSet<string>(definitions.skins.Select(d=>d.skin)){"normal"};}
+            foreach(var player in s.players){
+                if(string.IsNullOrEmpty(player.characterSkin)||!knownSkins.Contains(player.characterSkin))return false;
+                if(playerSkins.TryGetValue(player.id,out var priorSkin)&&priorSkin!=player.characterSkin)return false;
+                playerSkins[player.id]=player.characterSkin;
+                if(reconnected&&!reconnecting)reconnectSkins[player.id]=player.characterSkin;
+            }
             foreach(var item in (s.inventory??Array.Empty<PublicPersonaInstance>()).Concat(s.ground??Array.Empty<PublicPersonaInstance>()).Concat(s.revealed??Array.Empty<PublicPersonaInstance>()))
             {
                 if(item.asset?.visualId!=TraitAbilityCatalog.VisualId)continue;
@@ -171,7 +183,7 @@ namespace AboutMe
             if(string.IsNullOrEmpty(wordOutput))return;
             var r=new WordProbeReport{passed=passed,failure=failure,protocolVersion=s.protocolVersion,physicalFrames=physicalFrames,players=s.players.Length,playerId=s.you,room=s.room,matchId=s.matchId,
                 realApiIdentity=!net.Sample,privacyChecked=privacyChecked,reconnectRequested=reconnectRequested,reconnectValidated=reconnectValidated,useCommands=wordUseCommands,borrowCommands=wordBorrowCommands,
-                groundWordInstances=groundWords.Count,identities=s.players.Select(p=>p.id).ToArray(),assets=wordAssets.Values.OrderBy(a=>a.instanceId).ToArray(),abilityIds=wordAssets.Values.Select(a=>a.abilityId).Distinct().OrderBy(x=>x).ToArray(),effectAbilityIds=wordEffects.OrderBy(x=>x).ToArray(),observations=wordObservations.ToArray()};
+                groundWordInstances=groundWords.Count,identities=s.players.Select(p=>p.id).ToArray(),assets=wordAssets.Values.OrderBy(a=>a.instanceId).ToArray(),abilityIds=wordAssets.Values.Select(a=>a.abilityId).Distinct().OrderBy(x=>x).ToArray(),effectAbilityIds=wordEffects.OrderBy(x=>x).ToArray(),observations=wordObservations.ToArray(),playerSkins=playerSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray(),reconnectPlayerSkins=reconnectSkins.Select(p=>new ProbePlayerSkin{playerId=p.Key,characterSkin=p.Value}).OrderBy(p=>p.playerId).ToArray()};
             File.WriteAllText(wordOutput,JsonUtility.ToJson(r,true));
         }
     }
