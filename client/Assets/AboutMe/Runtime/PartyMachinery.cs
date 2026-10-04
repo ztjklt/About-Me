@@ -25,7 +25,7 @@ namespace AboutMe
     }
     public partial class Match
     {
-        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="gapped-cage"||e.mechanicId=="solid-shadow");
+        bool MachineEffect(EffectState e)=>e.kind=="PartyMechanic"&&e.machine!=null&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||e.mechanicId=="gapped-cage"||e.mechanicId=="solid-shadow"||e.mechanicId=="rope-bridge"||e.mechanicId=="item-scale");
         static bool MachinePlatform(string id)=>id=="turntable-wheel"||id=="balance-plank"||id=="floor-elevator"||id=="seesaw-flip";
         static bool MachineDoor(string id)=>id=="timed-door"||id=="weight-switch";
         public static IEnumerable<MachineBox> MachineShapes(EffectState e,bool previous=false)
@@ -33,6 +33,9 @@ namespace AboutMe
             if(e.machine==null)yield break;var m=e.machine;float angle=previous?m.previousAngle:m.angle,height=previous?m.previousHeight:m.height;
             var yaw=Quaternion.LookRotation(e.velocity);var center=e.position;float baseY=center.y-.15f;
             MachineBox Box(string id,Vector3 offset,Vector3 size,Quaternion turn,bool support=false)=>new MachineBox{id=e.id+"/"+id,center=center+yaw*offset,size=size,rotation=yaw*turn,support=support};
+            if(e.mechanicId=="item-scale")for(int i=0;i<2;i++)yield return Box("scale-pan-"+i,new Vector3(i==0?-1.3f:1.3f,.37f+(i==0?-height:height),0),new Vector3(1.1f,.1f,1.1f),Quaternion.identity,true);
+            if(e.mechanicId=="rope-bridge"&&e.path!=null&&e.path.Length==2)
+            {var delta=e.path[1]-e.path[0];for(int i=0;i<6;i++)yield return new MachineBox{id=e.id+"/bridge-"+i,center=Vector3.Lerp(e.path[0],e.path[1],(i+.5f)/6),rotation=Quaternion.LookRotation(delta)*Quaternion.Euler(0,0,angle),size=new Vector3(1.15f,.1f,delta.magnitude/6+.025f),support=true};}
             if(e.mechanicId=="solid-shadow")yield return Box("player-only-shadow",new Vector3(0,.27f,0),new Vector3(1.6f,.16f,1.6f),Quaternion.identity,true);
             if(e.mechanicId=="gapped-cage")
             {yield return Box("door-back",new Vector3(0,.60f,-1.2f),new Vector3(2.8f,1.2f,.16f),Quaternion.identity);yield return Box("door-left",new Vector3(-1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);yield return Box("door-right",new Vector3(1.4f,.60f,0),new Vector3(.16f,1.2f,2.4f),Quaternion.identity);}

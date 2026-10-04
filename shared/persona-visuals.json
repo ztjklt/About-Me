@@ -4552,6 +4552,82 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "mini-cable-car",
+      "label": "缆车模型",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/mini-cable-car",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#EDB556",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "mechanic-jack",
+      "label": "修车千斤顶",
+      "templateId": "Barricade",
+      "resourcePath": "PersonaProps/mechanic-jack",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#E9816D",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "film-clapper",
+      "label": "电影场记板",
+      "templateId": "Utility",
+      "resourcePath": "PersonaProps/film-clapper",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#263348",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "visualId": "friendship-bracelet",
+      "label": "友谊绳环",
+      "templateId": "Tether",
+      "resourcePath": "PersonaProps/friendship-bracelet",
+      "sourceAssetPath": "",
+      "source": "About Me original assembly geometry",
+      "license": "project-original",
+      "color": "#705CC2",
+      "scale": 1,
+      "groundOffset": 0,
+      "colliderRadius": 0.6,
+      "swallowScale": 1,
+      "grip": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     }
   ]
 }

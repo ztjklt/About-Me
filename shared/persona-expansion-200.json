@@ -1004,7 +1004,7 @@
       "id": "zipline-build",
       "name": "短索道",
       "family": "移动",
-      "status": "proposed_not_implemented",
+      "status": "implemented_authority_and_real_body_verified",
       "trigger": "两次使用在合法近距点设端头",
       "effect": "部署双方可抓住滑行的短索道，端点被拆索道即停",
       "duration": "8秒",
@@ -1040,7 +1040,8 @@
         "max_particles_per_effect": 48,
         "authority_tick_hz": 50,
         "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      },
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
       "id": "glide-open",
@@ -1088,7 +1089,7 @@
       "id": "wall-cling",
       "name": "短时扒墙",
       "family": "移动",
-      "status": "proposed_not_implemented",
+      "status": "implemented_authority_and_real_body_verified",
       "trigger": "近可攀墙使用",
       "effect": "粘住可攀墙并可短距侧移，再跳脱；不上屋顶禁区",
       "duration": "1.5秒",
@@ -1124,7 +1125,8 @@
         "max_particles_per_effect": 48,
         "authority_tick_hz": 50,
         "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      },
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
       "id": "skate-arc",
@@ -1281,48 +1283,6 @@
       "fun_hypothesis": "借空间组合形成聪明瞬间",
       "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
       "visual_feedback": "仅弹体穿门对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
-      "kind": "new_prop_environment_behavior",
-      "counts_toward_100_new_mechanisms": true,
-      "budget": {
-        "max_same_effect_per_owner": 1,
-        "max_total_effects_per_room": 24,
-        "max_dynamic_deployables_per_room": 8,
-        "max_targets_per_tick": 6,
-        "max_chain_segments": 3,
-        "max_particles_per_effect": 48,
-        "authority_tick_hz": 50,
-        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
-    },
-    {
-      "id": "prop-phase",
-      "name": "公共物穿行",
-      "family": "移动",
-      "status": "proposed_not_implemented",
-      "trigger": "使用获得短时公共物相位",
-      "effect": "仅穿过公共小道具碰撞，仍受玩家和校园墙阻挡",
-      "duration": "1.2秒",
-      "cooldown": "10秒",
-      "authority": {
-        "event": "prop_phase_resolved",
-        "state": [
-          "sourceInstanceId",
-          "effectId",
-          "ownerId",
-          "startedAt",
-          "expiresAt",
-          "worldPose",
-          "targets",
-          "charges",
-          "schemaVersion"
-        ],
-        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：仅穿过公共小道具碰撞，仍受玩家和校园墙阻挡"
-      },
-      "cost_and_counter": "不能攻击吞噬；结束若重叠安全推出；非无敌",
-      "playtest_case": "甲穿过公共箱避乙，但被真人丙挡住",
-      "fun_hypothesis": "狭窄通道仍可互动",
-      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
-      "visual_feedback": "公共物穿行对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
       "kind": "new_prop_environment_behavior",
       "counts_toward_100_new_mechanisms": true,
       "budget": {
@@ -2009,48 +1969,6 @@
       }
     },
     {
-      "id": "tilt-board",
-      "name": "局部翻板",
-      "family": "控制",
-      "status": "proposed_not_implemented",
-      "trigger": "部署铰链板，踩另一端或使用打板",
-      "effect": "局部地面倾斜使站上者滑向低端，跳离无效",
-      "duration": "6秒",
-      "cooldown": "12秒",
-      "authority": {
-        "event": "tilt_board_resolved",
-        "state": [
-          "sourceInstanceId",
-          "effectId",
-          "ownerId",
-          "startedAt",
-          "expiresAt",
-          "worldPose",
-          "targets",
-          "charges",
-          "schemaVersion"
-        ],
-        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：局部地面倾斜使站上者滑向低端，跳离无效"
-      },
-      "cost_and_counter": "所有人可反踩；角度封顶；不改变校园基础地形",
-      "playtest_case": "甲翻乙脚下板，丙反踩把甲也摇晃",
-      "fun_hypothesis": "第三者改变战斗局面",
-      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
-      "visual_feedback": "局部翻板对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
-      "kind": "new_prop_environment_behavior",
-      "counts_toward_100_new_mechanisms": true,
-      "budget": {
-        "max_same_effect_per_owner": 1,
-        "max_total_effects_per_room": 24,
-        "max_dynamic_deployables_per_room": 8,
-        "max_targets_per_tick": 6,
-        "max_chain_segments": 3,
-        "max_particles_per_effect": 48,
-        "authority_tick_hz": 50,
-        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
-    },
-    {
       "id": "tractor-loose",
       "name": "磁吸松散物",
       "family": "控制",
@@ -2121,48 +2039,6 @@
       "fun_hypothesis": "准备被识破可反制",
       "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
       "visual_feedback": "排斥标记物对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
-      "kind": "new_prop_environment_behavior",
-      "counts_toward_100_new_mechanisms": true,
-      "budget": {
-        "max_same_effect_per_owner": 1,
-        "max_total_effects_per_room": 24,
-        "max_dynamic_deployables_per_room": 8,
-        "max_targets_per_tick": 6,
-        "max_chain_segments": 3,
-        "max_particles_per_effect": 48,
-        "authority_tick_hz": 50,
-        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
-    },
-    {
-      "id": "orbit-cordon",
-      "name": "旋转软护栏",
-      "family": "控制",
-      "status": "proposed_not_implemented",
-      "trigger": "部署围绕固定点转的单臂",
-      "effect": "接触时横推，按角速度转动但无持续击晕；留大间隙",
-      "duration": "5秒",
-      "cooldown": "13秒",
-      "authority": {
-        "event": "orbit_cordon_resolved",
-        "state": [
-          "sourceInstanceId",
-          "effectId",
-          "ownerId",
-          "startedAt",
-          "expiresAt",
-          "worldPose",
-          "targets",
-          "charges",
-          "schemaVersion"
-        ],
-        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：接触时横推，按角速度转动但无持续击晕；留大间隙"
-      },
-      "cost_and_counter": "碰一次0.8秒免推；根部可拆；跳臂穿行",
-      "playtest_case": "乙等间隙进入中心回收，甲被自家护栏推走",
-      "fun_hypothesis": "进区时机具备可练习性",
-      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
-      "visual_feedback": "旋转软护栏对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
       "kind": "new_prop_environment_behavior",
       "counts_toward_100_new_mechanisms": true,
       "budget": {
@@ -2516,7 +2392,7 @@
       "id": "safety-tether",
       "name": "公共救援绳",
       "family": "防守",
-      "status": "proposed_not_implemented",
+      "status": "implemented_authority_and_real_body_verified",
       "trigger": "使用把自己连到合法近处锚点",
       "effect": "首次越边时被绳拉回边缘而非免掉落；一经触发断绳",
       "duration": "4秒",
@@ -2552,7 +2428,8 @@
         "max_particles_per_effect": 48,
         "authority_tick_hz": 50,
         "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      },
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
       "id": "hurt-release",
@@ -2936,7 +2813,7 @@
       "id": "item-scale",
       "name": "落物天平",
       "family": "抢夺",
-      "status": "proposed_not_implemented",
+      "status": "implemented_authority_and_real_body_verified",
       "trigger": "部署两盘，Ground资产压在一盘",
       "effect": "另一盘升起使另侧资产可接近取走；不生成资产",
       "duration": "7秒",
@@ -2972,7 +2849,8 @@
         "max_particles_per_effect": 48,
         "authority_tick_hz": 50,
         "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      },
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
       "id": "rescue-tow",
@@ -3188,7 +3066,7 @@
       "id": "rope-bridge",
       "name": "临时绳桥",
       "family": "机关",
-      "status": "proposed_not_implemented",
+      "status": "implemented_authority_and_real_body_verified",
       "trigger": "在两个已批准近距桥锚使用",
       "effect": "生成双向可走窄桥，受冲击会摇晃但安全端点固定",
       "duration": "6秒",
@@ -3224,7 +3102,8 @@
         "max_particles_per_effect": 48,
         "authority_tick_hz": 50,
         "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      },
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
       "id": "rotating-sweep",
@@ -4613,88 +4492,64 @@
       }
     },
     {
-      "id": "pride-banner",
-      "name": "自豪公开旗",
-      "family": "情绪",
-      "status": "proposed_not_implemented",
-      "trigger": "使用插立自己的昵称旗",
-      "effect": "附近自己Ground资产投影名字牌便于双方识别，不保护不传送",
-      "duration": "5秒",
-      "cooldown": "8秒",
-      "authority": {
-        "event": "pride_banner_resolved",
-        "state": [
-          "sourceInstanceId",
-          "effectId",
-          "ownerId",
-          "startedAt",
-          "expiresAt",
-          "worldPose",
-          "targets",
-          "charges",
-          "schemaVersion"
-        ],
-        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：附近自己Ground资产投影名字牌便于双方识别，不保护不传送"
-      },
-      "cost_and_counter": "也暴露自己的救援位置；旗2击可拆；无数值成长",
-      "playtest_case": "乙看到甲旗知道谁的游泳板，决定先吞甲的",
-      "fun_hypothesis": "强化社交笑点和选择",
-      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
-      "visual_feedback": "自豪公开旗对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "id": "public-clamp",
+      "name": "公共物固定夹",
+      "family": "联动",
+      "status": "implemented_authority_and_real_body_verified",
+      "trigger": "固定一件未持有普通箱桶，抵挡风和吸力；抓起立即解夹，两击拆",
+      "effect": "固定一件未持有普通箱桶，抵挡风和吸力；抓起立即解夹，两击拆",
       "kind": "new_prop_environment_behavior",
       "counts_toward_100_new_mechanisms": true,
-      "budget": {
-        "max_same_effect_per_owner": 1,
-        "max_total_effects_per_room": 24,
-        "max_dynamic_deployables_per_room": 8,
-        "max_targets_per_tick": 6,
-        "max_chain_segments": 3,
-        "max_particles_per_effect": 48,
-        "authority_tick_hz": 50,
-        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      "fun_hypothesis": "独立操作、公开反馈、角色与公共物组合形成可反制的场地选择；仍需真人验证",
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     },
     {
-      "id": "surprise-pop",
-      "name": "惊喜折纸墙",
-      "family": "情绪",
-      "status": "proposed_not_implemented",
-      "trigger": "使用在前方瞬时展开折纸",
-      "effect": "仅把当前重叠公共物弹出到合法近处，随后纸墙崩散不挡人",
-      "duration": "0.6秒",
-      "cooldown": "9秒",
-      "authority": {
-        "event": "surprise_pop_resolved",
-        "state": [
-          "sourceInstanceId",
-          "effectId",
-          "ownerId",
-          "startedAt",
-          "expiresAt",
-          "worldPose",
-          "targets",
-          "charges",
-          "schemaVersion"
-        ],
-        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：仅把当前重叠公共物弹出到合法近处，随后纸墙崩散不挡人"
-      },
-      "cost_and_counter": "不能推生命/玩家；需近距；可把箱子推向自己",
-      "playtest_case": "甲从箱堆弹出一箱，箱横滚撞到乙",
-      "fun_hypothesis": "无直接伤害也可创造事件",
-      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
-      "visual_feedback": "惊喜折纸墙对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "id": "projectile-fork",
+      "name": "普通弹体分束",
+      "family": "联动",
+      "status": "implemented_authority_and_real_body_verified",
+      "trigger": "普通攻击弹体前面分两条±25度路线，各半伤害冲力，不能再分裂",
+      "effect": "普通攻击弹体前面分两条±25度路线，各半伤害冲力，不能再分裂",
       "kind": "new_prop_environment_behavior",
       "counts_toward_100_new_mechanisms": true,
-      "budget": {
-        "max_same_effect_per_owner": 1,
-        "max_total_effects_per_room": 24,
-        "max_dynamic_deployables_per_room": 8,
-        "max_targets_per_tick": 6,
-        "max_chain_segments": 3,
-        "max_particles_per_effect": 48,
-        "authority_tick_hz": 50,
-        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
-      }
+      "fun_hypothesis": "独立操作、公开反馈、角色与公共物组合形成可反制的场地选择；仍需真人验证",
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
+    },
+    {
+      "id": "shot-vault",
+      "name": "公共弹体暂存",
+      "family": "联动",
+      "status": "implemented_authority_and_real_body_verified",
+      "trigger": "捕获一颗普通弹体0.65秒，附近任意玩家E瞄准释放，保留原攻击者和已命中记录",
+      "effect": "捕获一颗普通弹体0.65秒，附近任意玩家E瞄准释放，保留原攻击者和已命中记录",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": true,
+      "fun_hypothesis": "独立操作、公开反馈、角色与公共物组合形成可反制的场地选择；仍需真人验证",
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
+    },
+    {
+      "id": "public-twin-rope",
+      "name": "公共物双系绳",
+      "family": "联动",
+      "status": "implemented_authority_and_real_body_verified",
+      "trigger": "两件无主公共箱桶系绳，拉一个带另一个；墙断、6米断、两击拆",
+      "effect": "两件无主公共箱桶系绳，拉一个带另一个；墙断、6米断、两击拆",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": true,
+      "fun_hypothesis": "独立操作、公开反馈、角色与公共物组合形成可反制的场地选择；仍需真人验证",
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
+    },
+    {
+      "id": "consent-swap",
+      "name": "自愿双人换位",
+      "family": "联动",
+      "status": "implemented_authority_and_real_body_verified",
+      "trigger": "两人两侧E同意，0.45秒预告交换站位，移动/Q/受击/落点堵塞取消",
+      "effect": "两人两侧E同意，0.45秒预告交换站位，移动/Q/受击/落点堵塞取消",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": true,
+      "fun_hypothesis": "独立操作、公开反馈、角色与公共物组合形成可反制的场地选择；仍需真人验证",
+      "verification": "23 link authority scenarios, ten actual 15-body rig scenarios, seventy prior mechanism body scenarios and drag/held-Q regression; see docs/PARTY_LINK_DELIVERY.md"
     }
   ],
   "items": [
@@ -16956,6 +16811,228 @@
       "stage_0_template": "Utility",
       "stage_0_behavior": "第一阶段若仅上线模型，完全执行既有 Utility 行为；不宣称具有上述 proposed 能力。",
       "proposed_mechanic_rollout": "独立白名单启用，先按机制族验证后才挂入该候选；同一候选默认只一个主动效果。"
+    }
+  ],
+  "retiredMechanics": [
+    {
+      "id": "prop-phase",
+      "name": "公共物穿行",
+      "family": "移动",
+      "status": "retired_duplicate_or_information_only",
+      "trigger": "使用获得短时公共物相位",
+      "effect": "仅穿过公共小道具碰撞，仍受玩家和校园墙阻挡",
+      "duration": "1.2秒",
+      "cooldown": "10秒",
+      "authority": {
+        "event": "prop_phase_resolved",
+        "state": [
+          "sourceInstanceId",
+          "effectId",
+          "ownerId",
+          "startedAt",
+          "expiresAt",
+          "worldPose",
+          "targets",
+          "charges",
+          "schemaVersion"
+        ],
+        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：仅穿过公共小道具碰撞，仍受玩家和校园墙阻挡"
+      },
+      "cost_and_counter": "不能攻击吞噬；结束若重叠安全推出；非无敌",
+      "playtest_case": "甲穿过公共箱避乙，但被真人丙挡住",
+      "fun_hypothesis": "狭窄通道仍可互动",
+      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
+      "visual_feedback": "公共物穿行对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": false,
+      "budget": {
+        "max_same_effect_per_owner": 1,
+        "max_total_effects_per_room": 24,
+        "max_dynamic_deployables_per_room": 8,
+        "max_targets_per_tick": 6,
+        "max_chain_segments": 3,
+        "max_particles_per_effect": 48,
+        "authority_tick_hz": 50,
+        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
+      },
+      "replacementId": "projectile-fork",
+      "retirementReason": "原候选重复已有物理规则、仅信息显示，或无法形成可验的独立操作；替换为有独立因果和反制的新规则"
+    },
+    {
+      "id": "tilt-board",
+      "name": "局部翻板",
+      "family": "控制",
+      "status": "retired_duplicate_or_information_only",
+      "trigger": "部署铰链板，踩另一端或使用打板",
+      "effect": "局部地面倾斜使站上者滑向低端，跳离无效",
+      "duration": "6秒",
+      "cooldown": "12秒",
+      "authority": {
+        "event": "tilt_board_resolved",
+        "state": [
+          "sourceInstanceId",
+          "effectId",
+          "ownerId",
+          "startedAt",
+          "expiresAt",
+          "worldPose",
+          "targets",
+          "charges",
+          "schemaVersion"
+        ],
+        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：局部地面倾斜使站上者滑向低端，跳离无效"
+      },
+      "cost_and_counter": "所有人可反踩；角度封顶；不改变校园基础地形",
+      "playtest_case": "甲翻乙脚下板，丙反踩把甲也摇晃",
+      "fun_hypothesis": "第三者改变战斗局面",
+      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
+      "visual_feedback": "局部翻板对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": false,
+      "budget": {
+        "max_same_effect_per_owner": 1,
+        "max_total_effects_per_room": 24,
+        "max_dynamic_deployables_per_room": 8,
+        "max_targets_per_tick": 6,
+        "max_chain_segments": 3,
+        "max_particles_per_effect": 48,
+        "authority_tick_hz": 50,
+        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
+      },
+      "replacementId": "shot-vault",
+      "retirementReason": "原候选重复已有物理规则、仅信息显示，或无法形成可验的独立操作；替换为有独立因果和反制的新规则"
+    },
+    {
+      "id": "orbit-cordon",
+      "name": "旋转软护栏",
+      "family": "控制",
+      "status": "retired_duplicate_or_information_only",
+      "trigger": "部署围绕固定点转的单臂",
+      "effect": "接触时横推，按角速度转动但无持续击晕；留大间隙",
+      "duration": "5秒",
+      "cooldown": "13秒",
+      "authority": {
+        "event": "orbit_cordon_resolved",
+        "state": [
+          "sourceInstanceId",
+          "effectId",
+          "ownerId",
+          "startedAt",
+          "expiresAt",
+          "worldPose",
+          "targets",
+          "charges",
+          "schemaVersion"
+        ],
+        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：接触时横推，按角速度转动但无持续击晕；留大间隙"
+      },
+      "cost_and_counter": "碰一次0.8秒免推；根部可拆；跳臂穿行",
+      "playtest_case": "乙等间隙进入中心回收，甲被自家护栏推走",
+      "fun_hypothesis": "进区时机具备可练习性",
+      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
+      "visual_feedback": "旋转软护栏对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": false,
+      "budget": {
+        "max_same_effect_per_owner": 1,
+        "max_total_effects_per_room": 24,
+        "max_dynamic_deployables_per_room": 8,
+        "max_targets_per_tick": 6,
+        "max_chain_segments": 3,
+        "max_particles_per_effect": 48,
+        "authority_tick_hz": 50,
+        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
+      },
+      "replacementId": "public-twin-rope",
+      "retirementReason": "原候选重复已有物理规则、仅信息显示，或无法形成可验的独立操作；替换为有独立因果和反制的新规则"
+    },
+    {
+      "id": "surprise-pop",
+      "name": "惊喜折纸墙",
+      "family": "情绪",
+      "status": "retired_duplicate_or_information_only",
+      "trigger": "使用在前方瞬时展开折纸",
+      "effect": "仅把当前重叠公共物弹出到合法近处，随后纸墙崩散不挡人",
+      "duration": "0.6秒",
+      "cooldown": "9秒",
+      "authority": {
+        "event": "surprise_pop_resolved",
+        "state": [
+          "sourceInstanceId",
+          "effectId",
+          "ownerId",
+          "startedAt",
+          "expiresAt",
+          "worldPose",
+          "targets",
+          "charges",
+          "schemaVersion"
+        ],
+        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：仅把当前重叠公共物弹出到合法近处，随后纸墙崩散不挡人"
+      },
+      "cost_and_counter": "不能推生命/玩家；需近距；可把箱子推向自己",
+      "playtest_case": "甲从箱堆弹出一箱，箱横滚撞到乙",
+      "fun_hypothesis": "无直接伤害也可创造事件",
+      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
+      "visual_feedback": "惊喜折纸墙对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": false,
+      "budget": {
+        "max_same_effect_per_owner": 1,
+        "max_total_effects_per_room": 24,
+        "max_dynamic_deployables_per_room": 8,
+        "max_targets_per_tick": 6,
+        "max_chain_segments": 3,
+        "max_particles_per_effect": 48,
+        "authority_tick_hz": 50,
+        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
+      },
+      "replacementId": "public-clamp",
+      "retirementReason": "原候选重复已有物理规则、仅信息显示，或无法形成可验的独立操作；替换为有独立因果和反制的新规则"
+    },
+    {
+      "id": "pride-banner",
+      "name": "自豪公开旗",
+      "family": "情绪",
+      "status": "retired_duplicate_or_information_only",
+      "trigger": "使用插立自己的昵称旗",
+      "effect": "附近自己Ground资产投影名字牌便于双方识别，不保护不传送",
+      "duration": "5秒",
+      "cooldown": "8秒",
+      "authority": {
+        "event": "pride_banner_resolved",
+        "state": [
+          "sourceInstanceId",
+          "effectId",
+          "ownerId",
+          "startedAt",
+          "expiresAt",
+          "worldPose",
+          "targets",
+          "charges",
+          "schemaVersion"
+        ],
+        "decision": "服务器验证触发、目标类别、视线、预算与边界后执行：附近自己Ground资产投影名字牌便于双方识别，不保护不传送"
+      },
+      "cost_and_counter": "也暴露自己的救援位置；旗2击可拆；无数值成长",
+      "playtest_case": "乙看到甲旗知道谁的游泳板，决定先吞甲的",
+      "fun_hypothesis": "强化社交笑点和选择",
+      "lifecycle": "引用真实 sourceInstanceId；Ground/Carried/Consumed 后终止装备持续状态；生成效果/公共装置不创建 Persona 生命，不改变 ownerId，不跳过 Recover/Eat。",
+      "visual_feedback": "自豪公开旗对应主体动画、落点/方向警示与命中或失败提示；颜色以外保留形状/符号。",
+      "kind": "new_prop_environment_behavior",
+      "counts_toward_100_new_mechanisms": false,
+      "budget": {
+        "max_same_effect_per_owner": 1,
+        "max_total_effects_per_room": 24,
+        "max_dynamic_deployables_per_room": 8,
+        "max_targets_per_tick": 6,
+        "max_chain_segments": 3,
+        "max_particles_per_effect": 48,
+        "authority_tick_hz": 50,
+        "overflow": "拒绝新部署并显示预算提示；不删除真实 Persona 实例"
+      },
+      "replacementId": "consent-swap",
+      "retirementReason": "原候选重复已有物理规则、仅信息显示，或无法形成可验的独立操作；替换为有独立因果和反制的新规则"
     }
   ]
 }

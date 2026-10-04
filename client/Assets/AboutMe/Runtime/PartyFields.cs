@@ -7,15 +7,15 @@ namespace AboutMe
     public partial class Match
     {
         static bool SelfField(string id)=>id=="wet-trail"||id=="clean-rain"||id=="flame-fan";
-        static bool PartyDevice(EffectState e)=>e.kind=="PartyMechanic"&&(PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||(PartyMechanicRegistry.Find(e.mechanicId)?.family=="virtual"&&e.mechanicId!="quantum-echo")||e.mechanicId=="team-sling"||e.mechanicId=="gapped-cage"||e.mechanicId=="break-net"||e.mechanicId=="fuse-burst"||e.mechanicId=="relay-burst"||e.mechanicId=="remote-burst"||e.mechanicId=="proximity-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport"||e.mechanicId=="fan-volume"||e.mechanicId=="tractor-loose"||e.mechanicId=="loose-whirlpool"||e.mechanicId=="sand-sink"||e.mechanicId=="sticky-step"||e.mechanicId=="recover-screen"||e.mechanicId=="calm-dome"||e.mechanicId=="rhythm-gate"||e.mechanicId=="sponge-dry"||e.mechanicId=="carry-cradle"||e.mechanicId=="public-hot-potato"||e.mechanicId=="trip-line");
+        static bool PartyDevice(EffectState e)=>e.kind=="PartyMechanic"&&((PartyMechanicRegistry.Find(e.mechanicId)?.family=="link"&&!SelfLink(e.mechanicId))||PartyMechanicRegistry.Find(e.mechanicId)?.family=="machinery"||(PartyMechanicRegistry.Find(e.mechanicId)?.family=="virtual"&&e.mechanicId!="quantum-echo")||e.mechanicId=="team-sling"||e.mechanicId=="gapped-cage"||e.mechanicId=="break-net"||e.mechanicId=="fuse-burst"||e.mechanicId=="relay-burst"||e.mechanicId=="remote-burst"||e.mechanicId=="proximity-burst"||e.mechanicId=="vacuum-burst"||e.mechanicId=="spring-pad"||e.mechanicId=="belt-floor"||e.mechanicId=="paired-teleport"||e.mechanicId=="fan-volume"||e.mechanicId=="tractor-loose"||e.mechanicId=="loose-whirlpool"||e.mechanicId=="sand-sink"||e.mechanicId=="sticky-step"||e.mechanicId=="recover-screen"||e.mechanicId=="calm-dome"||e.mechanicId=="rhythm-gate"||e.mechanicId=="sponge-dry"||e.mechanicId=="carry-cradle"||e.mechanicId=="public-hot-potato"||e.mechanicId=="trip-line");
         bool PartyHasBudget(PartyMechanic d,string source="")
         {
             bool portalFirst=d.id=="shot-portal"&&!Effects.Any(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"&&x.sourceInstance==source);
-            int extra=d.id=="cluster-burst"?3:portalFirst?2:1;
+            int extra=LinkPair(d.id)&&Effects.Any(x=>x.sourceInstance==source&&x.stage=="link_wait")?0:d.id=="cluster-burst"?3:portalFirst?2:1;
             if(Effects.Count(e=>e.kind=="PartyMechanic")+extra>24){Say("场上效果较多，请等一个效果结束再使用。");return false;}
             var probe=new EffectState{kind="PartyMechanic",mechanicId=d.id};
             int units=Effects.Where(PartyDevice).Sum(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"?2:1);
-            int add=d.id=="shot-portal"?(Effects.Any(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"&&x.sourceInstance==source)?0:2):1;
+            int add=LinkPair(d.id)&&Effects.Any(x=>x.sourceInstance==source&&x.stage=="link_wait")?0:d.id=="shot-portal"?(Effects.Any(x=>x.mechanicId=="shot-portal"&&x.stage=="portal_wait"&&x.sourceInstance==source)?0:2):1;
             if(PartyDevice(probe)&&units+add>8){Say("场上公共装置已满，先拆除一个或等它结束。");return false;}
             return true;
         }

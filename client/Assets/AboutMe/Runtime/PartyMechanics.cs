@@ -35,6 +35,7 @@ namespace AboutMe
             var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
             if((definition.id=="timed-door"||definition.id=="wind-up-cart")&&active.Length==1)return true;
+            if(LinkPair(definition.id)&&active.Length==1&&active[0].stage=="link_wait")return true;
             if(definition.id=="shot-portal"&&active.Length==1&&active[0].stage=="portal_wait")return true;
             if(definition.id=="trip-line"&&active.Length==1&&active[0].stage=="line_wait")return true;
             if(definition.id=="impact-bank"&&active.Any(e=>e.stage=="banked"&&GuardAlive(e)))return true;
@@ -54,6 +55,7 @@ namespace AboutMe
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
             if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d,item.id)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="link")return TryLinkMechanic(p,item,d);
             if(d.family=="virtual")return TryVirtualMechanic(p,item,d);
             if(d.family=="control")return TryControlMechanic(p,item,d);
             if(d.family=="machinery")return TryMachineMechanic(p,item,d);
@@ -115,6 +117,7 @@ namespace AboutMe
         void RemovePartyEffect(EffectState e)
         {
             if(e.machine!=null)BodyWorld?.RemoveMachine(e.id);
+            vaultedShots.Remove(e.id);foreach(var rider in Players.Values)if(rider.linkRide==e.id)rider.linkRide="";
             if(e.targetId.StartsWith("device-",StringComparison.Ordinal))
             {
                 var prop=Props.Find(x=>x.id==e.targetId);
@@ -162,6 +165,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="link"){TickLinks(e,owner,d,dt);return;}
             if(d.family=="virtual"){TickVirtual(e,owner,d,dt);return;}
             if(d.family=="control"){TickControl(e,owner,d,dt);return;}
             if(d.family=="machinery"){TickMachine(e,owner,d,dt);return;}
