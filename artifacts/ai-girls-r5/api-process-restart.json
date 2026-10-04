@@ -1,0 +1,66 @@
+{
+  "scope": "Real independent uvicorn process over HTTP and SQLite, restarted once; no AI calls or live user data",
+  "passed": true,
+  "profiles": [
+    {
+      "skin": "ds-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "claude-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "gpt-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "gemini-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "grok-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "kimi-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "qwen-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "minimax-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "doubao-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    },
+    {
+      "skin": "glm-girl",
+      "selected": true,
+      "persistedAfterProcessRestart": true,
+      "publicVerified": true
+    }
+  ]
+}

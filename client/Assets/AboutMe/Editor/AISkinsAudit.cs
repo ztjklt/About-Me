@@ -42,9 +42,32 @@ namespace AboutMe.Editor
         }
         [InitializeOnLoadMethod] static void Resume()
         {
-            EditorApplication.playModeStateChanged+=state=>{if(state==PlayModeStateChange.EnteredPlayMode&&SessionState.GetBool("AISkinsR5Audit",false)){SessionState.EraseBool("AISkinsR5Audit");EditorApplication.delayCall+=()=>{try{Review();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};}};
+            EditorApplication.playModeStateChanged+=state=>{if(state==PlayModeStateChange.EnteredPlayMode&&(SessionState.GetBool("AISkinsR5Audit",false)||SessionState.GetBool("AISkinsR5Images",false))){SessionState.EraseBool("AISkinsR5Audit");EditorApplication.delayCall+=()=>{try{if(SessionState.GetBool("AISkinsR5Images",false)){SessionState.EraseBool("AISkinsR5Images");CaptureModels();}else Review();EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}};}};
         }
         public static void Begin(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);SessionState.SetBool("AISkinsR5Audit",true);EditorApplication.isPlaying=true;}
+        public static void BeginModels(){EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);SessionState.SetBool("AISkinsR5Images",true);EditorApplication.isPlaying=true;}
+        public static void CaptureModels()
+        {
+            Directory.CreateDirectory(Out+"/models");
+            var camera=new GameObject("Clean model camera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=1.7f;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.9f,.94f,.95f);
+            var light=new GameObject("Clean model light").AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.5f;light.transform.rotation=Quaternion.Euler(30,150,0);
+            foreach(var skin in new[]{"normal"}.Concat(AISkinRegistry.All.Select(x=>x.skin)))
+            {
+                var actor=new ToyActor("Clean model","#79CFC5",0,null,new AppearanceData{character=AISkinRegistry.CharacterForSkin(skin)});actor.label.text="";
+                // Box() creates its shared primitive mesh through a disposable independent Cube.
+                // This synchronous capture runs before deferred Destroy; exclude that helper only.
+                var primitive=GameObject.Find("Cube");if(primitive&&primitive.transform.parent==null)primitive.SetActive(false);
+                AppearancePresent(actor,skin);
+                foreach(var view in new[]{("front",new Vector3(0,.45f,6)),("side",new Vector3(6,.45f,0)),("back",new Vector3(0,.45f,-6))})DSGirlModularTools.Capture(camera,Out+"/models/"+skin+"-"+view.Item1+".png",view.Item2,new Vector3(0,.35f,0));
+                foreach(var action in new[]{"light","grab","eat"})
+                {
+                    var p=View(action,.75f,3,skin);for(int f=0;f<45;f++){p.simulationTime=9+f/60f;actor.DrawAt(p,camera,1/60f,p.simulationTime);}actor.label.text="";
+                    DSGirlModularTools.Capture(camera,Out+"/models/"+skin+"-"+action+".png",actor.root.transform.position+new Vector3(2,.6f,5),actor.root.transform.position+new Vector3(0,.35f,0));
+                }
+                UnityEngine.Object.DestroyImmediate(actor.root);
+            }
+            Debug.Log("AI_SKINS_R5_CLEAN_MODELS_PASSED count=66");
+        }
         public static void Review()
         {
             Directory.CreateDirectory(Out);var result=new Result();SceneManager.SetActiveScene(SceneManager.CreateScene("AI skin integrated audit"));

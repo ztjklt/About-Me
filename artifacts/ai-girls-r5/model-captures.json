@@ -1,0 +1,275 @@
+{
+  "scope": "Actual Unity Editor rendered model images; independent transient shared-mesh Cube excluded before synchronous capture, no image editing",
+  "sourceCommits": [
+    "1f994cec44f4d0d4309713916e9d88512f61eafa",
+    "baa9a9f237368513507cb0462158f1891f220944"
+  ],
+  "count": 66,
+  "files": [
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-back.png",
+      "sha256": "468e720c9b576c0ec065c8f639cfe8b3bd91ae75e0db7138ce849be13b3a1946"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-eat.png",
+      "sha256": "e77a6960c5cc4fd404542effaed9095072b573565db0bbc53b27b14bb955ad3a"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-front.png",
+      "sha256": "97faa8b4765322f79269a5e0c357ac3b657eaeedad87b3022f7cd6cdf94ebbf0"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-grab.png",
+      "sha256": "7c0b335d645d177bc8069e2ac54bdb9ca9fe331550ad31d67123612dec13bf98"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-light.png",
+      "sha256": "d42d59a24770768037cb50081885d71dc8a93bafdde556f8ad535aa1acd4f726"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/claude-girl-side.png",
+      "sha256": "f6acb0f9b8afa744524e27e175d9d5055e50e3d6e16f3aed5f4476bcdf1473f7"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-back.png",
+      "sha256": "65737b9fdda475dcc374dcbaab6344abd5f0b0eea16e4f306c84bc3903b9f224"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-eat.png",
+      "sha256": "28b6bd2a1821e6c48b9b562036f9d6ad20f73fa8bbe6129d184c893f981c2b34"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-front.png",
+      "sha256": "1e87010f39ff6d9dc608f20142fc3c2ac8baa8937412ea94d31c683ff4517290"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-grab.png",
+      "sha256": "c7a0520d22a1c7133331d0801f6e9375be5bffd4c3b2851ea18e8fcb3bc12c33"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-light.png",
+      "sha256": "076e815804af48c8e830045fafa46120ad595328282559e66452fa6509fd6288"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/doubao-girl-side.png",
+      "sha256": "53d8c96bc3dc8ca743a135293fe71528a4b9fb1e82ac21d76256f3ee416bf153"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-back.png",
+      "sha256": "700714f01eed76ac42f84292ef7ecba5d5e794a35a7d84f826b6396f1bd54ec9"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-eat.png",
+      "sha256": "efd9b2037e8c829294ab9e4c422fd635efb5c2ef4110e51d1bcde7467eaa09f5"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-front.png",
+      "sha256": "b79057d7f88f39d69f04f717aaf863992ef42171e6a31d5c75677e95a43834f9"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-grab.png",
+      "sha256": "379b2cac8ed06c36d804f4517f62074113786d98dbcae309e0e745a14c604787"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-light.png",
+      "sha256": "f6b9e373080964853bd94b75c06a0b24aa17a1635399f8f657cf8f6d40f2ab86"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/ds-girl-side.png",
+      "sha256": "2e5f38c8c4e6138aa580ba9a28e9c1774cb54dd055f349a0eaba0c099aa20a5b"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-back.png",
+      "sha256": "fdfb6f4bf939d9ce2483c8c3015dc93a8cce6ccb236de4ae646506a09410288c"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-eat.png",
+      "sha256": "2d71954b6c19e8a963d906a9a83a0bba743c0d38d4c432b6d8ce631c4b82b6d2"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-front.png",
+      "sha256": "bab2e5ce30b4ef85e26e18a11e1f6ad5a6534670c51f79084ee55341a0dbefdc"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-grab.png",
+      "sha256": "283d1a833d49cc034da7c1970f893fe2256c138e51ea4af5c980fdfe683dbe6a"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-light.png",
+      "sha256": "7d005cb4bffdab1c4386b94a5069b0fc9d69c2b75c5e3f671f65730c8874a656"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gemini-girl-side.png",
+      "sha256": "05cca68bd1bbba32b3a84e46f52e4010ddc419aa4938a37f9c4b95162e92c0ba"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-back.png",
+      "sha256": "c860a5ad22a4311544ac5c97802d70e99f50950457693547f6ac83703d9a25eb"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-eat.png",
+      "sha256": "967f4b7f56e29a56b55a4e07f397dbe626a4a098f629edfa839b173a723cc73d"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-front.png",
+      "sha256": "a67c7a2d20caab67b729cf342cf3d69c4d92a77c8b5ecc6b8a0e2e8d50210b33"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-grab.png",
+      "sha256": "174fca5129bcfcbfd48c21a7a91ccab316fbbdb87020262d1ad6e1ffbb7f8f7e"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-light.png",
+      "sha256": "023c6d5e3d0dd2a542f6b53c4468ba52c4fb13bfa6fed0b300f4d0b4819d2f70"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/glm-girl-side.png",
+      "sha256": "8ff3957b0ffaa4c35b51b9ed4549d5c0ce362d297832795b7021c4d9e038a3ac"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-back.png",
+      "sha256": "eb3c38f620e74ed583e65df10fd6b95047800bf811ea1b0d3c8855f33fe68ace"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-eat.png",
+      "sha256": "7991435d44273737d1ee7d8640db6e44bb23eb42785678a0f2ed92dd97363966"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-front.png",
+      "sha256": "90580fe2c195f4da6289dfdf1ad15a8eabaa8d21bc1a7f555384b048588bdcd3"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-grab.png",
+      "sha256": "4da9ef988a2ad6b9bbbb03e1bf172effe289f6d8f46095d2a805ac88a22dfaef"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-light.png",
+      "sha256": "95d2414cd6445207ede35919dca70e2bc874964c82577536bdc72d01d71aac6f"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/gpt-girl-side.png",
+      "sha256": "c291716fa8f6cba4c50471aae4413a5e89dc12999cbf795a59497f68af5c0577"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-back.png",
+      "sha256": "c78c646c8305520300bba0b06d875e97b6d349be01bdc0c61c03080f781f16c0"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-eat.png",
+      "sha256": "90174049f31aa82efd52de51601c8f505fc12b03c1c20d6bcf7b5f40503f1890"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-front.png",
+      "sha256": "0ca64b6cb148b5cb198c8999e72afc22d78d223b5fbc85f12fe7a9b2891835f7"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-grab.png",
+      "sha256": "e3c25610da8a061d2360dabd07e4f4b9d5152709e8eaecfcd63d26b3a4136748"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-light.png",
+      "sha256": "ce52f09dace0041a119295e9ea00f105869bf4f5e932bb2af8a5f4a819c6e833"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/grok-girl-side.png",
+      "sha256": "50a6b906c70982ad79f7bd7c35830187009322d35ce76e4e4b016fc19ef715aa"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-back.png",
+      "sha256": "87c00491db9a6e349a2358984661e21e9f83430c330f40809600e297c5033f07"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-eat.png",
+      "sha256": "4912fa64741234949bfca912134247fecf6a451c87b61901de0a212bb8451044"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-front.png",
+      "sha256": "3db238a7b6a7f19e9c3c9f1a0581832ef4870a865c7c9a82c2501d5bb60812a9"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-grab.png",
+      "sha256": "73031496207dde9f9aa7604b39310a632f9fb368e624fb6802fdc0b2bf6bbfb1"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-light.png",
+      "sha256": "83b89f57bb82be66f3f0121b7fc3f9e512c6e6c2b8b3a66492a2d3be0522f120"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/kimi-girl-side.png",
+      "sha256": "0fe42633061149d1ce1b3b4d92d1f73f2618bb04c17b801faba8887b3831ea68"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-back.png",
+      "sha256": "577a6a31275a4384cd796e0f38af84fec9338d0577d965ee1a6858c78e86f72a"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-eat.png",
+      "sha256": "71699576fc8d53eba2f1a95201e4b0a6514c5ac925189d4783f41912f22dcb26"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-front.png",
+      "sha256": "022c54f36448986db10329077f4c4578d0885f6627e607eaa0ae64c6fd70e375"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-grab.png",
+      "sha256": "fe5aee67ee591d0441799844b4a73706db3699483f301ec5079d521050b69c4f"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-light.png",
+      "sha256": "2dc8bd6cb67af949a0a47b7001f62d319379420292012655999eceb54fa8c1d9"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/minimax-girl-side.png",
+      "sha256": "860cb0a941bf16016ad76e89bc5cb7cca107c73fbe41f8413a1e66c07f6788e9"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-back.png",
+      "sha256": "f7808e853b6e8dddb9ea4047a6202095913ff0acfe42d3236a20f4b172b333ea"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-eat.png",
+      "sha256": "e43cfb1fd230fb5eeda38ad6cf0547ed2346849ec0e1095b217ec7fd2c6341cc"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-front.png",
+      "sha256": "5158b6e08243da1ea33f81158fc90fc9fc1c05ba018360fa942be9377bb9960c"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-grab.png",
+      "sha256": "f11b8ce05c34c68fe4d9433efa3e5530cb43639c4e08f0c238623c7b56841975"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-light.png",
+      "sha256": "524d4244409fc3a1f84c7dae0dcd7d38b0589ea5c5280219742d4870723c4215"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/normal-side.png",
+      "sha256": "154e06df9efcdeaa9998f787d8f219b77d4c5d1bf91dde44ecd5afdfd81b7fd2"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-back.png",
+      "sha256": "a3ce4933809165f8ff28f2118adbcf9a1516e311507222ed13060c1821b1dd8b"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-eat.png",
+      "sha256": "693fcd7eac676199c2f011f7eabb3ffb9b7714000061784405d7e00bc4878d99"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-front.png",
+      "sha256": "f865089e155f04f19cf9e11fd63fb70bde611be3c5b912b3c4ce7f396ce1a3e6"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-grab.png",
+      "sha256": "9836bbec2aa8a1469aa2a8c231b338935863327b6ffbab5b9adc91cecb693291"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-light.png",
+      "sha256": "27e0a712dfa52d6999004c1fe65393b3b1f1733ee96e8eeabf8b8c66dbcba8fd"
+    },
+    {
+      "path": "artifacts/ai-girls-r5/models/qwen-girl-side.png",
+      "sha256": "3d2333d4cdd8832cada594a8242075e94138ffb460666dbe07ac90931a99744d"
+    }
+  ],
+  "captureToolSha256": "426e69a50b065405097577530652de7dcd32a61a07edfd26eee1f3da884b1602"
+}

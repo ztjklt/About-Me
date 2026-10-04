@@ -127,7 +127,36 @@
         "client/Assets/AboutMe/Art/GPTGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "87bd4e2d1dbd8c92d03355cf3867fc35c92eaaceb2350f9c6a47f9fd54641598",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "631a2c899f0f9cc10cc8792fd7e15fa4c5d2fd00094bbfd64a8080cbccf46b17",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-04",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "bd999139e0cbb51b57ff654d4a0c460d7e9989c022b8961e57e0d4ddcc797df1",
+          "currentSourceSha256": "bd999139e0cbb51b57ff654d4a0c460d7e9989c022b8961e57e0d4ddcc797df1",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "5ab8781f44126494ee6a6f42ad400910c07614b9dc622236f019ffa12325780c",
+          "currentSourceSha256": "5ab8781f44126494ee6a6f42ad400910c07614b9dc622236f019ffa12325780c",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "33a40204fb0fe9c76a6e7167ed5fb2024909cfb13aed3181c3cd8b21d9b581c7",
+          "currentSourceSha256": "33a40204fb0fe9c76a6e7167ed5fb2024909cfb13aed3181c3cd8b21d9b581c7",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "c9d7de539ad7ff235a1e9967a6105b8262ca2f1e522b532e317d271ba39a1b69",
+          "currentSourceSha256": "c9d7de539ad7ff235a1e9967a6105b8262ca2f1e522b532e317d271ba39a1b69",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "gemini",
@@ -255,7 +284,36 @@
         "client/Assets/AboutMe/Art/GeminiGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "727c00ac8e4e46ca6d3258e2c6641f1d372e91182b9b680e0fad7a9db7a0cc7d",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "db2c73d39b8b95fdff62f447bed379621f38ade3963bebe43a9b0e6109b89628",
+      "baselineDescription": "Claude modular delivery working-tree snapshot; NOT clean 545b4ce",
+      "sourceSnapshotSpecifiedByPublisher": false,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "5aaa653d5e7546b1135e18e5a019530190c32c4160e5d4ae76a681af660a38d1",
+          "currentSourceSha256": "5aaa653d5e7546b1135e18e5a019530190c32c4160e5d4ae76a681af660a38d1",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "dec73359ac0d301f643b6c1257f90d16ee44d8ea007eda54b2afdff1ed6971f1",
+          "currentSourceSha256": "dec73359ac0d301f643b6c1257f90d16ee44d8ea007eda54b2afdff1ed6971f1",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "494654a2743dd848712feac3c20895320aac18a6a8af773747a3377104f76ea6",
+          "currentSourceSha256": "494654a2743dd848712feac3c20895320aac18a6a8af773747a3377104f76ea6",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "25f083e1dda0061708d3bcaa0647906ea67e0bd7fd4ba1133a9470508149c281",
+          "currentSourceSha256": "25f083e1dda0061708d3bcaa0647906ea67e0bd7fd4ba1133a9470508149c281",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "grok",
@@ -417,7 +475,36 @@
         "client/Assets/AboutMe/Art/GrokGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "a278739652a1021e6f32938fbc5bb804902d1f841077a3e292572ce040c3e9ec",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "03879f15086e4fe75b0ad51d05dbbf3fc51cf16cfe1c7ab8fba6845b69f357d4",
+      "baselineDescription": "Gemini modular delivery working-tree snapshot; NOT clean 545b4ce",
+      "sourceSnapshotSpecifiedByPublisher": false,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "4e53e26f8a1e02f86ae01ae334e8ae8e9756f179e1905ae8d10695daec5d1220",
+          "currentSourceSha256": "4e53e26f8a1e02f86ae01ae334e8ae8e9756f179e1905ae8d10695daec5d1220",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "bea77589606c7e100de4d942e52704487cff8cbbbb4692d0711d9ad2d27f0226",
+          "currentSourceSha256": "bea77589606c7e100de4d942e52704487cff8cbbbb4692d0711d9ad2d27f0226",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "27b9f0ae3604231c68000e8ddf47b22a08c8d95cb0756c23fc521a551c681088",
+          "currentSourceSha256": "27b9f0ae3604231c68000e8ddf47b22a08c8d95cb0756c23fc521a551c681088",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "6d4189456485f15994428b6f4c0ed2afa26cd167a9ac8d45c592455cbfd13cfd",
+          "currentSourceSha256": "6d4189456485f15994428b6f4c0ed2afa26cd167a9ac8d45c592455cbfd13cfd",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "kimi",
@@ -545,7 +632,36 @@
         "client/Assets/AboutMe/Art/KimiGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "fc0cfde2ba24b2af408de124d7bfeb21438394564c2f589ea47f1404658bfd61",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "ce825a51af77488cbd4be6dd4aff7b1234b2f96b2ecd845f0653cc427c206356",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "b6cd7386bbcb811ab80f61763489f35ca0ca64b92e3eff6208265e279729395b",
+          "currentSourceSha256": "b6cd7386bbcb811ab80f61763489f35ca0ca64b92e3eff6208265e279729395b",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "31e000ad2e2729d86cc2aade71b4342ffc911184bb28935fac77d8f60e8cf5cc",
+          "currentSourceSha256": "31e000ad2e2729d86cc2aade71b4342ffc911184bb28935fac77d8f60e8cf5cc",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "499ed9476fc623cb14ff6f39e365a9eb61bc925d383204b64c6f83fe781266b6",
+          "currentSourceSha256": "499ed9476fc623cb14ff6f39e365a9eb61bc925d383204b64c6f83fe781266b6",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "12381b78a1e3b6c34099c1ec7824f8655b0b52f6bfdc5e9a8a1274711f22e7eb",
+          "currentSourceSha256": "12381b78a1e3b6c34099c1ec7824f8655b0b52f6bfdc5e9a8a1274711f22e7eb",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "qwen",
@@ -673,7 +789,36 @@
         "client/Assets/AboutMe/Art/QwenGirlModular/QwenGirl_Accessories.fbx.meta"
       ],
       "patchSha256": "fbf19c41b58770aff317c7bab0ca3b92970dd223be6009c864c2b329a23f99d1",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "322913854da55d04a43c658e0a259ae3a11056841f469b830f971a49d3bde004",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "3bab8af3e80520f8f80654c26fa90a68e5990cb7627ab3493ee64b5e549da0fb",
+          "currentSourceSha256": "3bab8af3e80520f8f80654c26fa90a68e5990cb7627ab3493ee64b5e549da0fb",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "7ad0a446f7beaa88c4d642fd00d37ef67741ad8b468f22130b81af84f04fbf94",
+          "currentSourceSha256": "7ad0a446f7beaa88c4d642fd00d37ef67741ad8b468f22130b81af84f04fbf94",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "eef7b060c7b206dfa1d57491f2ea572f2c5d4eee15ab88bc6ea20d9529258c58",
+          "currentSourceSha256": "eef7b060c7b206dfa1d57491f2ea572f2c5d4eee15ab88bc6ea20d9529258c58",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "f87bc88cf8948f5512e8efaf8180deccb84a605ba70861d358fd3eac38cd8885",
+          "currentSourceSha256": "f87bc88cf8948f5512e8efaf8180deccb84a605ba70861d358fd3eac38cd8885",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "minimax",
@@ -801,7 +946,36 @@
         "client/Assets/AboutMe/Art/MiniMaxGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "1063a79530a225d18304018f603bae1886817e8f98760d1e678811bc458f3849",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "4423ea496d853987a702ae9b5069d753b478f0add4a2f5aed4781c218b79517e",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "e37bcf55170fc7a847d6e5d74e34c8cbc2473e0188b7a6304139afbcc0f5d5db",
+          "currentSourceSha256": "e37bcf55170fc7a847d6e5d74e34c8cbc2473e0188b7a6304139afbcc0f5d5db",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "5982a976cb7e889b3db6301010416d06f22df1153705cc7898b7576e77db5264",
+          "currentSourceSha256": "5982a976cb7e889b3db6301010416d06f22df1153705cc7898b7576e77db5264",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "37ca6e2ab226582a0ad746f7aedbdacb1d3c2a3f1cb05482c2b0425972009956",
+          "currentSourceSha256": "37ca6e2ab226582a0ad746f7aedbdacb1d3c2a3f1cb05482c2b0425972009956",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "a0825183808f8310e73747fc49fe4653ddabe555fbf9753b7be19886163ca991",
+          "currentSourceSha256": "a0825183808f8310e73747fc49fe4653ddabe555fbf9753b7be19886163ca991",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "doubao",
@@ -929,7 +1103,36 @@
         "client/Assets/AboutMe/Art/DoubaoGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "7f51f8d992755d8087b86681cb95805c5089443b5c47feb22ca1454559f54f12",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "1cb44a15012c5ebcc7c7da24b27dbbf69f838160b916becc717e9d68a888050f",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "6ea5456a3b62e1a12a3468153c6dc91e51e97eb4d9d78e000121e038e6f6ca41",
+          "currentSourceSha256": "6ea5456a3b62e1a12a3468153c6dc91e51e97eb4d9d78e000121e038e6f6ca41",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "0c5aa796537538ab25be649bb4bf5b2ebb419c84af52b59ef6a1da188ea1195f",
+          "currentSourceSha256": "0c5aa796537538ab25be649bb4bf5b2ebb419c84af52b59ef6a1da188ea1195f",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "45748ce1d3c72bb12cea75e232dbe261f86d5b7bf21b94fa1d739546c20a312d",
+          "currentSourceSha256": "45748ce1d3c72bb12cea75e232dbe261f86d5b7bf21b94fa1d739546c20a312d",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "21b885493d910140b9c904608ddbc04362e6cd8e1d4c87b5046597b7bd15ae75",
+          "currentSourceSha256": "21b885493d910140b9c904608ddbc04362e6cd8e1d4c87b5046597b7bd15ae75",
+          "matches": true
+        }
+      ]
     },
     {
       "model": "glm",
@@ -1057,7 +1260,36 @@
         "client/Assets/AboutMe/Art/GLMGirlModular/Palette.mat.meta"
       ],
       "patchSha256": "9261d85359c97fec96713d30eb1856e8a0db81383844f6cbb677b292bb8dd098",
-      "semanticIntegration": true
+      "semanticIntegration": true,
+      "manifestSha256": "3c93cffc8852df35ff5ce1ab593960deead5e16b7f00ef878e7d5d9fb0d49983",
+      "baselineDescription": "e5470e2 + recorded About Me DS Local Current working tree snapshot, 2026-10-05",
+      "sourceSnapshotSpecifiedByPublisher": true,
+      "modifiedSourceCheck": [
+        {
+          "path": "client/Assets/AboutMe/Runtime/CampusDoll.cs",
+          "deliveredResultSha256": "15297000f6aa364a116e1477034bba6930f167da94e04e9d0e1cdbf928fe88eb",
+          "currentSourceSha256": "15297000f6aa364a116e1477034bba6930f167da94e04e9d0e1cdbf928fe88eb",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/DollSkin.cs",
+          "deliveredResultSha256": "f12cfd1032f25b9106c2749a9c655f766a632df6cdfbb295dbdbd09e5b07457c",
+          "currentSourceSha256": "f12cfd1032f25b9106c2749a9c655f766a632df6cdfbb295dbdbd09e5b07457c",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/AppearanceData.cs",
+          "deliveredResultSha256": "f244fdd6ae86acb7cae39c4802b767c6c7c1713cfadc99eb82ba5eb5ea20eb0f",
+          "currentSourceSha256": "f244fdd6ae86acb7cae39c4802b767c6c7c1713cfadc99eb82ba5eb5ea20eb0f",
+          "matches": true
+        },
+        {
+          "path": "client/Assets/AboutMe/Runtime/BodyPhysicsRuntimeProbe.cs",
+          "deliveredResultSha256": "86b270988a880e4429f5cb93546492adc2c1a504eca6a7d3ea095fe7fcd513e7",
+          "currentSourceSha256": "86b270988a880e4429f5cb93546492adc2c1a504eca6a7d3ea095fe7fcd513e7",
+          "matches": true
+        }
+      ]
     }
   ]
 }
