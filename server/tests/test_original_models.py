@@ -16,17 +16,17 @@ def test_original_model_has_grounded_catalog_and_negative_rejection(recipe):
 
 def test_original_recipes_and_client_copy_are_exact_and_unique():
     assert (ROOT/'shared/persona-original-models.json').read_bytes()==(ROOT/'client/Assets/AboutMe/Resources/persona-original-models.json').read_bytes()
-    assert len({r['id'] for r in RECIPES})==len(RECIPES)==162
+    assert len({r['id'] for r in RECIPES})==len(RECIPES)==202
     geometry=[json.dumps(r['parts'],sort_keys=True) for r in RECIPES]
-    assert len(set(geometry))==162
+    assert len(set(geometry))==202
     assert all(r['license']=='project-original' and r['parts'] and r['stage'] in ('model_with_existing_template','model_with_authoritative_mechanic') for r in RECIPES)
 
 def test_live_party_mechanic_registry_is_packaged_and_bound_to_real_models():
     path=ROOT/'shared/persona-mechanics.json'
     assert path.read_bytes()==(ROOT/'client/Assets/AboutMe/Resources/persona-mechanics.json').read_bytes()
     mechanics=json.loads(path.read_text())['items']
-    assert len(mechanics)==len({m['id'] for m in mechanics})==50
-    assert len({m['visualId'] for m in mechanics})==50
+    assert len(mechanics)==len({m['id'] for m in mechanics})==60
+    assert len({m['visualId'] for m in mechanics})==60
     recipes={r['id']:r for r in RECIPES}
     planned={m['id'] for m in json.loads((ROOT/'shared/persona-expansion-200.json').read_text())['mechanics']}
     for m in mechanics:
@@ -41,6 +41,10 @@ def test_live_party_mechanic_registry_is_packaged_and_bound_to_real_models():
     ('origami-crane','纸鹤'),('fabric-scissors','剪刀'),('stamp-seal','印章'),('clay-vase','陶瓶'),
     ('travel-neck-pillow','颈枕'),('mini-lighthouse','灯塔'),('molecular-model','分子模型'),
     ('dna-helix','DNA'),('calculator','计算器'),
+    ('roller-skates','轮滑'),('climbing-chalkbag','攀岩'),('snowboard','滑雪'),('ice-skates','滑冰'),
+    ('paddleboard-racket','匹克球'),('squash-racket','壁球'),('forklift-toy','叉车'),('gearbox-model','齿轮'),
+    ('circuit-breadboard','电路'),('bridge-model','桥梁'),('wind-turbine','风力发电'),('justice-scales','法律'),
+    ('teaching-blackboard','教学'),('anatomical-heart','人体解剖'),('architecture-maquette','建筑设计'),('economics-chart','经济学'),
 ])
 def test_natural_short_prop_names_generate_green_and_reject_negative(visual,term):
     recipe=next(r for r in RECIPES if r['id']==visual)

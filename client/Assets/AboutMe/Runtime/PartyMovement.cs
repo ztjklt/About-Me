@@ -22,7 +22,7 @@ namespace AboutMe
             return (e.mechanicId=="glide-open"||e.mechanicId=="pogo-hop")&&(action=="use_item"||action=="interact");
         }
         float MotorY(Player p)=>BodyWorld==null?p.position.y:p.motorHeight;
-        bool OnPartyGround(Player p)=>!p.airborne&&Mathf.Abs(MotorY(p)-CampusGeometry.Floor(p.position+Vector3.up*.2f)-1)<.2f;
+        bool OnPartyGround(Player p)=>!p.airborne&&Mathf.Abs(MotorY(p)-SurfaceFloor(p.position+Vector3.up*.2f)-1)<.2f;
         static Vector3 Flat(Vector3 v){v.y=0;return v;}
         string MovementStatus(Player p)
         {
@@ -90,7 +90,7 @@ namespace AboutMe
         }
         void LaunchParty(Player p,float speed,Vector3 horizontal)
         {
-            p.verticalSpeed=speed;p.airborne=true;p.fallOriginHeight=CampusGeometry.Floor(p.position+Vector3.up*.2f);
+            p.verticalSpeed=speed;p.airborne=true;p.fallOriginHeight=SurfaceFloor(p.position+Vector3.up*.2f);
             if(horizontal.sqrMagnitude>0){if(BodyWorld!=null)BodyWorld.Impact(p,horizontal,p.position,false);else p.impulse+=horizontal;}
             SetAction(p,"jump");CombatEvent("party_launch",p,impulse:horizontal+Vector3.up*speed);
         }

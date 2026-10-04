@@ -141,6 +141,7 @@ namespace AboutMe
         public float createdAt,deadline,triggerAt;
         public int chainIndex;
         public float height;
+        public MachineState machine;
         public Vector3[] path;
         [NonSerialized] public Dictionary<string,float> touchTimes=new Dictionary<string,float>();
         public Vector3 position, velocity;
@@ -231,7 +232,7 @@ namespace AboutMe
                 Players.Remove(id); Items.RemoveAll(x => x.ownerId == id);
                 if (Host == id) Host = Players.Keys.FirstOrDefault();
             }
-            else { p.connected = false; p.input = new Command(); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
+            else { p.connected = false; p.input = new Command(); StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
         }
         public int Remaining(string id) => Items.Count(x => x.ownerId == id && x.state != ItemState.Consumed);
         public PersonaInstance Item(string id) => Items.Find(x => x.id == id);
@@ -254,8 +255,9 @@ namespace AboutMe
             if (!Active || p.eliminated) return;
             if (input.action == "escape") input.escapeHeld=true;
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
-            if (input.action == "cancel") { CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
+            if (input.action == "cancel") { StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
+            if(MachineBusy(p)&&input.action!="interact")return;
             if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action))return;
             switch (input.action)
             {
@@ -263,14 +265,14 @@ namespace AboutMe
                     // The physical pelvis bobs above the motor's grounded height while running.
                     // Judge takeoff from the motor path so a supported running stride can jump.
                     float motorY=BodyWorld!=null?p.motorHeight:p.position.y;
-                    float ground=Floor(new Vector3(p.position.x,motorY,p.position.z))+1;
+                    float ground=SurfaceFloor(new Vector3(p.position.x,motorY,p.position.z))+1;
                     if(!IsGrabbed(p)&&!p.airborne&&p.verticalSpeed<=0&&Mathf.Abs(motorY-ground)<=.15f)
                     {p.verticalSpeed=Rules.jumpSpeed;SetAction(p,"jump");}
                     Interrupt(p);break;
                 case "use_item": UseItem(p); break;
                 case "equip": Equip(p, input.itemId); break;
-                case "grab": CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, false); break;
-                case "grab_item": CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, true); break;
+                case "grab": StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, false); break;
+                case "grab_item": StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, true); break;
                 case "interact": Interact(p,input.itemId); break;
                 case "drop": Interrupt(p); ReleaseGrab(p); break;
             }
@@ -286,7 +288,7 @@ namespace AboutMe
         {
             var target = Item(id);
             if (target == null || target.ownerId != p.profile.playerId || target.state != ItemState.Inventory || Time < p.switchUntil) return;
-            CancelSelfLoot(p); CancelSelfGuards(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
+            StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
             SetAction(p,"equip");
             var current = Item(p.equipped); if (current != null) current.state = ItemState.Inventory;
             p.equipped = target.id; target.state = ItemState.Equipped; p.switchUntil = Time + Rules.switchDuration;
@@ -332,6 +334,7 @@ namespace AboutMe
             }
             if(BodyWorld!=null)foreach(var player in Players.Values)if(!player.eliminated)BodyWorld.Get(player);
             foreach(var player in Players.Values)player.tickOrigin=player.position;
+            TickMachinesBeforeMotor(dt);
             TickCombat(dt);
             foreach (var p in Players.Values)
             {
@@ -349,17 +352,17 @@ namespace AboutMe
                 if (!stunned) GuardYaw(p,dt);
                 PartyMotor(p,ref desired,dt);
                 if(!stunned)FieldMotor(p,ref desired,dt);else {p.fieldStatus="";p.wasWet=false;p.wetMomentum=Vector3.zero;}
-                if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);
+                if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);if(!stunned)MachineMotor(p,ref desired,dt);
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
                 if(!(BodyWorld!=null&&BodyLocked(p)))
                 {
                     var old=p.position;if(BodyWorld!=null)old.y=p.motorHeight;var next=old+(desired+(BodyWorld==null?p.impulse:Vector3.zero))*dt;
-                    float oldSurface=Floor(old);
+                    float oldSurface=SurfaceFloor(old);
                     if(Mathf.Abs(old.y-(oldSurface+1))<.10f&&p.verticalSpeed<=0){p.fallOriginHeight=oldSurface;p.airborne=false;}
-                    next=CampusGeometry.Move(old,next);if(BlockedByBarricade(next))next=old;
+                    next=MoveOnMachines(old,CampusGeometry.Move(old,next));if(BlockedByBarricade(next))next=old;
                     var travelled=next-old;travelled.y=0;p.locomotionSpeed=dt>0?Mathf.Min(desired.magnitude,Mathf.Max(0,Vector3.Dot(travelled,desired.normalized)/dt)):0;
                     p.verticalSpeed-=Rules.gravity*dt;PartyVertical(p);next.y+=p.verticalSpeed*dt;
-                    float surface=Floor(next),floor=surface+1;
+                    float surface=SurfaceFloor(next),floor=surface+1;
                     if(BodyWorld!=null&&desired.sqrMagnitude>.01f&&!BodyLocked(p)&&p.verticalSpeed<=0)
                     {
                         var probe=next+desired.normalized*.55f;
@@ -404,14 +407,14 @@ namespace AboutMe
             {
                 var a=living[i]; var b=living[j]; var d=b.position-a.position; d.y=0;
                 if(d.sqrMagnitude < 1.21f && Mathf.Abs(a.position.y-b.position.y)<1.6f)
-                { var n=d.sqrMagnitude<.001f?Vector3.right:d.normalized; float push=(1.1f-d.magnitude)*.5f; var aNext=CampusGeometry.Move(a.position,a.position-n*push);var bNext=CampusGeometry.Move(b.position,b.position+n*push);if(!BlockedByBarricade(aNext))a.position=aNext;if(!BlockedByBarricade(bNext))b.position=bNext; }
+                { var n=d.sqrMagnitude<.001f?Vector3.right:d.normalized; float push=(1.1f-d.magnitude)*.5f; var aNext=MoveOnMachines(a.position,CampusGeometry.Move(a.position,a.position-n*push));var bNext=MoveOnMachines(b.position,CampusGeometry.Move(b.position,b.position+n*push));if(!BlockedByBarricade(aNext))a.position=aNext;if(!BlockedByBarricade(bNext))b.position=bNext; }
             }
             if(BodyWorld==null)foreach(var player in Players.Values)player.velocity=Vector3.ClampMagnitude((player.position-player.tickOrigin)/dt,30);
             foreach (var item in Items.Where(x => x.state == ItemState.Ground))
             {
-                bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);
-                item.velocity += Vector3.down * Rules.gravity * dt; item.position = CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f);
-                float ground = CampusGeometry.Floor(item.position,.35f) + .35f;
+                bool beltDriven=PartyLooseBelt(ref item.velocity,item.position,.35f,dt);bool fieldDriven=FieldLoose(ref item.velocity,item.position,.35f,dt);fieldDriven|=MachineLoose(ref item.velocity,item.position,.35f,dt);
+                item.velocity += Vector3.down * Rules.gravity * dt; item.position = MoveOnMachines(item.position,CampusGeometry.Move(item.position,item.position+item.velocity*dt,.15f,.35f),.15f,.35f);
+                float ground = SurfaceFloor(item.position,.35f) + .35f;
                 if(item.position.y < ground) { item.position.y=ground; item.velocity=new Vector3(item.velocity.x*.9f,Mathf.Abs(item.velocity.y)*.25f,item.velocity.z*.9f); if(!beltDriven&&!fieldDriven&&item.velocity.magnitude<.5f)item.velocity=Vector3.zero; }
                 if(CampusGeometry.Outside(item.position))
                 { item.position = new Vector3(Mathf.Clamp(item.position.x,-11,11),2,Mathf.Clamp(item.position.z,-11,11)); item.velocity=Vector3.zero; }
@@ -421,15 +424,15 @@ namespace AboutMe
             foreach(var prop in Props)
             {
                 if(prop.holder!=""&&Players.TryGetValue(prop.holder,out var holder)) {prop.position=holder.position+Forward(holder);prop.velocity=Vector3.zero;continue;}
-                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);
-                prop.velocity+=Vector3.down*Rules.gravity*dt;var propFrom=prop.position;var propNext=CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f);
+                PartyLooseBelt(ref prop.velocity,prop.position,.6f,dt);FieldLoose(ref prop.velocity,prop.position,.6f,dt);MachineLoose(ref prop.velocity,prop.position,.6f,dt);
+                prop.velocity+=Vector3.down*Rules.gravity*dt;var propFrom=prop.position;var propNext=MoveOnMachines(prop.position,CampusGeometry.Move(prop.position,prop.position+prop.velocity*dt,.35f,.6f),.35f,.6f);
                 int propGuard=prop.velocity.magnitude>4&&prop.thrower!=""?GuardShot(prop.id,ref propFrom,ref prop.velocity,ref prop.thrower,ref prop.pushScale,prop.guardTouches,propNext):0;
                 if(propGuard!=0){prop.position=propFrom;if(propGuard==1){prop.velocity=Vector3.zero;prop.thrower="";}else prop.hitAfter=Time+.04f;continue;}prop.position=propNext;
-                if(prop.position.y<CampusGeometry.Floor(prop.position,.6f)+.6f){prop.position.y=CampusGeometry.Floor(prop.position,.6f)+.6f;prop.velocity=new Vector3(prop.velocity.x*.96f,0,prop.velocity.z*.96f);}
+                if(prop.position.y<SurfaceFloor(prop.position,.6f)+.6f){prop.position.y=SurfaceFloor(prop.position,.6f)+.6f;prop.velocity=new Vector3(prop.velocity.x*.96f,0,prop.velocity.z*.96f);}
                 if(prop.position.y< -6){prop.position=new Vector3(0,1,-6);prop.velocity=Vector3.zero;}
                 if(prop.velocity.magnitude>4&&Time>prop.hitAfter&&Players.TryGetValue(prop.thrower,out var thrower))
                 foreach(var p in Players.Values.Where(x=>x!=thrower&&!x.eliminated).ToArray())
-                if(Vector3.Distance(p.position,prop.position)<1.5f){Hit(p,thrower,12,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
+                if(Vector3.Distance(p.position,prop.position)<1.5f&&MachineClear(prop.position,p.position)){Hit(p,thrower,12,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
             }
             TickLootCargo();
         }
@@ -448,6 +451,7 @@ namespace AboutMe
             var carriedProp=Props.Find(x=>x.id==p.publicProp);
             if(carriedProp!=null)
             {
+                if(heavy&&UseHeldMachineCart(p,carriedProp))return;
                 if(OfferHotPotato(p,carriedProp))return;
                 if(heavy){carriedProp.holder="";carriedProp.thrower=p.profile.playerId;carriedProp.guardTouches.Clear();carriedProp.pushScale=1;carriedProp.velocity=Forward(p)*12+Vector3.up*3;p.publicProp="";}
                 else foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated&&Vector3.Distance(x.position,p.position)<2.3f).ToArray())Hit(target,p,12,2,false);
@@ -516,7 +520,7 @@ namespace AboutMe
             foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated).ToArray())
             {
                 var delta=target.position-p.position;
-                if(delta.magnitude<=reach && CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,target.position+Vector3.up*.25f) && (template=="SpecialAbility" || Vector3.Dot(Forward(p),delta.normalized)>.1f)) Hit(target,p,damage,force,heavy,knockdown);
+                if(delta.magnitude<=reach && CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,target.position+Vector3.up*.25f) && MachineClear(p.position+Vector3.up*.25f,target.position+Vector3.up*.25f) && (template=="SpecialAbility" || Vector3.Dot(Forward(p),delta.normalized)>.1f)) Hit(target,p,damage,force,heavy,knockdown);
             }
         }
         public void Hit(Player target,Player attacker,float damage,float force,bool heavy,bool knockdown=false,bool keepDepletedUntilGetUp=false,Vector3? origin=null,Vector3? impulseOverride=null,float horizontalScale=1)
@@ -529,7 +533,7 @@ namespace AboutMe
             {if(BodyWorld!=null)BodyWorld.Impact(target,direction*(.7f*horizontalScale),point,false);else target.impulse+=direction*(.7f*horizontalScale);return;}
             if(heavy&&target.cushionUntil>Time)
             {target.cushionUntil=0;Hit(attacker,target,0,6,false);Say(target.profile.nickname+" 用抱枕弹开了 "+attacker.profile.nickname+"！");return;}
-            CancelSelfLoot(target);CancelSelfMovement(target);Interrupt(target);ReleaseAllGrabs(target);CancelAction(target);target.chargingSince=-1;
+            StopMachineOperator(target);CancelSelfLoot(target);CancelSelfMovement(target);Interrupt(target);ReleaseAllGrabs(target);CancelAction(target);target.chargingSince=-1;
             target.stability=Mathf.Max(0,target.stability-damage);target.lastHit=Time;
             bool depleted=target.stability<=0;bool falls=knockdown||depleted;
             var kick=impulseOverride??(direction*(falls?7:heavy?11.5f:5.8f)+(falls?Vector3.up*3:Vector3.zero));
@@ -565,12 +569,12 @@ namespace AboutMe
                 var from=item.position;
                 var velocity=item.velocity+Vector3.down*Rules.gravity*dt;
                 var wanted=from+velocity*dt;
-                var next=CampusGeometry.Move(from,wanted,.2f,.35f);
+                var next=CampusGeometry.Move(from,wanted,.2f,.35f);if(!MachineClear(from,next))next=from;
                 bool wall=(new Vector2(next.x-wanted.x,next.z-wanted.z)).sqrMagnitude>.0001f;
                 var shotPosition=from;int guarded=GuardShot(item.id,ref shotPosition,ref velocity,ref item.thrownBy,ref item.pushScale,item.guardTouches,next);
                 if(guarded!=0){item.position=shotPosition;item.velocity=guarded==1?Vector3.zero:velocity;if(guarded==1){item.state=ItemState.Ground;item.thrownBy="";}continue;}
                 var target=Players.Values.Where(x=>x.profile.playerId!=item.thrownBy&&!x.eliminated)
-                    .Where(x=>DistanceToSegment(x.position,from,next)<1.1f&&CampusGeometry.ClearSegment(from,x.position))
+                    .Where(x=>DistanceToSegment(x.position,from,next)<1.1f&&CampusGeometry.ClearSegment(from,x.position)&&MachineClear(from,x.position))
                     .OrderBy(x=>DistanceToSegment(x.position,from,next)).FirstOrDefault();
                 item.position=next;
                 if(target!=null && Players.TryGetValue(item.thrownBy,out var thrower))
@@ -582,7 +586,7 @@ namespace AboutMe
                     item.velocity=velocity*.18f+Vector3.up*1.2f;
                     continue;
                 }
-                float floor=CampusGeometry.Floor(next,.35f)+.35f;
+                float floor=SurfaceFloor(next,.35f)+.35f;
                 if(wall||next.y<=floor||CampusGeometry.Outside(next))
                 {
                     item.state=ItemState.Ground;item.thrownBy="";
@@ -632,7 +636,7 @@ namespace AboutMe
                     if(guarded!=0){e.position=from;if(guarded==1)LandThrownDisc(e,from);continue;}
                     var hit=Players.Values.Where(p=>p!=owner&&!p.eliminated)
                         .FirstOrDefault(p=>Vector3.Distance(discNext,p.position)<1.25f);
-                    if(hit!=null)
+                    if(hit!=null&&MachineClear(e.position,hit.position))
                     {
                         e.position=discNext;
                         Hit(hit,owner,e.damage,e.force,e.heavy,e.knockdown,horizontalScale:e.pushScale);
@@ -640,13 +644,14 @@ namespace AboutMe
                         LandThrownDisc(e,e.position);
                         continue;
                     }
+                    if(!MachineClear(e.position,discNext)){LandThrownDisc(e,e.position);continue;}
                     if(CampusGeometry.Outside(discNext)||CampusGeometry.Blocked(discNext,.2f,.25f))
                     {
                         LandThrownDisc(e,e.position);
                         continue;
                     }
                     e.position=discNext;
-                    var floor=CampusGeometry.Floor(e.position,.08f)+.08f;
+                    var floor=SurfaceFloor(e.position,.08f)+.08f;
                     if(e.position.y<=floor)LandThrownDisc(e,e.position);
                     continue;
                 }
@@ -660,7 +665,7 @@ namespace AboutMe
                     next=e.position+e.velocity*dt;
                 }
                 if(OrdinaryShot(e))
-                {var from=e.position;int guarded=GuardShot(e.id,ref from,ref e.velocity,ref e.owner,ref e.pushScale,e.guardTouches,next);if(guarded!=0){e.position=from;if(guarded==1)e.remaining=0;continue;}if(!CampusGeometry.ClearSegment(e.position,next)){e.remaining=0;continue;}}
+                {var from=e.position;int guarded=GuardShot(e.id,ref from,ref e.velocity,ref e.owner,ref e.pushScale,e.guardTouches,next);if(guarded!=0){e.position=from;if(guarded==1)e.remaining=0;continue;}if(!CampusGeometry.ClearSegment(e.position,next)||!MachineClear(e.position,next)){e.remaining=0;continue;}}
                 e.position=next;
                 foreach(var p in Players.Values.Where(p=>p!=owner&&!p.eliminated).ToArray())
                 {
@@ -672,10 +677,10 @@ namespace AboutMe
                 }
             }
         }
-        static void LandThrownDisc(EffectState effect,Vector3 position)
+        void LandThrownDisc(EffectState effect,Vector3 position)
         {
             effect.position=position;
-            effect.position.y=CampusGeometry.Floor(position,.08f)+.08f;
+            effect.position.y=SurfaceFloor(position,.08f)+.08f;
             effect.velocity=Vector3.zero;
             effect.landed=true;
             effect.remaining=6;
@@ -695,10 +700,11 @@ namespace AboutMe
         }
         public void Interact(Player p,string targetId=null)
         {
+            if(TryMachineInteraction(p,targetId))return;
             if(p.interaction!="") { Interrupt(p); return; }
             if(IsGrabbed(p)) return;
             ReleaseGrab(p); CancelAction(p); p.chargingSince=-1;
-            var item=Items.Where(x=>x.state==ItemState.Ground&&(string.IsNullOrEmpty(targetId)||x.id==targetId)&&Vector3.Distance(x.position,p.position)<Rules.interactionRange)
+            var item=Items.Where(x=>x.state==ItemState.Ground&&(string.IsNullOrEmpty(targetId)||x.id==targetId)&&Vector3.Distance(x.position,p.position)<Rules.interactionRange&&MachineClear(p.position,x.position))
                 .OrderBy(x=>Vector3.Distance(x.position,p.position)).FirstOrDefault();
             if(item==null)return;
             item.state=ItemState.Carried;item.carrierId=p.profile.playerId;item.velocity=Vector3.zero;

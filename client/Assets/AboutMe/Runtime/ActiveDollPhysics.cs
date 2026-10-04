@@ -20,6 +20,8 @@ namespace AboutMe
         readonly PhysicsScene physics;
         readonly GameObject container;
         readonly Dictionary<string,ActiveDollRig> rigs=new Dictionary<string,ActiveDollRig>();
+        readonly Dictionary<string,GameObject> machines=new Dictionary<string,GameObject>();
+        public int MachineColliderCount=>machines.Count;
         readonly Dictionary<string,GameObject> barriers=new Dictionary<string,GameObject>();
         public int RigCount=>rigs.Count;
         public double LastStepMs {get;private set;}
@@ -44,6 +46,10 @@ namespace AboutMe
             var activeBarriers=match.Effects.Where(e=>e.kind=="Barricade").ToArray();
             foreach(var key in barriers.Keys.Where(id=>!activeBarriers.Any(e=>e.id==id)).ToArray()){Destroy(barriers[key]);barriers.Remove(key);}
             foreach(var b in activeBarriers)if(!barriers.ContainsKey(b.id))barriers[b.id]=Box("Temporary barrier",b.position+Vector3.up*.25f,new Vector3(b.radius*2,1.5f,b.radius*2));
+            var geometry=match.MachineGeometry().ToArray();
+            foreach(var key in machines.Keys.Where(id=>!geometry.Any(b=>b.id==id)).ToArray()){Destroy(machines[key]);machines.Remove(key);}
+            foreach(var shape in geometry){if(!machines.TryGetValue(shape.id,out var go)){go=Box("Public machine "+shape.id,shape.center,shape.size);machines[shape.id]=go;}go.transform.SetPositionAndRotation(shape.center,shape.rotation);go.GetComponent<BoxCollider>().size=shape.size;}
+            Physics.SyncTransforms();
             // Keep authority at 50 Hz; fast collisions / a body pile receive two solver substeps within that tick.
             int substeps=rigs.Values.Any(r=>r.Bodies.Any(b=>b.velocity.sqrMagnitude>100))||match.Players.Values.Count(p=>match.BodyDown(p))>=3?2:1;
             for(int substep=0;substep<substeps;substep++)
@@ -70,10 +76,13 @@ namespace AboutMe
             foreach(var p in match.Players.Values)if(!p.eliminated)Get(p).ReadBack(p,match,dt);
             clock.Stop();LastStepMs=clock.Elapsed.TotalMilliseconds;
         }
+        public void RemoveMachine(string id)
+        {foreach(var key in machines.Keys.Where(key=>key.StartsWith(id+"/",StringComparison.Ordinal)).ToArray()){machines[key].SetActive(false);Destroy(machines[key]);machines.Remove(key);}}
         public void PublishInitial(Match match){foreach(var p in match.Players.Values)if(!p.eliminated)Get(p).PublishPose(p,match.serverTick);}
         public void Impact(Player p,Vector3 velocity,Vector3 point,bool topple)
         {Get(p).Impact(velocity,point,topple);}
         public Vector3 Contact(Player p,Vector3 from)=>Get(p).ClosestContact(from);
+        public void Translate(Player p,Vector3 delta)=>Get(p).Translate(delta);
         public void Reset(Player p){Get(p).Reset(p.position,p.yaw);p.motorHeight=p.position.y;}
         public void Dispose()
         {
@@ -212,6 +221,8 @@ namespace AboutMe
         public int ClosestBone(Vector3 from)
         {int index=0;float best=float.MaxValue;for(int i=0;i<15;i++){float distance=(Bodies[i].GetComponent<Collider>().ClosestPoint(from)-from).sqrMagnitude;if(distance<best){best=distance;index=i;}}return index;}
         public Vector3 ClosestContact(Vector3 from)=>Bodies[ClosestBone(from)].GetComponent<Collider>().ClosestPoint(from);
+        public void Translate(Vector3 delta)
+        {foreach(var b in Bodies)b.position+=delta;lastPublished+=delta;if(previousMode==BodyMode.GettingUp){standingPoint+=delta;for(int i=0;i<getUpPositions.Length;i++)getUpPositions[i]+=delta;}foreach(var foot in feet){foot.anchor+=delta;foot.contactPoint+=delta;foot.desiredAnkle+=delta;}}
         public void Reset(Vector3 position,float yaw)
         {
             donor.DrawAt(new PublicPlayer{position=position,yaw=yaw,stability=100,connected=true},null,.02f,0);donor.root.transform.localScale=Vector3.one;
@@ -249,7 +260,7 @@ namespace AboutMe
             donor.DrawAt(view,null,dt,match.Time);donor.root.transform.localScale=Vector3.one;
 
             if(getting)ApplyGetUpTarget(p,match.Time-p.bodyStateAt);
-            PrepareFeet(p,dt,match.Time,beingDragged);
+            PrepareFeet(p,match,dt,match.Time,beingDragged);
             previousMode=p.bodyMode;
             float getUpBlend=getting?Mathf.SmoothStep(0,1,Mathf.Clamp01((match.Time-p.bodyStateAt)/.10f)):1;
             for(int i=0;i<15;i++)
@@ -329,7 +340,7 @@ namespace AboutMe
                     if(!float.IsNaN(chestAxis.x))Bodies[1].AddTorque(Vector3.ClampMagnitude((chestAxis*(chestAngle*Mathf.Deg2Rad*2500)-Bodies[1].angularVelocity*90)/(1+90*dt+2500*dt*dt),1200)*(p.bodyMode==BodyMode.Stagger?.3f:1),ForceMode.Acceleration);}
             }
         }
-        void PrepareFeet(Player p,float dt,float now,bool beingDragged)
+        void PrepareFeet(Player p,Match match,float dt,float now,bool beingDragged)
         {
             bool locomoting=p.bodyMode==BodyMode.Standing&&!p.airborne&&!beingDragged;
             bool settling=p.bodyMode==BodyMode.GettingUp&&now-p.bodyStateAt>.45f;
@@ -345,7 +356,7 @@ namespace AboutMe
                     if(settling)
                     {
                         var settlingAnkle=animatedFoot.position;
-                        float floor=CampusGeometry.Floor(new Vector3(settlingAnkle.x,p.getUpPosition.y,settlingAnkle.z));
+                        float floor=match.SurfaceFloor(new Vector3(settlingAnkle.x,p.getUpPosition.y,settlingAnkle.z));
                         if(floor>-50)
                         {
                             settlingAnkle.y=floor+SoleBelowAnkle;
@@ -388,7 +399,7 @@ namespace AboutMe
                 else
                 {
                     desired=animatedFoot.position;
-                    float ground=CampusGeometry.Floor(new Vector3(desired.x,p.motorHeight,desired.z));
+                    float ground=match.SurfaceFloor(new Vector3(desired.x,p.motorHeight,desired.z));
                     if(ground>-50)
                     {
                         float lift=speed<.15f?0:Mathf.Lerp(.01f,.105f,1-intent)*Mathf.Clamp01((.26f-state.swingAge)/.10f);
@@ -450,10 +461,10 @@ namespace AboutMe
             p.velocity=Bodies[0].velocity;
             if(p.bodyMode==BodyMode.Falling||p.bodyMode==BodyMode.Grounded)p.verticalSpeed=p.velocity.y;
             bool down=p.bodyMode==BodyMode.Falling||p.bodyMode==BodyMode.Grounded;
-            if(down&&p.fallOriginHeight-CampusGeometry.Floor(p.position+Vector3.up*.7f)>2)p.highFall=true;
+            if(down&&p.fallOriginHeight-match.SurfaceFloor(p.position+Vector3.up*.7f)>2)p.highFall=true;
             if(down&&bodyContactAge<.05f&&p.bodyMode==BodyMode.Falling)match.BodyLanded(p,landSpeed);
             // A supported stride may lift both feet; that is not a jump. Use the motor floor trajectory.
-            p.airborne=down?bodyContactAge>.08f:p.motorHeight>CampusGeometry.Floor(new Vector3(p.position.x,p.motorHeight,p.position.z))+1.15f;
+            p.airborne=down?bodyContactAge>.08f:p.motorHeight>match.SurfaceFloor(new Vector3(p.position.x,p.motorHeight,p.position.z))+1.15f;
             if(p.bodyMode==BodyMode.Grounded&&match.Time-p.bodyStateAt>=1)match.TryBodyGetUp(p,Bodies[1].rotation*Vector3.forward);
             if(p.bodyMode==BodyMode.GettingUp&&match.Time-p.bodyStateAt>=.6f&&Vector3.Dot(Bodies[1].rotation*Vector3.up,Vector3.up)>.82f&&feetContactAge<.1f&&Vector2.Distance(new Vector2(p.position.x,p.position.z),new Vector2(p.getUpPosition.x,p.getUpPosition.z))<.35f&&Mathf.Abs(p.position.y-p.getUpPosition.y)<.55f)match.CompleteBodyGetUp(p);
             lastPublished=p.position;lastYaw=p.yaw;

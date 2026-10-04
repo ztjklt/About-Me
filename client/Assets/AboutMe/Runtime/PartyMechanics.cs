@@ -34,6 +34,7 @@ namespace AboutMe
         {
             var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
+            if((definition.id=="timed-door"||definition.id=="wind-up-cart")&&active.Length==1)return true;
             if(definition.id=="trip-line"&&active.Length==1&&active[0].stage=="line_wait")return true;
             if(definition.id=="impact-bank"&&active.Any(e=>e.stage=="banked"&&GuardAlive(e)))return true;
             if(definition.id=="paired-teleport"&&active.Length==1&&active[0].stage=="portal_wait")return true;
@@ -51,7 +52,8 @@ namespace AboutMe
         {
             var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
-            if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d)){p.nextAttack=Time+.25f;return true;}
+            if(d.family=="machinery")return TryMachineMechanic(p,item,d);
             if(d.family=="loot")return TryLootMechanic(p,item,d);
             if(d.family=="guard")return TryGuardMechanic(p,item,d);
             if(d.family=="field")return TryFieldMechanic(p,item,d);
@@ -106,9 +108,10 @@ namespace AboutMe
         }
         static Vector3 GroundParty(Vector3 position)
         {position=CampusGeometry.SafeDrop(position);position.y=CampusGeometry.Floor(position,.1f)+.15f;return position;}
-        static bool PartyClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from+Vector3.up*.35f,to+Vector3.up*.1f);
+        bool PartyClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from+Vector3.up*.35f,to+Vector3.up*.1f)&&MachineClear(from+Vector3.up*.35f,to+Vector3.up*.1f);
         void RemovePartyEffect(EffectState e)
         {
+            if(e.machine!=null)BodyWorld?.RemoveMachine(e.id);
             if(e.targetId.StartsWith("device-",StringComparison.Ordinal))
             {
                 var prop=Props.Find(x=>x.id==e.targetId);
@@ -156,6 +159,7 @@ namespace AboutMe
             if(d==null||!Players.TryGetValue(e.owner,out var owner)){RemovePartyEffect(e);return;}
             var source=Item(e.sourceInstance);
             if(source==null||source.state==ItemState.Consumed||owner.eliminated){RemovePartyEffect(e);return;}
+            if(d.family=="machinery"){TickMachine(e,owner,d,dt);return;}
             if(d.family=="loot"){TickLoot(e,owner,d,dt);return;}
             if(d.family=="guard"){TickGuard(e,owner,d,dt);return;}
             if(d.family=="field"){TickField(e,owner,d,dt);return;}
@@ -221,7 +225,7 @@ namespace AboutMe
         }
         void DamagePartyDevices(Player attacker,Vector3 point,float reach)
         {
-            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&PartyDevice(e)&&Vector3.Distance(e.position,point)<=reach&&PartyClear(attacker.position,e.position)).ToArray())
+            foreach(var e in Effects.Where(e=>e.kind=="PartyMechanic"&&e.stage!="burst"&&PartyDevice(e)&&Vector3.Distance(e.position,point)<=reach&&CampusGeometry.ClearSegment(attacker.position,e.position)&&MachineClear(attacker.position,e.position,e.id)).ToArray())
             {if(--e.health<=0){RemovePartyEffect(e);Say(attacker.profile.nickname+" 拆掉了公共装置！");}}
         }
     }

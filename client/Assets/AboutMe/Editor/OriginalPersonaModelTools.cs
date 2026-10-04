@@ -9,11 +9,13 @@ namespace AboutMe.Editor
     public static class OriginalPersonaModelTools
     {
         const string Folder="Assets/AboutMe/Resources/PersonaProps";
-        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();PartyLootTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
+        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();PartyLootTests.Run();PartyMachineryTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
         public static void Build()
         {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            var authored=JsonUtility.FromJson<OriginalModelRecipes>(File.ReadAllText("Assets/AboutMe/Resources/persona-original-models.json")).items;
             int count=0;var fingerprints=new System.Collections.Generic.HashSet<string>();
-            foreach(var recipe in OriginalPersonaModels.All)
+            foreach(var recipe in authored)
             {
                 var root=OriginalPersonaModels.Create(recipe);
                 try
@@ -29,7 +31,7 @@ namespace AboutMe.Editor
                 finally{UnityEngine.Object.DestroyImmediate(root);}
             }
             AssetDatabase.SaveAssets();AssetDatabase.Refresh();
-            Thumbnails();Review();Debug.Log("ORIGINAL_PERSONA_MODELS_PASSED "+count+" unique authored geometry / single persistent palette / <=1500 triangles / grip and swallow anchors / packaged thumbnails");
+            Thumbnails();Review();MachineryDeliveryReview.Render();Debug.Log("ORIGINAL_PERSONA_MODELS_PASSED "+count+" unique authored geometry / single persistent palette / <=1500 triangles / grip and swallow anchors / packaged thumbnails");
         }
         static void Thumbnails()
         {
@@ -69,7 +71,7 @@ namespace AboutMe.Editor
             try
             {
                 camera.Render();RenderTexture.active=render;var texture=new Texture2D(2000,rows*220,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,2000,rows*220),0,0);texture.Apply();
-                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-162-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
+                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-202-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
             }
             finally{camera.targetTexture=null;RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(render);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(light.gameObject);UnityEngine.Object.DestroyImmediate(group);}
         }

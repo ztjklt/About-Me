@@ -24014,6 +24014,6744 @@
       "license": "project-original",
       "source": "About Me original assembly geometry",
       "stage": "model_with_existing_template"
+    },
+    {
+      "id": "bocce-ball",
+      "label": "地掷球",
+      "templateId": "Cushion",
+      "color": "#77C8BD",
+      "keywords": [
+        "地掷球",
+        "bocce"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.46,
+            "y": 0.46,
+            "z": 0.46
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.468,
+            "y": 0.468,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 25,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.47,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.02,
+            "y": 0,
+            "z": 0.236
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.016,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "paddleboard-racket",
+      "label": "匹克球拍",
+      "templateId": "Utility",
+      "color": "#86ADCB",
+      "keywords": [
+        "匹克球",
+        "pickleball"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.34,
+            "y": 0.38,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.23,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.31,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.22,
+            "y": 0.27,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.39,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.028,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "squash-racket",
+      "label": "壁球拍",
+      "templateId": "Cushion",
+      "color": "#F49A6B",
+      "keywords": [
+        "壁球",
+        "squash"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.41,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.23,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.36,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.07,
+            "y": 0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.32,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.32,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.07,
+            "y": 0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.32,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.009,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.009,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.23,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.009,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.009,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "score-flipboard",
+      "label": "翻页记分牌",
+      "templateId": "Utility",
+      "color": "#263248",
+      "keywords": [
+        "比赛记分",
+        "裁判"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.61,
+            "y": 0.06,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.58,
+            "y": 0.36,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.145,
+            "y": 0.1,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.28,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.145,
+            "y": 0.1,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.28,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.22,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.065,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.07,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.065,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.07,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.065,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.22,
+            "y": 0.3,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.065,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": 0.1,
+            "z": 0.044
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.17,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.14,
+            "y": 0.15,
+            "z": 0.044
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.023,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.17,
+            "y": 0.06,
+            "z": 0.044
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.15,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "referee-whistle",
+      "label": "裁判哨",
+      "templateId": "Utility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "裁判",
+        "体育裁判"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.08,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.18,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.015,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.11,
+            "z": 0.14
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.16,
+            "y": 0.076,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.025,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.22,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.12,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "balance-ball",
+      "label": "健身平衡球",
+      "templateId": "Cushion",
+      "color": "#86ADCB",
+      "keywords": [
+        "普拉提",
+        "平衡球"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.6,
+            "y": 0.5,
+            "z": 0.6
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.045,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.64,
+            "y": 0.05,
+            "z": 0.64
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.576,
+            "y": 0.576,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.14,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4971,
+            "y": 0.4971,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.21,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3256,
+            "y": 0.3256,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "foam-roller",
+      "label": "筋膜滚筒",
+      "templateId": "Deployable",
+      "color": "#77C8BD",
+      "keywords": [
+        "筋膜放松",
+        "健身恢复"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.67,
+            "z": 0.27
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.345,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.025,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.13,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.13,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.28,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "balance-plank"
+    },
+    {
+      "id": "ab-wheel",
+      "label": "健腹轮",
+      "templateId": "Utility",
+      "color": "#263248",
+      "keywords": [
+        "腹肌训练",
+        "健腹轮"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.44,
+            "y": 0.44,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.12,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.65,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.15,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.26,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.15,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "climbing-chalkbag",
+      "label": "攀岩粉袋",
+      "templateId": "Cushion",
+      "color": "#F49A6B",
+      "keywords": [
+        "抱石",
+        "攀岩粉",
+        "攀岩"
+      ],
+      "parts": [
+        {
+          "shape": "bucket",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.35,
+            "z": 0.29
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.22,
+            "z": -0.02
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.31,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.09,
+            "z": 0.014
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.15,
+            "y": 0.06,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.12,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "climbing-hold",
+      "label": "抱石岩点",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "抱石",
+        "室内攀岩"
+      ],
+      "parts": [
+        {
+          "shape": "wedge",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.54,
+            "y": 0.26,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 15
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.08,
+            "y": 0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.31,
+            "y": 0.21,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.11,
+            "y": 0.045,
+            "z": 0.16
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.02,
+            "z": 0.07
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.11,
+            "y": 0.045,
+            "z": 0.173
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.026,
+            "z": 0.027
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "ice-skates",
+      "label": "冰刀鞋",
+      "templateId": "Utility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "滑冰",
+        "花样滑冰"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.27,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0.18
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.15,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.26,
+            "z": 0.04
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.07,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.17,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.14,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.183
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.014,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.05,
+            "z": 0.183
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.014,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0.183
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.014,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0.183
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.014,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "roller-skates",
+      "label": "轮滑鞋",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "轮滑",
+        "roller skating"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.09,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.26,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.01,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.13,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.16,
+            "z": 0.04
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.035,
+            "z": 0.45
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.13,
+            "y": -0.22,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.065,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.13,
+            "y": -0.22,
+            "z": 0.21
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.065,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.13,
+            "y": -0.22,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.065,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.13,
+            "y": -0.22,
+            "z": 0.21
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.065,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": -0.18,
+            "z": 0.3
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.1,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "snowboard",
+      "label": "单板滑雪板",
+      "templateId": "Utility",
+      "color": "#86ADCB",
+      "keywords": [
+        "单板滑雪",
+        "snowboarding",
+        "滑雪"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.04,
+            "z": 0.64
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.015,
+            "z": -0.33
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.025,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.015,
+            "z": 0.33
+          },
+          "scale": {
+            "x": 0.27,
+            "y": 0.025,
+            "z": 0.18
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.065,
+            "z": -0.15
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.13,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 75,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.065,
+            "z": 0.15
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.13,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 75,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.02,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "ski-poles",
+      "label": "滑雪杖",
+      "templateId": "Tether",
+      "color": "#B7C5CE",
+      "keywords": [
+        "滑雪",
+        "skiing"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.11,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.68,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -12
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.11,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.68,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 12
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": 0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.16,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.18,
+            "y": 0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.16,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": -0.05,
+            "y": -0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.12,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0.05,
+            "y": -0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.12,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "rotating-sweep"
+    },
+    {
+      "id": "ski-goggles",
+      "label": "滑雪镜",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "滑雪",
+        "雪镜"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.19,
+            "z": 0.055
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.0,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.41,
+            "y": 0.14,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.105,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.06,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.07
+          },
+          "scale": {
+            "x": 0.57,
+            "y": 0.21,
+            "z": 0.033
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "paraglider-canopy",
+      "label": "滑翔伞翼",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "滑翔伞",
+        "paragliding"
+      ],
+      "parts": [
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0,
+            "y": 0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.69,
+            "y": 0.25,
+            "z": 0.38
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.26,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.06,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.15,
+            "y": -0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.013,
+            "y": 0.45,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -25
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.15,
+            "y": -0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.013,
+            "y": 0.45,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 25
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.013,
+            "y": 0.45,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": -15,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.013,
+            "y": 0.45,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 15,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.18,
+            "y": 0.26,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.07,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.26,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.07,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.18,
+            "y": 0.26,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.027,
+            "y": 0.07,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "bmx-bike",
+      "label": "特技自行车",
+      "templateId": "Cushion",
+      "color": "#263248",
+      "keywords": [
+        "BMX",
+        "小轮车",
+        "特技自行车"
+      ],
+      "parts": [
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.11,
+            "z": -0.23
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": -0.11,
+            "z": 0.23
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.08,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.32,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 65,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": 0.02
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.34,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": -65,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.04,
+            "z": -0.09
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.27,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.03,
+            "z": 0.17
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.3,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": -25,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.21,
+            "z": -0.11
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.035,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.21,
+            "z": 0.26
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.27,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "hurdle-frame",
+      "label": "田径栏架",
+      "templateId": "Barricade",
+      "color": "#B7C5CE",
+      "keywords": [
+        "跨栏",
+        "田径"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.28,
+            "y": -0.11,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.43,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.28,
+            "y": -0.11,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.43,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.62,
+            "y": 0.085,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.28,
+            "y": -0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.05,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.28,
+            "y": -0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.05,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": 0.12,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.09,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.12,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.09,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.12,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.07,
+            "y": 0.09,
+            "z": 0.008
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "timed-door"
+    },
+    {
+      "id": "relay-baton",
+      "label": "接力棒",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "接力赛",
+        "田径接力"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.08,
+            "y": 0.66,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.14,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.33,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.09,
+            "y": 0.09,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "optics-bench",
+      "label": "光学导轨",
+      "templateId": "Utility",
+      "color": "#B7C5CE",
+      "keywords": [
+        "光学实验",
+        "光路"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.67,
+            "y": 0.06,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.66,
+            "y": 0.035,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.035,
+            "z": -0.0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.025,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.22,
+            "y": -0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.026,
+            "y": 0.24,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.026,
+            "y": 0.24,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.22,
+            "y": -0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.026,
+            "y": 0.24,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.22,
+            "y": 0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.11,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.22,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.02,
+            "y": 0.23,
+            "z": 0.23
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "circuit-breadboard",
+      "label": "面包板电路",
+      "templateId": "Barricade",
+      "color": "#FFF9EF",
+      "keywords": [
+        "电子工程",
+        "电路"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.55,
+            "y": 0.07,
+            "z": 0.35
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": 0.043,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": 0.043,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": 0.043,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": 0.043,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.043,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.043,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": 0.043,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": 0.043,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.043,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.043,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.009,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.16,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.11,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.16,
+            "y": 0.1,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.038,
+            "y": 0.11,
+            "z": 0.038
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.2,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.065,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.14,
+            "y": 0.045,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "weight-switch"
+    },
+    {
+      "id": "gearbox-model",
+      "label": "齿轮箱模型",
+      "templateId": "Barricade",
+      "color": "#86ADCB",
+      "keywords": [
+        "机械设计",
+        "齿轮"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.6,
+            "y": 0.04,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.16
+          },
+          "scale": {
+            "x": 0.58,
+            "y": 0.3,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.14,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.04,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.16,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.04,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.04100505063388335,
+            "y": 0.11899494936611665,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 45
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": 0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.23899494936611665,
+            "y": 0.11899494936611667,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 135
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.28,
+            "y": 0.020000000000000018,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2389949493661167,
+            "y": -0.07899494936611665,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 225
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14000000000000004,
+            "y": -0.12000000000000001,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 270
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.04100505063388338,
+            "y": -0.07899494936611669,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.045,
+            "y": 0.055,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 315
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.16,
+            "y": 0.02,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.18,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "turntable-wheel"
+    },
+    {
+      "id": "bridge-model",
+      "label": "桁架桥模型",
+      "templateId": "Barricade",
+      "color": "#B67B4C",
+      "keywords": [
+        "土木工程",
+        "结构力学",
+        "桥梁"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.69,
+            "y": 0.04,
+            "z": 0.26
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.69,
+            "y": 0.027,
+            "z": 0.027
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.69,
+            "y": 0.027,
+            "z": 0.027
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.3,
+            "y": 0.03,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.3,
+            "y": 0.03,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.3,
+            "y": 0.03,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.3,
+            "y": 0.03,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.19,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15,
+            "y": 0.03,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.26,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -55
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15,
+            "y": 0.03,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.26,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -55
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.03,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.26,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 55
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.03,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.26,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 55
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "floor-elevator"
+    },
+    {
+      "id": "wind-turbine",
+      "label": "风力发电模型",
+      "templateId": "Deployable",
+      "color": "#FFF9EF",
+      "keywords": [
+        "风电",
+        "能源工程",
+        "风力发电"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.12,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.51,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.13,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.39,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.05,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.0,
+            "y": 0.36,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.32,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0.13859566198080953,
+            "y": 0.12005475323634814,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.32,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -120
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": -0.13850080496784378,
+            "y": 0.1198905310012649,
+            "z": 0.085
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.32,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -240
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "step-switch"
+    },
+    {
+      "id": "anatomical-heart",
+      "label": "心脏教学模型",
+      "templateId": "Utility",
+      "color": "#F49A6B",
+      "keywords": [
+        "医学",
+        "解剖学",
+        "人体解剖"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.1,
+            "y": -0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.34,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.1,
+            "y": -0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.26,
+            "y": 0.34,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.2,
+            "z": 0.19
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": -0.03,
+            "y": 0.19,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.19,
+            "y": 0.22,
+            "z": 0.065
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.12,
+            "y": 0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.22,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -15
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.36,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.035,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "protractor",
+      "label": "半圆量角器",
+      "templateId": "SpecialAbility",
+      "color": "#86ADCB",
+      "keywords": [
+        "几何",
+        "量角器"
+      ],
+      "parts": [
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.59,
+            "y": 0.59,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.59,
+            "y": 0.03,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.235,
+            "y": -0.04,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -90.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.21711169014015236,
+            "y": 0.04993060660579609,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -67.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.16617009357883866,
+            "y": 0.12617009357883863,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -45.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0899306066057961,
+            "y": 0.17711169014015235,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -22.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 1.43895998899814e-17,
+            "y": 0.19499999999999998,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.08993060660579608,
+            "y": 0.17711169014015235,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 22.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.16617009357883863,
+            "y": 0.12617009357883865,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 45.0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.21711169014015236,
+            "y": 0.04993060660579612,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 67.5
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.235,
+            "y": -0.03999999999999997,
+            "z": 0.03
+          },
+          "scale": {
+            "x": 0.011,
+            "y": 0.052,
+            "z": 0.011
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90.0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "set-square",
+      "label": "工程三角尺",
+      "templateId": "Utility",
+      "color": "#77C8BD",
+      "keywords": [
+        "制图",
+        "建筑制图"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.18,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.58,
+            "y": 0.055,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.25,
+            "y": 0.06,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.5,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.03,
+            "y": 0.04,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.72,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 48
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.16,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.09,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.01999999999999999,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.05000000000000002,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.12000000000000002,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.19000000000000003,
+            "y": -0.16,
+            "z": 0.023
+          },
+          "scale": {
+            "x": 0.009,
+            "y": 0.042,
+            "z": 0.009
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "globe",
+      "label": "地球仪",
+      "templateId": "Deployable",
+      "color": "#86ADCB",
+      "keywords": [
+        "地理",
+        "地球仪"
+      ],
+      "parts": [
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.39,
+            "y": 0.39,
+            "z": 0.39
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "torus",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.45,
+            "y": 0.45,
+            "z": 0.017
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.24,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.06,
+            "y": 0.27,
+            "z": 0.06
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.38,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.34,
+            "y": 0.035,
+            "z": 0.34
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": -0.09,
+            "y": 0.22,
+            "z": 0.168
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.16,
+            "z": 0.028
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.07,
+            "y": 0.03,
+            "z": 0.172
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.12,
+            "z": 0.029
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0.16,
+            "y": 0.19,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.15,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "map-scroll",
+      "label": "地形卷轴",
+      "templateId": "Utility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "地图学",
+        "测绘"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.38,
+            "y": 0.46,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.24,
+            "z": 0.015
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.49,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.24,
+            "z": 0.015
+          },
+          "scale": {
+            "x": 0.085,
+            "y": 0.49,
+            "z": 0.085
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": -0.05,
+            "z": 0.024
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.15,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 15
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08,
+            "y": 0.11,
+            "z": 0.024
+          },
+          "scale": {
+            "x": 0.055,
+            "y": 0.15,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -25
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.028
+          },
+          "scale": {
+            "x": 0.018,
+            "y": 0.34,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 35
+          },
+          "color": "#86ADCB"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "justice-scales",
+      "label": "法律天平",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "法学",
+        "公平",
+        "法律"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.05,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.04,
+            "y": 0.53,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.23,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.59,
+            "y": 0.035,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "sphere",
+          "position": {
+            "x": 0,
+            "y": 0.28,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.075,
+            "y": 0.075,
+            "z": 0.075
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.25,
+            "y": 0.07,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.28,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.25,
+            "y": 0.07,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.28,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.25,
+            "y": 0.07,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.28,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.25,
+            "y": 0.07,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.28,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": -0.25,
+            "y": -0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.065,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "hemisphere",
+          "position": {
+            "x": 0.25,
+            "y": -0.08,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.24,
+            "y": 0.065,
+            "z": 0.24
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "seesaw-flip"
+    },
+    {
+      "id": "economics-chart",
+      "label": "经济趋势板",
+      "templateId": "Utility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "经济学",
+        "经济分析"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.61,
+            "y": 0.44,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.64,
+            "y": 0.045,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.22,
+            "y": -0.05,
+            "z": 0.022
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.1,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.11,
+            "y": -0.02500000000000001,
+            "z": 0.022
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.15,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.009999999999999995,
+            "z": 0.022
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.22,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": 0.03,
+            "z": 0.022
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.26,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.22,
+            "y": 0.07499999999999998,
+            "z": 0.022
+          },
+          "scale": {
+            "x": 0.065,
+            "y": 0.35,
+            "z": 0.015
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.2,
+            "y": -0.02,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": 0.035,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.09,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": 0.14500000000000002,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.2,
+            "y": 0.2,
+            "z": 0.043
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "coin-stack",
+      "label": "理财硬币筒",
+      "templateId": "Barricade",
+      "color": "#F5CB77",
+      "keywords": [
+        "金融",
+        "理财"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.25,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.20500000000000002,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.16,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.11499999999999999,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.07,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": -0.025000000000000022,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": 0.020000000000000018,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": 0.065,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.18,
+            "y": 0.10999999999999999,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.07,
+            "y": -0.25,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.07,
+            "y": -0.20500000000000002,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.07,
+            "y": -0.16,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.07,
+            "y": -0.11499999999999999,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.07,
+            "y": -0.07,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.19,
+            "y": -0.25,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.19,
+            "y": -0.20500000000000002,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.19,
+            "y": -0.16,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.2,
+            "y": 0.032,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.18,
+            "y": 0.13,
+            "z": 0.0
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.012,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "architecture-maquette",
+      "label": "建筑沙盘",
+      "templateId": "Barricade",
+      "color": "#77C8BD",
+      "keywords": [
+        "建筑学",
+        "建筑设计"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.17,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.65,
+            "y": 0.04,
+            "z": 0.55
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": 0.02,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.23,
+            "y": 0.35,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": -0.02,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.21,
+            "y": 0.26,
+            "z": 0.32
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": -0.14,
+            "y": 0.245,
+            "z": -0.08
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.12,
+            "z": 0.28
+          },
+          "rotation": {
+            "x": 0,
+            "y": 45,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": -0.02,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.015,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": 0.05,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.015,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.14,
+            "y": 0.12,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.15,
+            "y": 0.015,
+            "z": 0.018
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.15,
+            "y": 0.01,
+            "z": 0.25
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.08,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "rotary-gate"
+    },
+    {
+      "id": "survey-level",
+      "label": "测量水准仪",
+      "templateId": "Tether",
+      "color": "#F5CB77",
+      "keywords": [
+        "测绘工程",
+        "水准仪"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.4,
+            "y": 0.09,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.22,
+            "y": 0.22,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.11,
+            "y": 0.025,
+            "z": 0.11
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.02,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.033,
+            "y": 0.36,
+            "z": 0.033
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.1,
+            "y": -0.27,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.022,
+            "y": 0.4,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 10,
+            "y": 0,
+            "z": -22
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.1,
+            "y": -0.27,
+            "z": 0.08
+          },
+          "scale": {
+            "x": 0.022,
+            "y": 0.4,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": 10,
+            "y": 0,
+            "z": 22
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.27,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.022,
+            "y": 0.4,
+            "z": 0.022
+          },
+          "rotation": {
+            "x": -22,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "fossil-cast",
+      "label": "化石拓片",
+      "templateId": "Utility",
+      "color": "#90745A",
+      "keywords": [
+        "古生物",
+        "化石"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.5,
+            "y": 0.37,
+            "z": 0.08
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#90745A"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.06
+          },
+          "scale": {
+            "x": 0.29,
+            "y": 0.29,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 40
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0.01,
+            "y": 0.01,
+            "z": 0.073
+          },
+          "scale": {
+            "x": 0.16,
+            "y": 0.16,
+            "z": 0.026
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -20
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.18,
+            "y": -0.07,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.15,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -30
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.18,
+            "y": -0.07,
+            "z": 0.065
+          },
+          "scale": {
+            "x": 0.025,
+            "y": 0.15,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 30
+          },
+          "color": "#B67B4C"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "archaeology-sieve",
+      "label": "考古筛",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "考古",
+        "考古学"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.57,
+            "y": 0.085,
+            "z": 0.57
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.19,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.012,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.1,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.012,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.012,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.012,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.19,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.012,
+            "y": 0.012,
+            "z": 0.47
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": -0.19
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": -0.1
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": 0.1
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.048,
+            "z": 0.19
+          },
+          "scale": {
+            "x": 0.47,
+            "y": 0.012,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "arc",
+          "position": {
+            "x": 0,
+            "y": 0.01,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.67,
+            "y": 0.67,
+            "z": 0.025
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "translation-cardwheel",
+      "label": "语言卡转轮",
+      "templateId": "Utility",
+      "color": "#FFF9EF",
+      "keywords": [
+        "语言学",
+        "翻译",
+        "外语"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.49,
+            "y": 0.025,
+            "z": 0.49
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.035
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.04,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 90,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.0,
+            "y": 0.18,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1558667900318081,
+            "y": 0.09003079342747261,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -60
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.1559201197284107,
+            "y": -0.08993840260910835,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -120
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.00010667763991790169,
+            "y": -0.17999996838855595,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -180
+          },
+          "color": "#F49A6B"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15581340558882423,
+            "y": -0.090123152623577,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -240
+          },
+          "color": "#77C8BD"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.15597339465990065,
+            "y": 0.08984598020093537,
+            "z": 0.026
+          },
+          "scale": {
+            "x": 0.1,
+            "y": 0.14,
+            "z": 0.013
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": -300
+          },
+          "color": "#86ADCB"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "philosophy-hourglass",
+      "label": "思辨沙漏",
+      "templateId": "Barricade",
+      "color": "#B67B4C",
+      "keywords": [
+        "哲学",
+        "思辨"
+      ],
+      "parts": [
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": -0.27,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.36,
+            "y": 0.04,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0.27,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.36,
+            "y": 0.04,
+            "z": 0.36
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.26,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.26,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#86ADCB"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.13,
+            "y": 0,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.54,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.13,
+            "y": 0,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.54,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.13,
+            "y": 0,
+            "z": -0.13
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.54,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.13,
+            "y": 0,
+            "z": 0.13
+          },
+          "scale": {
+            "x": 0.024,
+            "y": 0.54,
+            "z": 0.024
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "cone",
+          "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.13,
+            "z": 0.17
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.03,
+            "y": 0.15,
+            "z": 0.03
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "teaching-blackboard",
+      "label": "教学小黑板",
+      "templateId": "Utility",
+      "color": "#B67B4C",
+      "keywords": [
+        "教育学",
+        "教师",
+        "讲课",
+        "教学"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.57,
+            "y": 0.38,
+            "z": 0.045
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.03,
+            "z": 0.028
+          },
+          "scale": {
+            "x": 0.51,
+            "y": 0.32,
+            "z": 0.012
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.21,
+            "y": -0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.35,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.21,
+            "y": -0.29,
+            "z": 0
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.35,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.19,
+            "z": 0.05
+          },
+          "scale": {
+            "x": 0.56,
+            "y": 0.028,
+            "z": 0.09
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B67B4C"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.13,
+            "y": 0.08,
+            "z": 0.038
+          },
+          "scale": {
+            "x": 0.17,
+            "y": 0.014,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08,
+            "y": 0.03,
+            "z": 0.038
+          },
+          "scale": {
+            "x": 0.13,
+            "y": 0.014,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.08,
+            "y": 0.1,
+            "z": 0.038
+          },
+          "scale": {
+            "x": 0.014,
+            "y": 0.18,
+            "z": 0.01
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#FFF9EF"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.04,
+            "y": -0.17,
+            "z": 0.055
+          },
+          "scale": {
+            "x": 0.016,
+            "y": 0.09,
+            "z": 0.016
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#FFF9EF"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_existing_template"
+    },
+    {
+      "id": "forklift-toy",
+      "label": "叉车模型",
+      "templateId": "Cushion",
+      "color": "#F5CB77",
+      "keywords": [
+        "叉车",
+        "仓储司机"
+      ],
+      "parts": [
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.1,
+            "z": -0.05
+          },
+          "scale": {
+            "x": 0.3,
+            "y": 0.18,
+            "z": 0.37
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.08,
+            "z": -0.07
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.27,
+            "z": 0.22
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#F5CB77"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": 0.22,
+            "z": -0.07
+          },
+          "scale": {
+            "x": 0.28,
+            "y": 0.03,
+            "z": 0.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.17,
+            "y": -0.22,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.035,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": -0.17,
+            "y": -0.22,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.035,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.17,
+            "y": -0.22,
+            "z": -0.18
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.035,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "cylinder",
+          "position": {
+            "x": 0.17,
+            "y": -0.22,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.12,
+            "y": 0.035,
+            "z": 0.12
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+          },
+          "color": "#263248"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.11,
+            "y": 0.06,
+            "z": 0.22
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.45,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": 0.06,
+            "z": 0.22
+          },
+          "scale": {
+            "x": 0.035,
+            "y": 0.45,
+            "z": 0.035
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": -0.11,
+            "y": -0.19,
+            "z": 0.34
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.032,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0.11,
+            "y": -0.19,
+            "z": 0.34
+          },
+          "scale": {
+            "x": 0.05,
+            "y": 0.032,
+            "z": 0.3
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#B7C5CE"
+        },
+        {
+          "shape": "box",
+          "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0.12
+          },
+          "scale": {
+            "x": 0.18,
+            "y": 0.05,
+            "z": 0.1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "color": "#263248"
+        }
+      ],
+      "license": "project-original",
+      "source": "About Me original assembly geometry",
+      "stage": "model_with_authoritative_mechanic",
+      "mechanicId": "wind-up-cart"
     }
   ]
 }

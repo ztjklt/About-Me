@@ -63,7 +63,7 @@ namespace AboutMe
         {
             var delta=point-p.position;
             return delta.magnitude<=range&&Mathf.Abs(delta.y)<=(BodyWorld==null?.8f:1.5f)&&Vector3.Dot(Forward(p),delta.normalized)>=.5f
-                &&CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,point+Vector3.up*.25f)
+                &&CampusGeometry.ClearSegment(p.position+Vector3.up*.25f,point+Vector3.up*.25f)&&MachineClear(p.position+Vector3.up*.25f,point+Vector3.up*.25f)
                 &&!Effects.Any(e=>e.kind=="Barricade"&&DistanceToSegment(e.position,p.position,point)<e.radius);
         }
         static float DistanceToSegment(Vector3 p,Vector3 a,Vector3 b)
@@ -106,7 +106,7 @@ namespace AboutMe
             p.publicProp="";
             if(held)SetAction(p,"release");
         }
-        bool GrabLineClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from,to)&&!Effects.Any(e=>e.kind=="Barricade"&&DistanceToSegment(e.position,from,to)<e.radius+.1f);
+        bool GrabLineClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from,to)&&MachineClear(from,to)&&!Effects.Any(e=>e.kind=="Barricade"&&DistanceToSegment(e.position,from,to)<e.radius+.1f);
         Vector3 GrabAnchor(Player p)
         {
             if(p.grabbing!=""&&Players.TryGetValue(p.grabbing,out var t))return t.position+Quaternion.Euler(0,t.yaw,0)*p.targetLocalAnchor;
