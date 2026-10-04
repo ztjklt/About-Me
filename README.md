@@ -2,6 +2,8 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前版本为 `playtest-ui-r1`（`builds/playtest-ui-r1-mac/About Me.app`），包含结果卡左右滚动和可选的 10 题选择题模式，保留直接输入。客户端/权威服务同包，匹配 API 基线 `049312f`，独立端口 8086 / 7786；启动前校验交付清单和实际进程，端口占用时拒绝复用。选择「单人游戏 → 使用练习道具开始」即可对战。详见 [本轮交付记录](docs/PLAYTEST_UI_R1_DELIVERY.md)。
+
 ## 2026-09-24 当前 DS 娘与真实 AI 整合候选
 
 当前候选以 `codex/ds-local-current` 的 `git rev-parse HEAD` 为唯一源码版本。它保留新版四气泡首页、战斗音乐、校徽飞盘与 DeepSeek Vision 校徽裁切，加入 DS 娘免费解锁与选装、八件 Persona 实体投掷，以及真实 Persona 生成和由游戏服务器异步请求、向同房广播的 DeepSeek 吞噬调侃。结算页可接收晚到事件，网页房间码输入修复也已包含。此处说明源码范围；可运行包的构建 SHA 和验收范围以 [当前整合交付](docs/CURRENT_DS_INTEGRATION.md) 为准。
