@@ -27,6 +27,8 @@ def extracted_terms(raw, introduction, safe):
 
 
 def fallback_term(asset, catalog):
+    if asset.get('visualId') == 'trait-word':
+        return asset['wordText']
     if asset.get('institutionName'):
         return asset['institutionName']
     source = asset.get('source', '')
@@ -61,6 +63,12 @@ def fact_identity(source, keyword, pair, catalogs):
 def generation_terms(assets, terms, catalogs, pending=False):
     terms = [dict(x) for x in terms]
     def matches(asset, term):
+        if asset.get('visualId') == 'trait-word':
+            if term.get('wordText'):
+                return (asset.get('wordCategory'), asset.get('wordText')) == (term.get('wordCategory'), term['wordText'])
+            from server.trait_words import canonical
+            known = canonical(term['term'])
+            return bool(known and asset.get('wordCategory') == known['category'] and asset.get('wordText') == known['text'] and term['term'] in asset.get('source', ''))
         if asset.get('institutionName'):
             return asset['institutionName'] == term['term']
         if term['term'] not in asset.get('source', ''):
@@ -89,7 +97,14 @@ def generation_terms(assets, terms, catalogs, pending=False):
         asset = next((a for a in assets if matches(a, term)), None)
         row = {'term': term['term'], 'source': term.get('source', ''), 'assetId': '',
                'status': 'failed', 'reason': '暂无对应的已上线道具', 'kind': 'prop', 'progress': 0, 'stage': '未生成'}
+        if term.get('kind') == 'trait-word':
+            row.update(kind='trait-word', wordCategory=term.get('wordCategory', 'custom'),
+                       wordText=term.get('wordText', term['term']), abilityId=term.get('abilityId', ''))
+            if term.get('status') in ('needs-confirmation', 'failed'):
+                row.update(status=term['status'], reason=term['reason'], stage=term.get('stage', term['reason']))
         if asset:
+            if asset.get('visualId') == 'trait-word':
+                row.update(kind='trait-word', wordCategory=asset['wordCategory'], wordText=asset['wordText'], abilityId=asset['abilityId'])
             row['assetId'] = asset['assetId']
             if asset['visualId'] != 'school-disc':
                 row.update(status='ready', reason=asset['name'], progress=1, stage='道具已生成')

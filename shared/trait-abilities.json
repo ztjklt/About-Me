@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "abilities": [
+    {
+      "id": "flame-fan",
+      "label": "热情喷火",
+      "hint": "前方扇形喷火"
+    },
+    {
+      "id": "bubble-lift",
+      "label": "温柔泡泡",
+      "hint": "泡泡托举"
+    },
+    {
+      "id": "front-shield",
+      "label": "坚定护盾",
+      "hint": "正面护盾"
+    },
+    {
+      "id": "calm-dome",
+      "label": "冷静领域",
+      "hint": "安静领域"
+    },
+    {
+      "id": "tractor-loose",
+      "label": "好奇牵引",
+      "hint": "牵引地面物"
+    },
+    {
+      "id": "spring-pad",
+      "label": "活力弹簧",
+      "hint": "弹簧跳板"
+    }
+  ],
+  "words": [
+    {
+      "category": "personality",
+      "text": "热情",
+      "aliases": [
+        "热烈",
+        "热情似火",
+        "有激情",
+        "passionate",
+        "enthusiastic"
+      ],
+      "abilityId": "flame-fan"
+    },
+    {
+      "category": "personality",
+      "text": "温柔",
+      "aliases": [
+        "体贴",
+        "gentle"
+      ],
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "personality",
+      "text": "专注",
+      "aliases": [
+        "focused"
+      ],
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "personality",
+      "text": "坚定",
+      "aliases": [
+        "坚持",
+        "determined"
+      ],
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "personality",
+      "text": "理性",
+      "aliases": [
+        "rational"
+      ],
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "personality",
+      "text": "冷静",
+      "aliases": [
+        "calm"
+      ],
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "personality",
+      "text": "好奇",
+      "aliases": [
+        "curious"
+      ],
+      "abilityId": "tractor-loose"
+    },
+    {
+      "category": "personality",
+      "text": "活力",
+      "aliases": [
+        "有活力",
+        "energetic"
+      ],
+      "abilityId": "spring-pad"
+    },
+    {
+      "category": "personality",
+      "text": "调皮",
+      "aliases": [
+        "playful"
+      ],
+      "abilityId": "spring-pad"
+    },
+    {
+      "category": "personality",
+      "text": "有序",
+      "aliases": [
+        "organized"
+      ],
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "personality",
+      "text": "谨慎",
+      "aliases": [
+        "cautious"
+      ],
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "personality",
+      "text": "内向",
+      "aliases": [
+        "introverted"
+      ],
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "personality",
+      "text": "独立",
+      "aliases": [
+        "independent"
+      ],
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "personality",
+      "text": "外向",
+      "aliases": [
+        "extroverted"
+      ],
+      "abilityId": "flame-fan"
+    },
+    {
+      "category": "personality",
+      "text": "乐观",
+      "aliases": [
+        "optimistic"
+      ],
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "personality",
+      "text": "幽默",
+      "aliases": [
+        "humorous"
+      ],
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "personality",
+      "text": "自由",
+      "aliases": [
+        "free spirited"
+      ],
+      "abilityId": "tractor-loose"
+    },
+    {
+      "category": "personality",
+      "text": "勇敢",
+      "aliases": [
+        "brave"
+      ],
+      "abilityId": "spring-pad"
+    },
+    {
+      "category": "mood",
+      "text": "友好微笑",
+      "aliases": [
+        "友好",
+        "微笑",
+        "friendly smile",
+        "friendly"
+      ],
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "mood",
+      "text": "开心大笑",
+      "aliases": [
+        "开心",
+        "快乐",
+        "happy laugh",
+        "happy"
+      ],
+      "abilityId": "spring-pad"
+    },
+    {
+      "category": "mood",
+      "text": "自信挑眉",
+      "aliases": [
+        "自信",
+        "confident brow",
+        "confident"
+      ],
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "mood",
+      "text": "慵懒半眯",
+      "aliases": [
+        "慵懒",
+        "sleepy eyes",
+        "sleepy"
+      ],
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "mood",
+      "text": "惊讶睁眼",
+      "aliases": [
+        "惊讶",
+        "surprised eyes",
+        "surprised"
+      ],
+      "abilityId": "tractor-loose"
+    },
+    {
+      "category": "mood",
+      "text": "认真坚定",
+      "aliases": [
+        "认真",
+        "serious resolve",
+        "serious"
+      ],
+      "abilityId": "front-shield"
+    }
+  ],
+  "mbti": [
+    {
+      "category": "mbti",
+      "text": "ENFP",
+      "abilityId": "flame-fan"
+    },
+    {
+      "category": "mbti",
+      "text": "ESFP",
+      "abilityId": "flame-fan"
+    },
+    {
+      "category": "mbti",
+      "text": "INFP",
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "mbti",
+      "text": "ENFJ",
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "mbti",
+      "text": "ISFP",
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "mbti",
+      "text": "ESFJ",
+      "abilityId": "bubble-lift"
+    },
+    {
+      "category": "mbti",
+      "text": "ENTJ",
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "mbti",
+      "text": "ISFJ",
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "mbti",
+      "text": "ESTJ",
+      "abilityId": "front-shield"
+    },
+    {
+      "category": "mbti",
+      "text": "INTJ",
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "mbti",
+      "text": "ISTP",
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "mbti",
+      "text": "ISTJ",
+      "abilityId": "calm-dome"
+    },
+    {
+      "category": "mbti",
+      "text": "INFJ",
+      "abilityId": "tractor-loose"
+    },
+    {
+      "category": "mbti",
+      "text": "INTP",
+      "abilityId": "tractor-loose"
+    },
+    {
+      "category": "mbti",
+      "text": "ENTP",
+      "abilityId": "spring-pad"
+    },
+    {
+      "category": "mbti",
+      "text": "ESTP",
+      "abilityId": "spring-pad"
+    }
+  ]
+}

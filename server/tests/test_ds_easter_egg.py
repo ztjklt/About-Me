@@ -54,7 +54,10 @@ def test_trusted_profile_unlock_selection_and_revocation(client, monkeypatch):
         json={'token': session['token']}).json()
     assert own['characterSkin'] == verified['characterSkin'] == 'ds-girl'
     assert own['dsGirlUnlocked'] is verified['dsGirlUnlocked'] is True
-    assert own['personas'] == verified['personas'] == generated.json()['personas']
+    assert own['personas'] == generated.json()['personas']
+    assert [p['assetId'] for p in own['personas']] == [p['assetId'] for p in verified['personas']]
+    assert verified['personas'][0]['visualId'] == 'basketball'
+    assert all('source' not in p for p in verified['personas'])
     async def unavailable(_):
         raise HTTPException(502, '模型失败')
     monkeypatch.setattr(module, 'generate_with_provider', unavailable)

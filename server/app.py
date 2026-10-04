@@ -24,6 +24,7 @@ from server.easter_egg import liked_brands
 from server.university_crests import resolve_crest, cache_dir
 from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity, specific_catalog_pairs
 from server.roast_safety import safe_public_text, safe_roast
+from server import trait_words
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
 CATALOG_GENERATION_VERSION = hashlib.sha256(json.dumps(CATALOG, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
@@ -160,12 +161,20 @@ class SessionRequest(BaseModel):
     nickname: str = Field(min_length=1, max_length=24)
 
 
+class WordAbilityRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=12)
+    category: str = Field(default='custom', pattern=r'^(personality|mood|mbti|custom)$')
+    abilityId: str = Field(default='', pattern=r'^(flame-fan|bubble-lift|front-shield|calm-dome|tractor-loose|spring-pad)?$')
+
+
 class GenerateRequest(BaseModel):
     introduction: str = Field(min_length=3, max_length=MAX_INTRO_CHARS)
     nickname: str = Field(min_length=1, max_length=24)
     color: str = '#77C8BD'
     outfit: int = Field(default=0, ge=0, le=2)
     generationId: str | None = Field(default=None, pattern=r'^[0-9a-f]{32}$')
+    wordAbilities: list[WordAbilityRequest] = Field(default_factory=list, max_length=32)
 
 
 class VerifyRequest(BaseModel):
@@ -335,6 +344,7 @@ def validate_personas(raw, introduction):
                 result[-1]['institutionCountry'] = country
         if len(result) >= MAX_PERSONAS:
             break
+    result, terms = trait_words.augment(result, terms, introduction, sensitive=sensitive_persona_text, maximum=MAX_PERSONAS)
     if not result and not terms:
         raise NoUsablePersonaError('介绍中未找到适合游戏化的信息，请补充兴趣或经历')
     return PersonaBatch(result, terms)
@@ -347,10 +357,18 @@ def profile_follows_generation_rules(profile, introduction):
     seen = []
     for item in personas:
         source = plain(item.get('source', ''), 160)
+        if item.get('visualId') == 'trait-word':
+            if not trait_words.valid_asset(item, introduction, sensitive_persona_text):
+                return False
+            identity = ('word', item.get('wordCategory'), item.get('wordText'))
+            if identity in seen:
+                return False
+            seen.append(identity)
+            continue
         identity = fact_identity(source, item.get('generationTerm', ''), (item.get('templateId'), item.get('visualId')), CATALOG_BY_PAIR)
         if (not source or source not in introduction or sensitive_persona_text(source)
                 or sensitive_persona_text(item.get('name', ''))
-                or any(same_fact(identity, prior) for prior in seen)):
+                or any(same_fact(identity, prior) for prior in seen if isinstance(prior, str))):
             return False
         seen.append(identity)
         school = item.get('institutionName') or institution_name(source)
@@ -524,6 +542,7 @@ async def generate_with_provider(introduction):
               '同一事实最多一个 Persona；仅有一个可游戏化事实时最多返回一个。'
               'source 必须逐字复制用户输入中的一段连续原文，不得改写、留空；只包含该 Persona 对应的事实。重复或同义事实合并。同一句中的不同具体道具必须分别生成，例如“游泳浮板和游泳脚蹼”是两件，不能合并成一个游泳道具。'
               '每个 personas 项的 term 必须逐字复制 terms 数组中与该道具直接对应的一个关键词，不能用同一句中其他兴趣的成功代替。'
+              '性格、人物表情和玩家自报MBTI只放terms关键词，不自行发明外观或战斗代码；文字能力由服务器固定目录映射。'
               '提取学校、兴趣、职业和特别经历的关键词，放在 terms 数组，每项含 term 原文关键词和 source 连续原文；无法匹配道具的词也要保留，供显示失败结果。联系方式、诊断等敏感内容不列。'
               '大学不限知名度、国家或官网域名；学校简称也识别为大学，universities.name 必须是用户实际写的简称或校名，不得偷偷改成原文没有的名称。'
               'universities 每项另给 countryCode 学校所在国家或地区的两位代码，中国大陆 CN、香港 HK、澳门 MO、台湾 TW；无法判断用空字符串。该字段只用于优先生成国内大学，不改写用户学校名称。'
@@ -671,7 +690,7 @@ def health():
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
             'visionConfigured': bool(deepseek_vision_credentials()[0]),
-            'introductionImageRecognition': False, 'personalitySkins': True, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': len(json.loads((Path(__file__).resolve().parents[1] / 'shared/persona-mechanics.json').read_text())['items'])}
+            'introductionImageRecognition': False, 'personalitySkins': True, 'traitWordPersonas': True, 'traitWordVersion': trait_words.VERSION, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': len(json.loads((Path(__file__).resolve().parents[1] / 'shared/persona-mechanics.json').read_text())['items'])}
 
 
 @app.get('/school-emblems/{filename}')
@@ -690,6 +709,11 @@ def university_crest(filename: str):
         raise HTTPException(404, '校徽贴图不存在')
     return FileResponse(cache_dir() / filename, media_type='image/png', headers={
         'Cache-Control': 'public, max-age=31536000, immutable', 'X-Content-Type-Options': 'nosniff'})
+
+
+@app.get('/trait-abilities')
+def trait_ability_catalog():
+    return trait_words.CATALOG
 
 
 @app.get('/catalog')
@@ -807,6 +831,50 @@ def catalog_upgrade_can_retry_props(profile, introduction):
     return False
 
 
+def merged_word_selections(values):
+    result = {}
+    for item in values:
+        value = item.model_dump() if hasattr(item, 'model_dump') else dict(item)
+        known = trait_words.canonical(value['text'], value['category'])
+        key = (known['category'], known['text']) if known else (value['category'], value['text'])
+        result[key] = value
+    return list(result.values())
+
+
+def preserve_retry_assets(assets, old, introduction):
+    previous = old.get('generationCandidates', old.get('personas', []))
+    def key(a):
+        if a.get('visualId') == 'trait-word':
+            return ('word', a.get('wordCategory'), a.get('wordText'))
+        return (a.get('templateId'), a.get('visualId'), a.get('institutionName') or fact_key(a.get('source', '')))
+    valid = {key(a): a for a in previous if profile_follows_generation_rules({'personas': [a]}, introduction)}
+    result = []
+    for a in assets:
+        a = dict(a)
+        cached = valid.get(key(a))
+        if cached:
+            a['assetId'] = cached['assetId']
+            if cached.get('emblemPath') and cached.get('crestStatus') != 'unavailable':
+                a = dict(cached)
+        result.append(a)
+    present = {key(a) for a in result}
+    for k, a in valid.items():
+        if k not in present and a in playable_assets([a]) and len(result) < MAX_PERSONAS:
+            result.append(dict(a))
+    return result
+
+
+def public_profile(profile):
+    """Authority receives gameplay/appearance fields, never the player's private evidence."""
+    allowed = {'playerId', 'nickname', 'color', 'outfit', 'revision', 'appearance', 'appearanceRevision',
+               'characterSkin', 'dsGirlUnlocked', 'claudeGirlUnlocked', 'displayLanguage'}
+    asset_allowed = {'assetId', 'name', 'templateId', 'visualId', 'color', 'wordCategory', 'wordText', 'abilityId',
+                     'institutionName', 'emblemPath', 'emblemCrop', 'emblemLicense', 'crestStatus'}
+    result = {k: v for k, v in profile.items() if k in allowed}
+    result['personas'] = [{k:v for k,v in a.items() if k in asset_allowed} for a in profile.get('personas', [])]
+    return result
+
+
 @app.post('/personas/generate')
 async def generate(body: GenerateRequest, request: Request, authorization: str | None = Header(default=None)):
     player_id, previous, intro = authenticate(authorization)
@@ -818,6 +886,14 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
     if intro == body.introduction.strip() and (old.get('generationCandidates') is not None or profile_follows_generation_rules(old, intro)) and not catalog_upgrade_can_retry_props(old, intro):
         candidates = old.get('generationCandidates', old['personas'])
         terms = old.get('generationTerms', [])
+        selections = [*old.get('wordAbilities', []), *body.wordAbilities]
+        candidates, terms = trait_words.augment(candidates, terms, body.introduction.strip(), selections,
+                                               sensitive=sensitive_persona_text, maximum=MAX_PERSONAS)
+        word_changed = candidates != old.get('generationCandidates', old['personas'])
+        if word_changed:
+            old['revision'] = old.get('revision', 0) + 1
+        old.update(generationCandidates=candidates, personas=playable_assets(candidates), traitWordVersion=trait_words.VERSION)
+        old['wordAbilities'] = merged_word_selections(selections)
         retry = [p for p in candidates if p.get('visualId') == 'school-disc' and
                  (p.get('crestStatus') == 'unavailable' or not p.get('emblemPath', '').startswith('/assets/university-crests/'))]
         if retry:
@@ -851,7 +927,7 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
             publish(candidates, terms, 'complete')
             return normalized_profile(old, intro)
         updated_terms = generation_terms(candidates, terms, CATALOG_BY_PAIR)
-        if updated_terms != old.get('generationTerms', []):
+        if updated_terms != old.get('generationTerms', []) or word_changed or old != json.loads(previous):
             old['generationTerms'] = updated_terms
             with db() as con:
                 changed = con.execute('UPDATE profiles SET profile=?,updated=? WHERE id=? AND profile=?',
@@ -859,7 +935,7 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
             if not changed:
                 raise HTTPException(409, '角色已更新，请刷新后重试')
         publish(candidates, terms, 'complete')
-        if body.generationId:
+        if body.generationId or word_changed or body.wordAbilities:
             return normalized_profile(old, intro)
         raise HTTPException(409, '请修改自我介绍后重新生成；不支持原文重 Roll')
     if not body.introduction.strip():
@@ -867,6 +943,11 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
     try:
         personas = await generate_with_provider(body.introduction)
         terms = getattr(personas, 'terms', [])
+        selections = [*old.get('wordAbilities', []), *body.wordAbilities] if intro == body.introduction.strip() else body.wordAbilities
+        if intro == body.introduction.strip():
+            personas = preserve_retry_assets(personas, old, intro)
+        personas, terms = trait_words.augment(personas, terms, body.introduction.strip(), selections,
+                                               sensitive=sensitive_persona_text, maximum=MAX_PERSONAS)
         publish(personas, terms, 'searching')
         await attach_school_emblems(personas, lambda: publish(personas, terms, 'searching'))
     except HTTPException:
@@ -881,7 +962,8 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=playable_assets(personas), generationCandidates=list(personas),
                   generationTerms=generation_terms(personas, terms, CATALOG_BY_PAIR), revision=old['revision'] + 1,
-                  catalogGenerationVersion=CATALOG_GENERATION_VERSION,
+                  catalogGenerationVersion=CATALOG_GENERATION_VERSION, traitWordVersion=trait_words.VERSION,
+                  wordAbilities=merged_word_selections(selections),
                   appearance=old_normalized['appearance'], appearanceRevision=old_normalized['appearanceRevision'],
                   characterSkin=old_normalized['characterSkin'],
                   dsGirlUnlocked=likes['deepseek'], claudeGirlUnlocked=likes['claude'])
@@ -925,7 +1007,10 @@ def verify(body: VerifyRequest, x_game_key: str | None = Header(default=None)):
     if any(sensitive_persona_text(item.get('name', '')) or
            not safe_public_text(item.get('name', '')) for item in profile.get('personas', [])):
         raise HTTPException(422, '历史 Persona 含不可公开内容，请重新生成后加入房间')
-    return profile
+    if any(a.get('visualId') == 'trait-word' and not trait_words.valid_asset(a, intro, sensitive_persona_text)
+           for a in profile.get('personas', [])):
+        raise HTTPException(422, '历史文字 Persona 配置无效，请重新生成后加入房间')
+    return public_profile(profile)
 
 
 @app.post('/internal/results')
