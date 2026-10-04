@@ -1,0 +1,95 @@
+{
+    "environment": "2022.3.62t11 / macOS Editor batchmode",
+    "utc": "2026-10-04T18:42:18.4459660Z",
+    "scope": "Production Match commands and 50 Hz ticks; deterministic explicit profiles, flat geometric campus fixture. Not real AI, network transport, rendered mesh, human play, six-player performance or mobile acceptance.",
+    "runtimeSnapshot": "bcacfebf8d76d7263131137f14b97015189e68524bec8f1c53df9e0066851d3f",
+    "passed": 17,
+    "failed": 0,
+    "cases": [
+        {
+            "name": "directory: every trait, six moods, sixteen MBTI reuse six existing rules",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "explicit ability change and custom words use only allowlisted abilities",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "twelve asset budget and defense against thirteen",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "all six word abilities dispatch through actual Match use",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "simultaneous borrowing has one holder and owner cannot equip stolen word",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "release remains available during shield and stagger",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "formal word flame damages front target twice and excludes side",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "flame and borrowing respect solid wall",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "bubble word actually lifts and allows lateral movement",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "bubble pops on actual target item attack",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "last word borrowing preserves owner and borrower lives without swallowing",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "per-instance cooldown survives drop, borrow and original recovery",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "borrowed word can be knocked loose then recovered by owner",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "explicit E after borrow swallows once and charges original life only",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "release, inventory equip and disconnect terminate holder flame",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "ordinary physical props keep E eat and cannot be borrowed",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "public snapshot has protocol four and no private original source",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        }
+    ]
+}
