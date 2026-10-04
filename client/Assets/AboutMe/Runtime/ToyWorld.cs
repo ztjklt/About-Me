@@ -21,8 +21,9 @@ namespace AboutMe
             var go=GameObject.CreatePrimitive(type);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=pos;go.transform.localScale=scale;
             go.GetComponent<Renderer>().sharedMaterial=Material(color);if(!collider){if(Application.isPlaying)UnityEngine.Object.Destroy(go.GetComponent<Collider>());else UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());}return go;
         }
-        public static GameObject Item(string visual,string color,Transform parent,string label="",string emblemPath="",string emblemCrop="",string generatedBy="")
+        public static GameObject Item(string visual,string color,Transform parent,string label="",string emblemPath="",string emblemCrop="",string generatedBy="",string wordText="",string abilityId="")
         {
+            if(visual==TraitAbilityCatalog.VisualId)return ThickWordVisual.Create(wordText,abilityId,parent,color);
             var imported=PersonaVisualCatalog.Create(visual,parent);
             if(imported)return imported;
             var root=new GameObject(visual);root.transform.SetParent(parent,false);var t=root.transform;
@@ -163,7 +164,7 @@ namespace AboutMe
                 if(!actors.TryGetValue(p.id,out var actor)){actor=new ToyActor(p.id,p.color,p.outfit,actorRoot,p.appearance);actor.root.transform.position=p.position;actors[p.id]=actor;}
                 if(state.eaten!=null){var consumed=state.eaten.LastOrDefault(x=>x.eaterId==p.id);if(consumed!=null)actor.ConfirmSwallow(consumed.instanceId);}
                 actor.Draw(p,ViewCamera,state.simulationTime);
-                var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath;
+                var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId;
                 if(!cameraSkins.TryGetValue(p.id,out var cached)||cached.skin!=actor.Skin||cached.equipped!=equipmentKey)
                     cameraSkins[p.id]=(actor.Skin,equipmentKey,actor.root.GetComponentsInChildren<Renderer>(true),cached.hidden);
             }
@@ -203,7 +204,7 @@ namespace AboutMe
             var present=new HashSet<string>();
             if(state.revealed!=null)foreach(var item in state.revealed)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy);objects[item.id]=display;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var display)){display=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy,item.asset.wordText,item.asset.abilityId);objects[item.id]=display;}
                 display.transform.position=item.position+Vector3.up*(.2f*Mathf.Sin(UnityEngine.Time.time*3));display.transform.Rotate(Vector3.up,70*UnityEngine.Time.deltaTime);
             }
             if(state.props!=null)foreach(var prop in state.props)
@@ -213,7 +214,7 @@ namespace AboutMe
             }
             foreach(var item in state.ground)
             {
-                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy);objects[item.id]=go;}
+                present.Add(item.id);if(!objects.TryGetValue(item.id,out var go)){go=ToyFactory.Item(item.asset.visualId,item.asset.color,objectRoot,item.asset.name,item.asset.emblemPath,item.asset.emblemCrop,item.asset.generatedBy,item.asset.wordText,item.asset.abilityId);objects[item.id]=go;}
                 bool carried=item.state==ItemState.Carried;
                 if(carried&&actors.TryGetValue(item.carrierId,out var carrier))
                 {

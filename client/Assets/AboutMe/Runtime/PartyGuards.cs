@@ -49,7 +49,7 @@ namespace AboutMe
             var spot=SelfGuard(d.id)?p.position:GroundParty(p.position+Forward(p)*1.8f);
             if(!SelfGuard(d.id)&&CampusGeometry.Blocked(spot+Vector3.up*.85f)){Say("屏障位置被挡住，请换个空地。");p.nextAttack=Time+.25f;return true;}
             CancelSelfGuards(p);partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.4f;
-            Effects.Add(new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",mechanicId=d.id,sourceInstance=item.id,owner=p.profile.playerId,visual=item.asset.visualId,color=item.asset.color,position=spot,velocity=Forward(p),createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=d.id=="front-shield"||d.id=="rhythm-gate"||d.id=="sponge-dry"?2:1,stage="guard"});return true;
+            Effects.Add(new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",mechanicId=d.id,sourceInstance=item.id,owner=p.profile.playerId,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,position=spot,velocity=Forward(p),createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=d.id=="front-shield"||d.id=="rhythm-gate"||d.id=="sponge-dry"?2:1,stage="guard"});return true;
         }
         void TickGuard(EffectState e,Player owner,PartyMechanic d,float dt)
         {

@@ -5743,6 +5743,86 @@
     {
       "zh": "我喜欢",
       "en": "I like "
+    },
+    {
+      "zh": "你的 MBTI 是什么？（可跳过）",
+      "en": "What is your MBTI? (Optional)"
+    },
+    {
+      "zh": "我的 MBTI 是",
+      "en": "My MBTI is "
+    },
+    {
+      "zh": "文字道具想使用哪种能力？（可跳过）",
+      "en": "Which ability should your word Persona use? (Optional)"
+    },
+    {
+      "zh": "喷火",
+      "en": "Flame"
+    },
+    {
+      "zh": "护盾",
+      "en": "Shield"
+    },
+    {
+      "zh": "冷静罩",
+      "en": "Calm dome"
+    },
+    {
+      "zh": "牵引",
+      "en": "Tractor"
+    },
+    {
+      "zh": "弹床",
+      "en": "Spring pad"
+    },
+    {
+      "zh": "根据你喜欢的 AI，可能会额外提供可选的彩蛋角色模型。",
+      "en": "Depending on your preferred AI, additional optional Easter egg character models may be offered."
+    },
+    {
+      "zh": "仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。",
+      "en": "Choose one of six existing abilities. Personality, mood and MBTI word Persona abilities follow the equipped item. Save outfit recommendations separately in your wardrobe."
+    },
+    {
+      "zh": "请选择能力",
+      "en": "Choose an ability"
+    },
+    {
+      "zh": "改选能力",
+      "en": "Change ability"
+    },
+    {
+      "zh": "只更改这一件道具。选择后点击 AI生成，成功保存后生效；原资产保留。",
+      "en": "This changes one Persona. Choose, then Generate to save. The existing asset stays until generation succeeds."
+    },
+    {
+      "zh": "能力已选择；点击 AI生成确认并保存。当前 Persona 尚未改变。",
+      "en": "Ability selected. Generate to confirm and save. Your current Persona is unchanged."
+    },
+    {
+      "zh": "我对文字道具的想法是",
+      "en": "My idea for a word Persona is "
+    },
+    {
+      "zh": "借用文字",
+      "en": "Borrow word"
+    },
+    {
+      "zh": "放下借物",
+      "en": "Release loan"
+    },
+    {
+      "zh": "吞噬/回收",
+      "en": "Swallow/recover"
+    },
+    {
+      "zh": "F 使用 · R 借用文字 · T 放下\nG/H 抓取 · E 吞噬/回收",
+      "en": "F Use · R Borrow word · T Release\nG/H Grab · E Swallow/recover"
+    },
+    {
+      "zh": "文字道具能力 · ",
+      "en": "Word Persona ability · "
     }
   ]
 }

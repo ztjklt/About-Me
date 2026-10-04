@@ -200,7 +200,7 @@ namespace AboutMe
             var progressTrack=ArtPanel(hudProgress,"Progress track",18,42,474,18,UITheme.Field,true,false);progressFill=ArtPanel(progressTrack,"Progress fill",3,3,468,12,UITheme.Pink,false,false).GetComponent<Image>();progressFill.rectTransform.anchorMin=new Vector2(0,0);progressFill.rectTransform.anchorMax=new Vector2(1,1);progressFill.rectTransform.offsetMin=new Vector2(3,3);progressFill.rectTransform.offsetMax=new Vector2(-3,-3);hudProgress.gameObject.SetActive(false);
             mechanicHint=ArtText(hud,"",340,762,920,29,17,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleCenter);
             keyboardHint=ArtPanel(hud,"Keyboard help",34,202,382,142,new Color(1,1,1,.94f),true,true);
-            ArtText(keyboardHint,"WASD 移动  ·  点击场地锁定鼠标\n移动鼠标转镜头；失败时按住右键拖动\nF 使用  ·  G/H 抓取  ·  E 吃/收\n1–5 切换  ·  B 背包  ·  Q 挣脱",16,10,350,125,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
+            ArtText(keyboardHint,"WASD 移动  ·  点击场地锁定鼠标\n移动鼠标转镜头；失败时按住右键拖动\nF 使用 · R 借用文字 · T 放下\nG/H 抓取 · E 吞噬/回收\n1–5 切换  ·  B 背包  ·  Q 挣脱",16,10,350,125,16,UITheme.Ink,FontStyle.Bold,TextAnchor.MiddleLeft);
             keyboardHint.gameObject.SetActive(false);
             keyboardHelpButton=ArtButton(hud,"操作",34,807,96,48,()=>keyboardHint.gameObject.SetActive(!keyboardHint.gameObject.activeSelf),UITheme.Paper,UITheme.Ink,"status");
             hotbar=ArtPanel(hud,"Persona hotbar",380,795,840,84,UITheme.Paper,true,true);
@@ -270,7 +270,9 @@ namespace AboutMe
             ArtButton(touch,"跳跃",1402,556,118,76,()=>Send("jump"),UITheme.Purple,UITheme.Ink,"jump");
             ArtButton(touch,"抓人",1138,648,118,76,()=>Send("grab"),UITheme.Mint,UITheme.Ink,"grab");
             ArtButton(touch,"抓物",1270,648,118,76,()=>Send("grab_item"),UITheme.Field,UITheme.Ink,"grab");
-            ArtButton(touch,"吃/收",1402,648,118,76,()=>Send("interact"),UITheme.Orange,UITheme.Ink,"status");
+            ArtButton(touch,"吞噬/回收",1402,648,118,76,()=>Send("interact"),UITheme.Orange,UITheme.Ink,"status");
+            ArtButton(touch,"借用文字",1268,562,118,76,()=>Send("borrow_word"),UITheme.Mint,UITheme.Ink);
+            ArtButton(touch,"放下借物",1402,562,118,76,()=>Send("release_word"),UITheme.Field,UITheme.Ink);
             var escape=ArtButton(touch,"挣脱",1138,556,118,76,()=>{},UITheme.Orange,UITheme.Ink,"grab");
             var escapePress=escape.gameObject.AddComponent<PressButton>();
             escapePress.Down=()=>{touchEscapeHeld=escapeHeld=true;var me=net.State?.players.FirstOrDefault(p=>p.id==net.State.you);Send(me!=null&&(me.grabbed||me.sticky)?"escape":"cancel");};
@@ -312,7 +314,7 @@ namespace AboutMe
             phaseText.text=state.practiceOpening>0?"练习准备 "+Mathf.CeilToInt(state.practiceOpening)+"s":phase;float clock=state.phase==MatchPhase.Reveal?Mathf.Max(0,5-state.time):Mathf.Max(0,state.finalAt-state.time);timerText.text=Mathf.FloorToInt(clock/60).ToString("00")+":"+Mathf.FloorToInt(clock%60).ToString("00");
             if(me!=null)
             {
-                var mechanic=PartyMechanicRegistry.ForVisual(me.equippedVisual);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
+                var mechanic=PartyMechanicRegistry.ForPlayer(me);mechanicHint.text=mechanic==null?"":(!string.IsNullOrEmpty(me.movementStatus)?me.movementStatus:mechanic.label)+(me.mechanicCooldown>0?"（冷却 "+me.mechanicCooldown.ToString("0.0")+"s）":"（F 使用）")+" · "+mechanic.hint;
                 if(!string.IsNullOrEmpty(me.fieldStatus))mechanicHint.text=me.fieldStatus+" · "+mechanicHint.text;
                 hudText.text=me.eliminated?"观战中 · Tab 切换玩家":GameLocalization.Protect(me.nickname);
                 personaCountText.text="Persona × "+me.remaining+" · 吞噬 "+state.eaten.Count(e=>e.eaterId==me.id);stabilityText.text="韧性 "+Mathf.CeilToInt(me.stability);
@@ -382,10 +384,10 @@ namespace AboutMe
                 var itemImage=ArtIcon(well,thumbnail?"":IconForTemplate(item.asset.templateId),6,6,80,thumbnail?Color.white:ToyFactory.ColorOf(item.asset.color));
                 if(thumbnail)itemImage.sprite=thumbnail;
                 ArtText(card,GameLocalization.PersonaName(item.asset),109,10,199,40,18,UITheme.Ink,FontStyle.Bold);
-                ArtText(card,(PartyMechanicRegistry.ForVisual(item.asset.visualId)?.label??TemplateLabel(item.asset.templateId)),109,51,195,22,13,UITheme.Muted,FontStyle.Bold);
-                var mechanic=PartyMechanicRegistry.ForVisual(item.asset.visualId);
+                ArtText(card,(PartyMechanicRegistry.ForAsset(item.asset)?.label??TemplateLabel(item.asset.templateId)),109,51,195,22,13,UITheme.Muted,FontStyle.Bold);
+                var mechanic=PartyMechanicRegistry.ForAsset(item.asset);
                 if(mechanic!=null)ArtText(card,mechanic.hint,10,99,298,46,14,UITheme.Muted);
-                if(equipped)ArtText(card,"● 装备中",109,75,90,22,13,UITheme.Orange,FontStyle.Bold);
+                if(equipped)ArtText(card,item.ownerId!=state.you?"借用 · 原主生命":"● 装备中",109,75,90,22,13,UITheme.Orange,FontStyle.Bold);
                 var equip=ArtButton(card,equipped?"已装备":"装备",10,152,141,55,()=>Send("equip",id),equipped?UITheme.Yellow:UITheme.Mint,UITheme.Ink);
                 equip.interactable=available&&!equipped;
                 var quick=ArtButton(card,"置顶",167,152,141,55,()=>Favorite(assetId),UITheme.Purple,UITheme.Ink);

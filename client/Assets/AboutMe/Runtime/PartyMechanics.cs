@@ -20,6 +20,9 @@ namespace AboutMe
             get {if(all==null){var text=Resources.Load<TextAsset>("persona-mechanics");all=text?JsonUtility.FromJson<PartyMechanics>(text.text).items:Array.Empty<PartyMechanic>();}return all;}
         }
         public static PartyMechanic ForVisual(string visual)=>All.FirstOrDefault(x=>x.visualId==visual);
+        public static PartyMechanic ForAsset(PersonaAsset asset)=>asset?.visualId==TraitAbilityCatalog.VisualId?TraitAbilityCatalog.Resolve(asset.wordCategory,asset.wordText,asset.abilityId):ForVisual(asset?.visualId);
+        public static PartyMechanic ForAsset(PublicPersonaAsset asset)=>asset?.visualId==TraitAbilityCatalog.VisualId?TraitAbilityCatalog.Resolve(asset.wordCategory,asset.wordText,asset.abilityId):ForVisual(asset?.visualId);
+        public static PartyMechanic ForPlayer(PublicPlayer p)=>p?.equippedVisual==TraitAbilityCatalog.VisualId?TraitAbilityCatalog.Resolve(p.equippedWordCategory,p.equippedWordText,p.equippedAbilityId):ForVisual(p?.equippedVisual);
         public static PartyMechanic Find(string id)=>All.FirstOrDefault(x=>x.id==id);
     }
     public partial class Match
@@ -33,7 +36,7 @@ namespace AboutMe
         }
         bool PartyCanUse(Player p,PersonaInstance item)
         {
-            var definition=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(definition==null)return true;
+            var definition=PartyMechanicRegistry.ForAsset(item?.asset);if(definition==null)return true;
             var active=Effects.Where(e=>e.kind=="PartyMechanic"&&e.sourceInstance==item.id&&e.stage!="burst").ToArray();
             if((definition.id=="timed-door"||definition.id=="wind-up-cart")&&active.Length==1)return true;
             if(LinkPair(definition.id)&&active.Length==1&&active[0].stage=="link_wait")return true;
@@ -47,13 +50,13 @@ namespace AboutMe
         }
         float PartyCooldown(Player p)
         {
-            var item=Item(p.equipped);if(PartyMechanicRegistry.ForVisual(item?.asset?.visualId)==null)return 0;
+            var item=Item(p.equipped);if(PartyMechanicRegistry.ForAsset(item?.asset)==null)return 0;
             if(PartyCanUse(p,item))return Mathf.Max(0,p.nextAttack-Time);
             return Mathf.Max(0,(partyCooldowns.TryGetValue(item.id,out var until)?Mathf.Max(until,p.nextAttack):p.nextAttack)-Time);
         }
         bool TryPartyMechanic(Player p,PersonaInstance item)
         {
-            var d=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);if(d==null)return false;
+            var d=PartyMechanicRegistry.ForAsset(item?.asset);if(d==null)return false;
             if(!PartyCanUse(p,item)){p.nextAttack=Time+.2f;return true;}
             if(!(d.id=="impact-bank"&&GuardFor(p,"impact-bank")?.stage=="banked")&&!(d.id=="remote-burst"&&Effects.Any(effect=>effect.kind=="PartyMechanic"&&effect.sourceInstance==item.id&&effect.stage!="burst"))&&!(d.family=="machinery"&&Effects.Any(e=>e.sourceInstance==item.id&&MachineEffect(e)))&&!PartyHasBudget(d,item.id)){p.nextAttack=Time+.25f;return true;}
             if(d.family=="arena")return TryArenaMechanic(p,item,d);
@@ -72,7 +75,7 @@ namespace AboutMe
             var forward=Forward(p);
             EffectState New(Vector3 position,string stage)=>new EffectState {
                 id=Guid.NewGuid().ToString("N"),owner=p.profile.playerId,kind="PartyMechanic",mechanicId=d.id,sourceInstance=item.id,
-                visual=item.asset.visualId,color=item.asset.color,position=position,velocity=forward*9+Vector3.up*3,
+                visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,position=position,velocity=forward*9+Vector3.up*3,
                 stage=stage,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,damage=d.damage,force=d.force,health=2,heavy=true};
             if(d.id=="cone-burst")
             {

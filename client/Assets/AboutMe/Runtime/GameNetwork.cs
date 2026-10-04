@@ -66,9 +66,16 @@ namespace AboutMe
         int frame,receivingFrame=-1;
         readonly MemoryStream receiveBuffer=new MemoryStream();
 
+        // Awake runs before any UI health probe or authority request.
+        void ApplyEnvironmentEndpoints()
+        {
+            string api=Environment.GetEnvironmentVariable("ABOUTME_API_URL");if(!string.IsNullOrWhiteSpace(api))ApiUrl=api.Trim().TrimEnd('/');
+            string endpoint=Environment.GetEnvironmentVariable("ABOUTME_GAME_ENDPOINT");if(!string.IsNullOrWhiteSpace(endpoint))Endpoint=endpoint.Trim();
+        }
         public override void Awake()
         {
             autoCreatePlayer=false; dontDestroyOnLoad=true; runInBackground=true; maxConnections=64;
+            ApplyEnvironmentEndpoints();
             Game=this; transport=GetComponent<SimpleWebTransport>();
             var sw=(SimpleWebTransport)transport;sw.port=ushort.TryParse(Environment.GetEnvironmentVariable("ABOUTME_GAME_PORT"),out var configuredPort)&&configuredPort>0?configuredPort:(ushort)7777;sw.maxMessageSize=256*1024;
             base.Awake();
@@ -76,7 +83,7 @@ namespace AboutMe
         public override void Start()
         {
             base.Start();
-            string api=Environment.GetEnvironmentVariable("ABOUTME_API_URL");if(!string.IsNullOrEmpty(api))ApiUrl=api;
+            ApplyEnvironmentEndpoints();
             var args=Environment.GetCommandLineArgs();
             AllowSamples=args.Contains("--allow-samples");
             if(args.Contains("--accelerated")){Rules=new MatchRules{revealDuration=2,handInterval=4,finalTime=8,eatDuration=.2f,recoverDuration=.15f};reconnectGrace=3f;}
@@ -124,21 +131,21 @@ namespace AboutMe
             NetworkClient.RegisterHandler<StateMessage>(msg=>{
                 if(msg.frame!=receivingFrame){receivingFrame=msg.frame;receiveBuffer.SetLength(0);}
                 receiveBuffer.Write(msg.data,0,msg.data.Length);
-                if(msg.last){bool first=State==null;var json=Encoding.UTF8.GetString(receiveBuffer.ToArray());var incoming=JsonUtility.FromJson<Snapshot>(json);if(incoming.protocolVersion!=3){Status="游戏版本不一致，请更新客户端和服务器";StopClient();return;}State=incoming;RoomCode=State.room;receiveBuffer.SetLength(0);if(first)Status="已连接 · 房间 "+State.room;}
+                if(msg.last){bool first=State==null;var json=Encoding.UTF8.GetString(receiveBuffer.ToArray());var incoming=JsonUtility.FromJson<Snapshot>(json);if(incoming.protocolVersion!=TraitAbilityCatalog.ProtocolVersion){Status="游戏版本不一致，请更新客户端和服务器";StopClient();return;}State=incoming;RoomCode=State.room;receiveBuffer.SetLength(0);if(first)Status="已连接 · 房间 "+State.room;}
             });
             NetworkClient.RegisterHandler<NoticeMessage>(msg=>{Status=msg.text;Debug.Log("ABOUTME_NOTICE "+msg.text);});
         }
         public override void OnClientConnect()
         {
             NetworkClient.Ready();
-            NetworkClient.Send(new HelloMessage{token=Token,cosmeticToken=Sample?CosmeticToken:"",room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":3,"+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
+            NetworkClient.Send(new HelloMessage{token=Token,cosmeticToken=Sample?CosmeticToken:"",room=RoomCode,nickname=Nickname,sample=Sample,appearanceJson="{\"protocol\":"+TraitAbilityCatalog.ProtocolVersion+","+(Sample?JsonUtility.ToJson(SampleAppearance??AppearanceData.Demo(0)).Substring(1):"\"client\":true}")});
         }
         public override void OnClientDisconnect() { if(State!=null)Status="连接已断开，可使用原凭据重连";else if(queuedConnect==null&&Status.StartsWith("正在连接"))Status="连接失败，请稍后重新创建或加入房间。"; base.OnClientDisconnect(); }
         void Hello(NetworkConnectionToClient conn,HelloMessage hello)
         {
             if(pending.Contains(conn.connectionId)||seats.ContainsKey(conn.connectionId))return;
             if((hello.room??"").Length>12||(hello.token??"").Length>256||(hello.cosmeticToken??"").Length>256||(hello.nickname??"").Length>24||(hello.appearanceJson??"").Length>2048) { Reject(conn,"加入信息过长");return; }
-            try { if(string.IsNullOrEmpty(hello.appearanceJson)||JsonUtility.FromJson<HelloVersion>(hello.appearanceJson)?.protocol!=3){Reject(conn,"游戏版本不一致，请更新客户端和服务器后重连");return;} }
+            try { if(string.IsNullOrEmpty(hello.appearanceJson)||JsonUtility.FromJson<HelloVersion>(hello.appearanceJson)?.protocol!=TraitAbilityCatalog.ProtocolVersion){Reject(conn,"游戏版本不一致，请更新客户端和服务器后重连");return;} }
             catch(Exception){Reject(conn,"加入信息格式错误");return;}
             pending.Add(conn.connectionId);
             if(hello.sample)

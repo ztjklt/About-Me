@@ -65,7 +65,7 @@ namespace AboutMe
             }
             partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.45f;
             var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,mechanicId=d.id,sourceInstance=item.id,
-                visual=item.asset.visualId,color=item.asset.color,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,
+                visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,
                 position=SelfMovement(d.id)?p.position:position,velocity=direction,stage="deployed",damage=d.damage,force=d.force};
             if(d.id=="uppercut-piston")
             {

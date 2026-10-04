@@ -49,7 +49,7 @@ namespace AboutMe
             if(Item(p.equipped)==null&&Props.Find(x=>x.id==p.publicProp)==null)return;
             var item=Item(p.equipped);if(p.publicProp==""&&!PartyCanUse(p,item))return;
             int before=p.actionId;Attack(p,true,1f);
-            var mechanic=PartyMechanicRegistry.ForVisual(item?.asset?.visualId);
+            var mechanic=PartyMechanicRegistry.ForAsset(item?.asset);
             if(p.actionId!=before&&p.publicProp==""&&mechanic!=null)p.pendingAt=Time+mechanic.windup;
         }
         void Grab(Player p,bool item)

@@ -13,7 +13,7 @@ namespace AboutMe
 {
     [Serializable] class SessionRequest {public string nickname;}
     [Serializable] class SessionResponse {public string token;public Profile profile;}
-    [Serializable] class GenerationRequest {public string nickname,introduction,color,generationId;public int outfit;}
+    [Serializable] class GenerationRequest {public string nickname,introduction,color,generationId;public int outfit;public WordAbilityChoice[] wordAbilities;}
     [Serializable] class Transcription {public string text;}
     [Serializable] class ServiceHealth {public bool ok,aiConfigured,asrConfigured,visionConfigured;}
     [Serializable] class ErrorDetail {public string detail;}
@@ -218,7 +218,7 @@ namespace AboutMe
             if(aiCapabilityKnown&&!aiConfigured){net.Status="真实 AI 暂不可用，请稍后重试，或选择练习道具。";yield break;}
             busy=true;SaveDraft(false);net.Status="正在把你变成游戏内容…";
             string generationToken=SavedTokenForApi();
-            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit,generationId=Guid.NewGuid().ToString("N")};
+            var body=new GenerationRequest{nickname=nickname.text,introduction=introduction.text,color=selectedColor,outfit=outfit,generationId=Guid.NewGuid().ToString("N"),wordAbilities=SelectedWordAbilities()};
             for(int attempt=0;attempt<2;attempt++)
             {
                 if(string.IsNullOrEmpty(generationToken))
@@ -418,6 +418,7 @@ namespace AboutMe
             if(savedCharacterCamera)savedCharacterCamera.enabled=savedCharacterCard&&savedCharacterCard.gameObject.activeInHierarchy;
             if(net==null)return;
             if(traitLab&&traitLab.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))CloseTraitLab();return;}
+            if(wordAbilityPicker&&wordAbilityPicker.gameObject.activeSelf){if(Input.GetKeyDown(KeyCode.Escape))Destroy(wordAbilityPicker.gameObject);return;}
             if(introductionQuestionnaire&&introductionQuestionnaire.gameObject.activeSelf)
             {ApplyAdaptiveLayout();if(Input.GetKeyDown(KeyCode.Escape))CloseIntroductionQuestionnaire();return;}
             generate.interactable=!busy;join.interactable=!busy;foreach(var button in wardrobeButtons)button.interactable=!busy;ApplyBusyVisuals();UpdateStatusVisual();ApplyAdaptiveLayout();
@@ -503,6 +504,8 @@ namespace AboutMe
                 if(Input.GetKeyDown(KeyCode.Space))Send("jump");if(Input.GetKeyDown(KeyCode.F))Send("use_item");
                 if(Input.GetKeyDown(KeyCode.G))Send("grab");if(Input.GetKeyDown(KeyCode.H))Send("grab_item");
                 if(Input.GetKeyDown(KeyCode.E))Send("interact");
+                if(Input.GetKeyDown(KeyCode.R))Send("borrow_word");
+                if(Input.GetKeyDown(KeyCode.T))Send("release_word");
                 for(int i=0;i<5;i++)if(Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1+i))){var quick=QuickItems(state);if(i<quick.Length)Send("equip",quick[i].id);}
             }
             if(UnityEngine.Time.unscaledTime>=nextSend){nextSend=UnityEngine.Time.unscaledTime+.05f;Send("");}

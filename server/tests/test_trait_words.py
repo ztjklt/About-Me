@@ -190,7 +190,8 @@ def test_model_synonym_terms_collapse_to_one_text_row():
 def test_font_gate_matches_delivered_glyph_codepoint_table(monkeypatch):
     assert words.FONT_SUPPORT['schema']=='aboutme-thick-word-font-v2'
     assert words.FONT_SUPPORT['fontSha256']=='2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b'
-    assert len(words.FONT_SUPPORT['codepoints'])==44801
+    assert len(words.FONT_SUPPORT['codepoints'])==44802 and 32 in words.FONT_SUPPORT['codepoints']
+    assert (Path(__file__).resolve().parents[2]/'client/Assets/AboutMe/Resources/ThickWords/supported-codepoints.json').read_bytes()==(Path(__file__).resolve().parents[2]/'shared/trait-word-supported-codepoints.json').read_bytes()
     assert words.safe_word('云朵 ENFP',api.sensitive_persona_text)
     monkeypatch.setattr(words,'SUPPORTED_CODEPOINTS',words.SUPPORTED_CODEPOINTS-{ord('云')})
     batch=raw('我的性格是云朵')
@@ -216,3 +217,19 @@ def test_questionnaire_custom_expression_gets_confirmation():
     batch=raw('我喜欢的人物表情是云朵')
     row=generation_terms(batch,batch.terms,api.CATALOG_BY_PAIR)[0]
     assert batch==[] and row['wordCategory']=='custom' and row['status']=='needs-confirmation'
+
+
+def test_same_sentence_distinct_traits_not_source_dedup():
+    batch=raw('我的性格是热情、温柔、理性。')
+    assert {a['wordText'] for a in batch} == {'热情','温柔','理性'}
+    assert len({a['assetId'] for a in batch}) == 3
+    rows=generation_terms(batch,batch.terms,api.CATALOG_BY_PAIR)
+    assert {r['assetId'] for r in rows if r['status']=='ready'} == {a['assetId'] for a in batch}
+    aliases=raw('我的性格是热情、热烈；我喜欢的人物表情是友好微笑。')
+    assert [a['wordText'] for a in aliases] == ['热情','友好微笑']
+
+def test_custom_english_space_has_font_advance_but_empty_word_rejected():
+    assert words.safe_word('very kind',api.sensitive_persona_text)
+    assert not words.safe_word('   ',api.sensitive_persona_text)
+    batch,terms=words.augment([],[], 'My personality is very kind',[dict(text='very kind',category='custom',abilityId='bubble-lift')],api.sensitive_persona_text)
+    assert len(batch)==1 and batch[0]['wordText']=='very kind'

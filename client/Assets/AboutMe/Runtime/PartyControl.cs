@@ -39,7 +39,7 @@ namespace AboutMe
                 if(Players.Values.Any(x=>!x.eliminated&&Flat(x.position-spot).magnitude<2.4f)||Effects.Where(MachineEffect).Any(x=>Flat(x.position-spot).magnitude<4)){Say("范围有人或机关，请换空地再放置。");p.nextAttack=Time+.3f;return true;}
             }
             CancelSelfMovement(p);CancelSelfGuards(p);CancelSelfLoot(p);partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.45f;
-            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,position=SelfControl(d.id)?p.position:spot,velocity=direction,stage="active"};
+            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,position=SelfControl(d.id)?p.position:spot,velocity=direction,stage="active"};
             if(d.id=="water-jet")e.height=p.yaw;
             if(target!=null){e.targetId=target.profile.playerId;e.stage="attached";e.height=p.yaw;ResetEscape(target);Interrupt(p);SetAction(p,"reel",e.targetId);}
             if(anchor!=null){e.targetId=anchor.id;e.path=new[]{anchor.position};e.radius=Flat(p.position-anchor.position).magnitude;e.velocity=Flat(p.velocity);e.stage="swing";}

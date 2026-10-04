@@ -732,9 +732,9 @@ namespace AboutMe
             if(dsOutfit)dsOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
             if(claudeOutfit)claudeOutfit.Pose(dt,eatBlend,Mathf.Sin(swallowTime/.65f*Mathf.PI));
             if(camera)label.transform.rotation=camera.transform.rotation;
-            var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath;
-            if(visual!=equipmentKey){if(held)UnityEngine.Object.Destroy(held);visual=equipmentKey;if(!string.IsNullOrEmpty(p.equippedVisual)){held=ToyFactory.Item(p.equippedVisual,p.equippedColor,RightHandAttachment,p.equippedName,p.equippedEmblemPath,p.equippedEmblemCrop,p.equippedGeneratedBy);held.transform.localScale=Vector3.one*.60f;}}
-            if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=Quaternion.identity;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
+            var equipmentKey=p.equippedVisual+"|"+p.equippedEmblemPath+"|"+p.equippedWordText+"|"+p.equippedAbilityId;
+            if(visual!=equipmentKey){if(held)UnityEngine.Object.Destroy(held);visual=equipmentKey;if(!string.IsNullOrEmpty(p.equippedVisual)){held=ToyFactory.Item(p.equippedVisual,p.equippedColor,RightHandAttachment,p.equippedName,p.equippedEmblemPath,p.equippedEmblemCrop,p.equippedGeneratedBy,p.equippedWordText,p.equippedAbilityId);held.transform.localScale=Vector3.one*.60f;}}
+            if(held){held.transform.localPosition=new Vector3(0,0,.12f);held.transform.localRotation=p.equippedVisual==TraitAbilityCatalog.VisualId?Quaternion.Euler(90,0,0):Quaternion.identity;held.SetActive(string.IsNullOrEmpty(p.interaction)&&string.IsNullOrEmpty(p.publicProp));}
         }
     }
 }

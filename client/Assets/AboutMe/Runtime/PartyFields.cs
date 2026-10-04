@@ -48,7 +48,7 @@ namespace AboutMe
                 if(target==null){Say("前方没有可排斥的公共箱子或垃圾桶。");p.nextAttack=Time+.35f;return true;}
             }
             partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.45f;
-            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,
+            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,
                 position=spot,velocity=Forward(p),createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,damage=d.damage,force=d.force,health=2,stage="field"};
             if(d.id=="wet-trail"){e.path=new[]{GroundParty(p.position)};e.nextHit=Time+.3f;}
             if(d.id=="polarity-push"){e.position=target.position;e.targetId=target.id;e.stage="repel_warning";e.triggerAt=Time+.5f;}

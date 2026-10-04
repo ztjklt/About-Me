@@ -55,9 +55,9 @@ namespace AboutMe
             appearance.character=profile?.characterSkin=="ds-girl"&&profile.dsGirlUnlocked?"ds":profile?.characterSkin=="claude-girl"&&profile.claudeGirlUnlocked?"claude":"normal";
             if(savedCharacterActor==null){savedCharacterActor=new ToyActor("Saved character",appearance.topColor,0,null,appearance);savedCharacterActor.root.transform.position=new Vector3(1100,1,0);savedCharacterActor.label.text="";}
             savedCharacterActor.ApplyAppearance(appearance);
-            var persona=profile?.personas?.FirstOrDefault();
+            var persona=profile?.personas?.FirstOrDefault(a=>a.visualId==TraitAbilityCatalog.VisualId)??profile?.personas?.FirstOrDefault();
             if(savedCharacterActor.held)Destroy(savedCharacterActor.held);
-            if(persona!=null){savedCharacterActor.held=ToyFactory.Item(persona.visualId,persona.color??"#77C8BD",savedCharacterActor.PersonaAttachment,persona.name,persona.emblemPath,persona.emblemCrop,persona.generatedBy);savedCharacterActor.held.transform.localScale=Vector3.one*.72f;savedCharacterActor.held.transform.position=new Vector3(1100.67f,1.05f,.4f);if(persona.visualId=="school-disc")savedCharacterActor.held.transform.rotation=Quaternion.Euler(90,0,0);}
+            if(persona!=null){savedCharacterActor.held=ToyFactory.Item(persona.visualId,persona.color??"#77C8BD",savedCharacterActor.PersonaAttachment,persona.name,persona.emblemPath,persona.emblemCrop,persona.generatedBy,persona.wordText,persona.abilityId);savedCharacterActor.held.transform.localScale=Vector3.one*.72f;savedCharacterActor.held.transform.position=new Vector3(1100.67f,1.05f,.4f);if(persona.visualId=="school-disc")savedCharacterActor.held.transform.rotation=Quaternion.Euler(90,0,0);if(persona.visualId==TraitAbilityCatalog.VisualId)savedCharacterActor.held.transform.rotation=Quaternion.Euler(0,-16,0);}
             foreach(var labelMesh in savedCharacterActor.root.GetComponentsInChildren<TextMesh>())labelMesh.text="";
             foreach(var t in savedCharacterActor.root.GetComponentsInChildren<Transform>())t.gameObject.layer=29;
             string label=profile==null||(profile.personas?.Length??0)==0?"尚未生成角色":net.Sample?"练习角色（非 AI）":"当前已保存角色";

@@ -28,13 +28,15 @@ namespace AboutMe
             new IntroductionQuestion("哪些代表物适合你？","我觉得这些事物很适合代表自己：",new[]{"猫","拼图","天文望远镜","地球仪"},new[]{"cat","puzzle-piece","telescope","globe"}),
             new IntroductionQuestion("你会如何描述自己的性格？","我的性格是",new[]{"热情","好奇","温柔","理性","活力","专注"},new string[0]),
             new IntroductionQuestion("喜欢哪种人物表情？","我喜欢的人物表情是",new[]{"友好微笑","开心大笑","自信挑眉","慵懒半眯","惊讶睁眼","认真坚定"},new string[0]),
-            new IntroductionQuestion("喜欢使用哪个 AI？","我喜欢",new[]{"DeepSeek","Claude"},new string[0])
+            new IntroductionQuestion("喜欢使用哪个 AI？","我喜欢",new[]{"DeepSeek","Claude"},new string[0]),
+            new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0]),
+            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0])
         };
 
         RectTransform introductionQuestionnaire;
         InputField questionnaireDraft;
         Text questionnaireFeedback;
-        readonly bool[] introductionAnswers=new bool[54];
+        readonly bool[] introductionAnswers=new bool[76];
         readonly List<InputField> questionnaireOther=new List<InputField>();
         readonly List<string> questionnaireOptionLabels=new List<string>();
         static readonly string[] QuestionnaireExpressions={"friendly","joy","confident","sleepy","surprised","determined"};
@@ -48,7 +50,8 @@ namespace AboutMe
                 var selected=new List<string>();
                 foreach(var label in question.labels){if(answers!=null&&index<answers.Length&&answers[index])selected.Add(label);index++;}
                 if(other!=null&&q<other.Length&&!string.IsNullOrWhiteSpace(other[q]))selected.Add(other[q].Trim());q++;
-                if(selected.Count>0)sentences.Add(GameLocalization.Text(question.prefix)+
+                if(string.IsNullOrEmpty(question.prefix)&&other!=null&&q<=other.Length&&!string.IsNullOrWhiteSpace(other[q-1]))sentences.Add(GameLocalization.Text("我对文字道具的想法是")+other[q-1].Trim()+(GameLocalization.English?".":"。"));
+                if(selected.Count>0&&!string.IsNullOrEmpty(question.prefix))sentences.Add(GameLocalization.Text(question.prefix)+
                     string.Join(GameLocalization.English?", ":"、",selected.Select(label=>question.labels.Contains(label)?GameLocalization.Text(label):label))+
                     (GameLocalization.English?".":"。"));
             }
@@ -101,6 +104,8 @@ namespace AboutMe
                 float otherY=y+40+((question.labels.Length+1)/2)*52;
                 var other=ArtField(content,0,otherY,528,42,"其他 / 自己填写",false);other.characterLimit=120;questionnaireOther.Add(other);
                 y=otherY+65;
+                if(q==12){ArtText(content,"根据你喜欢的 AI，可能会额外提供可选的彩蛋角色模型。",0,y,528,42,14,UITheme.Muted);y+=52;}
+                if(q==14){ArtText(content,"仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。",0,y,528,58,14,UITheme.Muted);y+=68;}
             }
             content.sizeDelta=new Vector2(540,y+8);
             ArtText(card,"上下滑动查看更多问题 · 不要求全部作答",30,775,560,28,14,UITheme.Muted);
@@ -136,6 +141,8 @@ namespace AboutMe
             if(!wardrobe)BuildWardrobe();
             var traits=IntroductionQuestions[10].labels.Where((label,i)=>introductionAnswers[40+i]).Select(GameLocalization.Text).ToList();
             if(!string.IsNullOrWhiteSpace(questionnaireOther[10].text))traits.Add(questionnaireOther[10].text);
+            traits.AddRange(IntroductionQuestions[13].labels.Where((label,i)=>introductionAnswers[54+i]));
+            if(!string.IsNullOrWhiteSpace(questionnaireOther[13].text))traits.Add(questionnaireOther[13].text);
             if(traits.Count>0)personalityInput.text=string.Join(GameLocalization.English?", ":"、",traits);
             for(int i=0;i<6;i++)if(introductionAnswers[46+i]){appearanceDraft.expression=QuestionnaireExpressions[i];appearanceDirty=true;}
             RefreshAppearancePreview();

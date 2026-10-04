@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace AboutMe
 {
     [Serializable] public class GenerationTerm
-    { public string term,source,status,reason,assetId,kind,stage; public float progress; }
+    { public string term,source,status,reason,assetId,kind,stage,wordCategory,wordText,abilityId; public float progress; }
     [Serializable] class GenerationProgress
     { public string generationId,phase; public GenerationTerm[] generationTerms; }
 
@@ -21,7 +21,7 @@ namespace AboutMe
         string activeGenerationId;
         GenerationTerm[] displayedGenerationTerms=Array.Empty<GenerationTerm>();
         public static Color GenerationTermColor(string state) => state=="ready"?new Color(.12f,.56f,.34f):
-            state=="failed"?new Color(.78f,.21f,.25f):new Color(.30f,.37f,.43f);
+            state=="failed"?new Color(.78f,.21f,.25f):state=="needs-confirmation"?new Color(.65f,.44f,.10f):new Color(.30f,.37f,.43f);
 
         void BuildPersonaResults(RectTransform card)
         {
@@ -62,7 +62,7 @@ namespace AboutMe
                 var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i/2)*144,(i%2)*67,134,61,GenerationTermColor(term.status),false,false);
                 var click=card.gameObject.AddComponent<Button>();click.onClick.AddListener(()=>ShowGenerationTermDetail(term));
                 var title=ArtText(card,term.term,8,3,118,32,15,Color.white,FontStyle.Bold);title.horizontalOverflow=HorizontalWrapMode.Wrap;title.resizeTextMinSize=12;
-                string state=term.status=="ready"?"正常":term.status=="failed"?"未生成":"处理中";
+                string state=term.status=="ready"?"正常":term.status=="failed"?"未生成":term.status=="needs-confirmation"?"请选择能力":"处理中";
                 float progress=term.status=="ready"?1:Mathf.Clamp(term.progress,0,.95f);
                 ArtText(card,state+(term.kind=="university"?" · "+Mathf.RoundToInt(progress*100)+"%":" · 查看"),8,36,118,20,12,Color.white);
                 if(term.kind=="university")ArtPanel(card,"University progress",8,58,118*progress,3,UITheme.Mint,false,false).GetComponent<Image>().raycastTarget=false;
@@ -79,9 +79,10 @@ namespace AboutMe
         {
             if(generationTermDetail)Destroy(generationTermDetail.gameObject);
             generationTermDetail=ArtPanel(studioCard,"Result detail",450,352,408,194,UITheme.Paper,true,true);
-            var fullDetail=ArtScrollableField(generationTermDetail,14,12,378,122,"");fullDetail.readOnly=true;fullDetail.characterLimit=0;fullDetail.text=term.term+"\n"+GameLocalization.Text(term.reason??"")+"\n"+GameLocalization.Text(term.stage??"");
+            var fullDetail=ArtScrollableField(generationTermDetail,14,12,378,122,"");fullDetail.readOnly=true;fullDetail.characterLimit=0;fullDetail.text=term.term+"\n"+GameLocalization.Text(term.reason??"")+"\n"+GameLocalization.Text(term.stage??"")+(term.kind=="trait-word"&&!string.IsNullOrEmpty(term.abilityId)?"\n"+GameLocalization.Text(TraitAbilityCatalog.AbilityLabel(term.abilityId)):"");
             ArtButton(generationTermDetail,"关闭",290,145,102,34,()=>Destroy(generationTermDetail.gameObject),UITheme.Field,UITheme.Ink);
-            if(term.status=="failed")ArtButton(generationTermDetail,"重试生成",14,145,160,34,()=>{Destroy(generationTermDetail.gameObject);if(!busy)StartCoroutine(Generate());},UITheme.Mint,UITheme.Ink);
+            if(term.kind=="trait-word")ArtButton(generationTermDetail,string.IsNullOrEmpty(term.abilityId)?"请选择能力":"改选能力",14,145,160,34,()=>OpenWordAbilityPicker(term),UITheme.Mint,UITheme.Ink);
+            else if(term.status=="failed")ArtButton(generationTermDetail,"重试生成",14,145,160,34,()=>{Destroy(generationTermDetail.gameObject);if(!busy)StartCoroutine(Generate());},UITheme.Mint,UITheme.Ink);
         }
 
         GenerationTerm[] ProfileGenerationTerms()
@@ -102,7 +103,7 @@ namespace AboutMe
             }
             return (profile?.personas??Array.Empty<PersonaAsset>()).Select(p=>new GenerationTerm{
                 term=p.name.Replace("校徽圆盘",""),assetId=p.assetId,status=p.visualId=="school-disc"&&string.IsNullOrEmpty(p.emblemPath)?"failed":"ready",
-                kind=p.visualId=="school-disc"?"university":"prop",progress=string.IsNullOrEmpty(p.emblemPath)&&p.visualId=="school-disc"?0:1,
+                wordCategory=p.wordCategory,wordText=p.wordText,abilityId=p.abilityId,kind=p.visualId==TraitAbilityCatalog.VisualId?"trait-word":p.visualId=="school-disc"?"university":"prop",progress=string.IsNullOrEmpty(p.emblemPath)&&p.visualId=="school-disc"?0:1,
                 reason=p.visualId=="school-disc"?(string.IsNullOrEmpty(p.emblemPath)?"校徽尚未找到":"校徽飞盘已生成"):p.name}).ToArray();
         }
 
@@ -117,7 +118,7 @@ namespace AboutMe
         {
             EndGenerationPoll();
             DisplayGenerationTerms(displayedGenerationTerms.Select(t=>new GenerationTerm{
-                term=t.term,source=t.source,assetId=t.assetId,kind=t.kind,stage="结果未保存",progress=Mathf.Min(t.progress,.95f),status="failed",
+                term=t.term,source=t.source,assetId=t.assetId,kind=t.kind,wordCategory=t.wordCategory,wordText=t.wordText,abilityId=t.abilityId,stage="结果未保存",progress=Mathf.Min(t.progress,.95f),status="failed",
                 reason=t.status=="failed"?t.reason:"结果未保存，请重试"}).ToArray(),"failed");
         }
         IEnumerator PollGenerationResults(string token,string id)

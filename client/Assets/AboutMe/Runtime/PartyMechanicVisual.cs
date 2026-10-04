@@ -10,7 +10,7 @@ namespace AboutMe
         public static GameObject Create(EffectState e,Transform parent)
         {
             var root=new GameObject("Party warning "+e.mechanicId);root.transform.SetParent(parent,false);var v=root.AddComponent<PartyMechanicVisual>();
-            v.model=ToyFactory.Item(e.visual,e.color,root.transform,"");
+            v.model=ToyFactory.Item(e.visual,e.color,root.transform,"","","","",e.wordText,e.mechanicId);
             var circle=new GameObject("Visible warning circle");circle.transform.SetParent(root.transform,false);v.ring=circle.AddComponent<LineRenderer>();
             v.ring.useWorldSpace=false;v.ring.loop=true;v.ring.positionCount=64;v.ring.startWidth=v.ring.endWidth=.10f;
             if(!warningMaterial)warningMaterial=new Material(Resources.Load<Shader>("PartyWarning"));v.ring.sharedMaterial=warningMaterial;

@@ -9,17 +9,18 @@ namespace AboutMe
     {
         public string assetId, name, templateId, visualId, color, source;
         public string emblemPath, emblemCrop, emblemSource, emblemLicense, generatedBy;
+        public string wordCategory,wordText,abilityId;
         public float generationConfidence;
         public PersonaAsset Copy() => (PersonaAsset)MemberwiseClone();
         public PublicPersonaAsset PublicCopy() => new PublicPersonaAsset
         { assetId=assetId, name=name, templateId=templateId, visualId=visualId, color=color,
-          emblemPath=emblemPath, emblemCrop=emblemCrop, generatedBy=generatedBy, mechanicId=PartyMechanicRegistry.ForVisual(visualId)?.id??"" };
+          emblemPath=emblemPath, emblemCrop=emblemCrop, generatedBy=generatedBy, wordCategory=wordCategory,wordText=wordText,abilityId=abilityId,mechanicId=PartyMechanicRegistry.ForAsset(this)?.id??"" };
     }
     // A separate wire type prevents private profile fields from being serialized.
     [Serializable] public class PublicPersonaAsset
     {
         public string assetId, name, templateId, visualId, color;
-        public string emblemPath, emblemCrop, generatedBy, mechanicId;
+        public string emblemPath, emblemCrop, generatedBy, mechanicId,wordCategory,wordText,abilityId;
     }
     [Serializable] public class Profile
     {
@@ -116,7 +117,7 @@ namespace AboutMe
     [Serializable] public class PublicPlayer
     {
         public string id, nickname, color, equippedName, equippedVisual, equippedColor, carrying, grabbing, interaction,publicProp;
-        public string equippedEmblemPath, equippedEmblemCrop, equippedGeneratedBy;
+        public string equippedEmblemPath, equippedEmblemCrop, equippedGeneratedBy,equippedWordCategory,equippedWordText,equippedAbilityId;
         public int outfit, remaining;
         public BodyMode bodyMode;
         public float bodyStateAt,bodyProtectedUntil;
@@ -137,7 +138,7 @@ namespace AboutMe
     [Serializable] public class EffectState
     {
         public string id, owner, kind, visual, color, targetId = "";
-        public string emblemPath, emblemCrop, generatedBy;
+        public string emblemPath, emblemCrop, generatedBy,wordCategory,wordText,abilityId;
         public string mechanicId="",sourceInstance="",stage="";
         public float createdAt,deadline,triggerAt;
         public int chainIndex;
@@ -215,7 +216,7 @@ namespace AboutMe
             { if(Phase==MatchPhase.Lobby)
                 {existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);existing.profile.dsGirlUnlocked=profile.dsGirlUnlocked;existing.profile.claudeGirlUnlocked=profile.claudeGirlUnlocked;existing.profile.characterSkin=VerifiedCharacterSkin(profile);}
                 existing.connected = true; existing.lastInput = Time; existing.sequence = -1; return true; }
-            if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0) return false;
+            if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0 || profile.personas.Length > 12) return false;
             if (Host == null) Host = profile.playerId;
             profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);
             profile.characterSkin=VerifiedCharacterSkin(profile);
@@ -234,7 +235,7 @@ namespace AboutMe
                 Players.Remove(id); Items.RemoveAll(x => x.ownerId == id);
                 if (Host == id) Host = Players.Keys.FirstOrDefault();
             }
-            else { p.connected = false; p.input = new Command(); StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
+            else { ReleaseBorrowedWord(p);p.connected = false; p.input = new Command(); StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
         }
         public int Remaining(string id) => Items.Count(x => x.ownerId == id && x.state != ItemState.Consumed);
         public PersonaInstance Item(string id) => Items.Find(x => x.id == id);
@@ -257,7 +258,8 @@ namespace AboutMe
             if (!Active || p.eliminated) return;
             if (input.action == "escape") input.escapeHeld=true;
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
-            if (input.action == "cancel") { ReleaseSwingMomentum(p);CancelControlConsent(p);StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
+            if (input.action == "cancel") { ReleaseSwingMomentum(p);CancelControlConsent(p);StopMachineOperator(p);CancelSelfFields(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
+            if(input.action=="release_word"){ReleaseBorrowedWord(p);return;}
             if (Time < p.staggerUntil || BodyLocked(p)) return;
             if(ArenaOperatorAction(p,input.action))return;
             if(MachineBusy(p)&&input.action!="interact")return;
@@ -278,6 +280,8 @@ namespace AboutMe
                 case "grab": StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, false); break;
                 case "grab_item": StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, true); break;
                 case "interact": Interact(p,input.itemId); break;
+                case "borrow_word": BorrowWord(p,input.itemId); break;
+                case "release_word": ReleaseBorrowedWord(p); break;
                 case "drop": Interrupt(p); ReleaseGrab(p); break;
             }
         }
@@ -292,9 +296,9 @@ namespace AboutMe
         {
             var target = Item(id);
             if (target == null || target.ownerId != p.profile.playerId || target.state != ItemState.Inventory || Time < p.switchUntil) return;
-            StopMachineOperator(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
+            StopMachineOperator(p);CancelSelfFields(p); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
             SetAction(p,"equip");
-            var current = Item(p.equipped); if (current != null) current.state = ItemState.Inventory;
+            ReleaseBorrowedWord(p);var current = Item(p.equipped); if (current != null) current.state = ItemState.Inventory;
             p.equipped = target.id; target.state = ItemState.Equipped; p.switchUntil = Time + Rules.switchDuration;
         }
         public void Tick(float dt)
@@ -696,7 +700,7 @@ namespace AboutMe
         }
         public void Drop(Player p,int count)
         {
-            var candidates=Items.Where(x=>x.ownerId==p.profile.playerId&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped))
+            var candidates=Items.Where(x=>(x.ownerId==p.profile.playerId&&(x.state==ItemState.Inventory||(x.state==ItemState.Equipped&&string.IsNullOrEmpty(x.carrierId))))||BorrowedBy(x,p))
                 .OrderByDescending(x=>x.state==ItemState.Equipped).Take(count).ToArray();
             for(int i=0;i<candidates.Length;i++)
             {
@@ -704,13 +708,14 @@ namespace AboutMe
                 var safe=CampusGeometry.SafeDrop(p.position);
                 item.position=safe+Vector3.up*.4f;
                 item.velocity=Quaternion.Euler(0,i*137+Time*17,0)*new Vector3(3,5,0);
-                if(p.equipped==item.id)p.equipped="";
+                if(p.equipped==item.id){CancelSelfFields(p);CancelSelfGuards(p);CancelSelfMovement(p);CancelSelfLoot(p);CancelAction(p);p.equipped="";}
             }
         }
         public void Interact(Player p,string targetId=null)
         {
             if(TryLinkInteraction(p,targetId)||TryControlInteraction(p,targetId)||TryMachineInteraction(p,targetId))return;
             if(p.interaction!="") { Interrupt(p); return; }
+            if(SwallowBorrowedWord(p))return;
             if(IsGrabbed(p)) return;
             ReleaseGrab(p); CancelAction(p); p.chargingSince=-1;
             var item=Items.Where(x=>x.state==ItemState.Ground&&(string.IsNullOrEmpty(targetId)||x.id==targetId)&&Vector3.Distance(x.position,p.position)<Rules.interactionRange&&MachineClear(p.position,x.position))
@@ -763,17 +768,17 @@ namespace AboutMe
         }
         public Snapshot View(string recipient)
         {
-            return new Snapshot {protocolVersion=3,serverTick=serverTick,combatEvents=CombatEvents.ToArray(),grabLinks=GrabLinks(),room=Room,matchId=MatchId,you=recipient,host=Host,winner=Winner,winners=Winners,rankings=Rankings,endReason=EndReason,simulationTime=Time,handEventId=HandEventId,handStartedAt=LastHand,phase=Phase,handPosition=handPosition,handFist=handFist,
+            return new Snapshot {protocolVersion=TraitAbilityCatalog.ProtocolVersion,serverTick=serverTick,combatEvents=CombatEvents.ToArray(),grabLinks=GrabLinks(),room=Room,matchId=MatchId,you=recipient,host=Host,winner=Winner,winners=Winners,rankings=Rankings,endReason=EndReason,simulationTime=Time,handEventId=HandEventId,handStartedAt=LastHand,phase=Phase,handPosition=handPosition,handFist=handFist,
                 time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
                         portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=LinkStatus(p)??VirtualStatus(p)??ControlStatus(p)??p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),
-                        equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",
+                        equippedEmblemPath=item?.asset.emblemPath??"",equippedEmblemCrop=item?.asset.emblemCrop??"",equippedGeneratedBy=item?.asset.generatedBy??"",equippedWordCategory=item?.asset.wordCategory??"",equippedWordText=item?.asset.wordText??"",equippedAbilityId=item?.asset.abilityId??"",
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p)||HasControlRestraint(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
                 ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
-                inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),
+                inventory=Items.Where(x=>(x.ownerId==recipient&&(x.state==ItemState.Inventory||(x.state==ItemState.Equipped&&string.IsNullOrEmpty(x.carrierId))))||(x.state==ItemState.Equipped&&x.carrierId==recipient)).Select(x=>x.PublicCopy()).ToArray(),
                 revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.PublicCopy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PublicPersonaInstance>(),
                 effects=Effects.Where(e=>LootVisible(e,recipient)).ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};
         }
