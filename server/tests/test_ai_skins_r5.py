@@ -11,9 +11,9 @@ from server.tests.test_api import client, credentials
 @pytest.mark.parametrize('skin',SKINS,ids=lambda s:s['brand'])
 def test_positive_only_aliases_and_latest_stance(skin):
     brand=skin['brand'];display={'deepseek':'DeepSeek','gpt':'ChatGPT','qwen':'通义千问','doubao':'豆包','glm':'智谱清言'}.get(brand,brand)
-    for text in [f'我喜欢{display}',f'I like {display}.',f'我不喜欢{display}，但我喜欢{display}']:
+    for text in [f'我喜欢{display}',f'我喜欢使用{display}',f'I like {display}.',f'我不喜欢{display}，但我喜欢{display}']:
         assert liked_ai_brands(text)[brand],text
-    for text in [f'我不喜欢{display}',f'朋友喜欢{display}',f'我的朋友喜欢{display}',f'如果我喜欢{display}',f'我假装喜欢{display}',f'我喜欢{display}吗？',f'I do not like {display}.',f'My friend likes {display}.',f'If I like {display}.',f'I like {display}?',f'我喜欢{display}Sonnet']:
+    for text in [f'我不喜欢{display}',f'朋友喜欢{display}',f'我的朋友喜欢{display}',f'如果我喜欢{display}',f'我假装喜欢{display}',f'我喜欢{display}吗？',f'I do not like {display}.',f'My friend likes {display}.',f'If I like {display}.',f'I like {display}?',f'我喜欢{display}Sonnet',f'朋友说我喜欢{display}',f'My friend said I like {display}.',f'他写道“我喜欢{display}”']:
         assert not liked_ai_brands(text)[brand],text
     assert not liked_ai_brands(f'我喜欢{display}，我不喜欢{display}')[brand]
 

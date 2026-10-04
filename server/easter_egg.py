@@ -9,7 +9,7 @@ BRAND=r"(?:deep\s*seek|chatgpt|gpt|claude|gemini|grok|kimi|通义千问|千问|q
 BRAND_TOKEN=re.compile(BRAND,re.I)
 
 
-LIKE_BRANDS = re.compile(r'(?:喜欢|喜歡)\s*(?P<brands>'+BRAND+r'(?:\s*(?:和|跟|与|及|、|以及)\s*'+BRAND+r')*)',re.I)
+LIKE_BRANDS = re.compile(r'(?:喜欢|喜歡)\s*(?:使用|用|的是)?\s*(?P<brands>'+BRAND+r'(?:\s*(?:和|跟|与|及|、|以及)\s*'+BRAND+r')*)',re.I)
 CLAUSE_BREAK = re.compile(r'[，,。；;！!？?\n]|但是|不过|然而|可是|却|但')
 NEGATIVE_PREFIX = re.compile(r'(?:不|没|未|无|别|讨厌|反感|拒绝|假装|并非|不是|谈不上).{0,4}$')
 UNCERTAIN_PREFIX = re.compile(r'(?:如果|假如|可能|也许|或许|据说|听说|假设).{0,8}$')
@@ -35,6 +35,8 @@ def liked_ai_brands(introduction: str) -> dict[str, bool]:
         clause = CLAUSE_BREAK.split(introduction[:match.start()])[-1]
         suffix = introduction[match.end():]
         tail = re.split(r'[，,。；;！!？?\n]', suffix, maxsplit=1)[0]
+        if re.search(r'[“‘"]',clause) or clause.rstrip().endswith("'") or re.search(r'(?:朋友|同学|室友|别人|他们|她们|他|她|有人).*(?:说|表示|声称|提到).*(?:我|本人|自己)',clause):
+            continue
         other = list(OTHER_SUBJECT.finditer(clause))
         self_mentions = list(SELF_SUBJECT.finditer(clause))
         if other and (not self_mentions or
@@ -52,7 +54,7 @@ def liked_ai_brands(introduction: str) -> dict[str, bool]:
         prefix = introduction[:match.start()]
         suffix = introduction[match.end():]
         # Conditional/quoted mentions and questions are not preferences.
-        if ENGLISH_UNCERTAIN.search(prefix) or (prefix.rstrip().endswith(('"', '“', "'"))) or re.match(r'\s*[?？]', suffix):
+        if ENGLISH_UNCERTAIN.search(prefix) or re.search(r'\b(?:friend|he|she|they|someone)\b.*\b(?:says?|said|claims?|claimed)\s*$',prefix,re.I) or (prefix.rstrip().endswith(('"', '“', "'"))) or re.match(r'\s*[?？]', suffix):
             continue
         positive = not match.group('negative') and match.group('verb').lower() not in ('dislike', 'hate')
         for brand_match in BRAND_TOKEN.finditer(match.group('brands')):
