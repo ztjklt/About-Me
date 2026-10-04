@@ -22,10 +22,11 @@ from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_brands
 from server.university_crests import resolve_crest, cache_dir
-from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity
+from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity, specific_catalog_pairs
 from server.roast_safety import safe_public_text, safe_roast
 
 CATALOG = json.loads((Path(__file__).parent.parent / 'shared/catalog.json').read_text())['items']
+CATALOG_GENERATION_VERSION = hashlib.sha256(json.dumps(CATALOG, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 CATALOG_BY_PAIR = {(x['templateId'], x['visualId']): x for x in CATALOG}
 LEGACY_FOOTBALL_PAIR = ('Ricochet', 'football-cc0')
 CATALOG_BY_PAIR[LEGACY_FOOTBALL_PAIR] = CATALOG_BY_PAIR[('Projectile', 'football-cc0')]
@@ -791,6 +792,21 @@ def generation_status(generationId: str, authorization: str | None = Header(defa
     return value
 
 
+def catalog_upgrade_can_retry_props(profile, introduction):
+    """Retry newly supported failures once per catalog; retain fully successful cached generations."""
+    if profile.get('catalogGenerationVersion') == CATALOG_GENERATION_VERSION:
+        return False
+    candidates = profile.get('generationCandidates', profile.get('personas', []))
+    for row in generation_terms(candidates, profile.get('generationTerms', []), CATALOG_BY_PAIR):
+        source = row.get('source', '')
+        if row['status'] != 'failed' or row['kind'] != 'prop' or not source or source not in introduction:
+            continue
+        pairs = specific_catalog_pairs(row['term'], CATALOG_BY_PAIR)
+        if any(catalog_supports_fact(CATALOG_BY_PAIR[pair], source) for pair in pairs):
+            return True
+    return False
+
+
 @app.post('/personas/generate')
 async def generate(body: GenerateRequest, request: Request, authorization: str | None = Header(default=None)):
     player_id, previous, intro = authenticate(authorization)
@@ -799,7 +815,7 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
     progress = start_generation_progress(player_id, body.generationId)
     def publish(candidates, terms, phase):
         progress.update(phase=phase, generationTerms=generation_terms(candidates, terms, CATALOG_BY_PAIR, pending=phase=='searching'), updated=time.time())
-    if intro == body.introduction.strip() and (old.get('generationCandidates') is not None or profile_follows_generation_rules(old, intro)):
+    if intro == body.introduction.strip() and (old.get('generationCandidates') is not None or profile_follows_generation_rules(old, intro)) and not catalog_upgrade_can_retry_props(old, intro):
         candidates = old.get('generationCandidates', old['personas'])
         terms = old.get('generationTerms', [])
         retry = [p for p in candidates if p.get('visualId') == 'school-disc' and
@@ -865,6 +881,7 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
                   color=body.color if re.fullmatch(r'#[0-9a-fA-F]{6}', body.color) else '#77C8BD',
                   outfit=body.outfit, personas=playable_assets(personas), generationCandidates=list(personas),
                   generationTerms=generation_terms(personas, terms, CATALOG_BY_PAIR), revision=old['revision'] + 1,
+                  catalogGenerationVersion=CATALOG_GENERATION_VERSION,
                   appearance=old_normalized['appearance'], appearanceRevision=old_normalized['appearanceRevision'],
                   characterSkin=old_normalized['characterSkin'],
                   dsGirlUnlocked=likes['deepseek'], claudeGirlUnlocked=likes['claude'])

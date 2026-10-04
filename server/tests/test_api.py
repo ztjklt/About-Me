@@ -106,7 +106,7 @@ def test_private_and_abusive_facts_do_not_become_personas():
         module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
-    assert len(module.CATALOG) == 191
+    assert len(module.CATALOG) == 223
     result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):
@@ -124,8 +124,8 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     assert module.LEGACY_FOOTBALL_PAIR in module.ALLOWED
     assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
-    assert len(visuals) == 183
-    assert len({item['visualId'] for item in visuals}) == 183
+    assert len(visuals) == 215
+    assert len({item['visualId'] for item in visuals}) == 215
     assert all((item['templateId'], item['visualId']) in module.ALLOWED for item in visuals)
     intro = '我每周踢足球，也喜欢用手柄玩游戏，会弹尤克里里，还用笔记本记手账。'
     raw = {'personas': [
@@ -341,3 +341,27 @@ def test_timeout_result_keeps_co_winners_and_rankings_once(client):
     saved = json.loads(rows[0][0])
     assert saved['winners'] == ['p1', 'p2']
     assert saved['endReason'] == 'timeout' and saved['rankings'] == body['rankings']
+
+
+def test_catalog_upgrade_retries_newly_supported_red_prop_once(client,monkeypatch):
+    headers,data=credentials(client);intro='我喜欢望远镜'
+    old=dict(data['profile'],personas=[],generationCandidates=[],generationTerms=[dict(term='望远镜',source=intro,status='failed')],revision=1,catalogGenerationVersion='older-catalog')
+    with module.db() as con:
+        con.execute('UPDATE profiles SET profile=?,intro=? WHERE id=?',(json.dumps(old),intro,data['profile']['playerId']))
+    calls=[]
+    async def generated(text):
+        calls.append(text)
+        return module.validate_personas({'terms':[dict(term='望远镜',source=text)],'personas':[dict(name='望远镜',term='望远镜',source=text,templateId='Utility',visualId='telescope')]},text)
+    monkeypatch.setattr(module,'generate_with_provider',generated)
+    body=dict(nickname='玩家',introduction=intro,generationId='f'*32)
+    result=client.post('/personas/generate',headers=headers,json=body)
+    assert result.status_code==200 and result.json()['revision']==2
+    assert result.json()['personas'][0]['visualId']=='telescope' and result.json()['generationTerms'][0]['status']=='ready'
+    again=client.post('/personas/generate',headers=headers,json=body)
+    assert again.status_code==200 and again.json()['revision']==2 and calls==[intro]
+
+
+def test_catalog_upgrade_does_not_retry_negative_or_unsupported_failed_words():
+    for word,source in [('望远镜','我不喜欢望远镜'),('瞬间移动','我会瞬间移动')]:
+        old=dict(personas=[],generationCandidates=[],generationTerms=[dict(term=word,source=source)],catalogGenerationVersion='older')
+        assert not module.catalog_upgrade_can_retry_props(old,source)

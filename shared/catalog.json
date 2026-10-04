@@ -3564,6 +3564,826 @@
         "讨厌砚台",
         "不擅长砚台"
       ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "mini-lighthouse",
+      "label": "灯塔模型",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "海岸",
+        "灯塔",
+        "灯塔模型"
+      ],
+      "excludeTerms": [
+        "不喜欢海岸",
+        "不会海岸",
+        "讨厌海岸",
+        "不擅长海岸",
+        "不喜欢灯塔",
+        "不会灯塔",
+        "讨厌灯塔",
+        "不擅长灯塔",
+        "不喜欢灯塔模型",
+        "不会灯塔模型",
+        "讨厌灯塔模型",
+        "不擅长灯塔模型"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "crochet-hook",
+      "label": "钩针",
+      "color": "#77C8BD",
+      "evidenceTerms": [
+        "钩针编织",
+        "crochet",
+        "钩针"
+      ],
+      "excludeTerms": [
+        "不喜欢钩针编织",
+        "不会钩针编织",
+        "讨厌钩针编织",
+        "不擅长钩针编织",
+        "不喜欢crochet",
+        "不会crochet",
+        "讨厌crochet",
+        "不擅长crochet",
+        "不喜欢钩针",
+        "不会钩针",
+        "讨厌钩针",
+        "不擅长钩针"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "warehouse-pallet",
+      "label": "仓储托盘",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "仓管",
+        "物流仓储",
+        "仓储托盘"
+      ],
+      "excludeTerms": [
+        "不喜欢仓管",
+        "不会仓管",
+        "讨厌仓管",
+        "不擅长仓管",
+        "不喜欢物流仓储",
+        "不会物流仓储",
+        "讨厌物流仓储",
+        "不擅长物流仓储",
+        "不喜欢仓储托盘",
+        "不会仓储托盘",
+        "讨厌仓储托盘",
+        "不擅长仓储托盘"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "satellite-dish",
+      "label": "卫星碟",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "卫星通信",
+        "航天通信",
+        "卫星碟"
+      ],
+      "excludeTerms": [
+        "不喜欢卫星通信",
+        "不会卫星通信",
+        "讨厌卫星通信",
+        "不擅长卫星通信",
+        "不喜欢航天通信",
+        "不会航天通信",
+        "讨厌航天通信",
+        "不擅长航天通信",
+        "不喜欢卫星碟",
+        "不会卫星碟",
+        "讨厌卫星碟",
+        "不擅长卫星碟"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "hot-water-bag",
+      "label": "热水袋",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "保暖",
+        "热水袋"
+      ],
+      "excludeTerms": [
+        "不喜欢保暖",
+        "不会保暖",
+        "讨厌保暖",
+        "不擅长保暖",
+        "不喜欢热水袋",
+        "不会热水袋",
+        "讨厌热水袋",
+        "不擅长热水袋"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "dog-leash",
+      "label": "牵狗绳",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "遛狗",
+        "宠物散步",
+        "牵狗绳"
+      ],
+      "excludeTerms": [
+        "不喜欢遛狗",
+        "不会遛狗",
+        "讨厌遛狗",
+        "不擅长遛狗",
+        "不喜欢宠物散步",
+        "不会宠物散步",
+        "讨厌宠物散步",
+        "不擅长宠物散步",
+        "不喜欢牵狗绳",
+        "不会牵狗绳",
+        "讨厌牵狗绳",
+        "不擅长牵狗绳"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "bubble-wand",
+      "label": "泡泡棒",
+      "color": "#77C8BD",
+      "evidenceTerms": [
+        "吹泡泡",
+        "泡泡",
+        "泡泡棒"
+      ],
+      "excludeTerms": [
+        "不喜欢吹泡泡",
+        "不会吹泡泡",
+        "讨厌吹泡泡",
+        "不擅长吹泡泡",
+        "不喜欢泡泡",
+        "不会泡泡",
+        "讨厌泡泡",
+        "不擅长泡泡",
+        "不喜欢泡泡棒",
+        "不会泡泡棒",
+        "讨厌泡泡棒",
+        "不擅长泡泡棒"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "hologram-dice",
+      "label": "全息骰子",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "骰子",
+        "全息",
+        "桌游",
+        "全息骰子"
+      ],
+      "excludeTerms": [
+        "不喜欢骰子",
+        "不会骰子",
+        "讨厌骰子",
+        "不擅长骰子",
+        "不喜欢全息",
+        "不会全息",
+        "讨厌全息",
+        "不擅长全息",
+        "不喜欢桌游",
+        "不会桌游",
+        "讨厌桌游",
+        "不擅长桌游",
+        "不喜欢全息骰子",
+        "不会全息骰子",
+        "讨厌全息骰子",
+        "不擅长全息骰子"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "travel-neck-pillow",
+      "label": "旅行颈枕",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "长途旅行",
+        "颈枕",
+        "旅行颈枕"
+      ],
+      "excludeTerms": [
+        "不喜欢长途旅行",
+        "不会长途旅行",
+        "讨厌长途旅行",
+        "不擅长长途旅行",
+        "不喜欢颈枕",
+        "不会颈枕",
+        "讨厌颈枕",
+        "不擅长颈枕",
+        "不喜欢旅行颈枕",
+        "不会旅行颈枕",
+        "讨厌旅行颈枕",
+        "不擅长旅行颈枕"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "yarn-ball",
+      "label": "毛线团",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "钩织",
+        "毛线",
+        "毛线团"
+      ],
+      "excludeTerms": [
+        "不喜欢钩织",
+        "不会钩织",
+        "讨厌钩织",
+        "不擅长钩织",
+        "不喜欢毛线",
+        "不会毛线",
+        "讨厌毛线",
+        "不擅长毛线",
+        "不喜欢毛线团",
+        "不会毛线团",
+        "讨厌毛线团",
+        "不擅长毛线团"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "knitting-needles",
+      "label": "编织针",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "毛线编织",
+        "knitting",
+        "编织针"
+      ],
+      "excludeTerms": [
+        "不喜欢毛线编织",
+        "不会毛线编织",
+        "讨厌毛线编织",
+        "不擅长毛线编织",
+        "不喜欢knitting",
+        "不会knitting",
+        "讨厌knitting",
+        "不擅长knitting",
+        "不喜欢编织针",
+        "不会编织针",
+        "讨厌编织针",
+        "不擅长编织针"
+      ]
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "sewing-machine",
+      "label": "缝纫机",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "缝纫",
+        "裁缝",
+        "缝纫机"
+      ],
+      "excludeTerms": [
+        "不喜欢缝纫",
+        "不会缝纫",
+        "讨厌缝纫",
+        "不擅长缝纫",
+        "不喜欢裁缝",
+        "不会裁缝",
+        "讨厌裁缝",
+        "不擅长裁缝",
+        "不喜欢缝纫机",
+        "不会缝纫机",
+        "讨厌缝纫机",
+        "不擅长缝纫机"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "embroidery-hoop",
+      "label": "刺绣绷框",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "刺绣",
+        "embroidery",
+        "刺绣绷框"
+      ],
+      "excludeTerms": [
+        "不喜欢刺绣",
+        "不会刺绣",
+        "讨厌刺绣",
+        "不擅长刺绣",
+        "不喜欢embroidery",
+        "不会embroidery",
+        "讨厌embroidery",
+        "不擅长embroidery",
+        "不喜欢刺绣绷框",
+        "不会刺绣绷框",
+        "讨厌刺绣绷框",
+        "不擅长刺绣绷框"
+      ]
+    },
+    {
+      "templateId": "Tether",
+      "visualId": "fabric-scissors",
+      "label": "裁布剪",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "裁剪",
+        "做衣服",
+        "裁布剪",
+        "剪刀"
+      ],
+      "excludeTerms": [
+        "不喜欢裁剪",
+        "不会裁剪",
+        "讨厌裁剪",
+        "不擅长裁剪",
+        "不喜欢做衣服",
+        "不会做衣服",
+        "讨厌做衣服",
+        "不擅长做衣服",
+        "不喜欢裁布剪",
+        "不会裁布剪",
+        "讨厌裁布剪",
+        "不擅长裁布剪",
+        "不喜欢剪刀",
+        "不会剪刀",
+        "讨厌剪刀",
+        "不擅长剪刀"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "origami-crane",
+      "label": "折纸鹤",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "折纸",
+        "origami",
+        "折纸鹤",
+        "纸鹤"
+      ],
+      "excludeTerms": [
+        "不喜欢折纸",
+        "不会折纸",
+        "讨厌折纸",
+        "不擅长折纸",
+        "不喜欢origami",
+        "不会origami",
+        "讨厌origami",
+        "不擅长origami",
+        "不喜欢折纸鹤",
+        "不会折纸鹤",
+        "讨厌折纸鹤",
+        "不擅长折纸鹤",
+        "不喜欢纸鹤",
+        "不会纸鹤",
+        "讨厌纸鹤",
+        "不擅长纸鹤"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "paper-cutter",
+      "label": "滚轮裁纸台",
+      "color": "#77C8BD",
+      "evidenceTerms": [
+        "纸艺",
+        "裁纸",
+        "滚轮裁纸台"
+      ],
+      "excludeTerms": [
+        "不喜欢纸艺",
+        "不会纸艺",
+        "讨厌纸艺",
+        "不擅长纸艺",
+        "不喜欢裁纸",
+        "不会裁纸",
+        "讨厌裁纸",
+        "不擅长裁纸",
+        "不喜欢滚轮裁纸台",
+        "不会滚轮裁纸台",
+        "讨厌滚轮裁纸台",
+        "不擅长滚轮裁纸台"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "stamp-seal",
+      "label": "篆刻印章",
+      "color": "#90745A",
+      "evidenceTerms": [
+        "篆刻",
+        "印章",
+        "篆刻印章"
+      ],
+      "excludeTerms": [
+        "不喜欢篆刻",
+        "不会篆刻",
+        "讨厌篆刻",
+        "不擅长篆刻",
+        "不喜欢印章",
+        "不会印章",
+        "讨厌印章",
+        "不擅长印章",
+        "不喜欢篆刻印章",
+        "不会篆刻印章",
+        "讨厌篆刻印章",
+        "不擅长篆刻印章"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "felting-pad",
+      "label": "羊毛毡针垫",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "羊毛毡",
+        "戳戳乐",
+        "羊毛毡针垫"
+      ],
+      "excludeTerms": [
+        "不喜欢羊毛毡",
+        "不会羊毛毡",
+        "讨厌羊毛毡",
+        "不擅长羊毛毡",
+        "不喜欢戳戳乐",
+        "不会戳戳乐",
+        "讨厌戳戳乐",
+        "不擅长戳戳乐",
+        "不喜欢羊毛毡针垫",
+        "不会羊毛毡针垫",
+        "讨厌羊毛毡针垫",
+        "不擅长羊毛毡针垫"
+      ]
+    },
+    {
+      "templateId": "Barricade",
+      "visualId": "pottery-wheel",
+      "label": "陶艺转盘",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "陶艺",
+        "拉坯",
+        "陶艺转盘"
+      ],
+      "excludeTerms": [
+        "不喜欢陶艺",
+        "不会陶艺",
+        "讨厌陶艺",
+        "不擅长陶艺",
+        "不喜欢拉坯",
+        "不会拉坯",
+        "讨厌拉坯",
+        "不擅长拉坯",
+        "不喜欢陶艺转盘",
+        "不会陶艺转盘",
+        "讨厌陶艺转盘",
+        "不擅长陶艺转盘"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "clay-vase",
+      "label": "手作陶瓶",
+      "color": "#90745A",
+      "evidenceTerms": [
+        "陶瓷",
+        "陶艺",
+        "手作陶瓶",
+        "陶瓶"
+      ],
+      "excludeTerms": [
+        "不喜欢陶瓷",
+        "不会陶瓷",
+        "讨厌陶瓷",
+        "不擅长陶瓷",
+        "不喜欢陶艺",
+        "不会陶艺",
+        "讨厌陶艺",
+        "不擅长陶艺",
+        "不喜欢手作陶瓶",
+        "不会手作陶瓶",
+        "讨厌手作陶瓶",
+        "不擅长手作陶瓶",
+        "不喜欢陶瓶",
+        "不会陶瓶",
+        "讨厌陶瓶",
+        "不擅长陶瓶"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "telescope",
+      "label": "天文望远镜",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "天文",
+        "观星",
+        "astronomy",
+        "天文望远镜",
+        "望远镜",
+        "星空"
+      ],
+      "excludeTerms": [
+        "不喜欢天文",
+        "不会天文",
+        "讨厌天文",
+        "不擅长天文",
+        "不喜欢观星",
+        "不会观星",
+        "讨厌观星",
+        "不擅长观星",
+        "不喜欢astronomy",
+        "不会astronomy",
+        "讨厌astronomy",
+        "不擅长astronomy",
+        "不喜欢天文望远镜",
+        "不会天文望远镜",
+        "讨厌天文望远镜",
+        "不擅长天文望远镜",
+        "不喜欢望远镜",
+        "不会望远镜",
+        "讨厌望远镜",
+        "不擅长望远镜",
+        "不喜欢星空",
+        "不会星空",
+        "讨厌星空",
+        "不擅长星空"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "oscilloscope",
+      "label": "示波器",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "电子实验",
+        "示波器"
+      ],
+      "excludeTerms": [
+        "不喜欢电子实验",
+        "不会电子实验",
+        "讨厌电子实验",
+        "不擅长电子实验",
+        "不喜欢示波器",
+        "不会示波器",
+        "讨厌示波器",
+        "不擅长示波器"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "caliper",
+      "label": "游标卡尺",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "机械工程",
+        "卡尺",
+        "游标卡尺"
+      ],
+      "excludeTerms": [
+        "不喜欢机械工程",
+        "不会机械工程",
+        "讨厌机械工程",
+        "不擅长机械工程",
+        "不喜欢卡尺",
+        "不会卡尺",
+        "讨厌卡尺",
+        "不擅长卡尺",
+        "不喜欢游标卡尺",
+        "不会游标卡尺",
+        "讨厌游标卡尺",
+        "不擅长游标卡尺"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "beaker",
+      "label": "烧杯",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "化学",
+        "烧杯",
+        "实验"
+      ],
+      "excludeTerms": [
+        "不喜欢化学",
+        "不会化学",
+        "讨厌化学",
+        "不擅长化学",
+        "不喜欢烧杯",
+        "不会烧杯",
+        "讨厌烧杯",
+        "不擅长烧杯",
+        "不喜欢实验",
+        "不会实验",
+        "讨厌实验",
+        "不擅长实验"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "test-tube-rack",
+      "label": "试管架",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "实验室",
+        "试管",
+        "试管架"
+      ],
+      "excludeTerms": [
+        "不喜欢实验室",
+        "不会实验室",
+        "讨厌实验室",
+        "不擅长实验室",
+        "不喜欢试管",
+        "不会试管",
+        "讨厌试管",
+        "不擅长试管",
+        "不喜欢试管架",
+        "不会试管架",
+        "讨厌试管架",
+        "不擅长试管架"
+      ]
+    },
+    {
+      "templateId": "Deployable",
+      "visualId": "pipette",
+      "label": "移液枪",
+      "color": "#FFF9EF",
+      "evidenceTerms": [
+        "分子生物学",
+        "移液",
+        "移液枪"
+      ],
+      "excludeTerms": [
+        "不喜欢分子生物学",
+        "不会分子生物学",
+        "讨厌分子生物学",
+        "不擅长分子生物学",
+        "不喜欢移液",
+        "不会移液",
+        "讨厌移液",
+        "不擅长移液",
+        "不喜欢移液枪",
+        "不会移液枪",
+        "讨厌移液枪",
+        "不擅长移液枪"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "prism-block",
+      "label": "三棱镜",
+      "color": "#86ADCB",
+      "evidenceTerms": [
+        "光学",
+        "物理实验",
+        "三棱镜"
+      ],
+      "excludeTerms": [
+        "不喜欢光学",
+        "不会光学",
+        "讨厌光学",
+        "不擅长光学",
+        "不喜欢物理实验",
+        "不会物理实验",
+        "讨厌物理实验",
+        "不擅长物理实验",
+        "不喜欢三棱镜",
+        "不会三棱镜",
+        "讨厌三棱镜",
+        "不擅长三棱镜"
+      ]
+    },
+    {
+      "templateId": "SpecialAbility",
+      "visualId": "molecular-model",
+      "label": "分子球棍模型",
+      "color": "#263248",
+      "evidenceTerms": [
+        "有机化学",
+        "分子模型",
+        "分子球棍模型"
+      ],
+      "excludeTerms": [
+        "不喜欢有机化学",
+        "不会有机化学",
+        "讨厌有机化学",
+        "不擅长有机化学",
+        "不喜欢分子模型",
+        "不会分子模型",
+        "讨厌分子模型",
+        "不擅长分子模型",
+        "不喜欢分子球棍模型",
+        "不会分子球棍模型",
+        "讨厌分子球棍模型",
+        "不擅长分子球棍模型"
+      ]
+    },
+    {
+      "templateId": "Cushion",
+      "visualId": "dna-helix",
+      "label": "DNA双螺旋",
+      "color": "#F49A6B",
+      "evidenceTerms": [
+        "遗传学",
+        "DNA",
+        "DNA双螺旋"
+      ],
+      "excludeTerms": [
+        "不喜欢遗传学",
+        "不会遗传学",
+        "讨厌遗传学",
+        "不擅长遗传学",
+        "不喜欢DNA",
+        "不会DNA",
+        "讨厌DNA",
+        "不擅长DNA",
+        "不喜欢DNA双螺旋",
+        "不会DNA双螺旋",
+        "讨厌DNA双螺旋",
+        "不擅长DNA双螺旋"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "compass-divider",
+      "label": "圆规",
+      "color": "#B7C5CE",
+      "evidenceTerms": [
+        "几何作图",
+        "圆规"
+      ],
+      "excludeTerms": [
+        "不喜欢几何作图",
+        "不会几何作图",
+        "讨厌几何作图",
+        "不擅长几何作图",
+        "不喜欢圆规",
+        "不会圆规",
+        "讨厌圆规",
+        "不擅长圆规"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "abacus",
+      "label": "算盘",
+      "color": "#B67B4C",
+      "evidenceTerms": [
+        "珠算",
+        "传统数学",
+        "算盘"
+      ],
+      "excludeTerms": [
+        "不喜欢珠算",
+        "不会珠算",
+        "讨厌珠算",
+        "不擅长珠算",
+        "不喜欢传统数学",
+        "不会传统数学",
+        "讨厌传统数学",
+        "不擅长传统数学",
+        "不喜欢算盘",
+        "不会算盘",
+        "讨厌算盘",
+        "不擅长算盘"
+      ]
+    },
+    {
+      "templateId": "Utility",
+      "visualId": "calculator",
+      "label": "科学计算器",
+      "color": "#263248",
+      "evidenceTerms": [
+        "数学",
+        "计算器",
+        "科学计算器"
+      ],
+      "excludeTerms": [
+        "不喜欢数学",
+        "不会数学",
+        "讨厌数学",
+        "不擅长数学",
+        "不喜欢计算器",
+        "不会计算器",
+        "讨厌计算器",
+        "不擅长计算器",
+        "不喜欢科学计算器",
+        "不会科学计算器",
+        "讨厌科学计算器",
+        "不擅长科学计算器"
+      ]
     }
   ]
 }

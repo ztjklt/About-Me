@@ -70,6 +70,7 @@ namespace AboutMe
         {var d=b-a;return Vector3.Distance(p,a+d*Mathf.Clamp01(Vector3.Dot(p-a,d)/Mathf.Max(.001f,d.sqrMagnitude)));}
         void ConnectGrab(Player p,bool item)
         {
+            if(!item&&AcceptHotPotato(p))return;
             var target=Players.Values.Where(x=>x!=p&&!x.eliminated&&Time>=x.grabImmuneUntil&&Time>=x.bodyProtectedUntil&&x.bodyMode!=BodyMode.GettingUp&&!IsGrabbed(x)&&x.grabbing==""&&(!item||x.equipped!="")&&CanReach(p,BodyWorld==null?x.position:BodyWorld.Contact(x,p.position+Vector3.up*.25f),Rules.grabContactDistance))
                 .OrderBy(x=>(x.position-p.position).sqrMagnitude).ThenBy(x=>x.profile.playerId,StringComparer.Ordinal).FirstOrDefault();
             if(target==null)

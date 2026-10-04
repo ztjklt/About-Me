@@ -9,7 +9,7 @@ namespace AboutMe.Editor
     public static class OriginalPersonaModelTools
     {
         const string Folder="Assets/AboutMe/Resources/PersonaProps";
-        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
+        public static void BuildDeliverables(){Build();PartyMechanicTests.Run();PartyMovementTests.Run();PartyFieldTests.Run();PartyGuardTests.Run();PartyLootTests.Run();NpcPracticeTests.Run();PersonalitySkinTests.BuildDeliverables();}
         public static void Build()
         {
             int count=0;var fingerprints=new System.Collections.Generic.HashSet<string>();
@@ -69,7 +69,7 @@ namespace AboutMe.Editor
             try
             {
                 camera.Render();RenderTexture.active=render;var texture=new Texture2D(2000,rows*220,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,2000,rows*220),0,0);texture.Apply();
-                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-130-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
+                string output=Path.GetFullPath("../artifacts/persona-original-models");Directory.CreateDirectory(output);File.WriteAllBytes(output+"/priority-162-review.png",texture.EncodeToPNG());UnityEngine.Object.DestroyImmediate(texture);
             }
             finally{camera.targetTexture=null;RenderTexture.active=old;UnityEngine.Object.DestroyImmediate(render);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(light.gameObject);UnityEngine.Object.DestroyImmediate(group);}
         }

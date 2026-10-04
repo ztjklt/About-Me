@@ -61,6 +61,7 @@ namespace AboutMe
             var d=PartyMechanicRegistry.Find(e.mechanicId);if(d==null)return;
             transform.position=e.position;
             if(d.family=="movement"){PresentMovement(e,d,now,camera,state);return;}
+            if(d.family=="loot"){PresentLoot(e,d,now,camera,state);return;}
             if(d.family=="guard"){PresentGuard(e,d,now,camera);return;}
             if(d.family=="field"){PresentField(e,d,now,camera);return;}
             bool exploding=e.stage=="burst",isRing=e.stage=="ring";

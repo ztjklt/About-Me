@@ -231,7 +231,7 @@ namespace AboutMe
                 Players.Remove(id); Items.RemoveAll(x => x.ownerId == id);
                 if (Host == id) Host = Players.Keys.FirstOrDefault();
             }
-            else { p.connected = false; p.input = new Command(); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
+            else { p.connected = false; p.input = new Command(); CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseAllGrabs(p); CancelAction(p); }
         }
         public int Remaining(string id) => Items.Count(x => x.ownerId == id && x.state != ItemState.Consumed);
         public PersonaInstance Item(string id) => Items.Find(x => x.id == id);
@@ -254,9 +254,9 @@ namespace AboutMe
             if (!Active || p.eliminated) return;
             if (input.action == "escape") input.escapeHeld=true;
             if (input.action == "escape_end") { input.escapeHeld=false; p.escapeStartedAt=-1; }
-            if (input.action == "cancel") { CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
+            if (input.action == "cancel") { CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1; ResetEscape(p); SetAction(p,"release"); return; }
             if (Time < p.staggerUntil || BodyLocked(p)) return;
-            if(GuardBlocks(p,input.action)||MovementBlocks(p,input.action))return;
+            if(LootBlocks(p,input.action)||GuardBlocks(p,input.action)||MovementBlocks(p,input.action))return;
             switch (input.action)
             {
                 case "jump":
@@ -269,8 +269,8 @@ namespace AboutMe
                     Interrupt(p);break;
                 case "use_item": UseItem(p); break;
                 case "equip": Equip(p, input.itemId); break;
-                case "grab": CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, false); break;
-                case "grab_item": CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, true); break;
+                case "grab": CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, false); break;
+                case "grab_item": CancelSelfLoot(p); CancelSelfGuards(p); CancelSelfMovement(p); Grab(p, true); break;
                 case "interact": Interact(p,input.itemId); break;
                 case "drop": Interrupt(p); ReleaseGrab(p); break;
             }
@@ -286,7 +286,7 @@ namespace AboutMe
         {
             var target = Item(id);
             if (target == null || target.ownerId != p.profile.playerId || target.state != ItemState.Inventory || Time < p.switchUntil) return;
-            CancelSelfGuards(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
+            CancelSelfLoot(p); CancelSelfGuards(p); Interrupt(p); ReleaseGrab(p); CancelAction(p); p.chargingSince = -1;
             SetAction(p,"equip");
             var current = Item(p.equipped); if (current != null) current.state = ItemState.Inventory;
             p.equipped = target.id; target.state = ItemState.Equipped; p.switchUntil = Time + Rules.switchDuration;
@@ -349,7 +349,7 @@ namespace AboutMe
                 if (!stunned) GuardYaw(p,dt);
                 PartyMotor(p,ref desired,dt);
                 if(!stunned)FieldMotor(p,ref desired,dt);else {p.fieldStatus="";p.wasWet=false;p.wetMomentum=Vector3.zero;}
-                if(!stunned)GuardMotor(p,ref desired,dt);
+                if(!stunned)GuardMotor(p,ref desired,dt);if(!stunned)LootMotor(p,ref desired);
                 if(p.position.y< -8)BodyRespawn(p,Players.Keys.ToList().IndexOf(p.profile.playerId));
                 if(!(BodyWorld!=null&&BodyLocked(p)))
                 {
@@ -431,6 +431,7 @@ namespace AboutMe
                 foreach(var p in Players.Values.Where(x=>x!=thrower&&!x.eliminated).ToArray())
                 if(Vector3.Distance(p.position,prop.position)<1.5f){Hit(p,thrower,12,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
             }
+            TickLootCargo();
         }
         void ReleaseAllGrabs(Player target)
         {
@@ -447,6 +448,7 @@ namespace AboutMe
             var carriedProp=Props.Find(x=>x.id==p.publicProp);
             if(carriedProp!=null)
             {
+                if(OfferHotPotato(p,carriedProp))return;
                 if(heavy){carriedProp.holder="";carriedProp.thrower=p.profile.playerId;carriedProp.guardTouches.Clear();carriedProp.pushScale=1;carriedProp.velocity=Forward(p)*12+Vector3.up*3;p.publicProp="";}
                 else foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated&&Vector3.Distance(x.position,p.position)<2.3f).ToArray())Hit(target,p,12,2,false);
                 return;
@@ -527,7 +529,7 @@ namespace AboutMe
             {if(BodyWorld!=null)BodyWorld.Impact(target,direction*(.7f*horizontalScale),point,false);else target.impulse+=direction*(.7f*horizontalScale);return;}
             if(heavy&&target.cushionUntil>Time)
             {target.cushionUntil=0;Hit(attacker,target,0,6,false);Say(target.profile.nickname+" 用抱枕弹开了 "+attacker.profile.nickname+"！");return;}
-            CancelSelfMovement(target);Interrupt(target);ReleaseAllGrabs(target);CancelAction(target);target.chargingSince=-1;
+            CancelSelfLoot(target);CancelSelfMovement(target);Interrupt(target);ReleaseAllGrabs(target);CancelAction(target);target.chargingSince=-1;
             target.stability=Mathf.Max(0,target.stability-damage);target.lastHit=Time;
             bool depleted=target.stability<=0;bool falls=knockdown||depleted;
             var kick=impulseOverride??(direction*(falls?7:heavy?11.5f:5.8f)+(falls?Vector3.up*3:Vector3.zero));
@@ -758,7 +760,7 @@ namespace AboutMe
                 ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
                 inventory=Items.Where(x=>x.ownerId==recipient&&(x.state==ItemState.Inventory||x.state==ItemState.Equipped)).Select(x=>x.PublicCopy()).ToArray(),
                 revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.PublicCopy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PublicPersonaInstance>(),
-                effects=Effects.ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};
+                effects=Effects.Where(e=>LootVisible(e,recipient)).ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};
         }
     }
 }
