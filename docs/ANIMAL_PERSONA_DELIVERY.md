@@ -41,8 +41,22 @@
 5. API 完整测试 470 项通过，包含动物偏好、英文边界、否定、自我介绍多动物和共享目录一致性。测试日志 `api-tests-final.log`。
 6. 使用已配置真实文本模型，经本机 HTTP 输入“我喜欢猫、狗、兔子和仓鼠。”，2.59 秒返回四个不同动物资产，未替换为夹具或样例。去敏记录 `artifacts/animal-persona/real-provider/result.json`，使用隔离 QA 账号及数据库。
 
-Mac / Web / 服务打包身份及最终验证结果将在本文件构建交付节记录。Web 编译不代表浏览器运行验收；本轮未做微信真机、移动设备、公网或真人手感验收。
+完整 Mac / Web / 服务身份、源快照与实际匹配进程已核对，见下节。Web 编译不代表浏览器运行验收；本轮未做微信真机、移动设备、公网或真人手感验收。
 
 ## 构建交付与后续责任
 
-待完成同源 Web 构建及候选包身份核对后交付。产品负责人仅需验收成品与此摘要，并指定正式整合责任人；新默认入口、README、原 R5 数据继承及发布身份一起切换，禁止单独替换新客户端与旧权威服务器混用。
+候选版本 `playtest-animals-r6` 已完成：
+
+- Mac Release：`builds/playtest-animals-r6-mac/About Me.app`，构建于 `2026-10-05T11:04:02.455388+00:00`。
+- Web Release：`builds/playtest-animals-r6-web/`，构建于 `2026-10-05T11:04:38.131723+00:00`，约 110 MB 未压缩，未做浏览器或手机加载与内存验收。
+- 配套 API：`builds/playtest-animals-r6-service/`，隔离端口 API 8093 / 权威 7793，协议 5。API 目录 277、机制 96、六能力、16 MBTI、10 个 AI 皮肤及原设置和语言功能保留。
+- 本任务候选入口：`scripts/start-playtest-animals-r6.command`；仅正式整合后切换默认 `scripts/start-latest.command`。启动器逐文件核对客户端 / Web / API，并验证端口实际 PID、路径和服务快照，拒绝复用未知服务。
+- 构建源码提交：`55735431531246ba48263c0b3e43e348a748d546`。生成场景保持不变，Mac / Web 成对构建期间 4,338 个 Assets / Packages / ProjectSettings 文件哈希相同，证据 `paired-build-check.txt`。
+- 完整源码快照：`a31559d66b5e5dc156923f5a3bb0c41c5c3af2ae0845800dba19a4dc800275d8`。完整文件清单和构建哈希位于 `builds/playtest-animals-r6-mac/release-manifest.json`；源码冻结副本 `artifacts/animal-persona/source-freeze/`。唯一非源码本机辅助项为未提交 `.venv` 软链接，指向已有 API 环境，无密钥复制。
+- 实际启动候选 API 和权威服务后，逐文件、API 发布身份、277 件目录、进程 PID 与路径均通过，记录 `artifacts/animal-persona/service-check.txt`。验收进程已清理，没有遗留测试服务。
+
+复现构建：在上述工作区团结 batchmode 分别执行 `AboutMe.Editor.ProjectTools.BuildMac` / `BuildWeb`，环境变量 `ABOUTME_EXISTING_SCENES=1`、`ABOUTME_RELEASE_BUILD=1`、`ABOUTME_MAC_OUTPUT` / `ABOUTME_WEB_OUTPUT` 指向本候选目录。保持现有入口场景以保证两平台源文件一致。
+
+产品负责人只需验收成品与此摘要，并指定正式整合责任人。正式整合需将完整 Mac / Web / 配套服务及新脚本一起发布，再同时切换默认入口、README、交付身份，并继承原 R5 数据；不能替换其他角色未提交工作，也不能让协议 5 客户端与协议 4 权威混连。
+
+未验收：真人手感、专门的双客户端动物命中快照、浏览器运行、微信真机、移动性能、公网与骨骼奔跑动画。
