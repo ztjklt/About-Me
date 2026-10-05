@@ -1,5 +1,7 @@
 # 小动物 Persona 与投掷后掉落交付
 
+本记录描述 R6 历史候选；后续四种实际骨骼走动已在 [R7 交付](ANIMAL_PERSONA_WALK_DELIVERY.md) 完成。
+
 本轮小动物模型、选择界面、AI 映射和投掷玩法已完成。交付为完整 R5 基线上的 R6 候选构建；是否替换正式默认试玩入口由产品负责人验收和指定整合。根目录的默认 R5 入口未改动。
 
 工作区 `/Users/jitian/.codex/worktrees/animal-persona/About Me`，分支 `codex/animal-persona`，基线完整 R5 `be0350ace0a582973120ad8429d20c8838c15a28`。仅修改本任务工作区，未复制或覆盖根目录和其他角色未提交改动。
