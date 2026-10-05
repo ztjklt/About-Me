@@ -2,7 +2,7 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-persona20-r8`：Persona 上限20件，性格／表情／MBTI与实体道具共享数量；保留R7四种动物骨骼行走、277道具、96机制和此前设置／衣橱。Mac、Web、API同源发布，配套8095／7795；详见 [20件容量交付](docs/PERSONA_LIMIT_20_DELIVERY.md)。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-combined-r9`：Persona上限20件、四种动物骨骼行走，以及可调1–6个人机／默认推荐3个／稍慢反应。保留277道具、96机制及此前设置／衣橱／双语。Mac、Web、API同源发布，8093／7793；详见 [统一整合交付](docs/COMBINED_R9_DELIVERY.md)。
 
 ## 小动物 R6 候选交付
 

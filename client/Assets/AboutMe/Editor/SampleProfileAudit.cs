@@ -20,7 +20,7 @@ namespace AboutMe.Editor
             var solo=new LocalMatchSession(sample);
             try
             {
-                if(solo.Match.Players.Count!=2||solo.Match.Items.Count!=16||solo.Current.inventory.Length!=8)
+                if(solo.Match.Players.Count!=LocalMatchSession.RecommendedNpcCount+1||solo.Match.Items.Count!=8*(LocalMatchSession.RecommendedNpcCount+1)||solo.Current.inventory.Length!=8)
                     throw new Exception("SAMPLE_PROFILE_FAILED local match inventory");
             }
             finally { solo.Close(); }

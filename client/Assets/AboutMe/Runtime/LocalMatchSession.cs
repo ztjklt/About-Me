@@ -16,28 +16,45 @@ namespace AboutMe
     {
         public readonly Match Match;
         public readonly string PlayerId;
-        readonly NpcController npc;
-        float nextThink;
+        public const int RecommendedNpcCount=3, MaxNpcCount=6;
+        public const float NpcThinkInterval=.18f;
+        public readonly int NpcCount;
+        readonly List<NpcController> npcs=new List<NpcController>();
+        readonly float[] nextThink;
         bool closed;
         public Snapshot Current {get {if(closed)return null;var state=Match.View(PlayerId);state.practiceOpening=Match.Active?Mathf.Max(0,4-state.time):0;return state;}}
-        public LocalMatchSession(Profile player, MatchRules rules=null)
+        public LocalMatchSession(Profile player, MatchRules rules=null, int npcCount=RecommendedNpcCount)
         {
             // Never mutate the cached persistent profile during a match.
             var copy=JsonUtility.FromJson<Profile>(JsonUtility.ToJson(player));PlayerId=copy.playerId;
-            Match=new Match("SOLO",rules??new MatchRules());if(Application.isPlaying)Match.EnableBodyPhysics();Match.Add(copy);
-            var opponent=GameNetwork.SampleProfile("npc-"+Guid.NewGuid().ToString("N"),"陪练 NPC");
-            opponent.appearance=AppearanceData.Demo(1);
-            var catalog=opponent.personas;
-            opponent.personas=Enumerable.Range(0,copy.personas.Length).Select(i=>{
-                var asset=catalog[i%catalog.Length].Copy();asset.assetId="npc-asset-"+i;return asset;
-            }).ToArray();
-            Match.Add(opponent);npc=new NpcController(opponent.playerId,true);
+            NpcCount=Mathf.Clamp(npcCount,1,MaxNpcCount);nextThink=new float[NpcCount];
+            // Only offline practice may have six opponents plus the human. Online rooms stay at six total.
+            var localRules=rules==null?new MatchRules():JsonUtility.FromJson<MatchRules>(JsonUtility.ToJson(rules));
+            localRules.maxPlayers=NpcCount+1;
+            Match=new Match("SOLO",localRules);if(Application.isPlaying)Match.EnableBodyPhysics();
+            if(!Match.Add(copy))throw new ArgumentException("Solo player needs at least one Persona.");
+            for(int n=0;n<NpcCount;n++)
+            {
+                var opponent=GameNetwork.SampleProfile("npc-"+Guid.NewGuid().ToString("N"),"陪练 NPC "+(n+1));
+                opponent.appearance=AppearanceData.Demo(n+1);
+                var catalog=opponent.personas;
+                opponent.personas=Enumerable.Range(0,copy.personas.Length).Select(i=>{
+                    var asset=catalog[i%catalog.Length].Copy();asset.assetId=opponent.playerId+"-asset-"+i;return asset;
+                }).ToArray();
+                if(!Match.Add(opponent))throw new InvalidOperationException("Solo NPC could not join.");
+                npcs.Add(new NpcController(opponent.playerId,true));
+            }
             Match.Receive(PlayerId,new Command{sequence=0,action="start"});
         }
         public void Tick(float dt)
         {
             if(closed||Match.Phase==MatchPhase.Finished)return;
-            if(Match.Active&&Match.Time>=nextThink){nextThink=Match.Time+.1f;Match.Receive(npc.Id,npc.Decide(Match.View(npc.Id)));}
+            if(Match.Active)for(int i=0;i<npcs.Count;i++)
+            {
+                if(Match.Players[npcs[i].Id].eliminated||Match.Time<nextThink[i])continue;
+                nextThink[i]=Match.Time+NpcThinkInterval;
+                Match.Receive(npcs[i].Id,npcs[i].Decide(Match.View(npcs[i].Id)));
+            }
             Match.Tick(dt);
         }
         public void Submit(Command command){if(!closed)Match.Receive(PlayerId,command);}
@@ -63,8 +80,8 @@ namespace AboutMe
             float now=state.simulationTime;
             var enemy=state.players.Where(p=>p.id!=Id&&!p.eliminated).OrderBy(p=>Vector3.Distance(p.position,me.position)).FirstOrDefault();
             if(enemy==null)return c;
-            if(trackedEnemy!=enemy.id){trackedEnemy=enemy.id;reactionUntil=now+.35f;}
-            if(me.grabbed){if(grabReactionAt<0)grabReactionAt=now+.35f;c.escapeHeld=now>=grabReactionAt;c.yaw=me.yaw;return c;}
+            if(trackedEnemy!=enemy.id){trackedEnemy=enemy.id;reactionUntil=now+(practice?.55f:.35f);}
+            if(me.grabbed){if(grabReactionAt<0)grabReactionAt=now+(practice?.55f:.35f);c.escapeHeld=now>=grabReactionAt;c.yaw=me.yaw;return c;}
             grabReactionAt=-1;
             c.yaw=me.yaw;
             bool danger=state.handAnimation>0&&now-state.handStartedAt<.65f&&Mathf.Abs(me.position.y-state.handPosition.y)<2&&FlatDistance(me.position,state.handPosition)<4;
@@ -95,8 +112,8 @@ namespace AboutMe
             {
                 attacks++;
                 if(me.grabbing!=""){c.action="cancel";nextAttack=now+.4f;nextGrab=now+2.5f;}
-                else if(attacks%5==0&&distance<1.25f&&now>=nextGrab){c.action="grab";nextAttack=now+1.2f;nextGrab=now+3.5f;}
-                else if(me.equippedVisual!=""||me.publicProp!="") {c.action="use_item";nextAttack=now+(practice?2.2f:1.1f);}
+                else if(attacks%5==0&&distance<1.25f&&now>=nextGrab){c.action="grab";nextAttack=now+(practice?1.4f:1.2f);nextGrab=now+(practice?4f:3.5f);}
+                else if(me.equippedVisual!=""||me.publicProp!="") {c.action="use_item";nextAttack=now+(practice?2.5f:1.1f);}
             }
             return c;
         }

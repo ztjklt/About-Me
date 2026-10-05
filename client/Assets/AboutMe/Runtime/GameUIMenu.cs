@@ -19,6 +19,23 @@ namespace AboutMe
         IntroductionDrafts drafts;
         Button soloStart,replay;
         Profile lastSoloProfile;
+        const string SoloNpcCountKey="soloNpcCount";
+        int soloNpcCount=LocalMatchSession.RecommendedNpcCount,lastSoloNpcCount;
+        readonly List<Button> soloNpcButtons=new List<Button>();
+        void SetSoloNpcCount(int count)
+        {
+            soloNpcCount=Mathf.Clamp(count,1,LocalMatchSession.MaxNpcCount);
+            PlayerPrefs.SetInt(SoloNpcCountKey,soloNpcCount);PlayerPrefs.Save();RefreshSoloNpcButtons();
+        }
+        void RefreshSoloNpcButtons()
+        {
+            for(int i=0;i<soloNpcButtons.Count;i++)
+            {
+                int count=i+1;var button=soloNpcButtons[i];
+                button.GetComponentInChildren<Text>().text=(count==soloNpcCount?"✓ ":"")+count+(count==3?" · 推荐":" 个");
+                button.interactable=count!=soloNpcCount;
+            }
+        }
         // QA can inspect the plain default doll without changing saved wardrobes or profiles.
         static bool SessionDefaultActor=>Environment.GetCommandLineArgs().Contains("--qa-default-actor")||Application.absoluteURL.Contains("qa-default-actor");
         float cameraSensitivity=1;
@@ -28,10 +45,17 @@ namespace AboutMe
         {
             cameraSensitivity=PlayerPrefs.GetFloat("cameraSensitivity",1);touchMode=PlayerPrefs.GetInt("touchMode",0);reduceMotion=PlayerPrefs.GetInt("reduceMotion",0)==1;
             RefreshSettingLabels();
+            soloNpcCount=Mathf.Clamp(PlayerPrefs.GetInt(SoloNpcCountKey,LocalMatchSession.RecommendedNpcCount),1,LocalMatchSession.MaxNpcCount);
             BuildStartMenuStage();
             var soloCard=MenuCard("单人游戏","OFFLINE PRACTICE");soloMenu=(RectTransform)soloCard.parent;
             soloSummary=ArtText(soloCard,"",40,170,900,135,24,UITheme.Ink,FontStyle.Bold);
-            ArtText(soloCard,"陪练 NPC · 离线可玩",40,320,600,48,22,UITheme.Muted);
+            ArtText(soloCard,"人机人数（不含你）· 推荐 3 个",40,320,900,48,22,UITheme.Muted);
+            for(int i=1;i<=LocalMatchSession.MaxNpcCount;i++)
+            {
+                int count=i;soloNpcButtons.Add(ArtButton(soloCard,count+" 个",40+(i-1)*150,382,140,58,()=>SetSoloNpcCount(count),count==3?UITheme.Mint:UITheme.Field,UITheme.Ink));
+            }
+            RefreshSoloNpcButtons();
+            ArtText(soloCard,"反应稍慢的陪练 · 离线可玩",40,448,900,30,18,UITheme.Muted);
             soloStart=ArtButton(soloCard,"当前角色开始",40,487,294,66,()=>StartSolo(false),UITheme.Mint,UITheme.Ink,"attack");
             ArtButton(soloCard,"练习道具（非 AI）",40,574,294,58,()=>StartSolo(true),UITheme.Yellow,UITheme.Ink);
             ArtButton(soloCard,"编辑自我介绍",356,574,242,58,()=>ShowPage(MenuPage.Presets),UITheme.Field,UITheme.Ink);
@@ -134,11 +158,11 @@ namespace AboutMe
                 if(practice&&profile!=null&&!net.Sample&&SavedTokenForApi()!="")
                 {lastSoloProfile.dsGirlUnlocked=profile.dsGirlUnlocked;lastSoloProfile.claudeGirlUnlocked=profile.claudeGirlUnlocked;lastSoloProfile.characterSkin=profile.characterSkin;}
                 lastSoloProfile.appearance=SessionDefaultActor?new AppearanceData():CurrentAppearance;lastInventory="";lastResultVisual="";lastEvent=0;
-                net.StartSolo(lastSoloProfile);RefreshTouchVisibility();
+                lastSoloNpcCount=soloNpcCount;net.StartSolo(lastSoloProfile,lastSoloNpcCount);RefreshTouchVisibility();
             }
             else {ShowPage(MenuPage.Presets);net.Status="请先生成 Persona，或使用练习道具。";}
         }
-        void ReplaySolo(){if(!net.IsSolo||lastSoloProfile==null)return;lastInventory="";lastResultVisual="";lastEvent=0;net.StartSolo(lastSoloProfile);}
+        void ReplaySolo(){if(!net.IsSolo||lastSoloProfile==null)return;lastInventory="";lastResultVisual="";lastEvent=0;net.StartSolo(lastSoloProfile,lastSoloNpcCount);}
         void LoadCachedProfile()
         {
             try{var json=PlayerPrefs.GetString("cachedProfile","");if(json!=""){profile=JsonUtility.FromJson<Profile>(json);if(profile?.personas?.Length>0||profile?.generationTerms?.Length>0)DisplayProfile();}}

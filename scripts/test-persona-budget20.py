@@ -19,11 +19,12 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--manifest', type=Path, required=True)
 parser.add_argument('--api-port', type=int, default=8097)
 parser.add_argument('--game-port', type=int, default=7797)
+parser.add_argument('--output', type=Path, default=Path('artifacts/persona-limit-20/network'))
 args = parser.parse_args()
 manifest = json.loads(args.manifest.read_text())
 service = root / manifest['servicePath']
 binary = root / manifest['executablePath']
-out = root / 'artifacts/persona-limit-20/network'
+out = root / args.output
 out.mkdir(parents=True, exist_ok=True)
 marker = out/'room.txt'
 marker.unlink(missing_ok=True)

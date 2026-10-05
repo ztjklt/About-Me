@@ -34,9 +34,9 @@ namespace AboutMe
         bool localResultSaved;
         public bool IsSolo => localSession!=null;
         public Snapshot Current => State;
-        public void StartSolo(Profile profile)
+        public void StartSolo(Profile profile,int npcCount=LocalMatchSession.RecommendedNpcCount)
         {
-            Close();localSession=new LocalMatchSession(profile);sequence=0;localResultSaved=false;State=localSession.Current;Status="离线对战 · 陪练 NPC";
+            Close();localSession=new LocalMatchSession(profile,npcCount:npcCount);sequence=0;localResultSaved=false;State=localSession.Current;Status="离线对战 · 陪练 NPC";
         }
         public void Submit(Command command)
         {
