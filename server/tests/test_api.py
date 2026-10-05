@@ -124,8 +124,8 @@ def test_new_persona_pairs_have_grounded_server_mapping():
     assert module.LEGACY_FOOTBALL_PAIR in module.ALLOWED
     assert module.CATALOG_BY_PAIR[('Disc', 'notebook-cc0')]['label'] == '纸质笔记本'
     visuals = json.loads((root / 'shared/persona-visuals.json').read_text())['items']
-    assert len(visuals) == 266
-    assert len({item['visualId'] for item in visuals}) == 266
+    assert len(visuals) == 270  # Includes the four delivered R7 animal visuals.
+    assert len({item['visualId'] for item in visuals}) == 270
     assert all((item['templateId'], item['visualId']) in module.ALLOWED for item in visuals)
     intro = '我每周踢足球，也喜欢用手柄玩游戏，会弹尤克里里，还用笔记本记手账。'
     raw = {'personas': [

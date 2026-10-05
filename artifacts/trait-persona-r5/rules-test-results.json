@@ -1,9 +1,9 @@
 {
     "environment": "2022.3.62t11 / macOS Editor batchmode",
-    "utc": "2026-10-04T19:06:35.7507030Z",
+    "utc": "2026-10-05T13:58:59.5176000Z",
     "scope": "Production Match commands and 50 Hz ticks; deterministic explicit profiles, flat geometric campus fixture. Not real AI, network transport, rendered mesh, human play, six-player performance or mobile acceptance.",
-    "runtimeSnapshot": "f9ce337379264e3550305a9360d3a384547d5345d9d05be3860868bba818cb1a",
-    "passed": 18,
+    "runtimeSnapshot": "150f16a8b2fd4e44c92e76c57f8aeb4c7f5703075b27e6bf57d06bfadb7a1dd3",
+    "passed": 19,
     "failed": 0,
     "cases": [
         {
@@ -17,7 +17,12 @@
             "actual": "production Match assertions passed"
         },
         {
-            "name": "twelve asset budget and defense against thirteen",
+            "name": "twenty asset budget and defense against twenty-one",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "six players retain all 120 owned assets",
             "status": "passed",
             "actual": "production Match assertions passed"
         },
@@ -92,7 +97,7 @@
             "actual": "production Match assertions passed"
         },
         {
-            "name": "public snapshot has protocol four and no private original source",
+            "name": "public snapshot has current protocol and no private original source",
             "status": "passed",
             "actual": "production Match assertions passed"
         }

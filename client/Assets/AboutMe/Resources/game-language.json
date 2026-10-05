@@ -5903,6 +5903,10 @@
     {
       "zh": "仓鼠",
       "en": "Hamster"
+    },
+    {
+      "zh": "已达到20件 Persona 上限，请精简介绍",
+      "en": "The 20 Persona limit has been reached. Please shorten your introduction."
     }
   ]
 }

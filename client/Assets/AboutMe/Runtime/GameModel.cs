@@ -220,7 +220,7 @@ namespace AboutMe
             { if(Phase==MatchPhase.Lobby)
                 {existing.profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);existing.profile.dsGirlUnlocked=profile.dsGirlUnlocked;existing.profile.claudeGirlUnlocked=profile.claudeGirlUnlocked;existing.profile.unlockedCharacterSkins=profile.unlockedCharacterSkins;existing.profile.characterSkin=VerifiedCharacterSkin(profile);}
                 existing.connected = true; existing.lastInput = Time; existing.sequence = -1; return true; }
-            if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0 || profile.personas.Length > 12) return false;
+            if (Phase != MatchPhase.Lobby || Players.Count >= Rules.maxPlayers || profile.personas.Length == 0 || profile.personas.Length > TraitAbilityCatalog.MaxPersonas) return false;
             if (Host == null) Host = profile.playerId;
             profile.appearance=AppearanceData.Resolve(profile.appearance,profile.color,profile.outfit);
             profile.characterSkin=VerifiedCharacterSkin(profile);

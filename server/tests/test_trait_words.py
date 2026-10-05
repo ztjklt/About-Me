@@ -78,13 +78,43 @@ def test_custom_request_cannot_invent_self_fact_or_ability():
     assert words.extract('我的性格是云朵',[dict(values[0],abilityId='run-python')])[0]['abilityId']==''
 
 
-def test_total_budget_twelve_and_extra_word_red_without_fake_ready():
-    intro='我'+ '、'.join(w['text'] for w in words.CATALOG['words'])
+def test_total_budget_twenty_and_extra_word_red_without_fake_ready():
+    intro='我'+ '、'.join(w['text'] for w in words.CATALOG['words'])+'；'+'；'.join('我的MBTI是'+w['text'] for w in words.CATALOG['mbti'])
     batch=raw(intro)
-    assert len(batch)==12
+    assert len(batch)==20
     rows=generation_terms(batch,batch.terms,api.CATALOG_BY_PAIR)
-    assert sum(r['status']=='ready' for r in rows)==12
-    assert any(r['status']=='failed' and '12件' in r['reason'] and not r['assetId'] for r in rows)
+    assert sum(r['status']=='ready' for r in rows)==20
+    assert any(r['status']=='failed' and '20件' in r['reason'] and not r['assetId'] for r in rows)
+
+
+def test_twelve_asset_cache_recovers_smile_and_enfp_without_reroll(client, monkeypatch):
+    intro='；'.join(f'我喜欢篮球{i}' for i in range(11))+'；我的性格是热情；我的表情是友好微笑；我的MBTI是ENFP'
+    headers, session=login(client)
+    props=[dict(assetId=f'stable-prop-{i}',name='篮球',source=f'篮球{i}',templateId='Projectile',visualId='basketball',color='#EE7733') for i in range(11)]
+    candidates, terms=words.augment(props, [], intro, maximum=12)
+    old=dict(session['profile'],revision=1,personas=candidates,generationCandidates=candidates,
+             generationTerms=generation_terms(candidates,terms,api.CATALOG_BY_PAIR),traitWordVersion=words.VERSION)
+    assert len(candidates)==12
+    assert {t['wordText'] for t in old['generationTerms'] if t['status']=='failed'}=={'友好微笑','ENFP'}
+    with api.db() as con:
+        con.execute('UPDATE profiles SET profile=?,intro=? WHERE id=?',(json.dumps(old),intro,old['playerId']))
+    async def forbidden(_):
+        raise AssertionError('a capacity upgrade must not reroll existing assets')
+    monkeypatch.setattr(api,'generate_with_provider',forbidden)
+    body=dict(nickname='字玩具',introduction=intro,generationId='b'*32)
+    response=client.post('/personas/generate',headers=headers,json=body)
+    assert response.status_code==200,response.text
+    data=response.json()
+    assert len(data['personas'])==14
+    assert {a['assetId'] for a in candidates}<={a['assetId'] for a in data['personas']}
+    assert all(t['status']=='ready' for t in data['generationTerms'])
+    assert {a.get('wordText') for a in data['personas'] if a.get('visualId')=='trait-word'}=={'热情','友好微笑','ENFP'}
+    second=client.post('/personas/generate',headers=headers,json=body).json()
+    assert [a['assetId'] for a in second['personas']]==[a['assetId'] for a in data['personas']]
+    assert second['revision']==data['revision']
+    assert client.get('/profiles/me',headers=headers).json()['personas']==data['personas']
+    trusted=client.post('/internal/verify',headers={'X-Game-Key':'word-test-key'},json={'token':session['token']})
+    assert trusted.status_code==200 and len(trusted.json()['personas'])==14
 
 
 def test_old_request_cache_upgrade_confirmation_persistence_and_public_privacy(client,monkeypatch):

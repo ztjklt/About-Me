@@ -33,7 +33,7 @@ LEGACY_FOOTBALL_PAIR = ('Ricochet', 'football-cc0')
 CATALOG_BY_PAIR[LEGACY_FOOTBALL_PAIR] = CATALOG_BY_PAIR[('Projectile', 'football-cc0')]
 ALLOWED = set(CATALOG_BY_PAIR)
 MAX_INTRO_CHARS = 1200
-MAX_PERSONAS = 12  # Prototype budget: at most 72 assets in a six-player room.
+MAX_PERSONAS = trait_words.MAX_PERSONAS  # At most 120 owned assets in a six-player room.
 DEEPSEEK_V4FLASH_VISION_MODEL = 'deepseek-v4-flash-vision-exp'
 ROAST_COOLDOWN_SECONDS = 2.0
 ROAST_SYSTEM_PROMPT = ('你是适合陌生玩家的玩具派对调侃官。只围绕道具名称写一句善意的中文调侃，'
@@ -567,7 +567,7 @@ async def generate_with_provider(introduction):
                 headers={'Authorization': 'Bearer ' + key},
                 json={'model': model, 'messages': [{'role': 'system', 'content': prompt},
                       {'role': 'user', 'content': introduction}], 'response_format': {'type': 'json_object'},
-                      'thinking': {'type': 'disabled'}, 'temperature': 0.2, 'max_tokens': 2400})
+                      'thinking': {'type': 'disabled'}, 'temperature': 0.2, 'max_tokens': 4000})
             response.raise_for_status()
             data = json.loads(response.json()['choices'][0]['message']['content'])
         return validate_personas(data, introduction)
@@ -697,7 +697,7 @@ def health():
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
             'visionConfigured': bool(deepseek_vision_credentials()[0]),
-            'introductionImageRecognition': False, 'personalitySkins': True, 'traitWordPersonas': True, 'traitWordVersion': trait_words.VERSION, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': len(json.loads((Path(__file__).resolve().parents[1] / 'shared/persona-mechanics.json').read_text())['items'])}
+            'introductionImageRecognition': False, 'personalitySkins': True, 'traitWordPersonas': True, 'traitWordVersion': trait_words.VERSION, 'maxPersonas': MAX_PERSONAS, 'personaCatalogCount': len(CATALOG), 'partyMechanicsCount': len(json.loads((Path(__file__).resolve().parents[1] / 'shared/persona-mechanics.json').read_text())['items'])}
 
 
 @app.get('/school-emblems/{filename}')

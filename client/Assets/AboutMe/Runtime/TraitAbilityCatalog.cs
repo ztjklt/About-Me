@@ -10,6 +10,7 @@ namespace AboutMe
     public static class TraitAbilityCatalog
     {
         public const int ProtocolVersion=5;
+        public const int MaxPersonas=20;
         public const string VisualId="trait-word";
         static TraitAbilityData data;
         public static TraitAbilityData Data=>data??(data=JsonUtility.FromJson<TraitAbilityData>(Resources.Load<TextAsset>("trait-abilities").text));

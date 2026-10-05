@@ -7,6 +7,7 @@ from server.roast_safety import safe_public_text
 
 CATALOG = json.loads((Path(__file__).resolve().parents[1] / 'shared/trait-abilities.json').read_text())
 VERSION = CATALOG['version']
+MAX_PERSONAS = 20
 FONT_SUPPORT = json.loads((Path(__file__).resolve().parents[1] / 'shared/trait-word-supported-codepoints.json').read_text())
 if FONT_SUPPORT['schema'] != 'aboutme-thick-word-font-v2' or FONT_SUPPORT['maxCodepoints'] != 12:
     raise ValueError('文字字体支持目录版本不匹配')
@@ -138,7 +139,7 @@ def extract(introduction, selections=(), sensitive=lambda _: False):
     return rows
 
 
-def augment(assets, terms, introduction, selections=(), sensitive=lambda _: False, maximum=12):
+def augment(assets, terms, introduction, selections=(), sensitive=lambda _: False, maximum=MAX_PERSONAS):
     """Replace only word rows, preserve immutable asset IDs, and keep all nonword candidates."""
     old_words = {(a.get('wordCategory'), a.get('wordText', '').casefold()): a for a in assets if a.get('visualId') == 'trait-word'}
     result = [dict(a) for a in assets if a.get('visualId') != 'trait-word'][:maximum]
@@ -164,7 +165,7 @@ def augment(assets, terms, introduction, selections=(), sensitive=lambda _: Fals
                                color=PALETTE[row['abilityId']], source=row['source'], generationTerm=row['term'],
                                wordCategory=row['category'], wordText=row['text'], abilityId=row['abilityId']))
         elif row['abilityId']:
-            term.update(status='failed', reason='已达到12件 Persona 上限，请精简介绍', stage='超过上限')
+            term.update(status='failed', reason=f'已达到{maximum}件 Persona 上限，请精简介绍', stage='超过上限')
         else:
             term.update(status='needs-confirmation', reason='请选择能力', stage='请选择能力')
         new_terms.append(term)
