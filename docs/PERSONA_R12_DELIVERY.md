@@ -15,6 +15,21 @@
 
 后端506项测试通过，覆盖鉴权、公开数据边界、事件缓存与玩家隔离、文字积木和既有功能。Unity完整规则／菜单检查通过，新增20项检查覆盖真人、NPC、AI皮肤、吞噬起始、取消、找回、迟到回复、观察者归属和借用文字、七个同时气泡互不遮挡。
 
-原生产 API 真实 DeepSeek 调用已返回200。新版真实客户端验证与Mac／Web／Linux发布身份、部署证据将在构建和公网检查完成后补充；当前文档不把纯规则检查当作真人试玩、微信真机或跨网真人验收。
+Mac原生客户端在显式准备的吞噬状态中，真人吃篮球、人机吃相机，两名角色均取得真实DeepSeek回复；气泡显示在各自头顶，截图验证互不遮挡。这是自动准备场景和本机权威／真实API证据，不代表真人操作手感验收。
+
+两个实际Mac自动客户端连接Railway生产WSS，一个吞噬样例道具、一个观察者：同一句真实调侃在吞噬完成前已广播，`speakerId`／`itemId`正确，观察者收到相同文字。此证据来自同一网络，未覆盖两地真人、完整对局或微信真机。
+
+公网HTTPS独立调用篮球和相机均返回200／`aiSource=provider`，耗时约1.5–1.8秒；重放读取同一缓存。实际公网下载的四个WebGL资源哈希与发布清单完全一致；首页和版本清单禁缓存，显示最新版R12。Mac／Web／Linux均成功生成Release构建，本机默认入口的客户端／API／权威来源及真实进程检查通过。
+
+Linux发布包的旧设置曾拦截Railway内网HTTP。已在专用权威服务器构建期间设置允许HTTP并恢复客户端设置；修正后以生产WSS真实吞噬和观察者广播作为验收证据。
 
 默认入口 `scripts/start-latest.command` 指向完整 R12；本机匹配 API／权威端口为8096／7796。只打包冻结服务，不随当前工作树代码变化。生产网址沿用 Railway 入口，版本角标和 `/version.json` 标明实际提交，静态资源由内容指纹更新。
+
+## 发布身份
+
+- 版本：`playtest-persona-r12`；分支：`codex/eater-roast-r12`；运行源码：`b6e05be811dc543960e8104e6914d5e28df8333f`。后续交付文档提交不改变运行构建。
+- GitHub：`https://github.com/ztjklt/About-Me`；公网入口：`https://web-production-fb9b1.up.railway.app/`；网页角标：`最新版 R12 · b6e05be`。
+- Web内容指纹：`2af20e2485e04e24`；Linux归档SHA256：`d2f2cf83a40054717bfe4cfe6d9453b792a92533cad00ea4b25a211283ad6ab7`。
+- 源码冻结：`artifacts/railway-r12/source-freeze`，4505文件；构建清单：`builds/playtest-persona-r12-mac/release-manifest.json`。Mac、Web、冻结服务位于`builds/playtest-persona-r12-{mac,web,service}`；Linux位于`builds/playtest-persona-r12-linux`。
+- 结果证据：`artifacts/railway-r12/public-checks.json`、`network-final/result.json`、`runtime-delivery/eater-bubbles.png`及`deployments.json`。规则与API测试结果与上述真实API、公网自动客户端证据区分记录。
+- 已知限制：模型和网络有延迟，审核、断网或配置额度耗尽仍可能跳过某句；没有使用预设句冒充AI。未完成真人手感、两地真人或微信真机验收。
