@@ -32,6 +32,7 @@ namespace AboutMe
             var lines=match.Events.Where(e=>e.kind=="eating-roast").ToArray();
             if(lines.Length!=2||lines.Any(e=>e.itemId!=items[Array.IndexOf(speakers,e.speakerId)]||!e.line.Contains(e.speakerId==a.profile.playerId?"篮球":"相机")))
             {Debug.LogError("EATER_ROAST_RUNTIME_FAILED speaker/item/topic mismatch");Application.Quit(13);yield break;}
+            yield return new WaitForFixedUpdate();yield return null;
             File.WriteAllText(Path.Combine(output,"snapshot.json"),JsonUtility.ToJson(net.State,true));
             File.WriteAllText(Path.Combine(output,"passed.txt"),string.Join("\n",lines.Select(e=>e.text)));
             yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"eater-bubbles.png"));

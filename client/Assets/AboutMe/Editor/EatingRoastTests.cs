@@ -45,7 +45,7 @@ namespace AboutMe.Editor
             for(int i=0;i<7;i++)
             {
                 var point=EaterRoastPresentation.PlaceBubble(new Vector2(0,200),new Vector2(1600,900),occupied);
-                var rect=new Rect(point-new Vector2(181,62),new Vector2(362,124));
+                var rect=new Rect(point-new Vector2(181,72),new Vector2(362,144));
                 Check(!occupied.Any(other=>other.Overlaps(rect)),"concurrent bubble "+i+" does not overlap");occupied.Add(rect);
             }
             Debug.Log("EATER_ROAST_PASSED "+passed);
