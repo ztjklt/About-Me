@@ -241,8 +241,16 @@ namespace AboutMe.Editor
         public static void BuildServer()
         {
             PrepareBuildScenes();
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_SERVER_OUTPUT")??"../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
-            if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Linux server build failed; install Linux Dedicated Server module");
+            // Railway's authenticated authority-to-API traffic uses its private HTTP network.
+            // Scope this build flag to the dedicated server; restore the desktop/Web policy afterwards.
+            var priorHttp=PlayerSettings.insecureHttpOption;
+            try
+            {
+                PlayerSettings.insecureHttpOption=InsecureHttpOption.AlwaysAllowed;
+                var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_SERVER_OUTPUT")??"../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
+                if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Linux server build failed; install Linux Dedicated Server module");
+            }
+            finally{PlayerSettings.insecureHttpOption=priorHttp;}
             Debug.Log("ABOUTME_SERVER_BUILD_OK");
         }
         [MenuItem("About Me/6. Export WeChat (requires configured AppID and CDN)")]
