@@ -240,8 +240,8 @@ namespace AboutMe.Editor
         [MenuItem("About Me/5. Build Linux server (requires module)")]
         public static void BuildServer()
         {
-            Generate();
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_SERVER_OUTPUT")??"../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=BuildOptions.Development});
+            PrepareBuildScenes();
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_SERVER_OUTPUT")??"../builds/linux/AboutMeServer",target=BuildTarget.StandaloneLinux64,subtarget=(int)StandaloneBuildSubtarget.Server,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Linux server build failed; install Linux Dedicated Server module");
             Debug.Log("ABOUTME_SERVER_BUILD_OK");
         }

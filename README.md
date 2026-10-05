@@ -1,3 +1,5 @@
+**公网最新版发布：完整 R11。** GitHub 源码与 Railway Web/API/Game 使用本发布工作区；公开网页右下角显示“最新版 R11”及发布提交，`/version.json` 和 `/api/health` 提供版本核对。版本身份及验收范围见 [公网 R11 交付](docs/RAILWAY_R11_DELIVERY.md)。
+
 # About Me
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
