@@ -1,0 +1,184 @@
+{
+  "status": "awaiting explicit confirmation for additional Tripo credits; no paid animation task submitted",
+  "completed_free_checks": [
+    {
+      "animal": "cat",
+      "source_task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+      "check_task_id": "c2aa08a0-7d01-4e7d-89e5-4897e71546fb",
+      "riggable": true,
+      "rig_type": "quadruped",
+      "check_cost": 0
+    },
+    {
+      "animal": "dog",
+      "source_task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+      "check_task_id": "0cd9aa41-6e2c-4a46-ad59-e813863f57e8",
+      "riggable": true,
+      "rig_type": "quadruped",
+      "check_cost": 0
+    },
+    {
+      "animal": "rabbit",
+      "source_task_id": "e49ae3a7-87e3-45d3-97f3-e4d148fc9793",
+      "check_task_id": "951b4e33-9608-4746-9a73-7b8fea34d059",
+      "riggable": true,
+      "rig_type": "biped",
+      "check_cost": 0
+    },
+    {
+      "animal": "hamster",
+      "source_task_id": "6b4e5bec-7887-4120-9def-5070a30f4b9e",
+      "check_task_id": "437044cb-d46c-4691-8ea1-d764704fdb54",
+      "riggable": false,
+      "rig_type": "biped",
+      "check_cost": 0
+    }
+  ],
+  "paid_assets": [
+    {
+      "animal": "cat",
+      "input_task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+      "rig_model_wire": "v2.5-20260210",
+      "rig_model_cli_alias": "rig-v2.0",
+      "steps": [
+        {
+          "name": "rig",
+          "endpoint": "/v3/animations/rig",
+          "task_type": "animate_rig",
+          "payload": {
+            "input": "<upstream>",
+            "rig_type": "quadruped",
+            "model": "v2.5-20260210",
+            "spec": "tripo",
+            "out_format": "glb"
+          },
+          "estimated_credits": 25
+        },
+        {
+          "name": "retarget",
+          "endpoint": "/v3/animations/retarget",
+          "task_type": "animate_retarget",
+          "payload": {
+            "input": "<upstream>",
+            "animation": "preset:quadruped:walk",
+            "out_format": "fbx",
+            "animate_in_place": true
+          },
+          "estimated_credits": 10
+        }
+      ],
+      "warnings": [
+        "chain legality unverified: upstream task type unknown (no local history for c03146c3-ffba-4f34-9059-10a0243170b6); the real run checks it via the API"
+      ],
+      "estimated_credits": 35,
+      "deliverables": {
+        "animation": "FBX with geometry and skeletal in-place walk",
+        "rigged_model": "GLB",
+        "output_parent": "artifacts/animal-persona-animation",
+        "unity_target": "client/Assets/AboutMe/Art/TripoAnimals/cat/Animation/"
+      }
+    },
+    {
+      "animal": "dog",
+      "input_task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+      "rig_model_wire": "v2.5-20260210",
+      "rig_model_cli_alias": "rig-v2.0",
+      "steps": [
+        {
+          "name": "rig",
+          "endpoint": "/v3/animations/rig",
+          "task_type": "animate_rig",
+          "payload": {
+            "input": "<upstream>",
+            "rig_type": "quadruped",
+            "model": "v2.5-20260210",
+            "spec": "tripo",
+            "out_format": "glb"
+          },
+          "estimated_credits": 25
+        },
+        {
+          "name": "retarget",
+          "endpoint": "/v3/animations/retarget",
+          "task_type": "animate_retarget",
+          "payload": {
+            "input": "<upstream>",
+            "animation": "preset:quadruped:walk",
+            "out_format": "fbx",
+            "animate_in_place": true
+          },
+          "estimated_credits": 10
+        }
+      ],
+      "warnings": [
+        "chain legality unverified: upstream task type unknown (no local history for 180ead5a-8bda-45fd-b040-d7b0a1e80836); the real run checks it via the API"
+      ],
+      "estimated_credits": 35,
+      "deliverables": {
+        "animation": "FBX with geometry and skeletal in-place walk",
+        "rigged_model": "GLB",
+        "output_parent": "artifacts/animal-persona-animation",
+        "unity_target": "client/Assets/AboutMe/Art/TripoAnimals/animal-dog/Animation/"
+      }
+    },
+    {
+      "animal": "rabbit",
+      "input_task_id": "e49ae3a7-87e3-45d3-97f3-e4d148fc9793",
+      "rig_model_wire": "v2.5-20260210",
+      "rig_model_cli_alias": "rig-v2.0",
+      "steps": [
+        {
+          "name": "rig",
+          "endpoint": "/v3/animations/rig",
+          "task_type": "animate_rig",
+          "payload": {
+            "input": "<upstream>",
+            "rig_type": "biped",
+            "model": "v2.5-20260210",
+            "spec": "tripo",
+            "out_format": "glb"
+          },
+          "estimated_credits": 25
+        },
+        {
+          "name": "retarget",
+          "endpoint": "/v3/animations/retarget",
+          "task_type": "animate_retarget",
+          "payload": {
+            "input": "<upstream>",
+            "animation": "preset:walk",
+            "out_format": "fbx",
+            "animate_in_place": true
+          },
+          "estimated_credits": 10
+        }
+      ],
+      "warnings": [
+        "chain legality unverified: upstream task type unknown (no local history for e49ae3a7-87e3-45d3-97f3-e4d148fc9793); the real run checks it via the API"
+      ],
+      "estimated_credits": 35,
+      "deliverables": {
+        "animation": "FBX with geometry and skeletal in-place walk",
+        "rigged_model": "GLB",
+        "output_parent": "artifacts/animal-persona-animation",
+        "unity_target": "client/Assets/AboutMe/Art/TripoAnimals/animal-rabbit/Animation/"
+      }
+    }
+  ],
+  "estimated_credits_total": 105,
+  "failures": "Failed/cancelled Tripo steps refunded; no automatic paid rerolls",
+  "hamster": {
+    "automatic_rig_compatible": false,
+    "proposal": "Inspect and adjust original mesh in isolated local Blender scene, then manual skinning and stride animation; no new Tripo credits authorized or planned",
+    "status": "not yet rigged; manual deformation requires visual QA"
+  },
+  "runtime_integration": "Generic skeleton; animate in place with authority movement; walk only during chase; hold/drop return to rest pose; inspect stride deformation and seams in Unity; retain same-instance hit/drop rules",
+  "acceptance": [
+    "actual skinned vertices and limb poses change across cycle",
+    "four foot gait for cat and dog; biped gait fitted to standing rabbit",
+    "no humanoid skeleton forced onto quadruped",
+    "hold/chase/ground transitions inspected",
+    "no locomotion root offset affecting authority position",
+    "new paired release only after validation"
+  ]
+}
