@@ -41,6 +41,13 @@ namespace AboutMe.Editor
             borrowed.asset.templateId="SpecialAbility";borrowed.asset.visualId="trait-word";borrowed.asset.name="理性";borrowed.asset.wordText="理性";borrowed.asset.abilityId="front-shield";
             borrowed.state=ItemState.Equipped;borrowed.carrierId="human";word.Players["human"].equipped=borrowed.id;word.Interact(word.Players["human"]);
             Check(word.EatingRoasts.Single().itemId==borrowed.id,"borrowed word uses same eater event");word.Dispose();
+            var occupied=new System.Collections.Generic.List<Rect>();
+            for(int i=0;i<7;i++)
+            {
+                var point=EaterRoastPresentation.PlaceBubble(new Vector2(0,200),new Vector2(1600,900),occupied);
+                var rect=new Rect(point-new Vector2(181,62),new Vector2(362,124));
+                Check(!occupied.Any(other=>other.Overlaps(rect)),"concurrent bubble "+i+" does not overlap");occupied.Add(rect);
+            }
             Debug.Log("EATER_ROAST_PASSED "+passed);
         }
     }

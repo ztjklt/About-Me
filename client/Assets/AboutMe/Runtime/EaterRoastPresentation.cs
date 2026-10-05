@@ -25,6 +25,7 @@ namespace AboutMe
                 if(entry.kind!="eating-roast"||string.IsNullOrEmpty(entry.speakerId)||string.IsNullOrEmpty(entry.roastId)||!seen.Add(entry.roastId)||state.simulationTime-entry.spokenAt>8)continue;
                 var bubble=Get(entry.speakerId);bubble.line=entry.line;bubble.attempt=entry.roastId;bubble.item=entry.itemId;bubble.expires=UnityEngine.Time.unscaledTime+8;
             }
+            var occupied=new List<Rect>();
             foreach(var player in state.players)
             {
                 bool eating=player.interaction=="eat";
@@ -40,9 +41,27 @@ namespace AboutMe
                 bubble.root.gameObject.SetActive(visible);if(!visible)continue;
                 bubble.text.text=player.nickname+"\n"+text;
                 var size=canvas.rect.size;
-                bubble.root.anchoredPosition=new Vector2(Mathf.Clamp(point.x/Screen.width*size.x-size.x*.5f,-size.x*.5f+182,size.x*.5f-182),Mathf.Clamp(point.y/Screen.height*size.y-size.y*.5f+60,-size.y*.5f+65,size.y*.5f-65));
+                var desired=new Vector2(point.x/Screen.width*size.x-size.x*.5f,point.y/Screen.height*size.y-size.y*.5f+60);
+                bubble.root.anchoredPosition=PlaceBubble(desired,size,occupied);
+                occupied.Add(new Rect(bubble.root.anchoredPosition-new Vector2(181,62),new Vector2(362,124)));
             }
             foreach(var id in bubbles.Keys.Where(id=>!state.players.Any(p=>p.id==id)).ToArray()){Destroy(bubbles[id].root.gameObject);bubbles.Remove(id);}
+        }
+        public static Vector2 PlaceBubble(Vector2 desired,Vector2 size,IList<Rect> occupied)
+        {
+            float minX=-size.x*.5f+182,maxX=size.x*.5f-182,minY=-size.y*.5f+220,maxY=size.y*.5f-260;
+            desired=new Vector2(Mathf.Clamp(desired.x,minX,maxX),Mathf.Clamp(desired.y,minY,maxY));
+            var xs=new List<float>{desired.x,minX,maxX};var ys=new List<float>{desired.y,minY,maxY};
+            foreach(var rect in occupied){xs.Add(rect.xMin-181);xs.Add(rect.xMax+181);ys.Add(rect.yMin-62);ys.Add(rect.yMax+62);}
+            var result=desired;float best=float.PositiveInfinity;
+            foreach(float x in xs)foreach(float y in ys)
+            {
+                if(x<minX||x>maxX||y<minY||y>maxY)continue;
+                var candidate=new Vector2(x,y);float distance=(candidate-desired).sqrMagnitude;
+                if(distance>=best||occupied.Any(rect=>rect.Overlaps(new Rect(candidate-new Vector2(181,62),new Vector2(362,124)))))continue;
+                result=candidate;best=distance;
+            }
+            return result;
         }
         Bubble Get(string id)
         {
