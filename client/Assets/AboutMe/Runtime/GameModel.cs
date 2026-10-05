@@ -68,6 +68,7 @@ namespace AboutMe
         public Vector3 position, velocity;
         public float pushScale=1, thrownAt;
         public string chaseTarget="";
+        public int throwBounces;
         [NonSerialized] public HashSet<string> guardTouches=new HashSet<string>();
         public PersonaInstance Copy() => (PersonaInstance)MemberwiseClone();
         public PublicPersonaInstance PublicCopy() => new PublicPersonaInstance
@@ -479,7 +480,7 @@ namespace AboutMe
             {
                 // The equipped instance itself travels and remains a recoverable life.
                 equipped.state=ItemState.Thrown;equipped.thrownBy=p.profile.playerId;equipped.guardTouches.Clear();equipped.pushScale=1;
-                equipped.thrownAt=Time;equipped.chaseTarget="";
+                equipped.thrownAt=Time;equipped.chaseTarget="";equipped.throwBounces=template=="Ricochet"?2:0;
                 equipped.position=p.position+Forward(p)*.8f+Vector3.up*.25f;
                 equipped.velocity=Forward(p)*14+Vector3.up*3.5f;
                 p.equipped="";
@@ -594,6 +595,13 @@ namespace AboutMe
                     continue;
                 }
                 float floor=SurfaceFloor(next,.35f)+.35f;
+                if((wall||CampusGeometry.Outside(next))&&next.y>floor&&item.throwBounces>0)
+                {
+                    item.throwBounces--;
+                    if(Mathf.Abs(next.x-wanted.x)>.001f||Mathf.Abs(next.x)>40)velocity.x=-velocity.x;
+                    if(Mathf.Abs(next.z-wanted.z)>.001f||Mathf.Abs(next.z)>32)velocity.z=-velocity.z;
+                    item.position=from;item.velocity=velocity*.85f;continue;
+                }
                 if(wall||next.y<=floor||CampusGeometry.Outside(next))
                 {
                     item.state=ItemState.Ground;item.thrownBy="";

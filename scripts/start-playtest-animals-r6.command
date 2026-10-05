@@ -20,7 +20,7 @@ for task_port in 8093 7793; do
 done
 cd "$task_root"
 mkdir -p artifacts/playtest-animals-r6
-# Preserve current full R4 profiles through SQLite's consistent backup API.
+# Preserve current full R5 profiles through SQLite's consistent backup API.
 "$task_python" - "$task_root" <<'PYDB'
 from pathlib import Path
 import sqlite3,sys

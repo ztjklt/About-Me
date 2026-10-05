@@ -149,26 +149,26 @@ namespace AboutMe.Editor
             {
                 var p=m.Players[player];int seq=p.sequence+1;m.Receive(player,new Command{sequence=seq,action="use_item",yaw=p.yaw});Tick(m,.24f);
             }
-            Test("ricochet reflects with a bounded server count",()=>{
-                var m=MechanicMatch("Ricochet","basketball-cc0");Heavy(m);var effect=m.Effects.Single();Assert(effect.kind=="Ricochet"&&effect.bounces==2,"ricochet did not spawn");
-                effect.position=new Vector3(39.9f,1,0);effect.velocity=Vector3.right*12;Tick(m,.02f);Assert(effect.velocity.x<0&&effect.bounces==1,"ricochet did not reflect once");
+            Test("ricochet original life reflects with a bounded server count",()=>{
+                var m=MechanicMatch("Ricochet","basketball-cc0");var item=m.Item(m.Players["a"].equipped);Heavy(m);
+                Assert(item.state==ItemState.Thrown&&item.throwBounces==2&&m.Players["a"].equipped=="","ricochet did not throw original life");
+                item.position=new Vector3(39.9f,1,0);item.velocity=Vector3.right*12;Tick(m,.02f);Assert(item.velocity.x<0&&item.throwBounces==1&&item.ownerId=="a","ricochet did not reflect once");
             });
-            Test("school disc is thrown once, hits once, and remains grounded",()=>{
-                var m=MechanicMatch("Disc","school-disc");var source=m.Item(m.Players["a"].equipped).asset;source.emblemPath="/school-emblems/test.png";source.emblemCrop="0.06,0.06,0.88,0.88";source.generatedBy="DeepSeek Flash Vision";m.Players["b"].position=new Vector3(0,1,4.5f);m.Players["b"].stability=20;Heavy(m);
-                var effect=m.Effects.Single();Assert(effect.kind=="ThrownDisc"&&!effect.landed&&effect.velocity.z>0,"school disc did not launch forward");
-                Assert(effect.emblemPath==source.emblemPath&&effect.emblemCrop==source.emblemCrop&&effect.generatedBy==source.generatedBy,"DeepSeek emblem metadata was lost during throw");
-                Tick(m,1.5f);
-                Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f,"thrown school disc missed a clear target");
-                Assert(Mathf.Abs(m.Players["b"].stability-m.Rules.maxStability*.65f)<.01f&&m.Items.Any(x=>x.ownerId=="b"&&x.state==ItemState.Ground),"school disc did not use the existing depletion/drop rule");
-                Assert(effect.landed&&effect.velocity.sqrMagnitude<.001f&&effect.remaining>0,"thrown school disc did not settle on the floor");
-                var after=m.Players["b"].stability;Tick(m,.4f);
-                Assert(m.Effects.Contains(effect)&&m.Players["b"].stability==after,"landed school disc hit again or disappeared immediately");
+            Test("school disc original life throws, hits once and remains grounded",()=>{
+                var m=MechanicMatch("Disc","school-disc");var item=m.Item(m.Players["a"].equipped);var source=item.asset;
+                source.emblemPath="/school-emblems/test.png";source.emblemCrop="0.06,0.06,0.88,0.88";source.generatedBy="DeepSeek Flash Vision";
+                m.Players["b"].position=new Vector3(0,1,4.5f);m.Players["b"].stability=20;Heavy(m);
+                Assert(item.state==ItemState.Thrown&&item.velocity.z>0&&m.Players["a"].equipped=="","school disc did not launch original life");
+                var visible=m.View("b").ground.Single(x=>x.id==item.id).asset;
+                Assert(visible.emblemPath==source.emblemPath&&visible.emblemCrop==source.emblemCrop&&visible.generatedBy==source.generatedBy,"emblem metadata lost");
+                Tick(m,1.5f);Assert(m.Players["b"].impactId>0&&m.Items.Any(x=>x.ownerId=="b"&&x.state==ItemState.Ground),"school disc missed or did not drop target life");
+                Assert(item.state==ItemState.Ground&&m.Remaining("a")==4,"school disc lost original life");
+                int impacts=m.Players["b"].impactId;Tick(m,.4f);Assert(m.Players["b"].impactId==impacts&&item.state==ItemState.Ground,"landed disc hit again or recalled");
             });
-            Test("other Disc visuals retain their returning projectile rule",()=>{
-                var m=MechanicMatch("Disc","photo-frame");Heavy(m);var effect=m.Effects.Single();
-                Assert(effect.kind=="Disc"&&!effect.landed,"non-school Disc visual changed projectile behavior");
-                effect.remaining=.7f;effect.position=new Vector3(0,1,8);effect.velocity=Vector3.zero;Tick(m,.02f);
-                Assert(effect.velocity.z<0,"non-school Disc no longer returns to its owner");
+            Test("all Disc visuals land without automatic return",()=>{
+                var m=MechanicMatch("Disc","photo-frame");m.Players["b"].position=new Vector3(20,1,0);var item=m.Item(m.Players["a"].equipped);Heavy(m);
+                Assert(item.state==ItemState.Thrown&&m.Players["a"].equipped=="","non-school Disc did not throw original life");
+                Tick(m,2);Assert(item.state==ItemState.Ground&&m.Players["a"].equipped==""&&m.Remaining("a")==4,"non-school Disc recalled or consumed its life");
             });
             Test("school discs contain only the emblem or school fallback",()=>{
                 foreach(var school in new[]{"清华大学","北京大学","中山大学"})

@@ -4,6 +4,10 @@
 
 **最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-trait-r5`，保留全部R4设置与274道具/96机制，新增真正厚字性格/表情/16可选MBTI、六原能力及8已交付AI模型（衣橱共11选项）。同源Mac/Web Release，独立8091/7791，逐文件hash及配套服务身份核对；详见 [R5交付与验收范围](docs/TRAIT_PERSONA_R5_DELIVERY.md)。
 
+## 小动物 R6 候选交付
+
+猫、狗、兔子和仓鼠已有实际 Tripo 网格、贴图与选择题；动物追击击飞一次后作为原 Persona 落地，所有实际投掷道具不再自动回手。候选成品和验证范围见 [小动物交付](docs/ANIMAL_PERSONA_DELIVERY.md)，尚待产品负责人指定正式整合，默认试玩仍为上方完整 R5。
+
 ## 2026-09-24 当前 DS 娘与真实 AI 整合候选
 
 当前候选以 `codex/ds-local-current` 的 `git rev-parse HEAD` 为唯一源码版本。它保留新版四气泡首页、战斗音乐、校徽飞盘与 DeepSeek Vision 校徽裁切，加入 DS 娘免费解锁与选装、八件 Persona 实体投掷，以及真实 Persona 生成和由游戏服务器异步请求、向同房广播的 DeepSeek 吞噬调侃。结算页可接收晚到事件，网页房间码输入修复也已包含。此处说明源码范围；可运行包的构建 SHA 和验收范围以 [当前整合交付](docs/CURRENT_DS_INTEGRATION.md) 为准。

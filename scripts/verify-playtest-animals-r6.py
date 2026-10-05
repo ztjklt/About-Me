@@ -37,10 +37,10 @@ if manifest['settingsSourceSnapshot'] != '2530bcdd73597917a0043780164b1942eb8986
 expected_snapshot=hashlib.sha256(json.dumps(manifest['sourceFiles'],sort_keys=True).encode()).hexdigest()
 if manifest['sourceSnapshotSha256'] != expected_snapshot or manifest['apiSourceSnapshot'] != expected_snapshot: raise SystemExit('完整源码清单不匹配')
 prior=root/'builds/playtest-trait-r5-mac/release-manifest.json'
-if not prior.is_file() or hashlib.sha256(prior.read_bytes()).hexdigest()!=manifest['priorReleaseManifestSha256']: raise SystemExit('R4继承交付身份不匹配')
-if manifest.get('protocolVersion')!=5: raise SystemExit('文字能力协议版本不匹配')
+if not prior.is_file() or hashlib.sha256(prior.read_bytes()).hexdigest()!=manifest['priorReleaseManifestSha256']: raise SystemExit('R5继承交付身份不匹配')
+if manifest.get('protocolVersion')!=5: raise SystemExit('动物与单次投掷协议版本不匹配')
 for symbol in ('ThickWordVisual','TraitAbilityCatalog','BorrowWord','AISkinRegistry','AnimalPersonaCatalog','TickAnimalPersona','AnimalPersonaMotion'):
-    if symbol.encode() not in assembly: raise SystemExit('R5完整功能缺失：'+symbol)
+    if symbol.encode() not in assembly: raise SystemExit('R6及继承功能缺失：'+symbol)
 if len(json.loads((service/'shared/trait-abilities.json').read_text())['mbti'])!=16: raise SystemExit('MBTI目录未保留')
 if len(json.loads((service/'shared/ai-skins.json').read_text())['skins'])!=10: raise SystemExit('AI角色目录未完整整合')
 if manifest['sourceFiles']['shared/ai-skins.json']!=manifest['sourceFiles']['client/Assets/AboutMe/Resources/ai-skins.json']: raise SystemExit('AI角色共享目录不一致')
@@ -82,4 +82,4 @@ if args.authority_pid is not None:
     command = subprocess.check_output(['ps', '-p', str(args.authority_pid), '-o', 'command='], text=True)
     if str(root / manifest['executablePath']) not in command or '--aboutme-server' not in command:
         raise SystemExit('权威服务器运行路径不匹配')
-print('已核对最新整合版 ' + manifest['releaseId'] + ' · 客户端/权威同包 · 完整源码快照 + 设置 V2 · 277 道具 / '+str(manifest['mechanicCount'])+' 机制')
+print('已核对完整候选版 ' + manifest['releaseId'] + ' · 客户端/权威同包 · 完整源码快照 + 设置 V2 · 277 道具 / '+str(manifest['mechanicCount'])+' 机制')
