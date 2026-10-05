@@ -106,7 +106,7 @@ def test_private_and_abusive_facts_do_not_become_personas():
         module.validate_personas({'personas': raw['personas'][1:3]}, intro)
 
 def test_cc0_visual_catalog_allows_only_published_template_pairs():
-    assert len(module.CATALOG) == 274
+    assert len(module.CATALOG) == 277
     result = module.validate_personas({'personas': [dict(name='抱枕', source='抱枕', templateId='Cushion', visualId='pillow-a')]}, '抱枕')
     assert result[0]['color'] == '#F5C0CF'
     with pytest.raises(ValueError):

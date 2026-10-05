@@ -40,7 +40,32 @@
       "templateId": "Summon",
       "visualId": "cat",
       "label": "猫",
-      "color": "#F5C0CF"
+      "color": "#F5C0CF",
+      "animal": true,
+      "evidenceTerms": [
+        "猫",
+        "小猫",
+        "猫咪",
+        "橘猫",
+        "cat",
+        "cats",
+        "kitten",
+        "kittens"
+      ],
+      "excludeTerms": [
+        "不喜欢猫",
+        "讨厌猫",
+        "不想养猫",
+        "不喜欢小猫",
+        "讨厌小猫",
+        "不想养小猫",
+        "不喜欢猫咪",
+        "讨厌猫咪",
+        "不想养猫咪",
+        "不喜欢橘猫",
+        "讨厌橘猫",
+        "不想养橘猫"
+      ]
     },
     {
       "templateId": "SpecialAbility",
@@ -5698,6 +5723,93 @@
         "不会气球狗",
         "讨厌气球狗",
         "不擅长气球狗"
+      ]
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "animal-dog",
+      "label": "狗",
+      "color": "#E5C58D",
+      "animal": true,
+      "evidenceTerms": [
+        "狗",
+        "小狗",
+        "狗狗",
+        "柯基",
+        "dog",
+        "dogs",
+        "puppy",
+        "puppies",
+        "corgi"
+      ],
+      "excludeTerms": [
+        "不喜欢狗",
+        "讨厌狗",
+        "不想养狗",
+        "不喜欢小狗",
+        "讨厌小狗",
+        "不想养小狗",
+        "不喜欢狗狗",
+        "讨厌狗狗",
+        "不想养狗狗",
+        "不喜欢柯基",
+        "讨厌柯基",
+        "不想养柯基",
+        "气球狗",
+        "牵狗绳",
+        "遛狗绳"
+      ]
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "animal-rabbit",
+      "label": "兔子",
+      "color": "#FFF3EA",
+      "animal": true,
+      "evidenceTerms": [
+        "兔子",
+        "小兔",
+        "兔兔",
+        "白兔",
+        "rabbit",
+        "rabbits",
+        "bunny",
+        "bunnies"
+      ],
+      "excludeTerms": [
+        "不喜欢兔子",
+        "讨厌兔子",
+        "不想养兔子",
+        "不喜欢小兔",
+        "讨厌小兔",
+        "不想养小兔",
+        "不喜欢兔兔",
+        "讨厌兔兔",
+        "不想养兔兔",
+        "不喜欢白兔",
+        "讨厌白兔",
+        "不想养白兔"
+      ]
+    },
+    {
+      "templateId": "Summon",
+      "visualId": "animal-hamster",
+      "label": "仓鼠",
+      "color": "#E9BE79",
+      "animal": true,
+      "evidenceTerms": [
+        "仓鼠",
+        "金丝熊",
+        "hamster",
+        "hamsters"
+      ],
+      "excludeTerms": [
+        "不喜欢仓鼠",
+        "讨厌仓鼠",
+        "不想养仓鼠",
+        "不喜欢金丝熊",
+        "讨厌金丝熊",
+        "不想养金丝熊"
       ]
     }
   ]

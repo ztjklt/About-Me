@@ -21,6 +21,7 @@ namespace AboutMe.Editor
         static void Tick(Match m,float t){for(int i=0;i<Mathf.CeilToInt(t/.02f);i++)m.Tick(.02f);}
         static PersonaInstance Throw(Match m)
         {var p=m.Players["p0"];var item=m.Item(p.equipped);m.Receive("p0",new Command{sequence=p.sequence+1,action="use_item",yaw=0});Tick(m,.2f);return item;}
+        public static void ValidateAll(){Run();Regression();}
         public static void Regression()
         {
             SoftCombatTests.Run();

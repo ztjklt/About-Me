@@ -263,6 +263,13 @@ def institution_name(source):
 
 def catalog_supports_fact(catalog, source):
     evidence = normalized_fact(source)
+    if catalog.get('animal'):
+        def matches(term):
+            return bool(re.search(r'(?<![a-z])'+re.escape(term)+r'(?![a-z])', source, re.I)) if term.isascii() else term in source
+        if not any(matches(t) for t in catalog['evidenceTerms']):
+            return False
+        if re.search(r"(?:do not like|don't like|dislike|hate|not like)\s+(?:cute\s+|small\s+)?(?:"+'|'.join(re.escape(t) for t in catalog['evidenceTerms'] if t.isascii())+r")\b", source, re.I):
+            return False
     return (not catalog.get('evidenceTerms')
             or any(normalized_fact(term) in evidence for term in catalog['evidenceTerms'])) and not any(
                 normalized_fact(term) in evidence for term in catalog.get('excludeTerms', []))

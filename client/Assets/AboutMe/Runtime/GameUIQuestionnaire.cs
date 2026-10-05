@@ -31,13 +31,14 @@ namespace AboutMe
             new IntroductionQuestion("喜欢使用哪个 AI？","我喜欢",new[]{"DeepSeek","Claude"},new string[0]),
             new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0]),
             new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0]),
-            new IntroductionQuestion("其他 AI 偏好（可跳过）","我喜欢",new[]{"GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0])
+            new IntroductionQuestion("其他 AI 偏好（可跳过）","我喜欢",new[]{"GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0]),
+            new IntroductionQuestion("喜欢哪些小动物？","我喜欢的小动物有",new[]{"猫","狗","兔子","仓鼠"},AnimalPersonaCatalog.Visuals)
         };
 
         RectTransform introductionQuestionnaire;
         InputField questionnaireDraft;
         Text questionnaireFeedback;
-        readonly bool[] introductionAnswers=new bool[84];
+        readonly bool[] introductionAnswers=new bool[IntroductionQuestions.Sum(q=>q.labels.Length)];
         readonly List<InputField> questionnaireOther=new List<InputField>();
         readonly List<string> questionnaireOptionLabels=new List<string>();
         static readonly string[] QuestionnaireExpressions={"friendly","joy","confident","sleepy","surprised","determined"};

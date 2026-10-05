@@ -1,0 +1,25 @@
+{
+  "task_id": "8ef5cc45-7930-49c1-a083-5331d26929d1",
+  "source_task_id": "6b4e5bec-7887-4120-9def-5070a30f4b9e",
+  "credits_consumed": 50,
+  "credits_breakdown": [
+    {
+      "task_id": "6b4e5bec-7887-4120-9def-5070a30f4b9e",
+      "type": "text_to_model",
+      "credits_consumed": 40
+    },
+    {
+      "task_id": "8ef5cc45-7930-49c1-a083-5331d26929d1",
+      "type": "convert_model",
+      "credits_consumed": 10
+    }
+  ],
+  "provider": "Tripo",
+  "model": "P1-20260311",
+  "animal": "hamster",
+  "files": {
+    "preview.png": "2b774c8f0affa99104a813ac6ee01eb4a62c13232b330ec37b4fae6a14c0d603",
+    "model.fbx": "30b6115c6fd5b7c630f6ccfe6396054a7a0ace93be6073aca9dc050d00120ccb",
+    "model.glb": "debb1a72b65ae39b4d95e4b3db0789484a048f40d093335ecd2f248139d3bf91"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "task_id": "f2c43df5-e0d3-4b3b-9629-2832230dc02e",
+  "source_task_id": "e49ae3a7-87e3-45d3-97f3-e4d148fc9793",
+  "credits_consumed": 50,
+  "credits_breakdown": [
+    {
+      "task_id": "e49ae3a7-87e3-45d3-97f3-e4d148fc9793",
+      "type": "text_to_model",
+      "credits_consumed": 40
+    },
+    {
+      "task_id": "f2c43df5-e0d3-4b3b-9629-2832230dc02e",
+      "type": "convert_model",
+      "credits_consumed": 10
+    }
+  ],
+  "provider": "Tripo",
+  "model": "P1-20260311",
+  "animal": "rabbit",
+  "files": {
+    "preview.png": "98c3c10a142059c74bfa301a90e5594c6bba4049b402b3fb61d626612c7e1208",
+    "model.fbx": "4f29a1b5fee2ab90ab98069bf8b8c1d4a59b12334f1bed52f3127615fc1361ad",
+    "model.glb": "e61d8feb70bc7ecab4c02b7a64bd05bc580ad4846762aa97af3fd7fcd0ae64a1"
+  }
+}

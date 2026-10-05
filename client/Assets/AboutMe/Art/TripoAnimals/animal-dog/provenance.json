@@ -1,0 +1,25 @@
+{
+  "task_id": "ebf7e168-1816-40b1-844f-7caa236446c7",
+  "source_task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+  "credits_consumed": 50,
+  "credits_breakdown": [
+    {
+      "task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+      "type": "text_to_model",
+      "credits_consumed": 40
+    },
+    {
+      "task_id": "ebf7e168-1816-40b1-844f-7caa236446c7",
+      "type": "convert_model",
+      "credits_consumed": 10
+    }
+  ],
+  "provider": "Tripo",
+  "model": "P1-20260311",
+  "animal": "dog",
+  "files": {
+    "preview.png": "a57204b87cda38159cf62851ab7ba8b9a583232558e1bf32107c86185928c13d",
+    "model.fbx": "69f764e2f878106b20593eda9a2d8b174eccc134ad0d4554e2e3ba71fe87d2d3",
+    "model.glb": "ab680d3b0e2017dc24b8e0c3280c6b8236aff3ffff628ad7f58d0a21b18abfb8"
+  }
+}

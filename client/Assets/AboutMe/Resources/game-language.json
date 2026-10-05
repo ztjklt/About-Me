@@ -5883,6 +5883,26 @@
     {
       "zh": "GLM 娘",
       "en": "GLM Girl"
+    },
+    {
+      "zh": "喜欢哪些小动物？",
+      "en": "Which small animals do you like?"
+    },
+    {
+      "zh": "我喜欢的小动物有",
+      "en": "Small animals I like include "
+    },
+    {
+      "zh": "狗",
+      "en": "Dog"
+    },
+    {
+      "zh": "兔子",
+      "en": "Rabbit"
+    },
+    {
+      "zh": "仓鼠",
+      "en": "Hamster"
     }
   ]
 }

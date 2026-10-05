@@ -1,0 +1,25 @@
+{
+  "task_id": "f565b4dd-963c-483c-96a0-de715eb8a341",
+  "source_task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+  "credits_consumed": 50,
+  "credits_breakdown": [
+    {
+      "task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+      "type": "text_to_model",
+      "credits_consumed": 40
+    },
+    {
+      "task_id": "f565b4dd-963c-483c-96a0-de715eb8a341",
+      "type": "convert_model",
+      "credits_consumed": 10
+    }
+  ],
+  "provider": "Tripo",
+  "model": "P1-20260311",
+  "animal": "cat",
+  "files": {
+    "preview.png": "96d8c78827d328fa7f183e4768cb57f68cd1fc170dc2f1e335f77c4e4e6b5ac6",
+    "model.fbx": "a2795b66e22033ec9859b7cd2d82f61780262f16e688ddd0d3bd4754ea1a9571",
+    "model.glb": "a8fdb3847435ef10b1a9ba12204d6fc5e570f65f1b6faea21bb1aa3c48795a64"
+  }
+}

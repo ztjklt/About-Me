@@ -4685,6 +4685,54 @@
         "y": 0,
         "z": 0
       }
+    },
+    {
+      "visualId": "cat",
+      "label": "猫",
+      "templateId": "Summon",
+      "resourcePath": "PersonaProps/cat",
+      "source": "Tripo P1-20260311",
+      "license": "Generated asset; Tripo account terms",
+      "color": "#F4AE62",
+      "scale": 1,
+      "colliderRadius": 0.45,
+      "swallowScale": 1
+    },
+    {
+      "visualId": "animal-dog",
+      "label": "狗",
+      "templateId": "Summon",
+      "resourcePath": "PersonaProps/animal-dog",
+      "source": "Tripo P1-20260311",
+      "license": "Generated asset; Tripo account terms",
+      "color": "#E5C58D",
+      "scale": 1,
+      "colliderRadius": 0.45,
+      "swallowScale": 1
+    },
+    {
+      "visualId": "animal-rabbit",
+      "label": "兔子",
+      "templateId": "Summon",
+      "resourcePath": "PersonaProps/animal-rabbit",
+      "source": "Tripo P1-20260311",
+      "license": "Generated asset; Tripo account terms",
+      "color": "#FFF3EA",
+      "scale": 1,
+      "colliderRadius": 0.45,
+      "swallowScale": 1
+    },
+    {
+      "visualId": "animal-hamster",
+      "label": "仓鼠",
+      "templateId": "Summon",
+      "resourcePath": "PersonaProps/animal-hamster",
+      "source": "Tripo P1-20260311",
+      "license": "Generated asset; Tripo account terms",
+      "color": "#E9BE79",
+      "scale": 1,
+      "colliderRadius": 0.45,
+      "swallowScale": 1
     }
   ]
 }

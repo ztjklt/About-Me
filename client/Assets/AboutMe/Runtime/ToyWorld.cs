@@ -227,7 +227,8 @@ namespace AboutMe
                 {
                     go.transform.position=Vector3.Lerp(go.transform.position,item.position,1-Mathf.Exp(-Time.deltaTime*20));if(item.state==ItemState.Thrown&&AnimalPersonaCatalog.IsAnimal(item.asset.visualId))
                     {var heading=item.velocity;heading.y=0;if(heading.sqrMagnitude>.01f)go.transform.rotation=Quaternion.LookRotation(heading);go.transform.localScale=Vector3.one; }
-                    else {go.transform.Rotate(Vector3.up,45*Time.deltaTime);go.transform.localScale=Vector3.one;}
+                    else {if(!AnimalPersonaCatalog.IsAnimal(item.asset.visualId))go.transform.Rotate(Vector3.up,45*Time.deltaTime);go.transform.localScale=Vector3.one;}
+                    go.GetComponent<AnimalPersonaMotion>()?.Present(item.state==ItemState.Thrown,state.simulationTime);
                     var itemLabel=go.GetComponentInChildren<TextMesh>(true);if(itemLabel)itemLabel.gameObject.SetActive(true);
                 }
             }
