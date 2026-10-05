@@ -86,6 +86,7 @@ namespace AboutMe
         GameObject handOpen,handFist;
         HandPresentation handPresentation;
         ImpactFeedback impactFeedback;
+        EaterRoastPresentation eaterRoasts;
         string spectate="";
         bool menuPreviewVisible=true;
         public void SetMenuPreviewVisible(bool visible)
@@ -128,7 +129,7 @@ namespace AboutMe
                 ToyFactory.Shape("Threshold gold inlay",PrimitiveType.Cube,campusRoot.transform,
                     new Vector3(side*30.45f,4.506f,z),new Vector3(.045f,.012f,6.4f),"#FFD773");
             }
-            impactFeedback=gameObject.AddComponent<ImpactFeedback>();
+            impactFeedback=gameObject.AddComponent<ImpactFeedback>();eaterRoasts=gameObject.AddComponent<EaterRoastPresentation>();
             actorRoot=new GameObject("Actors").transform;objectRoot=new GameObject("Persona & effects").transform;
             hand=new GameObject("The Hand").transform;handPresentation=gameObject.AddComponent<HandPresentation>();
             handOpen=Instantiate(Resources.Load<GameObject>("CampusV04/HandOpen"),hand,false);
@@ -140,6 +141,7 @@ namespace AboutMe
             var state=GameNetwork.Game?.State;
             if(state==null)
             {
+                eaterRoasts?.Draw(null,actors,ViewCamera);
                 if(!menuPreviewVisible){if(ViewCamera)ViewCamera.enabled=false;return;}
                 if(ViewCamera&&!ViewCamera.enabled)ViewCamera.enabled=true;
                 handPresentation.Draw(null,hand,handOpen,handFist,ViewCamera);
@@ -200,7 +202,7 @@ namespace AboutMe
                     if(renderer&&renderer.gameObject!=actor.label.gameObject)renderer.forceRenderingOff=hidden;
                 visual.hidden=hidden;cameraSkins[pair.Key]=visual;
             }
-            impactFeedback.Draw(state,actors,ViewCamera);
+            impactFeedback.Draw(state,actors,ViewCamera);eaterRoasts.Draw(state,actors,ViewCamera);
             var present=new HashSet<string>();
             if(state.revealed!=null)foreach(var item in state.revealed)
             {

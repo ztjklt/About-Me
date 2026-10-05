@@ -193,7 +193,7 @@ namespace AboutMe.Editor
                 p.position=barrier.position+Vector3.back*1.2f;p.position.y=1;p.input=new Command();p.yaw=0;p.nextAttack=0;m.Item(p.equipped).asset.templateId="HeavyWeapon";Heavy(m,"b");Assert(barrier.health==1,"first heavy did not damage barricade");
                 p.nextAttack=0;p.chargingSince=-1;Heavy(m,"b");Assert(!m.Effects.Contains(barrier),"barricade did not break after two heavy strikes health="+barrier.health+" pending="+p.pendingAction+" kind="+p.actionKind+" stagger="+p.staggerUntil+" time="+m.Time+" charging="+p.chargingSince);
             });
-            MenuRuleTests.Run();
+            MenuRuleTests.Run();EatingRoastTests.Run();
             Debug.Log("ABOUTME_RULE_TESTS_PASSED "+passed+" + menu/NPC suite");
         }
         static void PrepareBuildScenes()

@@ -160,7 +160,7 @@ namespace AboutMe
         public List<string> hit = new List<string>();
     }
     [Serializable] public class EatRecord { public string eater, owner, persona, visual,eaterId,ownerId,assetId,instanceId; }
-    [Serializable] public class MatchEvent { public int id; public string text; }
+    [Serializable] public class MatchEvent { public int id; public string text,kind,speakerId,itemId,roastId,line; public float spokenAt; }
     [Serializable] public class MatchRank { public string playerId, nickname; public int rank, eaten, remaining; public bool eliminated; }
     [Serializable] public class Snapshot
     {
@@ -726,9 +726,11 @@ namespace AboutMe
             if(item==null)return;
             item.state=ItemState.Carried;item.carrierId=p.profile.playerId;item.velocity=Vector3.zero;
             p.carrying=item.id;p.interaction=item.ownerId==p.profile.playerId?"recover":"eat";p.interactionStart=Time; SetAction(p,p.interaction,item.id);
+            if(p.interaction=="eat")BeginEatingRoast(p,item);
         }
         public void Interrupt(Player p)
         {
+            CancelEatingRoast(p);
             var item=Item(p.carrying);
             if(item!=null && item.state==ItemState.Carried && item.carrierId==p.profile.playerId)
             { item.state=ItemState.Ground;item.carrierId="";item.position=p.position+Forward(p);item.velocity=Vector3.up*2; }
@@ -743,6 +745,7 @@ namespace AboutMe
             else
             {
                 item.state=ItemState.Consumed;
+                CompleteEatingRoast(p,item);
                 var original=Players[item.ownerId];
                 Eaten.Add(new EatRecord {eater=p.profile.nickname,owner=original.profile.nickname,persona=item.asset.name,visual=item.asset.visualId,eaterId=p.profile.playerId,ownerId=item.ownerId,assetId=item.asset.assetId,instanceId=item.id});
                 Say(p.profile.nickname+" 吃掉了 "+original.profile.nickname+" 的「"+item.asset.name+"」！");

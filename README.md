@@ -4,7 +4,7 @@
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-persona-r11`：喷火两次各30稳定度，16型MBTI各有不同默认机制，问卷直接标注能力、能力面板提供16种改选；保留20件Persona、统一AI题、四动物骨骼行走、1–6人机／默认3个及277道具／96机制与设置／衣橱／双语。Mac、Web、API同源，8093／7793；详见 [R11交付](docs/PERSONA_R11_DELIVERY.md) 与 [16型原理表](docs/MBTI_16_MECHANICS.md)。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-persona-r12`：每个真人、人机和 AI 角色开始吞噬别人的 Persona 时，由 DeepSeek 针对当前道具生成一句第一人称调侃，气泡跟随吞噬者；保留完整 R11 的20件Persona、16型MBTI机制、四种动物动画、1–6人机和277道具。Mac、Web、API同源，8096／7796；详见 [R12交付](docs/PERSONA_R12_DELIVERY.md)。
 
 ## 小动物 R6 候选交付
 

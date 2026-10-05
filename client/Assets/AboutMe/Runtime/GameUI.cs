@@ -97,6 +97,7 @@ namespace AboutMe
             net.Token=SavedTokenForApi();if(net.Token!=""&&net.ApiUrl!=""&&!Environment.GetCommandLineArgs().Contains("--ui-preview"))StartCoroutine(LoadProfile());
             platform.Initialize();
             RefreshTouchVisibility();ConfigureUIPreview();StartCoroutine(CheckService());
+            int roastAudit=Array.IndexOf(languageArgs,"--eater-roast-audit");if(roastAudit>=0&&roastAudit+1<languageArgs.Length)StartCoroutine(AuditEatingRoasts(languageArgs[roastAudit+1]));
             int soloAudit=Array.IndexOf(languageArgs,"--solo-audit");if(soloAudit>=0&&soloAudit+1<languageArgs.Length)StartCoroutine(AuditSoloBots(languageArgs[soloAudit+1]));
             int settingsAudit=Array.IndexOf(languageArgs,"--settings-audit");if(settingsAudit>=0&&settingsAudit+1<languageArgs.Length)StartCoroutine(AuditPlayerSettings(languageArgs[settingsAudit+1]));
         }

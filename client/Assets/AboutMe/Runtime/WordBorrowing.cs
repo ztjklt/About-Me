@@ -25,7 +25,7 @@ namespace AboutMe
         {
             var item=Item(p.equipped);if(!BorrowedBy(item,p))return false;
             CancelSelfFields(p);CancelSelfLoot(p);CancelSelfGuards(p);CancelSelfMovement(p);CancelAction(p);p.chargingSince=-1;p.equipped="";
-            item.state=ItemState.Carried;p.carrying=item.id;p.interaction="eat";p.interactionStart=Time;SetAction(p,"eat",item.id);return true;
+            item.state=ItemState.Carried;p.carrying=item.id;p.interaction="eat";p.interactionStart=Time;SetAction(p,"eat",item.id);BeginEatingRoast(p,item);return true;
         }
     }
 }

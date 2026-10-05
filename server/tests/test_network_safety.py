@@ -49,7 +49,7 @@ def test_roast_forbids_source_and_rejects_private_name(client, monkeypatch):
     result = client.post('/roast', json=BODY, headers=headers)
     assert result.status_code == 200
     assert '篮球' in result.json()['roast']
-    assert sent == [BODY]
+    assert sent == [dict(BODY, catalog_label='篮球')]
 
 
 def test_unsafe_provider_output_is_never_returned(client, monkeypatch):
@@ -82,7 +82,7 @@ def test_internal_roast_is_authenticated_and_idempotent(client, monkeypatch):
     assert first.status_code == 200
     assert first.json() == {'event_id': 'b' * 32, 'roast': ROAST_LINE, 'aiSource': 'provider'}
     assert client.post('/internal/roast', json=body, headers=auth).json() == first.json()
-    assert len(calls) == 1 and calls[0] == BODY
+    assert len(calls) == 1 and calls[0] == dict(BODY, catalog_label='篮球')
     with module.db() as con:
         billed = con.execute("SELECT count FROM request_limits WHERE bucket LIKE 'ai:daily:%'").fetchone()[0]
     assert billed == 1
@@ -206,3 +206,38 @@ def test_only_authenticated_proxy_header_splits_peer_quota(client, monkeypatch):
     with pytest.raises(HTTPException) as error:
         module.enforce_quota(SimpleNamespace(client=SimpleNamespace(host='another-peer')), 'sessions')
     assert error.value.status_code == 429
+
+
+def test_local_eater_events_are_authenticated_scoped_and_idempotent(client, monkeypatch):
+    calls = []
+    async def fake(item):
+        calls.append(item)
+        return '我把篮球吃进肚里，这下打嗝都得算三分球了。'
+    monkeypatch.setattr(module, 'roast_with_provider', fake)
+    body = dict(BODY, match_id='1' * 32, event_id='2' * 32)
+    assert client.post('/roast/eating', json=body).status_code == 401
+    auth = identity(client)
+    first = client.post('/roast/eating', json=body, headers=auth)
+    assert first.status_code == 200 and first.json()['event_id'] == body['event_id']
+    assert client.post('/roast/eating', json=body, headers=auth).json() == first.json()
+    assert len(calls) == 1
+    other = identity(client)
+    assert client.post('/roast/eating', json=body, headers=other).status_code == 200
+    assert len(calls) == 2  # Separate players cannot read another local match's cached line.
+    assert client.post('/roast/eating', json=dict(body, source='原始介绍'), headers=auth).status_code == 422
+
+
+def test_consumable_trait_words_are_grounded_as_physical_blocks(client, monkeypatch):
+    calls = []
+    async def fake(item):
+        calls.append(item)
+        return '我吞下这块理性积木，连打嗝都要先列个提纲。'
+    monkeypatch.setattr(module, 'roast_with_provider', fake)
+    auth = {'X-Game-Key': 'test-server-key'}
+    body = dict(item_name='理性', template_id='SpecialAbility', visual_id='trait-word', match_id='3'*32, event_id='4'*32)
+    result = client.post('/internal/roast', json=body, headers=auth)
+    assert result.status_code == 200
+    assert calls[0]['catalog_label'] == '文字积木'
+    assert 'source' not in calls[0] and 'eater' not in calls[0]
+    assert client.post('/internal/roast', json=dict(body, item_name='我的电话13800138000'), headers=auth).status_code == 422
+    assert '第一人称' in module.ROAST_SYSTEM_PROMPT and '咀嚼' in module.ROAST_SYSTEM_PROMPT

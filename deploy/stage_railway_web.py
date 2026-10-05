@@ -38,7 +38,7 @@ def main() -> None:
     # Use the current public pair before Unity reads application.absoluteURL.
     setup = "const publicReleaseUrl=new URL(location.href);publicReleaseUrl.searchParams.set('api',location.origin+'/api');publicReleaseUrl.searchParams.set('game'," + json.dumps(args.game_url) + ");history.replaceState(history.state,'',publicReleaseUrl);"
     html = html.replace('<script>', '<script>\n' + setup, 1)
-    badge = '<a id="release-version" href="/version.json" target="_blank" style="position:fixed;bottom:6px;right:8px;z-index:100;color:#374151;background:#fff9;padding:3px 8px;border-radius:6px;font:11px system-ui;text-decoration:none">最新版 R11 · ' + args.release_sha[:7] + '</a>'
+    badge = '<a id="release-version" href="/version.json" target="_blank" style="position:fixed;bottom:6px;right:8px;z-index:100;color:#374151;background:#fff9;padding:3px 8px;border-radius:6px;font:11px system-ui;text-decoration:none">最新版 ' + args.release_id.rsplit('-', 1)[-1].upper() + ' · ' + args.release_sha[:7] + '</a>'
     html = html.replace('</body>', badge + '\n</body>', 1)
     if "aboutme-web-fingerprint" in html or (root / "version.json").exists():
         raise SystemExit("WebGL index has already been versioned")

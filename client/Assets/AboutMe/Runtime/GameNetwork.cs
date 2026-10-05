@@ -21,7 +21,7 @@ namespace AboutMe
     [Serializable] public class RoastRequestPayload { public string match_id, event_id, item_name, template_id, visual_id; }
     [Serializable] public class RoastResponsePayload { public string roast, event_id, aiSource; }
 
-    public class GameNetwork : NetworkManager, IMatchSession
+    public partial class GameNetwork : NetworkManager, IMatchSession
     {
         public static GameNetwork Game;
         public string ApiUrl = "http://127.0.0.1:8081";
@@ -47,6 +47,7 @@ namespace AboutMe
         public void Close()
         {
             if(queuedConnect!=null){StopCoroutine(queuedConnect);queuedConnect=null;}
+            if(localSession!=null)roastCursor.Remove(localSession.Match.MatchId);
             localSession?.Close();localSession=null;
             if(NetworkClient.active)StopClient();State=null;sequence=0;
         }
@@ -233,7 +234,7 @@ namespace AboutMe
         {
             if(localSession!=null)
             {
-                localSession.Tick(UnityEngine.Time.fixedDeltaTime);State=localSession.Current;
+                localSession.Tick(UnityEngine.Time.fixedDeltaTime);QueueRoasts(localSession.Match,true);State=localSession.Current;
                 if(State.phase==MatchPhase.Finished&&!localResultSaved)
                 {localResultSaved=true;PlayerPrefs.SetString("lastSoloResult",JsonUtility.ToJson(State));PlayerPrefs.Save();}
             }
@@ -255,44 +256,6 @@ namespace AboutMe
             {
                 QueueRoasts(room);
                 if(room.Phase==MatchPhase.Finished && !saved.Contains(room.MatchId)) {saved.Add(room.MatchId);StartCoroutine(SaveResult(room));}
-            }
-        }
-        void QueueRoasts(Match room)
-        {
-            int seen=roastCursor.TryGetValue(room.MatchId,out var count)?count:0;
-            roastCursor[room.MatchId]=room.Eaten.Count;
-            if(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GAME_SERVER_KEY")))return;
-            // A room containing any practice identity remains a free trial room.
-            if(room.Players.Values.Any(p=>p.profile.playerId.StartsWith("sample-",StringComparison.Ordinal)))return;
-            for(int i=seen;i<room.Eaten.Count;i++)
-            {
-                var eaten=room.Eaten[i];
-                var item=room.Item(eaten.instanceId);
-                if(item==null)continue;
-                StartCoroutine(RequestRoast(room,new RoastRequestPayload{
-                    match_id=room.MatchId,event_id=eaten.instanceId,item_name=eaten.persona,
-                    template_id=item.asset.templateId,visual_id=item.asset.visualId}));
-            }
-        }
-        IEnumerator RequestRoast(Match room,RoastRequestPayload payload)
-        {
-            string key=Environment.GetEnvironmentVariable("GAME_SERVER_KEY");
-            using(var req=ApiRequest(ApiUrl+"/internal/roast",JsonUtility.ToJson(payload)))
-            {
-                req.timeout=15;
-                req.SetRequestHeader("X-Game-Key",key);
-                yield return req.SendWebRequest();
-                if(req.result!=UnityWebRequest.Result.Success||req.responseCode<200||req.responseCode>=300)
-                {Debug.LogWarning("ABOUTME_ROAST_UNAVAILABLE match="+payload.match_id+" event="+payload.event_id+" status="+req.responseCode);yield break;}
-                RoastResponsePayload response=null;
-                try{response=JsonUtility.FromJson<RoastResponsePayload>(req.downloadHandler.text);}catch(Exception){}
-                if(response==null||response.event_id!=payload.event_id||response.aiSource!="provider"||string.IsNullOrWhiteSpace(response.roast))
-                {Debug.LogWarning("ABOUTME_ROAST_INVALID match="+payload.match_id+" event="+payload.event_id);yield break;}
-                string line=response.roast.Trim();
-                if(line.Length>120||line.IndexOfAny(new[]{'\r','\n'})>=0)
-                {Debug.LogWarning("ABOUTME_ROAST_INVALID match="+payload.match_id+" event="+payload.event_id);yield break;}
-                if(rooms.TryGetValue(room.Room,out var current)&&ReferenceEquals(current,room)&&current.MatchId==payload.match_id)
-                    current.Say(line);
             }
         }
         void SendSnapshot(NetworkConnectionToClient conn,Snapshot view)
