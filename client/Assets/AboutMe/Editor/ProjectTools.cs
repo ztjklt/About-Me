@@ -196,10 +196,16 @@ namespace AboutMe.Editor
             MenuRuleTests.Run();
             Debug.Log("ABOUTME_RULE_TESTS_PASSED "+passed+" + menu/NPC suite");
         }
+        static void PrepareBuildScenes()
+        {
+            if(Environment.GetEnvironmentVariable("ABOUTME_EXISTING_SCENES")!="1"){Generate();return;}
+            if(EditorBuildSettings.scenes.Length!=5||EditorBuildSettings.scenes.Any(s=>!s.enabled||!File.Exists(s.path)))
+                throw new Exception("Frozen release requires all five generated scenes");
+        }
         [MenuItem("About Me/3. Build macOS demo")]
         public static void BuildMac()
         {
-            Generate();TestRules();
+            PrepareBuildScenes();TestRules();
             bool isolated=Environment.GetEnvironmentVariable("ABOUTME_QA_ISOLATED")=="1";
             string originalProduct=PlayerSettings.productName;
             string originalIdentifier=PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Standalone);
@@ -226,7 +232,7 @@ namespace AboutMe.Editor
         [MenuItem("About Me/4. Build WebGL demo")]
         public static void BuildWeb()
         {
-            Generate();PlayerSettings.WebGL.template="PROJECT:AboutMe";PlayerSettings.WebGL.compressionFormat=WebGLCompressionFormat.Disabled;
+            PrepareBuildScenes();PlayerSettings.WebGL.template="PROJECT:AboutMe";PlayerSettings.WebGL.compressionFormat=WebGLCompressionFormat.Disabled;
             var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=EditorBuildSettings.scenes.Select(s=>s.path).ToArray(),locationPathName=Environment.GetEnvironmentVariable("ABOUTME_WEB_OUTPUT")??"../builds/web",target=BuildTarget.WebGL,options=Environment.GetEnvironmentVariable("ABOUTME_RELEASE_BUILD")=="1"?BuildOptions.None:BuildOptions.Development});
             if(result.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Web build failed");
             Debug.Log("ABOUTME_WEB_BUILD_OK");
