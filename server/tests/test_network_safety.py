@@ -241,3 +241,20 @@ def test_consumable_trait_words_are_grounded_as_physical_blocks(client, monkeypa
     assert 'source' not in calls[0] and 'eater' not in calls[0]
     assert client.post('/internal/roast', json=dict(body, item_name='我的电话13800138000'), headers=auth).status_code == 422
     assert '第一人称' in module.ROAST_SYSTEM_PROMPT and '咀嚼' in module.ROAST_SYSTEM_PROMPT
+
+
+def test_seven_local_consumers_can_speak_without_generation_peer_cap(client, monkeypatch):
+    calls = []
+    async def fake(item):
+        calls.append(item)
+        return ROAST_LINE
+    monkeypatch.setattr(module, 'roast_with_provider', fake)
+    auth = identity(client)
+    for i in range(7):
+        body = dict(BODY, match_id='5'*32, event_id=f'{i:032x}')
+        assert client.post('/roast/eating', json=body, headers=auth).status_code == 200
+    assert len(calls) == 7
+    # The global/day caps still apply to every actor; normal generation retains its peer cap.
+    with module.db() as con:
+        assert con.execute("SELECT count FROM request_limits WHERE bucket LIKE 'ai:daily:%'").fetchone()[0] == 7
+    assert client.post('/roast', json=BODY, headers=auth).status_code == 429

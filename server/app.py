@@ -148,7 +148,8 @@ def enforce_quota(request: Request, kind: str):
         buckets = [('ai:global:' + str(minute), quota_limit('ABOUTME_AI_GLOBAL_PER_MINUTE', 30), (minute + 1) * 60),
                    ('ai:daily:' + str(day), quota_limit('ABOUTME_AI_DAILY_LIMIT', 500), (day + 1) * 86400)]
         if kind != 'ai_internal':
-            buckets.append(('ai:peer:' + peer + ':' + str(minute), quota_limit('ABOUTME_AI_PEER_PER_MINUTE', 6), (minute + 1) * 60))
+            peer_limit = quota_limit('ABOUTME_ROAST_PEER_PER_MINUTE', 30) if kind == 'ai_local_roast' else quota_limit('ABOUTME_AI_PEER_PER_MINUTE', 6)
+            buckets.append(('ai:peer:' + peer + ':' + str(minute), peer_limit, (minute + 1) * 60))
     with db() as con:
         con.execute('BEGIN IMMEDIATE')
         for bucket, maximum, _ in buckets:
@@ -646,7 +647,7 @@ async def local_eating_roast(body: InternalRoastRequest, request: Request,
                              authorization: str | None = Header(default=None)):
     player_id, _, _ = authenticate(authorization)
     # One authenticated local match can speak for its human and NPCs. Never ship the game key.
-    return await eating_roast_event(body, request, 'local:' + player_id + ':', 'ai')
+    return await eating_roast_event(body, request, 'local:' + player_id + ':', 'ai_local_roast')
 
 
 @app.post('/internal/roast')
