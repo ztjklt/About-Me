@@ -221,6 +221,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: walk
       objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: f1b201257c66c4ca09954d7a2a3b4992, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: f1b201257c66c4ca09954d7a2a3b4992, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9042432133132620188, guid: f1b201257c66c4ca09954d7a2a3b4992, type: 3}
       propertyPath: m_AABB.m_Center.z
       value: 0.4231276

@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace AboutMe
 {
-    // Sample the imported skin/bone clip; authority movement and hits remain separate.
+    // Imported Legacy clips support explicit runtime skeletal sampling; authority movement and hits remain separate.
     public sealed class AnimalPersonaMotion : MonoBehaviour
     {
         public Transform model;
@@ -16,6 +16,7 @@ namespace AboutMe
         {
             if(bones!=null||!model)return;
             foreach(var animator in model.GetComponentsInChildren<Animator>(true))animator.enabled=false;
+            foreach(var animation in model.GetComponentsInChildren<Animation>(true)){animation.playAutomatically=false;animation.enabled=false;}
             bones=model.GetComponentsInChildren<Transform>(true);
             positions=new Vector3[bones.Length];scales=new Vector3[bones.Length];rotations=new Quaternion[bones.Length];
             for(int i=0;i<bones.Length;i++){positions[i]=bones[i].localPosition;rotations[i]=bones[i].localRotation;scales[i]=bones[i].localScale;}

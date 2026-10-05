@@ -25,7 +25,7 @@ namespace AboutMe.Editor
                 try
                 {
                     var motion=go.GetComponent<AnimalPersonaMotion>();var skins=go.GetComponentsInChildren<SkinnedMeshRenderer>();
-                    Check(motion&&motion.walk&&motion.walk.length>.1f&&skins.Length>0&&skins.All(s=>s.bones.Length>=7),id+" missing actual rig or walk");passed++;
+                    Check(motion&&motion.walk&&motion.walk.length>.1f&&motion.walk.legacy&&skins.Length>0&&skins.All(s=>s.bones.Length>=7),id+" missing actual rig or walk");passed++;
                     Check(skins.All(s=>s.sharedMesh.boneWeights.All(w=>Mathf.Abs(w.weight0+w.weight1+w.weight2+w.weight3-1)<.01f)),id+" unweighted vertices");passed++;
                     var rest=Vertices(go);var position=motion.model.localPosition;var rotation=motion.model.localRotation;var scale=motion.model.localScale;
                     float cycle=motion.walk.length/motion.walkSpeed;

@@ -52,7 +52,10 @@ namespace AboutMe
                 Check(go.GetComponentsInChildren<MeshFilter>().Sum(x=>x.sharedMesh.triangles.Length/3)+go.GetComponentsInChildren<SkinnedMeshRenderer>().Sum(x=>x.sharedMesh.triangles.Length/3)>1000,"real imported mesh "+id);
                 Check(go.GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterials.All(m=>m.mainTexture!=null)),"actual textures "+id);
                 var motion=go.GetComponent<AnimalPersonaMotion>();var skin=go.GetComponentInChildren<SkinnedMeshRenderer>();Check(motion.walk&&skin&&skin.bones.Length>=7,"actual skeletal clip "+id);
-                var a=new Mesh();var b=new Mesh();motion.Present(true,0);skin.BakeMesh(a,true);motion.Present(true,motion.walk.length/motion.walkSpeed*.25f);skin.BakeMesh(b,true);
+                var a=new Mesh();var b=new Mesh();motion.Present(true,0);yield return null;skin.BakeMesh(a,true);
+                var rotations=skin.bones.Select(t=>t.localRotation).ToArray();motion.Present(true,motion.walk.length/motion.walkSpeed*.25f);
+                Debug.Log("RUNTIME_ANIMAL_BONES "+id+" legacy="+motion.walk.legacy+" rotationDelta="+skin.bones.Select((t,i)=>Quaternion.Angle(rotations[i],t.localRotation)).Max());
+                yield return null;skin.BakeMesh(b,true);Debug.Log("RUNTIME_ANIMAL_MESH "+id+" delta="+a.vertices.Zip(b.vertices,(x,y)=>(x-y).magnitude).Max());
                 Check(a.vertices.Zip(b.vertices,(x,y)=>(x-y).magnitude).Max()>.005f,"actual runtime skin deformation "+id);motion.Present(false,0);Destroy(a);Destroy(b);Destroy(go);
             }
             yield return WalkGallery();

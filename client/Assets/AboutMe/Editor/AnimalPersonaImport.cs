@@ -38,7 +38,7 @@ namespace AboutMe.Editor
                 importer.isReadable=true;importer.importAnimation=animated;importer.materialImportMode=ModelImporterMaterialImportMode.ImportStandard;
                 if(animated)
                 {
-                    importer.animationType=ModelImporterAnimationType.Generic;importer.animationCompression=ModelImporterAnimationCompression.Off;
+                    importer.animationType=ModelImporterAnimationType.Legacy;importer.animationCompression=ModelImporterAnimationCompression.Off;
                     var clips=importer.defaultClipAnimations;foreach(var clip in clips){clip.loopTime=true;clip.loopPose=false;}importer.clipAnimations=clips;
                 }
                 if(!animated){Directory.CreateDirectory(folder+"/Textures");importer.ExtractTextures(folder+"/Textures");}
@@ -96,6 +96,7 @@ namespace AboutMe.Editor
                         motion.walkSpeed=(id=="cat"||id=="animal-dog")?3f:1.8f;
                         if(!motion.walk||motion.walk.length<=0)throw new Exception("Missing walk clip "+id);
                         foreach(var animator in model.GetComponentsInChildren<Animator>(true))animator.enabled=false;
+                        foreach(var animation in model.GetComponentsInChildren<Animation>(true)){animation.playAutomatically=false;animation.enabled=false;}
                         foreach(var skin in model.GetComponentsInChildren<SkinnedMeshRenderer>())
                         {if(skin.bones.Length<7)throw new Exception("Missing weighted animal bones "+id);skin.updateWhenOffscreen=true;var b=skin.localBounds;b.Expand(.25f);skin.localBounds=b;}
                     }

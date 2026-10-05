@@ -218,6 +218,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1699495096679524499, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0.06364331
+      objectReference: {fileID: 0}
+    - target: {fileID: -1699495096679524499, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.39111218
+      objectReference: {fileID: 0}
+    - target: {fileID: -1699495096679524499, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
       propertyPath: m_AABB.m_Extent.x
       value: 0.7339424
       objectReference: {fileID: 0}
@@ -240,6 +248,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
       propertyPath: m_Name
       value: walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2223639932434330405, guid: 3c64942e3a18447869d086739d7d0a4c, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
