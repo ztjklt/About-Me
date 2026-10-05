@@ -1,0 +1,122 @@
+{
+  "approved_credits": 105,
+  "actual_credits": 95,
+  "balance_before": 24715,
+  "balance_after": 24620,
+  "deliveries": [
+    {
+      "animal": "cat",
+      "task_id": "9395a1ef-bb19-4b2d-93e2-11263398f4f1",
+      "source_task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+      "credits_consumed": 35,
+      "credits_breakdown": [
+        {
+          "task_id": "0338fbbb-3991-4f72-a247-1322554861de",
+          "type": "animate_rig",
+          "credits_consumed": 25
+        },
+        {
+          "task_id": "9395a1ef-bb19-4b2d-93e2-11263398f4f1",
+          "type": "animate_retarget",
+          "credits_consumed": 10
+        }
+      ],
+      "model": "v2.5-20260210",
+      "rig_type": "quadruped",
+      "clip": "preset:quadruped:walk",
+      "animate_in_place": true,
+      "fbx_sha256": "1ab740916ba494beac924f3d826a62657ba70baf5186fac436e969e2f9849cf8"
+    },
+    {
+      "animal": "dog",
+      "task_id": "e90edd99-1683-4646-8ebd-b956e8c93056",
+      "source_task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+      "credits_consumed": 35,
+      "credits_breakdown": [
+        {
+          "task_id": "02336d6f-1db7-4be2-acd6-b4162dc16438",
+          "type": "animate_rig",
+          "credits_consumed": 25
+        },
+        {
+          "task_id": "e90edd99-1683-4646-8ebd-b956e8c93056",
+          "type": "animate_retarget",
+          "credits_consumed": 10
+        }
+      ],
+      "model": "v2.5-20260210",
+      "rig_type": "quadruped",
+      "clip": "preset:quadruped:walk",
+      "animate_in_place": true,
+      "fbx_sha256": "632cc591d050f3f6d2f7fa46e111758268b230c3ef156aaeab81ceff6d47090d"
+    },
+    {
+      "animal": "rabbit",
+      "source": "successful Tripo biped rig; locally authored walk following failed refunded retarget",
+      "rig_task_id": "bef66302-0a23-4ddb-bd89-b45b5cfef86c",
+      "rig_credits_consumed": 25,
+      "local_animation_credits": 0,
+      "driven_bones": [
+        "bone_15",
+        "bone_16",
+        "tripo::0_Right_Limb_0",
+        "tripo::1_Left_Limb_1",
+        "tripo::1_Left_Limb_2",
+        "tripo::0_Left_Limb_0",
+        "tripo::Spine_0",
+        "tripo::Head_1"
+      ],
+      "removed_helper_geometry": true,
+      "Blender_version": "5.1.2",
+      "fbx_sha256": "af692a09a0cb90e57ac429bbfd1b4a886f4434bf3ed1bfa64fcf3f1ec5e3b93d",
+      "credits_consumed": 25,
+      "credits_breakdown": [
+        {
+          "task_id": "bef66302-0a23-4ddb-bd89-b45b5cfef86c",
+          "type": "animate_rig",
+          "credits_consumed": 25
+        },
+        {
+          "task_id": "7bc88629-89ae-4d3b-9a08-6a55360df1b6",
+          "type": "animate_retarget",
+          "status": "failed",
+          "error_code": 1004,
+          "quoted_credits": 10,
+          "refunded_credits": 10,
+          "credits_consumed": 0
+        }
+      ]
+    },
+    {
+      "animal": "hamster",
+      "source": "existing Tripo hamster mesh; local manual skinning and baked walk",
+      "source_task_id": "6b4e5bec-7887-4120-9def-5070a30f4b9e",
+      "credits_consumed": 0,
+      "bones": 7,
+      "weighted_vertices": {
+        "Root": 0,
+        "Body": 1806,
+        "Head": 790,
+        "Foot.L": 287,
+        "Paw.L": 72,
+        "Foot.R": 287,
+        "Paw.R": 36
+      },
+      "unweighted_vertices": 0,
+      "source_bounds": {
+        "min": [
+          -0.2802734673023224,
+          -0.4990234375,
+          -0.3798828125
+        ],
+        "max": [
+          0.2802734076976776,
+          0.4990234375,
+          0.3798828125
+        ]
+      },
+      "Blender_version": "5.1.2",
+      "fbx_sha256": "c8aa958a9315ca1354512d276b518400e31f927965d7bca070c6929d1780fae2"
+    }
+  ]
+}

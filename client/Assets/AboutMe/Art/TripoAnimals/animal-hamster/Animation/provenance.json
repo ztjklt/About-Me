@@ -1,0 +1,31 @@
+{
+  "animal": "hamster",
+  "source": "existing Tripo hamster mesh; local manual skinning and baked walk",
+  "source_task_id": "6b4e5bec-7887-4120-9def-5070a30f4b9e",
+  "credits_consumed": 0,
+  "bones": 7,
+  "weighted_vertices": {
+    "Root": 0,
+    "Body": 1806,
+    "Head": 790,
+    "Foot.L": 287,
+    "Paw.L": 72,
+    "Foot.R": 287,
+    "Paw.R": 36
+  },
+  "unweighted_vertices": 0,
+  "source_bounds": {
+    "min": [
+      -0.2802734673023224,
+      -0.4990234375,
+      -0.3798828125
+    ],
+    "max": [
+      0.2802734076976776,
+      0.4990234375,
+      0.3798828125
+    ]
+  },
+  "Blender_version": "5.1.2",
+  "fbx_sha256": "c8aa958a9315ca1354512d276b518400e31f927965d7bca070c6929d1780fae2"
+}

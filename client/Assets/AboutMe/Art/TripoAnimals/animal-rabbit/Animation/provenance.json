@@ -1,0 +1,37 @@
+{
+  "animal": "rabbit",
+  "source": "successful Tripo biped rig; locally authored walk following failed refunded retarget",
+  "rig_task_id": "bef66302-0a23-4ddb-bd89-b45b5cfef86c",
+  "rig_credits_consumed": 25,
+  "local_animation_credits": 0,
+  "driven_bones": [
+    "bone_15",
+    "bone_16",
+    "tripo::0_Right_Limb_0",
+    "tripo::1_Left_Limb_1",
+    "tripo::1_Left_Limb_2",
+    "tripo::0_Left_Limb_0",
+    "tripo::Spine_0",
+    "tripo::Head_1"
+  ],
+  "removed_helper_geometry": true,
+  "Blender_version": "5.1.2",
+  "fbx_sha256": "af692a09a0cb90e57ac429bbfd1b4a886f4434bf3ed1bfa64fcf3f1ec5e3b93d",
+  "credits_consumed": 25,
+  "credits_breakdown": [
+    {
+      "task_id": "bef66302-0a23-4ddb-bd89-b45b5cfef86c",
+      "type": "animate_rig",
+      "credits_consumed": 25
+    },
+    {
+      "task_id": "7bc88629-89ae-4d3b-9a08-6a55360df1b6",
+      "type": "animate_retarget",
+      "status": "failed",
+      "error_code": 1004,
+      "quoted_credits": 10,
+      "refunded_credits": 10,
+      "credits_consumed": 0
+    }
+  ]
+}

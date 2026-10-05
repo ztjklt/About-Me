@@ -219,6 +219,7 @@ namespace AboutMe
                 if(carried&&actors.TryGetValue(item.carrierId,out var carrier))
                 {
                     var eater=state.players.FirstOrDefault(x=>x.id==item.carrierId);bool eating=eater!=null&&eater.interaction=="eat";
+                    go.GetComponent<AnimalPersonaMotion>()?.Present(false,state.simulationTime);
                     go.transform.position=carrier.CarriedPosition(eating);go.transform.localScale=Vector3.one*carrier.CarriedScale(eating);
                     go.transform.rotation=Quaternion.Slerp(go.transform.rotation,carrier.head.rotation,1-Mathf.Exp(-Time.deltaTime*10));
                     var itemLabel=go.GetComponentInChildren<TextMesh>(true);if(itemLabel)itemLabel.gameObject.SetActive(false);
@@ -228,7 +229,7 @@ namespace AboutMe
                     go.transform.position=Vector3.Lerp(go.transform.position,item.position,1-Mathf.Exp(-Time.deltaTime*20));if(item.state==ItemState.Thrown&&AnimalPersonaCatalog.IsAnimal(item.asset.visualId))
                     {var heading=item.velocity;heading.y=0;if(heading.sqrMagnitude>.01f)go.transform.rotation=Quaternion.LookRotation(heading);go.transform.localScale=Vector3.one; }
                     else {if(!AnimalPersonaCatalog.IsAnimal(item.asset.visualId))go.transform.Rotate(Vector3.up,45*Time.deltaTime);go.transform.localScale=Vector3.one;}
-                    go.GetComponent<AnimalPersonaMotion>()?.Present(item.state==ItemState.Thrown,state.simulationTime);
+                    go.GetComponent<AnimalPersonaMotion>()?.Present(item.state==ItemState.Thrown&&Mathf.Abs(item.velocity.y)<.01f&&item.velocity.sqrMagnitude>.01f,state.simulationTime);
                     var itemLabel=go.GetComponentInChildren<TextMesh>(true);if(itemLabel)itemLabel.gameObject.SetActive(true);
                 }
             }

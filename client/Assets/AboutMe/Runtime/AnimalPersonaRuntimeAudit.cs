@@ -21,6 +21,27 @@ namespace AboutMe
             File.WriteAllText(Path.Combine(output,"passed.txt"),string.Join("\n",checks));Debug.Log("ANIMAL_RUNTIME_AUDIT_PASSED "+checks.Count);Application.Quit(0);
         }
         IEnumerator Shot(string name){yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return new WaitForSecondsRealtime(.25f);}
+        IEnumerator WalkGallery()
+        {
+            var cameraObject=new GameObject("Runtime animal walk camera");var camera=cameraObject.AddComponent<Camera>();camera.enabled=false;camera.cullingMask=1<<30;
+            camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.94f,.91f,.85f);camera.orthographic=true;camera.orthographicSize=.94f;
+            camera.transform.position=new Vector3(1000,1.25f,5);camera.transform.LookAt(new Vector3(1000,.4f,0));
+            var lightObject=new GameObject("Runtime animal walk light");var light=lightObject.AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.3f;light.cullingMask=1<<30;light.transform.rotation=Quaternion.Euler(35,160,0);
+            var all=new GameObject[4];for(int i=0;i<4;i++){var go=PersonaVisualCatalog.Create(AnimalPersonaCatalog.Visuals[i],null);all[i]=go;go.transform.position=new Vector3(1000+(i-1.5f)*1.1f,.35f,0);go.transform.rotation=Quaternion.Euler(0,-25,0);foreach(var t in go.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;}
+            var target=new RenderTexture(1600,650,24);camera.targetTexture=target;
+            string frames=Path.Combine(output,"walk-frames");Directory.CreateDirectory(frames);
+            try
+            {
+                for(int frame=0;frame<120;frame++)
+                {
+                    foreach(var go in all)go.GetComponent<AnimalPersonaMotion>().Present(true,frame/30f);
+                    yield return new WaitForEndOfFrame();camera.Render();var prior=RenderTexture.active;RenderTexture.active=target;
+                    var image=new Texture2D(1600,650,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1600,650),0,0);image.Apply();File.WriteAllBytes(Path.Combine(frames,"frame-"+frame.ToString("000")+".png"),image.EncodeToPNG());RenderTexture.active=prior;Destroy(image);
+                }
+            }
+            finally{foreach(var go in all)Destroy(go);Destroy(cameraObject);Destroy(lightObject);Destroy(target);}
+            Check(Directory.GetFiles(frames,"frame-*.png").Length==120,"four actual rendered skeletal walks across runtime frames");
+        }
         IEnumerator Run()
         {
             yield return new WaitForSecondsRealtime(1);net=GameNetwork.Game;
@@ -28,9 +49,13 @@ namespace AboutMe
             foreach(var id in AnimalPersonaCatalog.Visuals)
             {
                 var go=ToyFactory.Item(id,"#FFFFFF",null);Check(go.GetComponent<AnimalPersonaMotion>()!=null,"imported animal prefab "+id);
-                Check(go.GetComponentsInChildren<MeshFilter>().Sum(x=>x.sharedMesh.triangles.Length/3)>1000,"real imported mesh "+id);
-                Check(go.GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterials.All(m=>m.mainTexture!=null)),"actual textures "+id);Destroy(go);
+                Check(go.GetComponentsInChildren<MeshFilter>().Sum(x=>x.sharedMesh.triangles.Length/3)+go.GetComponentsInChildren<SkinnedMeshRenderer>().Sum(x=>x.sharedMesh.triangles.Length/3)>1000,"real imported mesh "+id);
+                Check(go.GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterials.All(m=>m.mainTexture!=null)),"actual textures "+id);
+                var motion=go.GetComponent<AnimalPersonaMotion>();var skin=go.GetComponentInChildren<SkinnedMeshRenderer>();Check(motion.walk&&skin&&skin.bones.Length>=7,"actual skeletal clip "+id);
+                var a=new Mesh();var b=new Mesh();motion.Present(true,0);skin.BakeMesh(a,true);motion.Present(true,motion.walk.length/motion.walkSpeed*.25f);skin.BakeMesh(b,true);
+                Check(a.vertices.Zip(b.vertices,(x,y)=>(x-y).magnitude).Max()>.005f,"actual runtime skin deformation "+id);motion.Present(false,0);Destroy(a);Destroy(b);Destroy(go);
             }
+            yield return WalkGallery();
             bool prior=GameLocalization.English;
             var ui=GameUI.UI;var f=BindingFlags.Instance|BindingFlags.NonPublic;
             var questionnaire=typeof(GameUI).GetMethod("OpenIntroductionQuestionnaire",f);questionnaire.Invoke(ui,null);yield return null;

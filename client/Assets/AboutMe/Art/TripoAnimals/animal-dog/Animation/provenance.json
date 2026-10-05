@@ -1,0 +1,23 @@
+{
+  "animal": "dog",
+  "task_id": "e90edd99-1683-4646-8ebd-b956e8c93056",
+  "source_task_id": "180ead5a-8bda-45fd-b040-d7b0a1e80836",
+  "credits_consumed": 35,
+  "credits_breakdown": [
+    {
+      "task_id": "02336d6f-1db7-4be2-acd6-b4162dc16438",
+      "type": "animate_rig",
+      "credits_consumed": 25
+    },
+    {
+      "task_id": "e90edd99-1683-4646-8ebd-b956e8c93056",
+      "type": "animate_retarget",
+      "credits_consumed": 10
+    }
+  ],
+  "model": "v2.5-20260210",
+  "rig_type": "quadruped",
+  "clip": "preset:quadruped:walk",
+  "animate_in_place": true,
+  "fbx_sha256": "632cc591d050f3f6d2f7fa46e111758268b230c3ef156aaeab81ceff6d47090d"
+}

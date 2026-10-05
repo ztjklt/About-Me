@@ -30,28 +30,44 @@ namespace AboutMe.Editor
         {
             foreach(var id in AnimalPersonaCatalog.Visuals)
             {
-                string folder="Assets/AboutMe/Art/TripoAnimals/"+id,path=folder+"/model.fbx";
+                string folder="Assets/AboutMe/Art/TripoAnimals/"+id;
+                bool animated=File.Exists(folder+"/Animation/walk.fbx");
+                string path=animated?folder+"/Animation/walk.fbx":folder+"/model.fbx";
                 var importer=AssetImporter.GetAtPath(path) as ModelImporter;
                 if(importer==null)throw new Exception("Missing animal FBX "+path);
-                importer.isReadable=true;importer.importAnimation=false;importer.materialImportMode=ModelImporterMaterialImportMode.ImportStandard;
-                Directory.CreateDirectory(folder+"/Textures");importer.ExtractTextures(folder+"/Textures");importer.SaveAndReimport();AssetDatabase.Refresh();
+                importer.isReadable=true;importer.importAnimation=animated;importer.materialImportMode=ModelImporterMaterialImportMode.ImportStandard;
+                if(animated)
+                {
+                    importer.animationType=ModelImporterAnimationType.Generic;importer.animationCompression=ModelImporterAnimationCompression.Off;
+                    var clips=importer.defaultClipAnimations;foreach(var clip in clips){clip.loopTime=true;clip.loopPose=false;}importer.clipAnimations=clips;
+                }
+                if(!animated){Directory.CreateDirectory(folder+"/Textures");importer.ExtractTextures(folder+"/Textures");}
+                importer.SaveAndReimport();AssetDatabase.Refresh();
                 var source=AssetDatabase.LoadAssetAtPath<GameObject>(path);var root=new GameObject(id);
                 try
                 {
                     var model=(GameObject)PrefabUtility.InstantiatePrefab(source);model.transform.SetParent(root.transform,false);
-                    // Preserve the imported -90 X axis correction. FBX handedness maps Tripo +X to Unity -X; +90 yaw faces +Z.
+                    // Standard Blender hamster is -Y forward; Tripo's animal skeletons are +X forward.
                     Debug.Log("ANIMAL_SOURCE_TRANSFORM "+id+" root="+source.transform.localEulerAngles+" child="+string.Join(";",model.GetComponentsInChildren<Transform>().Select(t=>t.name+":"+t.localEulerAngles)));
-                    model.transform.localRotation=Quaternion.Euler(0,90,0)*model.transform.localRotation;
+                    model.transform.localRotation=Quaternion.Euler(0,id=="animal-hamster"&&animated?0:90,0)*model.transform.localRotation;
                     var renderers=model.GetComponentsInChildren<Renderer>();
                     if(renderers.Length==0)throw new Exception("Empty model "+id);
-                    Bounds Bounds(){var b=renderers[0].bounds;foreach(var renderer in renderers.Skip(1))b.Encapsulate(renderer.bounds);return b;}
+                    Bounds Bounds()
+                    {
+                        var points=new System.Collections.Generic.List<Vector3>();
+                        foreach(var skin in model.GetComponentsInChildren<SkinnedMeshRenderer>())
+                        {var mesh=new Mesh();skin.BakeMesh(mesh,true);points.AddRange(mesh.vertices.Select(v=>skin.transform.TransformPoint(v)));UnityEngine.Object.DestroyImmediate(mesh);}
+                        foreach(var mesh in model.GetComponentsInChildren<MeshFilter>())points.AddRange(mesh.sharedMesh.vertices.Select(v=>mesh.transform.TransformPoint(v)));
+                        if(points.Count==0)throw new Exception("Empty animal geometry "+id);
+                        var b=new Bounds(points[0],Vector3.zero);foreach(var point in points)b.Encapsulate(point);return b;
+                    }
                     var bounds=Bounds();float max=Mathf.Max(bounds.size.x,bounds.size.y,bounds.size.z);model.transform.localScale*=.78f/max;
-                    bounds=Bounds();model.transform.position-=bounds.center;bounds=Bounds();
-                    int triangles=model.GetComponentsInChildren<MeshFilter>().Sum(x=>x.sharedMesh.triangles.Length/3);
+                    bounds=Bounds();model.transform.position-=new Vector3(bounds.center.x,bounds.min.y+.35f,bounds.center.z);bounds=Bounds();
+                    int triangles=model.GetComponentsInChildren<MeshFilter>().Sum(x=>x.sharedMesh.triangles.Length/3)+model.GetComponentsInChildren<SkinnedMeshRenderer>().Sum(x=>x.sharedMesh.triangles.Length/3);
                     if(triangles<=0||triangles>6000)throw new Exception("Animal triangle budget "+id+" "+triangles);
                     foreach(var renderer in renderers)
                         foreach(var mat in renderer.sharedMaterials)
-                            if(mat==null||mat.mainTexture==null)throw new Exception("Missing animal texture "+id);
+                            if(mat==null)throw new Exception("Missing animal material "+id);
                     foreach(var renderer in renderers)
                     {
                         var materials=renderer.sharedMaterials;
@@ -61,8 +77,10 @@ namespace AboutMe.Editor
                             string matPath=folder+"/Animal-"+n+".mat";
                             var mat=AssetDatabase.LoadAssetAtPath<Material>(matPath);
                             if(!mat){mat=new Material(Shader.Find("Standard"));AssetDatabase.CreateAsset(mat,matPath);}
-                            mat.color=Color.white;mat.mainTexture=basis.mainTexture;mat.SetFloat("_Metallic",0);mat.SetFloat("_Glossiness",.18f);
-                            mat.SetTexture("_EmissionMap",basis.mainTexture);mat.SetColor("_EmissionColor",Color.white*.18f);mat.EnableKeyword("_EMISSION");
+                            var texture=mat.mainTexture?mat.mainTexture:basis.mainTexture;
+                            if(!texture)throw new Exception("Missing animal albedo "+id);
+                            mat.color=Color.white;mat.mainTexture=texture;mat.SetFloat("_Metallic",0);mat.SetFloat("_Glossiness",.18f);
+                            mat.SetTexture("_EmissionMap",texture);mat.SetColor("_EmissionColor",Color.white*.18f);mat.EnableKeyword("_EMISSION");
                             materials[n]=mat;EditorUtility.SetDirty(mat);
                         }
                         renderer.sharedMaterials=materials;
@@ -72,6 +90,15 @@ namespace AboutMe.Editor
                     var collider=root.AddComponent<BoxCollider>();collider.center=bounds.center;collider.size=bounds.size;collider.enabled=false;
                     var meta=root.AddComponent<PersonaVisualMeta>();meta.visualId=id;meta.templateId="Summon";meta.source="Tripo P1-20260311 / user authorized generation";meta.license="Generated asset; Tripo account terms";meta.colliderRadius=bounds.extents.magnitude;meta.swallowScale=1;
                     var motion=root.AddComponent<AnimalPersonaMotion>();motion.model=model.transform;motion.restPosition=model.transform.localPosition;
+                    if(animated)
+                    {
+                        motion.walk=AssetDatabase.LoadAllAssetsAtPath(path).OfType<AnimationClip>().FirstOrDefault(c=>!c.name.StartsWith("__preview__"));
+                        motion.walkSpeed=(id=="cat"||id=="animal-dog")?3f:1.8f;
+                        if(!motion.walk||motion.walk.length<=0)throw new Exception("Missing walk clip "+id);
+                        foreach(var animator in model.GetComponentsInChildren<Animator>(true))animator.enabled=false;
+                        foreach(var skin in model.GetComponentsInChildren<SkinnedMeshRenderer>())
+                        {if(skin.bones.Length<7)throw new Exception("Missing weighted animal bones "+id);skin.updateWhenOffscreen=true;var b=skin.localBounds;b.Expand(.25f);skin.localBounds=b;}
+                    }
                     string prefab="Assets/AboutMe/Resources/PersonaProps/"+id+".prefab";PrefabUtility.SaveAsPrefabAsset(root,prefab);
                     Debug.Log("ANIMAL_MODEL_IMPORTED "+id+" triangles="+triangles+" bounds="+bounds.size+" materials="+renderers.Sum(x=>x.sharedMaterials.Length));
                 }

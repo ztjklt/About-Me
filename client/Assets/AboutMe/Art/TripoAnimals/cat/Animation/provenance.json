@@ -1,0 +1,23 @@
+{
+  "animal": "cat",
+  "task_id": "9395a1ef-bb19-4b2d-93e2-11263398f4f1",
+  "source_task_id": "c03146c3-ffba-4f34-9059-10a0243170b6",
+  "credits_consumed": 35,
+  "credits_breakdown": [
+    {
+      "task_id": "0338fbbb-3991-4f72-a247-1322554861de",
+      "type": "animate_rig",
+      "credits_consumed": 25
+    },
+    {
+      "task_id": "9395a1ef-bb19-4b2d-93e2-11263398f4f1",
+      "type": "animate_retarget",
+      "credits_consumed": 10
+    }
+  ],
+  "model": "v2.5-20260210",
+  "rig_type": "quadruped",
+  "clip": "preset:quadruped:walk",
+  "animate_in_place": true,
+  "fbx_sha256": "1ab740916ba494beac924f3d826a62657ba70baf5186fac436e969e2f9849cf8"
+}
