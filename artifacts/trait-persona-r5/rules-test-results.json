@@ -1,9 +1,9 @@
 {
     "environment": "2022.3.62t11 / macOS Editor batchmode",
-    "utc": "2026-10-05T13:58:59.5176000Z",
+    "utc": "2026-10-05T14:15:13.5104720Z",
     "scope": "Production Match commands and 50 Hz ticks; deterministic explicit profiles, flat geometric campus fixture. Not real AI, network transport, rendered mesh, human play, six-player performance or mobile acceptance.",
-    "runtimeSnapshot": "150f16a8b2fd4e44c92e76c57f8aeb4c7f5703075b27e6bf57d06bfadb7a1dd3",
-    "passed": 19,
+    "runtimeSnapshot": "384067c804f34591b7146332338068080d4cc228c8f0672cec130f453c9356e5",
+    "passed": 20,
     "failed": 0,
     "cases": [
         {
@@ -23,6 +23,11 @@
         },
         {
             "name": "six players retain all 120 owned assets",
+            "status": "passed",
+            "actual": "production Match assertions passed"
+        },
+        {
+            "name": "offline six bots can each own twenty assets without changing online cap",
             "status": "passed",
             "actual": "production Match assertions passed"
         },
