@@ -1,0 +1,282 @@
+[
+  {
+    "animal": "cat",
+    "prompt": "One cute orange tabby kitten, fluffy curved tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+    "command": [
+      "npx",
+      "tripo-cli@latest",
+      "make",
+      "One cute orange tabby kitten, fluffy curved tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "--for",
+      "game-mobile",
+      "-p",
+      "face_limit=6000",
+      "--then",
+      "convert:format=FBX,texture_size=1024",
+      "--name",
+      "animal-cat",
+      "-o",
+      "artifacts/animal-persona",
+      "--json",
+      "--yes"
+    ],
+    "plan": {
+      "dry_run": true,
+      "valid": true,
+      "input": "One cute orange tabby kitten, fluffy curved tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "scenario": "game-mobile",
+      "model": "P1-20260311",
+      "model_reason": "explicit --model",
+      "steps": [
+        {
+          "name": "text-to-model",
+          "endpoint": "/v3/generation/text-to-model",
+          "task_type": "text_to_model",
+          "payload": {
+            "prompt": "One cute orange tabby kitten, fluffy curved tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+            "model": "P1-20260311",
+            "texture": true,
+            "pbr": true,
+            "texture_quality": "standard",
+            "face_limit": 6000
+          }
+        },
+        {
+          "name": "convert",
+          "endpoint": "/v3/models/convert",
+          "task_type": "convert_model",
+          "payload": {
+            "input": "<upstream>",
+            "format": "FBX",
+            "texture_size": 1024
+          }
+        }
+      ],
+      "pending_uploads": [],
+      "deliverables": [
+        "FBX",
+        "GLB"
+      ],
+      "candidates": 1,
+      "warnings": [
+        "--then overrides the default game-mobile processing chain",
+        "non-default convert options use the \"complex convert\" price tier"
+      ],
+      "errors": [],
+      "cost_notes": [
+        "non-default convert options bill as complex convert"
+      ]
+    },
+    "estimate": 50
+  },
+  {
+    "animal": "dog",
+    "prompt": "One cute cream corgi puppy, short legs and upright ears, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+    "command": [
+      "npx",
+      "tripo-cli@latest",
+      "make",
+      "One cute cream corgi puppy, short legs and upright ears, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "--for",
+      "game-mobile",
+      "-p",
+      "face_limit=6000",
+      "--then",
+      "convert:format=FBX,texture_size=1024",
+      "--name",
+      "animal-dog",
+      "-o",
+      "artifacts/animal-persona",
+      "--json",
+      "--yes"
+    ],
+    "plan": {
+      "dry_run": true,
+      "valid": true,
+      "input": "One cute cream corgi puppy, short legs and upright ears, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "scenario": "game-mobile",
+      "model": "P1-20260311",
+      "model_reason": "explicit --model",
+      "steps": [
+        {
+          "name": "text-to-model",
+          "endpoint": "/v3/generation/text-to-model",
+          "task_type": "text_to_model",
+          "payload": {
+            "prompt": "One cute cream corgi puppy, short legs and upright ears, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+            "model": "P1-20260311",
+            "texture": true,
+            "pbr": true,
+            "texture_quality": "standard",
+            "face_limit": 6000
+          }
+        },
+        {
+          "name": "convert",
+          "endpoint": "/v3/models/convert",
+          "task_type": "convert_model",
+          "payload": {
+            "input": "<upstream>",
+            "format": "FBX",
+            "texture_size": 1024
+          }
+        }
+      ],
+      "pending_uploads": [],
+      "deliverables": [
+        "FBX",
+        "GLB"
+      ],
+      "candidates": 1,
+      "warnings": [
+        "--then overrides the default game-mobile processing chain",
+        "non-default convert options use the \"complex convert\" price tier"
+      ],
+      "errors": [],
+      "cost_notes": [
+        "non-default convert options bill as complex convert"
+      ]
+    },
+    "estimate": 50
+  },
+  {
+    "animal": "rabbit",
+    "prompt": "One cute white baby rabbit, long upright ears and short round tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+    "command": [
+      "npx",
+      "tripo-cli@latest",
+      "make",
+      "One cute white baby rabbit, long upright ears and short round tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "--for",
+      "game-mobile",
+      "-p",
+      "face_limit=6000",
+      "--then",
+      "convert:format=FBX,texture_size=1024",
+      "--name",
+      "animal-rabbit",
+      "-o",
+      "artifacts/animal-persona",
+      "--json",
+      "--yes"
+    ],
+    "plan": {
+      "dry_run": true,
+      "valid": true,
+      "input": "One cute white baby rabbit, long upright ears and short round tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "scenario": "game-mobile",
+      "model": "P1-20260311",
+      "model_reason": "explicit --model",
+      "steps": [
+        {
+          "name": "text-to-model",
+          "endpoint": "/v3/generation/text-to-model",
+          "task_type": "text_to_model",
+          "payload": {
+            "prompt": "One cute white baby rabbit, long upright ears and short round tail, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+            "model": "P1-20260311",
+            "texture": true,
+            "pbr": true,
+            "texture_quality": "standard",
+            "face_limit": 6000
+          }
+        },
+        {
+          "name": "convert",
+          "endpoint": "/v3/models/convert",
+          "task_type": "convert_model",
+          "payload": {
+            "input": "<upstream>",
+            "format": "FBX",
+            "texture_size": 1024
+          }
+        }
+      ],
+      "pending_uploads": [],
+      "deliverables": [
+        "FBX",
+        "GLB"
+      ],
+      "candidates": 1,
+      "warnings": [
+        "--then overrides the default game-mobile processing chain",
+        "non-default convert options use the \"complex convert\" price tier"
+      ],
+      "errors": [],
+      "cost_notes": [
+        "non-default convert options bill as complex convert"
+      ]
+    },
+    "estimate": 50
+  },
+  {
+    "animal": "hamster",
+    "prompt": "One cute golden hamster, plump body, small rounded ears and short legs, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+    "command": [
+      "npx",
+      "tripo-cli@latest",
+      "make",
+      "One cute golden hamster, plump body, small rounded ears and short legs, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "--for",
+      "game-mobile",
+      "-p",
+      "face_limit=6000",
+      "--then",
+      "convert:format=FBX,texture_size=1024",
+      "--name",
+      "animal-hamster",
+      "-o",
+      "artifacts/animal-persona",
+      "--json",
+      "--yes"
+    ],
+    "plan": {
+      "dry_run": true,
+      "valid": true,
+      "input": "One cute golden hamster, plump body, small rounded ears and short legs, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+      "scenario": "game-mobile",
+      "model": "P1-20260311",
+      "model_reason": "explicit --model",
+      "steps": [
+        {
+          "name": "text-to-model",
+          "endpoint": "/v3/generation/text-to-model",
+          "task_type": "text_to_model",
+          "payload": {
+            "prompt": "One cute golden hamster, plump body, small rounded ears and short legs, anatomically recognizable real three dimensional animal, soft stylized toy proportions, four separate legs in neutral standing pose, large friendly eyes, no base no accessories, game ready textured mesh",
+            "model": "P1-20260311",
+            "texture": true,
+            "pbr": true,
+            "texture_quality": "standard",
+            "face_limit": 6000
+          }
+        },
+        {
+          "name": "convert",
+          "endpoint": "/v3/models/convert",
+          "task_type": "convert_model",
+          "payload": {
+            "input": "<upstream>",
+            "format": "FBX",
+            "texture_size": 1024
+          }
+        }
+      ],
+      "pending_uploads": [],
+      "deliverables": [
+        "FBX",
+        "GLB"
+      ],
+      "candidates": 1,
+      "warnings": [
+        "--then overrides the default game-mobile processing chain",
+        "non-default convert options use the \"complex convert\" price tier"
+      ],
+      "errors": [],
+      "cost_notes": [
+        "non-default convert options bill as complex convert"
+      ]
+    },
+    "estimate": 50
+  }
+]

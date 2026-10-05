@@ -45,7 +45,7 @@ namespace AboutMe.Editor
                     Check(m.CombatEvents.Any(e=>e.kind=="party_burst"),"contact did not explode");Check(m.Players["p1"].stability<100&&m.Players["p0"].stability<100,"radial owner/target damage missing");Check(m.Players["p2"].stability==100,"distant player hit");
                 });
                 Test("fuse countdown stays visible and can be grabbed and thrown",()=>{
-                    var m=Make("fuse-burst");var e=Deploy(m);Check(m.View("p0").players.Single(x=>x.id=="p0").mechanicCooldown>7,"cooldown not shown to owner");Check(m.View("p1").effects.Any(x=>x.id==e.id&&x.remaining>2),"countdown not public");
+                    var m=Make("fuse-burst");var e=Deploy(m);Check(m.Players["p0"].equipped==""&&m.Item(e.sourceInstance).state==ItemState.Thrown&&m.Remaining("p0")==4,"fuse must throw the original life once");Check(m.View("p1").effects.Any(x=>x.id==e.id&&x.remaining>2),"countdown not public");
                     Tick(m,.65f);var prop=m.Props.Single();prop.velocity=Vector3.zero;var p=m.Players["p1"];p.position=prop.position-Vector3.forward*.9f;p.position.y=1;p.yaw=0;Input(m,"p1","grab");Tick(m,.24f);Check(p.publicProp==prop.id,"device not grabbable");
                     Input(m,"p1","use_item");Tick(m,.18f);Check(p.publicProp==""&&prop.thrower=="p1"&&prop.velocity.magnitude>5,"device did not throw back");Tick(m,2.5f);Check(m.Props.Count==0&&m.CombatEvents.Any(x=>x.kind=="party_burst"),"fuse failed or stale prop");
                 });

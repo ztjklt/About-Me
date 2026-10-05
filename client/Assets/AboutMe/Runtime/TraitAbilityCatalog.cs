@@ -9,7 +9,7 @@ namespace AboutMe
     [Serializable] public class TraitAbilityData {public int version;public TraitAbilityDefinition[] abilities;public TraitWordDefinition[] words,mbti;}
     public static class TraitAbilityCatalog
     {
-        public const int ProtocolVersion=4;
+        public const int ProtocolVersion=5;
         public const string VisualId="trait-word";
         static TraitAbilityData data;
         public static TraitAbilityData Data=>data??(data=JsonUtility.FromJson<TraitAbilityData>(Resources.Load<TextAsset>("trait-abilities").text));

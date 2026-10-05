@@ -66,7 +66,8 @@ namespace AboutMe
         public PersonaAsset asset;
         public ItemState state;
         public Vector3 position, velocity;
-        public float pushScale=1;
+        public float pushScale=1, thrownAt;
+        public string chaseTarget="";
         [NonSerialized] public HashSet<string> guardTouches=new HashSet<string>();
         public PersonaInstance Copy() => (PersonaInstance)MemberwiseClone();
         public PublicPersonaInstance PublicCopy() => new PublicPersonaInstance
@@ -141,6 +142,7 @@ namespace AboutMe
         public string id, owner, kind, visual, color, targetId = "";
         public string emblemPath, emblemCrop, generatedBy,wordCategory,wordText,abilityId;
         public string mechanicId="",sourceInstance="",stage="";
+        [NonSerialized] public bool ownsThrownPersona;
         public float createdAt,deadline,triggerAt;
         public int chainIndex;
         public float height;
@@ -455,7 +457,7 @@ namespace AboutMe
         }
         static Vector3 Forward(Player p) => Quaternion.Euler(0,p.yaw,0)*Vector3.forward;
         static bool PhysicalThrow(PersonaAsset asset) => asset!=null &&
-            (asset.templateId=="Projectile" || asset.visualId=="football-cc0");
+            (new[]{"Projectile","Disc","Ricochet","Deployable","Summon"}.Contains(asset.templateId));
         void ResolveAttack(Player p, bool heavy, float charge)
         {
             BreakBubbleOnAttack(p);
@@ -477,6 +479,7 @@ namespace AboutMe
             {
                 // The equipped instance itself travels and remains a recoverable life.
                 equipped.state=ItemState.Thrown;equipped.thrownBy=p.profile.playerId;equipped.guardTouches.Clear();equipped.pushScale=1;
+                equipped.thrownAt=Time;equipped.chaseTarget="";
                 equipped.position=p.position+Forward(p)*.8f+Vector3.up*.25f;
                 equipped.velocity=Forward(p)*14+Vector3.up*3.5f;
                 p.equipped="";
@@ -512,17 +515,6 @@ namespace AboutMe
                 var spot=CampusGeometry.SafeDrop(p.position+Forward(p)*1.65f);spot.y=CampusGeometry.Floor(spot,.5f)+.5f;
                 Effects.Add(new EffectState{id=Guid.NewGuid().ToString("N"),owner=p.profile.playerId,kind="Barricade",visual=equipped.asset.visualId,color=equipped.asset.color,position=spot,remaining=7,health=2,radius=.85f});
                 p.nextAttack=Time+2f;return;
-            }
-            if(heavy && (template=="Projectile"||template=="Disc"||template=="Deployable"||template=="Summon"||template=="Ricochet"))
-            {
-                bool schoolDisc=equipped!=null&&equipped.asset.visualId=="school-disc";
-                Effects.Add(new EffectState { id=Guid.NewGuid().ToString("N"), owner=p.profile.playerId, kind=schoolDisc?"ThrownDisc":template,
-                    visual=equipped.asset.visualId,color=equipped.asset.color,position=p.position+Forward(p),
-                    emblemPath=equipped.asset.emblemPath,emblemCrop=equipped.asset.emblemCrop,generatedBy=equipped.asset.generatedBy,
-                    velocity=schoolDisc?Forward(p)*18+Vector3.up*2.2f:Forward(p)*(template=="Disc"?14:12),
-                    remaining=schoolDisc?6:template=="Deployable"?8:template=="Summon"?7:template=="Ricochet"?3:2,
-                    damage=damage,force=force,heavy=true,knockdown=knockdown,bounces=template=="Ricochet"?2:0 });
-                return;
             }
             float reach=heavy?2.8f:2.2f;
             if(heavy && template=="Utility") { reach=5; damage=28; force=2; p.nextAttack=Time+5; }
@@ -579,6 +571,8 @@ namespace AboutMe
         {
             foreach(var item in Items.Where(x=>x.state==ItemState.Thrown).ToArray())
             {
+                if(Effects.Any(e=>e.sourceInstance==item.id&&e.ownsThrownPersona))continue;
+                if(AnimalPersonaCatalog.IsAnimal(item.asset.visualId)&&TickAnimalPersona(item,dt))continue;
                 var from=item.position;
                 var velocity=item.velocity+Vector3.down*Rules.gravity*dt;
                 var wanted=from+velocity*dt;
@@ -669,7 +663,7 @@ namespace AboutMe
                     if(e.position.y<=floor)LandThrownDisc(e,e.position);
                     continue;
                 }
-                if(e.kind=="Disc" && e.remaining<.8f)e.velocity=(owner.position-e.position).normalized*15;
+                // Projectiles never steer back to their holder.
                 if(e.kind=="Deployable") { e.velocity*=Mathf.Max(0,1-dt*5); e.position.y=.5f; }
                 var next=e.position+e.velocity*dt;
                 if(e.kind=="Ricochet"&&(CampusGeometry.Outside(next)||CampusGeometry.Blocked(next,.2f,.5f)))
@@ -778,7 +772,7 @@ namespace AboutMe
                         bodyMode=p.bodyMode,bodyStateAt=p.bodyStateAt,bodyProtectedUntil=p.bodyProtectedUntil,knockdownId=p.knockdownId,getUpFaceUp=p.getUpFaceUp,bodyPose=p.bodyPose,position=p.position,velocity=p.velocity,simulationTime=Time,actionId=p.actionId,actionKind=p.actionKind,actionVariant=p.actionVariant,actionTarget=p.actionTarget,actionStartedAt=p.actionStartedAt,impactId=p.impactId,impactImpulse=p.impactImpulse,grabAnchor=GrabAnchor(p),grabTension=p.grabTension,escapeProgress=Mathf.Clamp01(p.escapeCharge/Rules.escapeDuration),yaw=p.yaw,stability=p.stability,running=Active&&p.running,airborne=p.airborne,locomotionSpeed=Active?p.locomotionSpeed:0,stagger=Mathf.Max(0,p.staggerUntil-Time),connected=p.connected,ready=p.ready,eliminated=p.eliminated,reveal=Phase==MatchPhase.Reveal,
                         carrying=p.carrying,grabbing=p.grabbing,grabbed=Players.Values.Any(other=>other.grabbing==p.profile.playerId),sticky=HasStickyCharge(p)||HasControlRestraint(p),interaction=p.interaction,publicProp=p.publicProp,charge=p.chargingSince<0?0:Mathf.Clamp01((Time-p.chargingSince)/1.2f),
                         progress=p.interaction==""?0:Mathf.Clamp01((Time-p.interactionStart)/(p.interaction=="eat"?Rules.eatDuration:Rules.recoverDuration))}; }).ToArray(),
-                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||x.state==ItemState.Thrown).Select(x=>x.PublicCopy()).ToArray(),
+                ground=Items.Where(x=>x.state==ItemState.Ground||x.state==ItemState.Carried||(x.state==ItemState.Thrown&&!Effects.Any(e=>e.sourceInstance==x.id&&e.ownsThrownPersona))).Select(x=>x.PublicCopy()).ToArray(),
                 inventory=Items.Where(x=>(x.ownerId==recipient&&(x.state==ItemState.Inventory||(x.state==ItemState.Equipped&&string.IsNullOrEmpty(x.carrierId))))||(x.state==ItemState.Equipped&&x.carrierId==recipient)).Select(x=>x.PublicCopy()).ToArray(),
                 revealed=Phase==MatchPhase.Reveal?Players.Values.SelectMany(p=>Items.Where(x=>x.ownerId==p.profile.playerId).Take(2).Select((x,i)=>{var copy=x.PublicCopy();copy.id="reveal-"+x.id;copy.position=p.position+new Vector3(i==0?-1.5f:1.5f,.9f,0);return copy;})).ToArray():Array.Empty<PublicPersonaInstance>(),
                 effects=Effects.Where(e=>LootVisible(e,recipient)).ToArray(),props=Props.ToArray(),eaten=Eaten.ToArray(),events=Events.ToArray()};

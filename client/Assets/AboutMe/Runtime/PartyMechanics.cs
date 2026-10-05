@@ -102,6 +102,7 @@ namespace AboutMe
                 var e=New(p.position+forward*1.2f+Vector3.up*.1f,d.id=="relay-burst"?"waiting":"armed");e.targetId="device-"+e.id;e.velocity=Vector3.zero;
                 Props.Add(new PublicProp{id=e.targetId,visual=e.visual,position=e.position,velocity=d.id=="fuse-burst"?forward*6+Vector3.up*2:Vector3.zero,hitAfter=float.MaxValue});
                 Effects.Add(e);
+                if(d.id=="fuse-burst")StartSingleUsePartyThrow(p,item,e);
                 if(d.id=="remote-burst")p.nextAttack=Time+.45f;
                 if(d.id=="relay-burst")
                 {
@@ -114,13 +115,15 @@ namespace AboutMe
             }
             if(d.id=="proximity-burst")
             {var e=New(GroundParty(p.position+forward*1.8f),"watching");e.velocity=Vector3.zero;Effects.Add(e);return true;}
-            Effects.Add(New(p.position+forward*.8f+Vector3.up*.15f,"flying"));return true;
+            var thrown=New(p.position+forward*.8f+Vector3.up*.15f,"flying");
+            Effects.Add(thrown);StartSingleUsePartyThrow(p,item,thrown);return true;
         }
         static Vector3 GroundParty(Vector3 position)
         {position=CampusGeometry.SafeDrop(position);position.y=CampusGeometry.Floor(position,.1f)+.15f;return position;}
         bool PartyClear(Vector3 from,Vector3 to)=>CampusGeometry.ClearSegment(from+Vector3.up*.35f,to+Vector3.up*.1f)&&MachineClear(from+Vector3.up*.35f,to+Vector3.up*.1f);
         void RemovePartyEffect(EffectState e)
         {
+            LandSingleUsePartyThrow(e);
             if(e.machine!=null)BodyWorld?.RemoveMachine(e.id);ReleaseArenaCargo(e);
             vaultedShots.Remove(e.id);foreach(var rider in Players.Values)if(rider.linkRide==e.id)rider.linkRide="";
             if(e.targetId.StartsWith("device-",StringComparison.Ordinal))
@@ -153,6 +156,7 @@ namespace AboutMe
                 var prop=Props.Find(x=>x.id==id);if(prop!=null&&Players.TryGetValue(prop.holder,out var holder)&&holder.publicProp==id){holder.publicProp="";SetAction(holder,"release");}
                 Props.RemoveAll(x=>x.id==id);
             }
+            LandSingleUsePartyThrow(e);
             e.targetId="";e.stage="burst";e.deadline=Time+.5f;e.remaining=.5f;e.velocity=Vector3.zero;
             foreach(var target in Players.Values.Where(x=>!x.eliminated).ToArray())
             {

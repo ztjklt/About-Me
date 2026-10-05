@@ -295,7 +295,7 @@ namespace AboutMe.Editor
                 });
                 Test("ordinary item templates stagger but do not force a full-stability knockdown",()=>
                 {
-                    foreach(var template in new[]{"Melee","Disc","Ricochet","Deployable","Summon","Utility"})
+                    foreach(var template in new[]{"Melee","Utility"})
                     {
                         var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
                         m.Item(attacker.equipped).asset.templateId=template;

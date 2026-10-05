@@ -48,7 +48,7 @@ namespace AboutMe
             if(d.id=="team-sling"){e.stage="ready";e.path=new[]{p.position};}
             if(d.id=="break-net"||d.id=="bubble-lift"||d.id=="momentum-pass")
             {e.position=p.position+direction*.85f;e.velocity=direction*(d.id=="momentum-pass"?8:9);e.stage="flying";e.triggerAt=Time+.08f;}
-            Effects.Add(e);return true;
+            Effects.Add(e);if(d.id=="break-net"||d.id=="momentum-pass")StartSingleUsePartyThrow(p,item,e);return true;
         }
         bool TryControlInteraction(Player p,string targetId)
         {
@@ -137,14 +137,14 @@ namespace AboutMe
                 if(d.id=="momentum-pass")
                 {
                     var prop=Props.Where(OrdinaryPublic).Where(x=>DistanceToSegment(x.position,from,next)<.7f&&LootLineClear(from,x.position)).OrderBy(x=>DistanceToSegment(x.position,from,next)).FirstOrDefault();
-                    if(prop!=null&&Time>=e.triggerAt){var transferred=Flat(e.velocity)*.7f;var prior=Flat(prop.velocity);float energyLimit=Mathf.Sqrt(prior.sqrMagnitude+Flat(e.velocity).sqrMagnitude*.96f);prop.velocity=Vector3.ClampMagnitude(prior+transferred,Mathf.Min(8,energyLimit));e.velocity*=.2f;e.position=next;e.stage="spent";e.deadline=Time+.3f;CombatEvent("party_momentum_transfer",owner,impulse:transferred);return;}
+                    if(prop!=null&&Time>=e.triggerAt){var transferred=Flat(e.velocity)*.7f;var prior=Flat(prop.velocity);float energyLimit=Mathf.Sqrt(prior.sqrMagnitude+Flat(e.velocity).sqrMagnitude*.96f);prop.velocity=Vector3.ClampMagnitude(prior+transferred,Mathf.Min(8,energyLimit));e.velocity*=.2f;e.position=next;e.stage="spent";LandSingleUsePartyThrow(e);e.deadline=Time+.3f;CombatEvent("party_momentum_transfer",owner,impulse:transferred);return;}
                     e.velocity=Flat(e.velocity)*Mathf.Max(0,1-.65f*dt);next.y=SurfaceFloor(next,.4f)+.4f;
                 }
                 else
                 {
                     var target=Players.Values.Where(x=>x!=owner&&ControlTarget(x)&&!HasControlRestraint(x)&&DistanceToSegment(x.position,from,next)<.75f&&LootLineClear(from,x.position)).OrderBy(x=>DistanceToSegment(x.position,from,next)).FirstOrDefault();
                     if(target!=null&&!blocked&&Time>=e.triggerAt)
-                    {e.stage="attached";e.targetId=target.profile.playerId;e.height=MotorY(target);e.position=d.id=="break-net"?target.position:target.position;e.radius=d.id=="break-net"?1.1f:.75f;e.velocity=Vector3.zero;e.deadline=Time+(d.id=="break-net"?3:2.2f);ResetEscape(target);CombatEvent("party_control_attach",owner,target,reason:d.id);return;}
+                    {LandSingleUsePartyThrow(e);e.stage="attached";e.targetId=target.profile.playerId;e.height=MotorY(target);e.position=d.id=="break-net"?target.position:target.position;e.radius=d.id=="break-net"?1.1f:.75f;e.velocity=Vector3.zero;e.deadline=Time+(d.id=="break-net"?3:2.2f);ResetEscape(target);CombatEvent("party_control_attach",owner,target,reason:d.id);return;}
                 }
                 e.position=next;if(blocked||CampusGeometry.Outside(next)){RemovePartyEffect(e);return;}return;
             }
