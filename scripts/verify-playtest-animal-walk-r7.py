@@ -36,7 +36,7 @@ for symbol in ('PersonaResultScrollRect','OpenIntroductionQuestionnaire','Introd
 if manifest['settingsSourceSnapshot'] != '2530bcdd73597917a0043780164b1942eb8986efa968bb9f0ab745fda35ff640': raise SystemExit('设置 V2 基线不匹配')
 expected_snapshot=hashlib.sha256(json.dumps(manifest['sourceFiles'],sort_keys=True).encode()).hexdigest()
 if manifest['sourceSnapshotSha256'] != expected_snapshot or manifest['apiSourceSnapshot'] != expected_snapshot: raise SystemExit('完整源码清单不匹配')
-prior=root/'builds/playtest-animals-r6-mac/release-manifest.json'
+prior=args.manifest.resolve().parent/'prior-release-manifest.json'
 if not prior.is_file() or hashlib.sha256(prior.read_bytes()).hexdigest()!=manifest['priorReleaseManifestSha256']: raise SystemExit('R6继承交付身份不匹配')
 if 'animal-skeletal-walk-4' not in manifest['requiredFeatures'] or len(manifest.get('animationDeliveries',[]))!=4: raise SystemExit('四种骨骼走动交付缺失')
 for row in manifest['animationDeliveries']:
