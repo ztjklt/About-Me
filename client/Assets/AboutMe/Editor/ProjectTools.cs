@@ -199,8 +199,8 @@ namespace AboutMe.Editor
         static void PrepareBuildScenes()
         {
             if(Environment.GetEnvironmentVariable("ABOUTME_EXISTING_SCENES")!="1"){Generate();return;}
-            if(EditorBuildSettings.scenes.Length!=5||EditorBuildSettings.scenes.Any(s=>!s.enabled||!File.Exists(s.path)))
-                throw new Exception("Frozen release requires all five generated scenes");
+            if(EditorBuildSettings.scenes.Length!=1||EditorBuildSettings.scenes[0].path!="Assets/AboutMe/Scenes/Bootstrap.unity"||!EditorBuildSettings.scenes[0].enabled||new[]{"Bootstrap","CharacterCreation","Room","Arena","Results"}.Any(n=>!File.Exists("Assets/AboutMe/Scenes/"+n+".unity")))
+                throw new Exception("Frozen release requires the bootstrap entry and all five generated scene files");
         }
         [MenuItem("About Me/3. Build macOS demo")]
         public static void BuildMac()
