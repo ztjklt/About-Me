@@ -70,7 +70,7 @@ namespace AboutMe
             ScreenCapture.CaptureScreenshot(Path.Combine(output,"results-last.png"));yield return new WaitForSecondsRealtime(.2f);
 
             var catalog=JsonUtility.FromJson<Catalog>(Resources.Load<TextAsset>("catalog").text);
-            Check(GameUI.IntroductionQuestions.Length==16&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==40,"sixteen questions; original forty catalog choices retained");
+            Check(GameUI.IntroductionQuestions.Length==16&&GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).Count()==44,"sixteen questions; forty interest choices and four animals retained");
             Check(GameUI.IntroductionQuestions.SelectMany(q=>q.visuals).All(v=>catalog.items.Any(i=>i.visualId==v)),"all choices map to current catalog");
             Check(GameUI.BuildQuestionnaireIntroduction(new bool[40])=="","all questions may be skipped");
             var intro=Field<InputField>("introduction");string original="  我来自这里，喜欢篮球。\n原稿保留！  ";intro.text=original;
@@ -101,7 +101,7 @@ namespace AboutMe
             yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"questionnaire.png"));yield return new WaitForSecondsRealtime(.3f);
             Call("CloseIntroductionQuestionnaire");
             Check(Field<Button>("generate").gameObject.activeInHierarchy&&intro.gameObject.activeInHierarchy,"original free input and generate button remain available");
-            Check(catalog.items.Length==274,"latest 274 prop catalog preserved");
+            Check(catalog.items.Length==277,"latest 277 prop catalog preserved");
             Call("OpenSettings");GameLocalization.SetEnglish(true);GameLocalization.Refresh();
             Check(Field<RectTransform>("settings").gameObject.activeInHierarchy&&Field<Text>("sensitivityLabel").text.Contains("Camera"),"latest English player settings retained");
             Field<RectTransform>("settings").gameObject.SetActive(false);

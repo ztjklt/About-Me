@@ -10,11 +10,13 @@ namespace AboutMe
     {
         public sealed class IntroductionQuestion
         {
-            public readonly string title,prefix;
+            public readonly string title,prefix,hint;
             public readonly string[] labels,visuals;
-            public IntroductionQuestion(string title,string prefix,string[] labels,string[] visuals)
-            {this.title=title;this.prefix=prefix;this.labels=labels;this.visuals=visuals;}
+            public IntroductionQuestion(string title,string prefix,string[] labels,string[] visuals,string hint="")
+            {this.title=title;this.prefix=prefix;this.labels=labels;this.visuals=visuals;this.hint=hint;}
         }
+        public const int PersonalityQuestionIndex=10, MoodQuestionIndex=11, AIQuestionIndex=12, MBTIQuestionIndex=13, AbilityQuestionIndex=14;
+        public static int IntroductionQuestionOffset(int question)=>IntroductionQuestions.Take(question).Sum(q=>q.labels.Length);
         public static readonly IntroductionQuestion[] IntroductionQuestions={
             new IntroductionQuestion("空闲时喜欢做什么？","空闲时，我喜欢",new[]{"玩游戏","摄影","看电影","阅读"},new[]{"gamepad-cc0","camera","film-clapper","book-single"}),
             new IntroductionQuestion("喜欢哪些运动？","我感兴趣的运动有",new[]{"篮球","足球","游泳","轮滑"},new[]{"basketball","football-cc0","swimming-ring","roller-skates"}),
@@ -28,10 +30,9 @@ namespace AboutMe
             new IntroductionQuestion("哪些代表物适合你？","我觉得这些事物很适合代表自己：",new[]{"猫","拼图","天文望远镜","地球仪"},new[]{"cat","puzzle-piece","telescope","globe"}),
             new IntroductionQuestion("你会如何描述自己的性格？","我的性格是",new[]{"热情","好奇","温柔","理性","活力","专注"},new string[0]),
             new IntroductionQuestion("喜欢哪种人物表情？","我喜欢的人物表情是",new[]{"友好微笑","开心大笑","自信挑眉","慵懒半眯","惊讶睁眼","认真坚定"},new string[0]),
-            new IntroductionQuestion("喜欢使用哪个 AI？","我喜欢",new[]{"DeepSeek","Claude"},new string[0]),
+            new IntroductionQuestion("你喜欢什么 AI？","我喜欢",new[]{"DeepSeek","Claude","GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0],"回答后可能解锁相应的彩蛋模型，可在衣橱切换。"),
             new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0]),
-            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0]),
-            new IntroductionQuestion("其他 AI 偏好（可跳过）","我喜欢",new[]{"GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0]),
+            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0],"仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。"),
             new IntroductionQuestion("喜欢哪些小动物？","我喜欢的小动物有",new[]{"猫","狗","兔子","仓鼠"},AnimalPersonaCatalog.Visuals)
         };
 
@@ -106,8 +107,7 @@ namespace AboutMe
                 float otherY=y+40+((question.labels.Length+1)/2)*52;
                 var other=ArtField(content,0,otherY,528,42,"其他 / 自己填写",false);other.characterLimit=120;questionnaireOther.Add(other);
                 y=otherY+65;
-                if(q==12||q==15){ArtText(content,"根据你喜欢的 AI，可能会额外提供可选的彩蛋角色模型。",0,y,528,42,14,UITheme.Muted);y+=52;}
-                if(q==14){ArtText(content,"仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。",0,y,528,58,14,UITheme.Muted);y+=68;}
+                if(!string.IsNullOrEmpty(question.hint)){ArtText(content,question.hint,0,y,528,58,14,UITheme.Muted);y+=68;}
             }
             content.sizeDelta=new Vector2(540,y+8);
             ArtText(card,"上下滑动查看更多问题 · 不要求全部作答",30,775,560,28,14,UITheme.Muted);
@@ -141,10 +141,10 @@ namespace AboutMe
         void ApplyQuestionnaireAppearance()
         {
             if(!wardrobe)BuildWardrobe();
-            var traits=IntroductionQuestions[10].labels.Where((label,i)=>introductionAnswers[40+i]).Select(GameLocalization.Text).ToList();
-            if(!string.IsNullOrWhiteSpace(questionnaireOther[10].text))traits.Add(questionnaireOther[10].text);
-            traits.AddRange(IntroductionQuestions[13].labels.Where((label,i)=>introductionAnswers[54+i]));
-            if(!string.IsNullOrWhiteSpace(questionnaireOther[13].text))traits.Add(questionnaireOther[13].text);
+            var traits=IntroductionQuestions[PersonalityQuestionIndex].labels.Where((label,i)=>introductionAnswers[IntroductionQuestionOffset(PersonalityQuestionIndex)+i]).Select(GameLocalization.Text).ToList();
+            if(!string.IsNullOrWhiteSpace(questionnaireOther[PersonalityQuestionIndex].text))traits.Add(questionnaireOther[PersonalityQuestionIndex].text);
+            traits.AddRange(IntroductionQuestions[MBTIQuestionIndex].labels.Where((label,i)=>introductionAnswers[IntroductionQuestionOffset(MBTIQuestionIndex)+i]));
+            if(!string.IsNullOrWhiteSpace(questionnaireOther[MBTIQuestionIndex].text))traits.Add(questionnaireOther[MBTIQuestionIndex].text);
             if(traits.Count>0)personalityInput.text=string.Join(GameLocalization.English?", ":"、",traits);
             for(int i=0;i<6;i++)if(introductionAnswers[46+i]){appearanceDraft.expression=QuestionnaireExpressions[i];appearanceDirty=true;}
             RefreshAppearancePreview();

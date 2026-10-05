@@ -5923,6 +5923,18 @@
     {
       "zh": " 个",
       "en": " bots"
+    },
+    {
+      "zh": "你喜欢什么 AI？",
+      "en": "Which AI do you like?"
+    },
+    {
+      "zh": "回答后可能解锁相应的彩蛋模型，可在衣橱切换。",
+      "en": "Your answer may unlock a matching easter egg model. Switch to it in the wardrobe."
+    },
+    {
+      "zh": "前方两次各削20韧、只推一次；侧绕或墙体挡火",
+      "en": "Two hits reduce stability by 20 each; push once. Dodge sideways or use a wall."
     }
   ]
 }

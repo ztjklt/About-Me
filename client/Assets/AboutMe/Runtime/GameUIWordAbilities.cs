@@ -12,13 +12,14 @@ namespace AboutMe
         WordAbilityChoice[] SelectedWordAbilities()
         {
             var choices=new Dictionary<string,WordAbilityChoice>(wordAbilityOverrides);
-            var selected=Enumerable.Range(0,6).FirstOrDefault(i=>introductionAnswers[70+i]);
-            if(Enumerable.Range(0,6).Any(i=>introductionAnswers[70+i]))
+            int abilityOffset=IntroductionQuestionOffset(AbilityQuestionIndex);
+            var selected=Enumerable.Range(0,QuestionnaireAbilityIds.Length).FirstOrDefault(i=>introductionAnswers[abilityOffset+i]);
+            if(Enumerable.Range(0,QuestionnaireAbilityIds.Length).Any(i=>introductionAnswers[abilityOffset+i]))
             {
                 foreach(var word in TraitAbilityCatalog.Words)
                     if((word.aliases??Array.Empty<string>()).Append(word.text).Any(t=>introduction.text.IndexOf(t,StringComparison.OrdinalIgnoreCase)>=0))
                         if(!choices.ContainsKey(word.text))choices[word.text]=new WordAbilityChoice{text=word.text,category=word.category,abilityId=QuestionnaireAbilityIds[selected]};
-                foreach(int q in new[]{10,11,13})if(questionnaireOther.Count>q&&!string.IsNullOrWhiteSpace(questionnaireOther[q].text))
+                foreach(int q in new[]{PersonalityQuestionIndex,MoodQuestionIndex,MBTIQuestionIndex})if(questionnaireOther.Count>q&&!string.IsNullOrWhiteSpace(questionnaireOther[q].text))
                 {var text=questionnaireOther[q].text.Trim();if(introduction.text.Contains(text)&&!choices.ContainsKey(text))choices[text]=new WordAbilityChoice{text=text,category="custom",abilityId=QuestionnaireAbilityIds[selected]};}
             }
             return choices.Count==0?null:choices.Values.ToArray();
