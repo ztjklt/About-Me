@@ -17,6 +17,7 @@ import urllib.request
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--manifest', type=Path, required=True)
+parser.add_argument('--all-mbti', action='store_true', help='Include all sixteen distinct MBTI defaults in each twenty-asset fixture')
 parser.add_argument('--api-port', type=int, default=8097)
 parser.add_argument('--game-port', type=int, default=7797)
 parser.add_argument('--output', type=Path, default=Path('artifacts/persona-limit-20/network'))
@@ -68,10 +69,15 @@ try:
         with TestClient(api.app) as client:
             for index in range(2):
                 session = client.post('/sessions',json={'nickname':f'Capacity QA {index+1}'}).json()
-                intro = '；'.join(f'我喜欢篮球{i}' for i in range(17))+'；我的性格是热情；我的表情是友好微笑；我的MBTI是ENFP'
-                props = [dict(assetId=f'qa-{index}-{i}',name='篮球',source=f'篮球{i}',templateId='Projectile',visualId='basketball',color='#EE7733') for i in range(17)]
+                prop_count = 3 if args.all_mbti else 17
+                intro = '；'.join(f'我喜欢篮球{i}' for i in range(prop_count))+'；我的性格是热情'
+                intro += '；'+'；'.join('我的MBTI是'+row['text'] for row in trait_words.CATALOG['mbti']) if args.all_mbti else '；我的表情是友好微笑；我的MBTI是ENFP'
+                props = [dict(assetId=f'qa-{index}-{i}',name='篮球',source=f'篮球{i}',templateId='Projectile',visualId='basketball',color='#EE7733') for i in range(prop_count)]
                 assets, _ = trait_words.augment(props,[],intro,[dict(text='友好微笑',category='mood',abilityId='bubble-lift')])
                 assert len(assets)==20
+                if args.all_mbti:
+                    mbti_assets=[a for a in assets if a.get('wordCategory')=='mbti']
+                    assert len(mbti_assets)==16 and len({a['abilityId'] for a in mbti_assets})==16
                 profile = dict(session['profile'],personas=assets,revision=1)
                 with api.db() as con:
                     con.execute('UPDATE profiles SET profile=?,intro=? WHERE id=?',(json.dumps(profile),intro,profile['playerId']))
@@ -103,6 +109,8 @@ try:
             reports.append({'players':report['players'],'physicalFrames':report['physicalFrames'],
                 'privacyChecked':report['privacyChecked'],'reconnectValidated':report['reconnectValidated'],
                 'fixturePersonaCount':len(assets), 'maximumObservedRemaining':max(own_remaining),
+                'mbtiTypes':len([a for a in assets if a.get('wordCategory')=='mbti']),
+                'distinctMbtiMechanics':len({a['abilityId'] for a in assets if a.get('wordCategory')=='mbti'}),
                 'useCommands':report['useCommands']})
         result={'passed':True,'releaseId':manifest['releaseId'],'assemblySha256':manifest['assemblySha256'],
             'scope':'Two actual released Unity clients, 20 fixture Personas each, isolated API and localhost authority, physics and host reconnect. No live AI, human, web or phone acceptance.', 'clients':reports}

@@ -29,7 +29,7 @@ namespace AboutMe
             }
             if(d.id=="quantum-echo"){CancelSelfMovement(p);CancelSelfLoot(p);CancelSelfGuards(p);spot=p.position;}
             partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.45f;
-            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,position=spot,velocity=direction,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,stage="virtual"};
+            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,position=spot,velocity=direction,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,stage="virtual"};
             if(d.id=="shot-portal")
             {if(first==null){e.stage="portal_wait";e.deadline=Time+6;Say("第一弹体光框已放，移动并朝向出口再 F；仅攻击弹体可穿。");}else{first.stage="portal_in";e.stage="portal_out";first.targetId=e.id;e.targetId=first.id;first.deadline=e.deadline;Say("双光框已连：普通弹体穿过后沿出口箭头射出。");}}
             if(d.id=="quantum-echo"){e.stage="record";e.path=new[]{p.position};e.triggerAt=Time+1;e.nextHit=Time+.16f;}

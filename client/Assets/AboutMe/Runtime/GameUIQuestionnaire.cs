@@ -31,8 +31,8 @@ namespace AboutMe
             new IntroductionQuestion("你会如何描述自己的性格？","我的性格是",new[]{"热情","好奇","温柔","理性","活力","专注"},new string[0]),
             new IntroductionQuestion("喜欢哪种人物表情？","我喜欢的人物表情是",new[]{"友好微笑","开心大笑","自信挑眉","慵懒半眯","惊讶睁眼","认真坚定"},new string[0]),
             new IntroductionQuestion("你喜欢什么 AI？","我喜欢",new[]{"DeepSeek","Claude","GPT","Gemini","Grok","Kimi","千问","MiniMax","豆包","GLM"},new string[0],"回答后可能解锁相应的彩蛋模型，可在衣橱切换。"),
-            new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0]),
-            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床"},new string[0],"仅选择已有六种能力；性格、表情或 MBTI 的文字道具跟随装备生效。外观推荐另在衣橱保存。"),
+            new IntroductionQuestion("你的 MBTI 是什么？（可跳过）","我的 MBTI 是",new[]{"ENFP","ESFP","INFP","ENFJ","ISFP","ESFJ","ENTJ","ISFJ","ESTJ","INTJ","ISTP","ISTJ","INFJ","INTP","ENTP","ESTP"},new string[0],"16种 MBTI 各有不同默认能力，选项后标注对应能力。"),
+            new IntroductionQuestion("文字道具想使用哪种能力？（可跳过）","",new[]{"喷火","泡泡托举","护盾","冷静罩","牵引","弹床","落地跺脚","双人自愿抛举","展开滑翔","温柔推离","回收挡风屏","节奏弹体门","弹体矢量场","限时反射","蹲锚抗拉","可碰撞滑冲"},new string[0],"可改选已有16种能力；文字道具跟随装备生效。外观推荐另在衣橱保存。"),
             new IntroductionQuestion("喜欢哪些小动物？","我喜欢的小动物有",new[]{"猫","狗","兔子","仓鼠"},AnimalPersonaCatalog.Visuals)
         };
 
@@ -101,8 +101,9 @@ namespace AboutMe
                 for(int a=0;a<question.labels.Length;a++)
                 {
                     int choice=index++;
-                    var button=ArtButton(content,"未选 · "+question.labels[a],(a%2)*270,y+36+(a/2)*52,258,44,()=>ToggleQuestionnaireAnswer(choice),UITheme.Paper,UITheme.Ink);
-                    questionnaireOptions.Add(button);questionnaireOptionLabels.Add(question.labels[a]);
+                    string option=question.labels[a];if(q==MBTIQuestionIndex)option+=" · "+TraitAbilityCatalog.AbilityLabel(TraitAbilityCatalog.FindWord(option).abilityId);
+                    var button=ArtButton(content,"未选 · "+option,(a%2)*270,y+36+(a/2)*52,258,44,()=>ToggleQuestionnaireAnswer(choice),UITheme.Paper,UITheme.Ink);
+                    questionnaireOptions.Add(button);questionnaireOptionLabels.Add(option);
                 }
                 float otherY=y+40+((question.labels.Length+1)/2)*52;
                 var other=ArtField(content,0,otherY,528,42,"其他 / 自己填写",false);other.characterLimit=120;questionnaireOther.Add(other);
@@ -134,7 +135,7 @@ namespace AboutMe
         {
             for(int i=0;i<questionnaireOptions.Count;i++)
             {
-                var button=questionnaireOptions[i];button.GetComponentInChildren<Text>().text=GameLocalization.Text(introductionAnswers[i]?"已选 · ":"未选 · ")+GameLocalization.Text(questionnaireOptionLabels[i]);
+                var button=questionnaireOptions[i];button.GetComponentInChildren<Text>().text=GameLocalization.Text(introductionAnswers[i]?"已选 · ":"未选 · ")+string.Join(" · ",questionnaireOptionLabels[i].Split(new[]{" · "},StringSplitOptions.None).Select(GameLocalization.Text));
                 button.GetComponent<StickerButton>().SetState(introductionAnswers[i]?UIVisualState.Selected:UIVisualState.Normal);
             }
         }

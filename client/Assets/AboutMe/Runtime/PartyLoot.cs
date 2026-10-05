@@ -44,7 +44,7 @@ namespace AboutMe
             {
                 var end=GroundParty(p.position+Forward(p)*1.2f);float distance=Flat(end-waiting.position).magnitude;
                 if(distance<1.2f||distance>d.radius||!LootLineClear(waiting.position,end)||CampusGeometry.Blocked(end+Vector3.up*.6f)){Say("另端需相距1.2–5米且无遮挡，请移动后再按 F。");p.nextAttack=Time+.3f;return true;}
-                var other=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,position=end,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=.45f,health=2,stage="line_end",targetId=waiting.id};
+                var other=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,position=end,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=.45f,health=2,stage="line_end",targetId=waiting.id};
                 waiting.targetId=other.id;waiting.path=new[]{waiting.position,end};waiting.stage="line_armed";waiting.deadline=Time+d.lifetime;Effects.Add(other);p.nextAttack=Time+.45f;CombatEvent("party_line_armed",p);return true;
             }
             PersonaInstance target=null;PublicProp[] swap=null;Player down=null;Vector3 safe=Vector3.zero;
@@ -57,7 +57,7 @@ namespace AboutMe
             var spot=d.id=="carry-cradle"||d.id=="public-hot-potato"||d.id=="trip-line"?GroundParty(p.position+Forward(p)*1.2f):target?.position??p.position;
             if((d.id=="carry-cradle"||d.id=="public-hot-potato"||d.id=="trip-line")&&CampusGeometry.Blocked(spot+Vector3.up*.6f)){Say("放置位置被挡住，请换个空地。");p.nextAttack=Time+.3f;return true;}
             CancelSelfLoot(p);partyCooldowns[item.id]=Time+d.cooldown;p.nextAttack=Time+.45f;
-            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,position=spot,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,stage="active",targetId=target?.id??"",velocity=Forward(p)};
+            var e=new EffectState{id=Guid.NewGuid().ToString("N"),kind="PartyMechanic",owner=p.profile.playerId,sourceInstance=item.id,mechanicId=d.id,visual=item.asset.visualId,color=item.asset.color,wordCategory=item.asset.wordCategory,wordText=item.asset.wordText,abilityId=item.asset.abilityId,position=spot,createdAt=Time,deadline=Time+d.lifetime,remaining=d.lifetime,radius=d.radius,health=2,stage="active",targetId=target?.id??"",velocity=Forward(p)};
             if(d.id=="tongs-place")e.stage="clamping";
             if(d.id=="carry-cradle"||d.id=="public-hot-potato")
             {e.targetId="device-"+e.id;spot.y=CampusGeometry.Floor(spot,.1f)+.6f;e.position=spot;Props.Add(new PublicProp{id=e.targetId,visual=e.visual,position=spot,hitAfter=float.MaxValue});}

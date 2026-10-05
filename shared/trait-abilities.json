@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "abilities": [
     {
       "id": "flame-fan",
@@ -30,6 +30,56 @@
       "id": "spring-pad",
       "label": "活力弹簧",
       "hint": "弹簧跳板"
+    },
+    {
+      "id": "stomp-pulse",
+      "label": "落地跺脚",
+      "hint": "先跳起再 F，落地触发一次；跳过脉冲可躲避"
+    },
+    {
+      "id": "team-sling",
+      "label": "双人自愿抛举",
+      "hint": "放置者留位，第二人在支架按E同意；预告0.45秒后抛举，离开/Q取消"
+    },
+    {
+      "id": "glide-open",
+      "label": "展开滑翔",
+      "hint": "空中 F 减缓下降；不能攻击吞噬，Q 收拢"
+    },
+    {
+      "id": "gentle-push-clear",
+      "label": "温柔推离",
+      "hint": "F 轻推附近倒地角色向安全平地；不削韧、不改起身时间、不能推向边缘"
+    },
+    {
+      "id": "recover-screen",
+      "label": "回收挡风屏",
+      "hint": "地面屏挡一枚穿面的弹体，双方可走穿；不加速回收"
+    },
+    {
+      "id": "rhythm-gate",
+      "label": "节奏弹体门",
+      "hint": "每秒开0.35秒，其余时段挡弹；双方走穿，按节拍选时机"
+    },
+    {
+      "id": "vector-arrow",
+      "label": "弹体矢量场",
+      "hint": "普通弹体进入转向场按固定箭头转向，速度守恒，每颗仅转一次"
+    },
+    {
+      "id": "timed-reflect",
+      "label": "限时反射",
+      "hint": "F 后短窗反射首枚弹体；伤害不免近战，失败有硬直"
+    },
+    {
+      "id": "ground-anchor",
+      "label": "蹲锚抗拉",
+      "hint": "F 定住水平拖拽；不能走跳，近战削韧与竖直击飞有效"
+    },
+    {
+      "id": "short-dash",
+      "label": "可碰撞滑冲",
+      "hint": "沿输入方向滑冲；撞人撞墙会停，冲后不能立即吞噬"
     }
   ],
   "words": [
@@ -256,7 +306,7 @@
     {
       "category": "mbti",
       "text": "ESFP",
-      "abilityId": "flame-fan"
+      "abilityId": "stomp-pulse"
     },
     {
       "category": "mbti",
@@ -266,17 +316,17 @@
     {
       "category": "mbti",
       "text": "ENFJ",
-      "abilityId": "bubble-lift"
+      "abilityId": "team-sling"
     },
     {
       "category": "mbti",
       "text": "ISFP",
-      "abilityId": "bubble-lift"
+      "abilityId": "glide-open"
     },
     {
       "category": "mbti",
       "text": "ESFJ",
-      "abilityId": "bubble-lift"
+      "abilityId": "gentle-push-clear"
     },
     {
       "category": "mbti",
@@ -286,32 +336,32 @@
     {
       "category": "mbti",
       "text": "ISFJ",
-      "abilityId": "front-shield"
+      "abilityId": "recover-screen"
     },
     {
       "category": "mbti",
       "text": "ESTJ",
-      "abilityId": "front-shield"
+      "abilityId": "rhythm-gate"
     },
     {
       "category": "mbti",
       "text": "INTJ",
-      "abilityId": "calm-dome"
+      "abilityId": "vector-arrow"
     },
     {
       "category": "mbti",
       "text": "ISTP",
-      "abilityId": "calm-dome"
+      "abilityId": "timed-reflect"
     },
     {
       "category": "mbti",
       "text": "ISTJ",
-      "abilityId": "calm-dome"
+      "abilityId": "ground-anchor"
     },
     {
       "category": "mbti",
       "text": "INFJ",
-      "abilityId": "tractor-loose"
+      "abilityId": "calm-dome"
     },
     {
       "category": "mbti",
@@ -326,7 +376,7 @@
     {
       "category": "mbti",
       "text": "ESTP",
-      "abilityId": "spring-pad"
+      "abilityId": "short-dash"
     }
   ]
 }

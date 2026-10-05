@@ -415,9 +415,9 @@
       "windup": 0.35,
       "lifetime": 1,
       "radius": 4,
-      "damage": 20,
+      "damage": 30,
       "force": 2,
-      "hint": "前方两次各削20韧、只推一次；侧绕或墙体挡火",
+      "hint": "前方两次各削30韧、只推一次；侧绕或墙体挡火",
       "family": "field",
       "countsTowardDistinctMechanics": true
     },

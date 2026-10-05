@@ -20,13 +20,44 @@ def login(client):
 def raw(intro):
     return api.validate_personas({'personas':[]},intro)
 
-def test_catalog_exact_client_copy_and_existing_six_mechanics():
+def test_catalog_exact_client_copy_and_sixteen_distinct_mbti_mechanics():
     root=Path(__file__).resolve().parents[2]
     assert (root/'shared/trait-abilities.json').read_bytes()==(root/'client/Assets/AboutMe/Resources/trait-abilities.json').read_bytes()
     ids={a['id'] for a in json.loads((root/'shared/persona-mechanics.json').read_text())['items']}
-    assert len(words.ABILITIES)==6 and words.ABILITIES<=ids
+    assert len(words.ABILITIES)==16 and words.ABILITIES<=ids
     assert len(words.CATALOG['mbti'])==16
+    assert len({w['abilityId'] for w in words.CATALOG['mbti']})==16
     assert all(w['abilityId'] in words.ABILITIES for w in words.WORDS)
+
+
+@pytest.mark.parametrize('entry', words.CATALOG['mbti'])
+@pytest.mark.parametrize('explicit_override', [False, True])
+def test_mbti_default_upgrade_keeps_ids_and_explicit_player_choices(client, monkeypatch, entry, explicit_override):
+    old_mapping = {'ENFP':'flame-fan','ESFP':'flame-fan','INFP':'bubble-lift','ENFJ':'bubble-lift',
+                   'ISFP':'bubble-lift','ESFJ':'bubble-lift','ENTJ':'front-shield','ISFJ':'front-shield',
+                   'ESTJ':'front-shield','INTJ':'calm-dome','ISTP':'calm-dome','ISTJ':'calm-dome',
+                   'INFJ':'tractor-loose','INTP':'tractor-loose','ENTP':'spring-pad','ESTP':'spring-pad'}
+    headers, session = login(client)
+    intro = '我喜欢篮球，也喜欢阅读和听音乐；我的MBTI是'+entry['text']
+    asset = dict(next(a for a in raw(intro) if a.get('wordText')==entry['text']), abilityId=old_mapping[entry['text']])
+    choices = [dict(text=entry['text'], category='mbti', abilityId=asset['abilityId'])] if explicit_override else []
+    old = dict(session['profile'], revision=1, personas=[asset], generationCandidates=[asset],
+               generationTerms=[], traitWordVersion=1, wordAbilities=choices)
+    with api.db() as con:
+        con.execute('UPDATE profiles SET profile=?,intro=? WHERE id=?', (json.dumps(old),intro,old['playerId']))
+    async def forbidden(_):
+        raise AssertionError('MBTI mapping upgrade must not reroll existing assets')
+    monkeypatch.setattr(api, 'generate_with_provider', forbidden)
+    body = dict(nickname='字玩具', introduction=intro, generationId='d'*32)
+    response = client.post('/personas/generate', headers=headers, json=body)
+    assert response.status_code == 200, response.text
+    after = response.json()
+    expected = asset['abilityId'] if explicit_override else entry['abilityId']
+    assert after['personas'][0]['abilityId'] == expected
+    assert after['personas'][0]['assetId'] == asset['assetId']
+    assert after['traitWordVersion'] == 2
+    again = client.post('/personas/generate', headers=headers, json=body).json()
+    assert again['revision'] == after['revision'] and again['personas'] == after['personas']
 
 @pytest.mark.parametrize('entry',words.WORDS)
 def test_all_published_personality_mood_and_mbti_are_grounded_assets(entry):

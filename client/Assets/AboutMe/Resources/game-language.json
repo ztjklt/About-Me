@@ -5935,6 +5935,58 @@
     {
       "zh": "前方两次各削20韧、只推一次；侧绕或墙体挡火",
       "en": "Two hits reduce stability by 20 each; push once. Dodge sideways or use a wall."
+    },
+    {
+      "zh": "前方扇形喷火",
+      "en": "Flame cone in front"
+    },
+    {
+      "zh": "温柔泡泡",
+      "en": "Gentle bubble"
+    },
+    {
+      "zh": "坚定护盾",
+      "en": "Resolute shield"
+    },
+    {
+      "zh": "正面护盾",
+      "en": "Front shield"
+    },
+    {
+      "zh": "冷静领域",
+      "en": "Calm field"
+    },
+    {
+      "zh": "安静领域",
+      "en": "Calm field"
+    },
+    {
+      "zh": "好奇牵引",
+      "en": "Curious attraction"
+    },
+    {
+      "zh": "牵引地面物",
+      "en": "Attract loose items"
+    },
+    {
+      "zh": "活力弹簧",
+      "en": "Energetic spring"
+    },
+    {
+      "zh": "弹簧跳板",
+      "en": "Spring pad"
+    },
+    {
+      "zh": "前方两次各削30韧、只推一次；侧绕或墙体挡火",
+      "en": "Two hits reduce stability by 30 each; push once. Dodge sideways or use a wall."
+    },
+    {
+      "zh": "16种 MBTI 各有不同默认能力，选项后标注对应能力。",
+      "en": "Each of the 16 MBTI types has a different default ability, shown beside its option."
+    },
+    {
+      "zh": "可改选已有16种能力；文字道具跟随装备生效。外观推荐另在衣橱保存。",
+      "en": "Choose from 16 abilities. Word abilities follow the equipped item. Save outfit recommendations separately in your wardrobe."
     }
   ]
 }

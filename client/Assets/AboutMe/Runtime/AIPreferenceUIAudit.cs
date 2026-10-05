@@ -42,6 +42,9 @@ namespace AboutMe
             Array.Clear(answers,0,answers.Length);var mbti=GameUI.IntroductionQuestions[GameUI.MBTIQuestionIndex];
             answers[GameUI.IntroductionQuestionOffset(GameUI.MBTIQuestionIndex)+Array.IndexOf(mbti.labels,"INTP")]=true;Call("CreateQuestionnaireDraft");
             Check(Field<InputField>("questionnaireDraft").text=="我的 MBTI 是INTP。"&&Call("SelectedWordAbilities")==null,"INTP produces MBTI sentence without accidental ability override");
+            Check(TraitAbilityCatalog.Data.mbti.Select(w=>w.abilityId).Distinct().Count()==16,"all sixteen MBTI defaults use different mechanics");
+            foreach(var type in mbti.labels){Array.Clear(answers,0,answers.Length);int index=GameUI.IntroductionQuestionOffset(GameUI.MBTIQuestionIndex)+Array.IndexOf(mbti.labels,type);answers[index]=true;Call("CreateQuestionnaireDraft");Check(Field<InputField>("questionnaireDraft").text=="我的 MBTI 是"+type+"。"&&Call("SelectedWordAbilities")==null,type+" selection preserves its default ability");Check(Field<List<Button>>("questionnaireOptions")[index].GetComponentInChildren<Text>().text.Contains(TraitAbilityCatalog.AbilityLabel(TraitAbilityCatalog.FindWord(type).abilityId)),type+" displays its default ability beside the option");}
+            Array.Clear(answers,0,answers.Length);answers[GameUI.IntroductionQuestionOffset(GameUI.MBTIQuestionIndex)+Array.IndexOf(mbti.labels,"INTP")]=true;
             answers[GameUI.IntroductionQuestionOffset(GameUI.PersonalityQuestionIndex)]=true;intro.text="我的性格是热情；我的 MBTI 是 INTP";
             answers[GameUI.IntroductionQuestionOffset(GameUI.AbilityQuestionIndex)+4]=true;
             var choices=(WordAbilityChoice[])Call("SelectedWordAbilities");Check(choices.Any(c=>c.text=="INTP")&&choices.Any(c=>c.text=="热情")&&choices.All(c=>c.abilityId=="tractor-loose"),"manual tractor choice applies to the intended words after reordering");
@@ -51,9 +54,14 @@ namespace AboutMe
             var title=scroll.content.GetComponentsInChildren<Text>().First(t=>t.text.Contains(question.title));
             scroll.content.anchoredPosition=new Vector2(10,-title.rectTransform.anchoredPosition.y);Call("RefreshQuestionnaireOptions");
             yield return null;Canvas.ForceUpdateCanvases();ScreenCapture.CaptureScreenshot(Path.Combine(output,"ai-question-zh.png"));yield return new WaitForSecondsRealtime(.3f);
+            var mbtiTitle=scroll.content.GetComponentsInChildren<Text>().First(t=>t.text.Contains(mbti.title));scroll.content.anchoredPosition=new Vector2(10,-mbtiTitle.rectTransform.anchoredPosition.y);yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"mbti-abilities-zh.png"));yield return new WaitForSecondsRealtime(.3f);
             GameLocalization.SetEnglish(true);GameLocalization.Refresh();Call("RefreshQuestionnaireOptions");yield return null;
             Check(!panel.GetComponentsInChildren<Text>().Where(t=>t!=Field<InputField>("questionnaireDraft").textComponent).Any(t=>t.text.Any(c=>c>='\u4e00'&&c<='\u9fff')),"AI controls and hint translate completely to English");
-            ScreenCapture.CaptureScreenshot(Path.Combine(output,"ai-question-en.png"));yield return new WaitForSecondsRealtime(.3f);GameLocalization.SetEnglish(english);
+            ScreenCapture.CaptureScreenshot(Path.Combine(output,"mbti-abilities-en.png"));yield return new WaitForSecondsRealtime(.3f);scroll.content.anchoredPosition=new Vector2(10,-title.rectTransform.anchoredPosition.y);yield return null;
+            ScreenCapture.CaptureScreenshot(Path.Combine(output,"ai-question-en.png"));yield return new WaitForSecondsRealtime(.3f);GameLocalization.SetEnglish(false);Call("CloseIntroductionQuestionnaire");Call("OpenWordAbilityPicker",new GenerationTerm{term="INTP",wordText="INTP",wordCategory="mbti",abilityId="tractor-loose"});yield return null;
+            var picker=Field<RectTransform>("wordAbilityPicker");var buttons=picker.GetComponentsInChildren<Button>();Check(buttons.Length==17,"picker exposes sixteen distinct abilities and close button");var abilityScroll=picker.GetComponentInChildren<ScrollRect>();abilityScroll.verticalNormalizedPosition=0;yield return null;ScreenCapture.CaptureScreenshot(Path.Combine(output,"ability-picker-last-zh.png"));yield return new WaitForSecondsRealtime(.3f);
+            buttons.Last().onClick.Invoke();Check(((WordAbilityChoice[])Call("SelectedWordAbilities")).Any(c=>c.text=="INTP"&&c.abilityId=="short-dash"),"last new picker option selects short dash for INTP only");Check(JsonUtility.ToJson(profile)==saved,"expanded picker retains saved Persona until regeneration");
+            GameLocalization.SetEnglish(english);
         }
     }
 }

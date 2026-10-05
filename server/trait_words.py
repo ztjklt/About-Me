@@ -162,7 +162,7 @@ def augment(assets, terms, introduction, selections=(), sensitive=lambda _: Fals
             old = old_words.get(identity(row), {})
             result.append(dict(assetId=old.get('assetId') or uuid.uuid4().hex, name=row['text'],
                                templateId='SpecialAbility', visualId='trait-word',
-                               color=PALETTE[row['abilityId']], source=row['source'], generationTerm=row['term'],
+                               color=PALETTE.get(row['abilityId'], '#86ADCB'), source=row['source'], generationTerm=row['term'],
                                wordCategory=row['category'], wordText=row['text'], abilityId=row['abilityId']))
         elif row['abilityId']:
             term.update(status='failed', reason=f'已达到{maximum}件 Persona 上限，请精简介绍', stage='超过上限')
