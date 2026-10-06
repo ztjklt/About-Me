@@ -519,7 +519,7 @@ namespace AboutMe
                 p.nextAttack=Time+2f;return;
             }
             float reach=heavy?2.8f:2.2f;
-            if(template=="Melee")damage=Rules.lightDamage;
+            if(template=="Melee"){damage=Rules.lightDamage;reach=2.8f;}
             if(heavy && template=="Utility") { reach=5; damage=100; force=2; p.nextAttack=Time+5; }
             if(heavy && template=="SpecialAbility") { reach=4.5f; force=15; p.nextAttack=Time+7; }
             if(template=="HeavyWeapon") { damage*=1.25f; force*=1.2f; p.nextAttack+=.3f; }
