@@ -79,10 +79,20 @@ mergeInto(LibraryManager.library, {
     input.value=initial;input.placeholder=hint;input.setAttribute('aria-label',hint);input.maxLength=maxLength;input.autocomplete='off';input.autocapitalize='off';input.spellcheck=false;
     var style=input.style;style.position='fixed';style.zIndex='2147483647';style.left=(bounds.left+x*bounds.width)+'px';style.top=(bounds.top+(1-y-height)*bounds.height)+'px';
     style.width=Math.max(48,width*bounds.width)+'px';style.height=Math.max(28,height*bounds.height)+'px';style.boxSizing='border-box';style.opacity='1';style.background='#f5f7f4';style.color='#222c3c';style.border='2px solid #222c3c';style.borderRadius='8px';style.outline='0';style.padding='0 12px';style.resize='none';style.fontSize='18px';style.fontFamily='system-ui,sans-serif';
+    // Unity's capture-phase keyboard handlers run before a textarea's own events.
+    // Yield those engine handlers while editing, then restore them when the field closes.
+    // This also works with Tuanjie builds that omit the WebGLInput managed API.
+    var keyboardHandlers=typeof JSEvents!=='undefined'?JSEvents.eventHandlers.filter(function(handler){
+      return /^(keydown|keypress|keyup)$/.test(handler.eventTypeString);
+    }):[];
+    keyboardHandlers.forEach(function(handler){handler.target.removeEventListener(handler.eventTypeString,handler.eventListenerFunc,handler.useCapture);});
     var closed=false;
     var finish=function(blurred){
       if(closed)return;
       closed=true;
+      keyboardHandlers.forEach(function(handler){
+        if(JSEvents.eventHandlers.indexOf(handler)!==-1)handler.target.addEventListener(handler.eventTypeString,handler.eventListenerFunc,handler.useCapture);
+      });
       var finalValue=input.value;
       values[target]=finalValue;
       if(globalThis.aboutMeTextInput===input)globalThis.aboutMeTextInput=null;

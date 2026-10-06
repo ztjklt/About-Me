@@ -10,20 +10,6 @@ namespace AboutMe
     {
         public InputField Field;
         bool selected, closing;
-#if UNITY_WEBGL && !UNITY_EDITOR
-        bool browserKeyboardOwned, previousKeyboardCapture;
-        void TakeBrowserKeyboard()
-        {
-            if(browserKeyboardOwned)return;
-            previousKeyboardCapture=WebGLInput.captureAllKeyboardInput;
-            WebGLInput.captureAllKeyboardInput=false;browserKeyboardOwned=true;
-        }
-        void ReleaseBrowserKeyboard()
-        {
-            if(!browserKeyboardOwned)return;
-            WebGLInput.captureAllKeyboardInput=previousKeyboardCapture;browserKeyboardOwned=false;
-        }
-#endif
 
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
         [DllImport("__Internal")] static extern void AM_InputOpen(string receiver,string value,string placeholder,int multiline,int maxLength,float x,float y,float width,float height);
@@ -62,10 +48,6 @@ namespace AboutMe
             if(Field==null)return;
             selected=true;closing=false;
             Input.imeCompositionMode=IMECompositionMode.On;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            // Let the HTML textarea receive Space, Enter and IME events before the game.
-            TakeBrowserKeyboard();
-#endif
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
             var corners=new Vector3[4];((RectTransform)transform).GetWorldCorners(corners);
             var lower=RectTransformUtility.WorldToScreenPoint(null,corners[0]);
@@ -82,9 +64,6 @@ namespace AboutMe
             Input.imeCompositionMode=IMECompositionMode.Auto;
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
             if(!closing)AM_InputClose(gameObject.name);
-#endif
-#if UNITY_WEBGL && !UNITY_EDITOR
-            ReleaseBrowserKeyboard();
 #endif
         }
 
@@ -105,9 +84,6 @@ namespace AboutMe
         public void OnBrowserBlur(string value)
         {
             OnBrowserInput(value);closing=true;selected=false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            ReleaseBrowserKeyboard();
-#endif
             Input.imeCompositionMode=IMECompositionMode.Auto;
             Field.DeactivateInputField();
             if(EventSystem.current&&EventSystem.current.currentSelectedGameObject==gameObject)EventSystem.current.SetSelectedGameObject(null);
@@ -116,9 +92,6 @@ namespace AboutMe
 
         void OnDisable()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            ReleaseBrowserKeyboard();
-#endif
             if(!selected)return;selected=false;
 #if (UNITY_WEBGL || UNITY_WEIXINMINIGAME || UNITY_MINIGAME || PLATFORM_WEIXINMINIGAME) && !UNITY_EDITOR
             AM_InputClose(gameObject.name);
