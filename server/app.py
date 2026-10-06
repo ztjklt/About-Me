@@ -780,8 +780,8 @@ def image_mime(data):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-persona-r14'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
-            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'playtest-persona-r14', 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
+    return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-combat-r15'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
+            'universityProgress': True, 'domesticPriority': True, 'latestUI': os.getenv('ABOUTME_RELEASE_ID', 'playtest-combat-r15'), 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
