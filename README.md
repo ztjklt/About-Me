@@ -1,12 +1,12 @@
-**本机最新整合：完整 R15。** 普通近战两次有效命中击飞掉落，重击／干扰／范围攻击一次有效命中掉落；攻击性路障与场地接触击倒。保留完整 R14 嘴型与短梗气泡。双击 `scripts/start-latest.command`，API／权威 8099／7799。详见 [R15 交付](docs/COMBAT_R15_DELIVERY.md)。
+**本机最新整合：完整 R16。** 修复学校生成校徽缓存权限，以及网页直接输入的空格、换行和中文确认；保留完整R15战斗与嘴型短梗。双击 `scripts/start-latest.command`，API／权威8136／7836。详见 [R16交付](docs/INPUT_R16_DELIVERY.md)。
 
-**公网最新：完整 R15，已同步 GitHub main 与 Railway Web/API/Game。** [打开游戏](https://web-production-fb9b1.up.railway.app/)；[公网交付与验证](docs/RAILWAY_R15_DELIVERY.md)。
+**公网最新：完整 R16，GitHub 与 Railway Web/API/Game 已同步。** [打开游戏](https://web-production-fb9b1.up.railway.app/)；[R16交付与验证](docs/INPUT_R16_DELIVERY.md)。AI额度暂时关闭。
 
 # About Me
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-combat-r15`：近战每次60，重击与干扰一次命中掉落，喷火两次各60，攻击性场地踩中掉落；保留20 Persona、16 MBTI、277道具、四种动物与1–6人机。参见 [R15交付](docs/COMBAT_R15_DELIVERY.md)。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-input-r16`：网页空格／换行和学校缓存已修复；近战每次60，重击与干扰一次命中掉落，喷火两次各60，攻击性场地踩中掉落；保留20 Persona、16 MBTI、277道具、四种动物与1–6人机。参见 [R16交付](docs/INPUT_R16_DELIVERY.md)。
 
 `builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
 
