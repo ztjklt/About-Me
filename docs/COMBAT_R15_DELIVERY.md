@@ -38,3 +38,7 @@ Mac 与 WebGL 完整 Release 构建通过；构建自带31项基础、菜单/NPC
 默认入口已切换完整R15，根README与STATUS同步，验证入口 `scripts/start-latest.command --verify-only`／`scripts/start-playtest-combat-r15.command --check`。公网仍是R12，本任务未部署Railway。根工作区只新增产物、脚本、交付记录和定点更新入口／说明；没有覆盖或提交其他角色的客户端源码。
 
 证据目录：`artifacts/combat-r15/validation-summary.json`、`CombatImpactTests.log`、`CombatImpactPhysics.log`、`BuildMac.log`、`BuildWeb.log`及`network/`。尚待真人局确认更高伤害后的节奏、手机／微信真机和异地联机；不把规则或真实刚体场景当成人类体验评分。最终成果交产品负责人任务，由其安排后续真人与公网验收。
+
+## 公网同步
+
+完整 R15 已推送 GitHub main 并部署 Railway Web/API/Game；公网版本、四份资源 hash 及双实际自动客户端入房／战斗快照／重连通过，详见 [公网 R15 交付](RAILWAY_R15_DELIVERY.md)。

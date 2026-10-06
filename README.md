@@ -1,6 +1,6 @@
 **本机最新整合：完整 R15。** 普通近战两次有效命中击飞掉落，重击／干扰／范围攻击一次有效命中掉落；攻击性路障与场地接触击倒。保留完整 R14 嘴型与短梗气泡。双击 `scripts/start-latest.command`，API／权威 8099／7799。详见 [R15 交付](docs/COMBAT_R15_DELIVERY.md)。
 
-**公网当前仍为完整 R12。** R15 尚未部署公网。
+**公网最新：完整 R15，已同步 GitHub main 与 Railway Web/API/Game。** [打开游戏](https://web-production-fb9b1.up.railway.app/)；[公网交付与验证](docs/RAILWAY_R15_DELIVERY.md)。
 
 # About Me
 
