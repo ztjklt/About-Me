@@ -7,11 +7,13 @@ namespace AboutMe
     {
         static Mesh rimMesh;
         static readonly Dictionary<string,Mesh> curves=new Dictionary<string,Mesh>();
-        public static void SetOpening(Transform root,float opening,bool idleOpen=false)
+        public static void SetOpening(Transform root,float opening,bool hideIdle=false)
         {
-            var idle=root.Find("Idle smile");if(idle)idle.gameObject.SetActive(opening<.08f&&!idleOpen);
-            var rim=root.Find("Skin lip rim");if(rim)rim.gameObject.SetActive(opening>=.08f||idleOpen);
-            for(int i=0;i<root.childCount;i++){var c=root.GetChild(i);if(c.name=="Mouth cavity"||c.name=="Tongue"||c.name=="Upper teeth")c.gameObject.SetActive(opening>=.08f||idleOpen);}
+            bool eating=opening>=.08f;
+            root.gameObject.SetActive(!hideIdle||eating);
+            var idle=root.Find("Idle smile");if(idle)idle.gameObject.SetActive(!eating&&!hideIdle);
+            var rim=root.Find("Skin lip rim");if(rim)rim.gameObject.SetActive(eating);
+            for(int i=0;i<root.childCount;i++){var c=root.GetChild(i);if(c.name=="Mouth cavity"||c.name=="Tongue"||c.name=="Upper teeth")c.gameObject.SetActive(eating);}
         }
         public static GameObject Build(Transform head,string skin,float smile=0)
         {
@@ -47,7 +49,7 @@ namespace AboutMe
                 curve=new Mesh{name="Expression smile "+key};curve.SetVertices(v);curve.SetTriangles(t,0);curve.RecalculateNormals();curve.RecalculateBounds();curves[key]=curve;
             }
             idle.GetComponent<MeshFilter>().sharedMesh=curve;idle.GetComponent<MeshRenderer>().sharedMaterial=DollFactory.Material("#332438");
-            // Joy and surprise use the open aperture at rest for a readable laugh / O mouth.
+            // The mouth aperture is reserved for eating, independently of the eye expression.
             return root;
         }
     }

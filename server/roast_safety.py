@@ -26,10 +26,10 @@ def safe_public_text(value):
 
 def safe_roast(value):
     text = str(value or '').strip()
-    visible = re.sub(r'\s+', '', text)
-    if not 15 <= len(visible) <= 40 or not safe_public_text(text):
+    visible = re.sub(r'[\s。！？?!，,、…]', '', text)
+    if not 5 <= len(visible) <= 7 or not safe_public_text(text):
         return False
     # A single line of ordinary Chinese text: no handles, links, markup or digits.
-    if re.search(r'[A-Za-z0-9@#<>\\/{}\[\]]', text):
+    if re.search(r'[A-Za-z0-9@#<>\\/{}\[\]]', re.sub(r'rap', '', text, flags=re.I)):
         return False
-    return text.count('。') + text.count('！') + text.count('？') <= 1
+    return sum(text.count(mark) for mark in ('。','！','？','?','!')) <= 1

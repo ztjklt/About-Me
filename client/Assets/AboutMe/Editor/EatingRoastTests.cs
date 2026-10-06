@@ -23,7 +23,7 @@ namespace AboutMe.Editor
             var m=Create();var npc=m.Players.Keys.Single(x=>x!="human");var ball=Ground(m,npc,"human");m.Interact(m.Players["human"],ball.id);
             Check(m.Eaten.Count==0&&m.EatingRoasts.Count==1,"human triggers before completion");
             var attempt=m.EatingRoasts.Single();Check(attempt.eaterId=="human"&&attempt.itemId==ball.id,"consumer and actual item retained");
-            const string line="我把篮球吃进肚里，这下打嗝都得算三分球了。";
+            const string line="唱跳缺个篮球";
             Check(m.SayEatingRoast(attempt,line),"provider reply accepted during eating");
             var view=m.View(npc);var spoken=view.events.Last();Check(spoken.speakerId=="human"&&spoken.itemId==ball.id&&spoken.line==line&&spoken.text.StartsWith("真人："),"observers receive attributed dialogue");
             m.Events.Clear();Check(!m.SayEatingRoast(attempt,line),"duplicate reply remains suppressed after event history eviction");m.Interrupt(m.Players["human"]);
@@ -53,10 +53,11 @@ namespace AboutMe.Editor
             var occupied=new System.Collections.Generic.List<Rect>();
             for(int i=0;i<7;i++)
             {
-                var point=EaterRoastPresentation.PlaceBubble(new Vector2(0,200),new Vector2(1600,900),occupied);
-                var rect=new Rect(point-new Vector2(132,55),new Vector2(264,110));
+                var point=EaterRoastPresentation.PlaceBubble(new Vector2(0,-160),new Vector2(1600,900),occupied);
+                var rect=new Rect(point-new Vector2(82,30),new Vector2(164,60));
                 Check(!occupied.Any(other=>other.Overlaps(rect)),"concurrent bubble "+i+" does not overlap");occupied.Add(rect);
             }
+            Check(occupied.All(x=>Mathf.Abs(x.center.x)<.001f),"crowded bubbles stay directly above each speaker");
             Debug.Log("EATER_ROAST_PASSED "+passed);
         }
     }

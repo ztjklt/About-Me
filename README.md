@@ -1,12 +1,12 @@
-**本机最新整合：完整 R13。** AI 皮肤关键词按已解锁状态显示绿色；调侃进场时提前准备，吞噬时立即显示人物旁的透明小气泡。默认双击 `scripts/start-latest.command`，配套 API／权威端口 8097／7797。详见 [R13 交付](docs/PERSONA_R13_DELIVERY.md)。
+**本机最新整合：完整 R14。** AI 娘平时无嘴，普通玩偶闭嘴微笑，吞噬时保留大嘴；头顶透明小气泡显示五到七字损梗。默认双击 `scripts/start-latest.command`，配套 API／权威 8098／7798。详见 [R14 交付](docs/PERSONA_R14_DELIVERY.md)。
 
-**公网当前仍为完整 R12。** [打开在线试玩](https://web-production-fb9b1.up.railway.app/)；本次 R13 尚未部署公网。
+**公网当前仍为完整 R12。** 本次 R14 尚未部署公网。
 
 # About Me
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前 `playtest-persona-r13`，保留完整 R12 功能；源码和客户端、权威服务器、API 的匹配身份由发布清单核对。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前 `playtest-persona-r14`，保留完整 R13 功能；源码和客户端、权威服务器、API 的匹配身份由发布清单核对。
 
 `builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
 

@@ -354,7 +354,7 @@ namespace AboutMe
                 if(sign<0)leftBrow=brow.transform;else rightBrow=brow.transform;
             }
             P("Nose",head,new Vector3(0,-.07f,.45f),new Vector3(.115f,.105f,.15f),"#"+ColorUtility.ToHtmlStringRGB(Color.Lerp(ToyFactory.ColorOf(a.skinColor),ToyFactory.ColorOf(Ink),.08f)));
-            var mouthObject=DollMouth.Build(head,a.skinColor,face.smile);cosmetics.Add(mouthObject);mouth=mouthObject.transform;
+            var mouthObject=DollMouth.Build(head,a.skinColor,.22f);cosmetics.Add(mouthObject);mouth=mouthObject.transform;
             P("Neck",neck,Vector3.zero,new Vector3(.27f,.26f,.27f),a.skinColor);
             // Capture skin bind poses only in the neutral rest pose; keep the current animation intact.
             var current=new List<(Vector3 p,Quaternion q)>();
@@ -643,11 +643,13 @@ namespace AboutMe
         public float CarriedScale(bool eating)=>eating?Mathf.Lerp(.58f,.035f,Mathf.SmoothStep(0,1,Mathf.Clamp01((eatProgress-.53f)/.47f))):.65f;
         void UpdateFace(float now)
         {
-            float restingDepth=Appearance.expression=="joy"||Appearance.expression=="surprised"?.46f:.367f;
-            mouth.localPosition=new Vector3(0,-.235f-eatBlend*.095f-FaceMouthDrop*(1-eatBlend),Mathf.Lerp(restingDepth,.495f,eatBlend));
-            mouth.localScale=new Vector3(Mathf.Lerp(face.mouthWidth,1.25f,eatBlend),Mathf.Lerp(face.mouthHeight,1.06f,eatBlend),.10f+eatBlend*.14f);
-            mouth.localRotation=Quaternion.Euler(0,0,face.mouthTilt*(1-eatBlend));
-            DollMouth.SetOpening(mouth,eatBlend,Appearance.expression=="joy"||Appearance.expression=="surprised");
+            const float restingDepth=.367f;
+            // The giant-jaw morph pushes the lower face forward by .18. Keep the
+            // cavity in front of that surface so the open mouth remains visible.
+            mouth.localPosition=new Vector3(0,-.235f-eatBlend*.095f-FaceMouthDrop*(1-eatBlend),Mathf.Lerp(restingDepth,.68f,eatBlend));
+            mouth.localScale=new Vector3(Mathf.Lerp(.25f,1.25f,eatBlend),Mathf.Lerp(.075f,1.06f,eatBlend),.10f+eatBlend*.14f);
+            mouth.localRotation=Quaternion.identity;
+            DollMouth.SetOpening(mouth,eatBlend,UsesModularOutfit);
             float lift=face.browLift*(1-eatBlend)+eatBlend*.15f-FaceBrowDrop*(1-eatBlend);
             float browDepth=Mathf.Lerp(Appearance.character=="gpt"?GPTGirlFaceDetails.BrowDepth:Appearance.character=="kimi"?KimiGirlFaceDetails.BrowDepth:Appearance.character=="qwen"?QwenGirlFaceDetails.BrowDepth:Appearance.character=="minimax"?MiniMaxGirlFaceDetails.BrowDepth:Appearance.character=="doubao"?DoubaoGirlFaceDetails.BrowDepth:Appearance.character=="glm"?GLMGirlFaceDetails.BrowDepth:.412f,.382f,eatBlend);
             leftBrow.localPosition=new Vector3(-.185f-eatBlend*.085f,.215f+lift+face.asymmetry*(1-eatBlend),browDepth);

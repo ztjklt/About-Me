@@ -48,7 +48,7 @@ ITEMS=[dict(item_name='篮球',template_id='Projectile',visual_id='basketball'),
 
 def test_preparation_auth_public_input_and_order(client,monkeypatch):
     items=[dict(item_name='篮球',template_id='Projectile',visual_id='basketball')]
-    calls=provider_fixture(monkeypatch, {'lines':[{'index':0,'roast':'我把篮球吃下去，打个嗝都能算三分球。'}]})
+    calls=provider_fixture(monkeypatch, {'lines':[{'index':0,'roast':'唱跳缺个篮球'}]})
     assert client.post('/roast/prepare',json={'items':items}).status_code==401
     assert client.post('/internal/roast/prepare',json={'items':items}).status_code==403
     headers,_=credentials(client)
@@ -59,9 +59,19 @@ def test_preparation_auth_public_input_and_order(client,monkeypatch):
     assert set(prompt[0])=={'index','item_name','template_id','visual_id','catalog_label'}
     assert client.post('/internal/roast/prepare',headers={'X-Game-Key':'test-server-key'},json={'items':items}).status_code==200
 
-@pytest.mark.parametrize('raw',[{'lines':[]},{'lines':[{'index':2,'roast':'我把篮球吃下去，打个嗝都能算三分球。'}]}, {'lines':[{'index':0,'roast':'你这个傻逼。'}]}])
+@pytest.mark.parametrize('raw',[{'lines':[]},{'lines':[{'index':2,'roast':'唱跳缺个篮球'}]}, {'lines':[{'index':0,'roast':'你这个傻逼。'}]}])
 def test_invalid_preparation_cannot_be_played(client,monkeypatch,raw):
     provider_fixture(monkeypatch,raw);headers,_=credentials(client)
     response=client.post('/roast/prepare',headers=headers,json={'items':[ITEMS[0]]})
     assert response.status_code==502
     assert client.post('/roast/prepare',headers=headers,json={'items':[dict(ITEMS[0],source='private introduction')]}).status_code==422
+
+@pytest.mark.parametrize('line',['唱跳缺个篮球','球技还没嘴硬','你也唱跳rap？','滤镜救不了你'])
+def test_new_roast_style_accepts_short_punchlines(line):
+    from server.roast_safety import safe_roast
+    assert safe_roast(line)
+
+@pytest.mark.parametrize('line',['太菜','我把篮球吃下去，打个嗝都能算三分球。','唱跳缺个篮球。你呢？','球技123嘴硬','唱跳\n缺个篮球','你这个傻逼呀','还唱跳?菜不菜?'])
+def test_new_roast_style_rejects_long_or_unsafe_lines(line):
+    from server.roast_safety import safe_roast
+    assert not safe_roast(line)

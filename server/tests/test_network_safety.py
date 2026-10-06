@@ -25,7 +25,7 @@ def identity(client):
 
 
 BODY = {'item_name': '篮球', 'template_id': 'Projectile', 'visual_id': 'basketball'}
-ROAST_LINE = '篮球刚上场就想投三分，结果先投进了对手的胃里。'
+ROAST_LINE = '唱跳缺个篮球'
 
 
 def test_roast_forbids_source_and_rejects_private_name(client, monkeypatch):
@@ -42,7 +42,7 @@ def test_roast_forbids_source_and_rejects_private_name(client, monkeypatch):
         async def __aexit__(self, *args): pass
         async def post(self, url, **kwargs):
             sent.append(json.loads(kwargs['json']['messages'][1]['content']))
-            return httpx.Response(200, json={'choices': [{'message': {'content': '篮球刚上场就想投三分，结果先投进了对手的胃里。'}}]},
+            return httpx.Response(200, json={'choices': [{'message': {'content': '唱跳缺个篮球'}}]},
                                   request=httpx.Request('POST', url))
 
     monkeypatch.setattr(module.httpx, 'AsyncClient', Provider)
@@ -152,7 +152,7 @@ def test_public_playtest_ai_budget_is_configurable(client, monkeypatch):
 
 
 def test_new_identities_share_ai_peer_budget(client, monkeypatch):
-    async def fake(_): return '篮球刚上场就想投三分，结果先投进了对手的胃里。'
+    async def fake(_): return '唱跳缺个篮球'
     monkeypatch.setattr(module, 'roast_with_provider', fake)
     headers = [identity(client) for _ in range(7)]
     statuses = [client.post('/roast', json=BODY, headers=item).status_code for item in headers]

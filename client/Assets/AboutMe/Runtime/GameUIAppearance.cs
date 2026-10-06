@@ -135,7 +135,7 @@ namespace AboutMe
             }
             if(wardrobeActor==null){wardrobeActor=new ToyActor("My campus doll",selectedColor,0,null,appearanceDraft);wardrobeActor.root.transform.position=new Vector3(1000,1,0);wardrobeActor.label.text="";}
             wardrobeActor.ApplyAppearance(appearanceDraft);
-            foreach(var t in wardrobeActor.root.GetComponentsInChildren<Transform>())t.gameObject.layer=30;
+            foreach(var t in wardrobeActor.root.GetComponentsInChildren<Transform>(true))t.gameObject.layer=30;
         }
         IEnumerator ReloadAppearance()
         {
