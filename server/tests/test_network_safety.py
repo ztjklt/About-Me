@@ -258,3 +258,42 @@ def test_seven_local_consumers_can_speak_without_generation_peer_cap(client, mon
     with module.db() as con:
         assert con.execute("SELECT count FROM request_limits WHERE bucket LIKE 'ai:daily:%'").fetchone()[0] == 7
     assert client.post('/roast', json=BODY, headers=auth).status_code == 429
+
+
+@pytest.mark.parametrize('kind', ['ai', 'ai_internal', 'ai_local_roast'])
+def test_temporarily_disabled_ai_quota_ignores_exhausted_budgets(client, monkeypatch, kind):
+    for name in ['ABOUTME_AI_DAILY_LIMIT', 'ABOUTME_AI_GLOBAL_PER_MINUTE',
+                 'ABOUTME_AI_PEER_PER_MINUTE', 'ABOUTME_ROAST_PEER_PER_MINUTE']:
+        monkeypatch.setenv(name, '1')
+    request = SimpleNamespace(client=SimpleNamespace(host='quota-toggle-peer'))
+    module.enforce_quota(request, kind)
+    monkeypatch.setenv('ABOUTME_AI_QUOTA_ENABLED', '0')
+    for _ in range(10):
+        module.enforce_quota(request, kind)
+    assert client.get('/health').json()['aiQuotaEnabled'] is False
+    monkeypatch.setenv('ABOUTME_AI_QUOTA_ENABLED', '1')
+    with pytest.raises(HTTPException) as error:
+        module.enforce_quota(request, kind)
+    assert error.value.status_code == 429
+
+
+def test_disabling_ai_quota_preserves_session_limit(client, monkeypatch):
+    monkeypatch.setenv('ABOUTME_AI_QUOTA_ENABLED', '0')
+    monkeypatch.setenv('ABOUTME_SESSION_PEER_PER_MINUTE', '1')
+    request = SimpleNamespace(client=SimpleNamespace(host='session-limit-peer'))
+    module.enforce_quota(request, 'sessions')
+    with pytest.raises(HTTPException) as error:
+        module.enforce_quota(request, 'sessions')
+    assert error.value.status_code == 429
+
+
+def test_disabling_ai_quota_allows_consecutive_roasts(client, monkeypatch):
+    monkeypatch.setenv('ABOUTME_AI_QUOTA_ENABLED', '0')
+    calls = []
+    async def provider(item):
+        calls.append(item)
+        return ROAST_LINE
+    monkeypatch.setattr(module, 'roast_with_provider', provider)
+    headers = identity(client)
+    assert [client.post('/roast', json=BODY, headers=headers).status_code for _ in range(8)] == [200] * 8
+    assert len(calls) == 8

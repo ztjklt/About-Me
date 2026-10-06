@@ -137,8 +137,14 @@ def quota_limit(name, default):
     return value
 
 
+def ai_quota_enabled():
+    return os.getenv('ABOUTME_AI_QUOTA_ENABLED', '1').strip().lower() not in {'0', 'false', 'off'}
+
+
 def enforce_quota(request: Request, kind: str):
     """Atomic limits shared by all workers and identities using the same SQLite DB."""
+    if kind != 'sessions' and not ai_quota_enabled():
+        return
     now = time.time()
     peer = quota_peer(request)
     minute = int(now // 60)
@@ -633,14 +639,15 @@ async def roast(body: RoastRequest, request: Request, authorization: str | None 
     player_id, _, _ = authenticate(authorization)
     item = validated_roast_item(body)
     enforce_quota(request, 'ai')
-    now = time.time()
-    with db() as con:
-        changed = con.execute('''INSERT INTO roast_limits(player_id,last_requested) VALUES(?,?)
-            ON CONFLICT(player_id) DO UPDATE SET last_requested=excluded.last_requested
-            WHERE roast_limits.last_requested <= excluded.last_requested - ?''',
-            (player_id, now, ROAST_COOLDOWN_SECONDS)).rowcount
-    if not changed:
-        raise HTTPException(429, '调侃官正在消化上一件 Persona，请稍后再试')
+    if ai_quota_enabled():
+        now = time.time()
+        with db() as con:
+            changed = con.execute('''INSERT INTO roast_limits(player_id,last_requested) VALUES(?,?)
+                ON CONFLICT(player_id) DO UPDATE SET last_requested=excluded.last_requested
+                WHERE roast_limits.last_requested <= excluded.last_requested - ?''',
+                (player_id, now, ROAST_COOLDOWN_SECONDS)).rowcount
+        if not changed:
+            raise HTTPException(429, '调侃官正在消化上一件 Persona，请稍后再试')
     return {'roast': await roast_with_provider(item), 'aiSource': 'provider'}
 
 
@@ -781,7 +788,7 @@ def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
     return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-combat-r15'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
-            'universityProgress': True, 'domesticPriority': True, 'latestUI': os.getenv('ABOUTME_RELEASE_ID', 'playtest-combat-r15'), 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
+            'universityProgress': True, 'domesticPriority': True, 'latestUI': os.getenv('ABOUTME_RELEASE_ID', 'playtest-combat-r15'), 'eaterRoasts': True, 'preparedRoasts': True, 'aiQuotaEnabled': ai_quota_enabled(), 'apiSourceCommit': os.getenv('ABOUTME_API_SOURCE_SHA', os.getenv('ABOUTME_RELEASE_SHA', '')), 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
