@@ -26,8 +26,8 @@
     launchUrl.searchParams.set('practiceSession',practiceToken);
     // This localhost release uses the matching R16 pair. Explicit hosting URLs take precedence.
     if(['127.0.0.1','localhost','[::1]'].includes(launchUrl.hostname)){
-      if(!launchUrl.searchParams.has('api'))launchUrl.searchParams.set('api',launchUrl.protocol+'//'+launchUrl.host.split(':')[0]+':8100');
-      if(!launchUrl.searchParams.has('game'))launchUrl.searchParams.set('game','ws://'+launchUrl.hostname+':7800');
+      if(!launchUrl.searchParams.has('api'))launchUrl.searchParams.set('api',launchUrl.protocol+'//'+launchUrl.host.split(':')[0]+':8136');
+      if(!launchUrl.searchParams.has('game'))launchUrl.searchParams.set('game','ws://'+launchUrl.hostname+':7836');
     }
     history.replaceState(history.state,'',launchUrl);
     const canvas=document.getElementById('game'),loading=document.getElementById('loading');
