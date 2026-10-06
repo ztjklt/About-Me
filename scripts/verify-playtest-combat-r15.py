@@ -108,4 +108,8 @@ if args.authority_pid is not None:
     if str(root / manifest['executablePath']) not in command or '--aboutme-server' not in command:
         raise SystemExit('权威服务器运行路径不匹配')
 if manifest.get('combatTuningVersion')!=1 or b'HitContactHazard' not in assembly: raise SystemExit('R15伤害规则未整合')
+if any(manifest.get(k)!=v for k,v in {'lightMeleeDamage':60,'utilityDamage':100,'hazardContactDamage':100}.items()): raise SystemExit('R15伤害配置身份不匹配')
+if any(d['damage']>0 and d['damage']!=(60 if d['id']=='flame-fan' else 100) for d in mechanics['items']): raise SystemExit('攻击机制伤害目录不匹配')
+if any(next(d for d in mechanics['items'] if d['id']==k)['damage']!=100 for k in ('wet-trail','sand-sink','sticky-step','frost-lock')): raise SystemExit('踩踏场地伤害未整合')
+
 print('已核对完整候选版 ' + manifest['releaseId'] + ' · 客户端/权威同包 · 完整源码快照 + 设置 V2 · 277 道具 / '+str(manifest['mechanicCount'])+' 机制')
