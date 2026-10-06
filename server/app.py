@@ -705,7 +705,7 @@ async def prepare_roast_lines(body, request, quota_kind):
     key, model, base = (os.getenv(k, '') for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     if not all((key, model, base)):
         raise HTTPException(503, '尚未配置真实 AI 服务')
-    prompt = ROAST_SYSTEM_PROMPT + '本次提前准备整局台词。返回 JSON {"lines":[{"index":0,"roast":"一句台词"}]}，为每个输入索引各写一句。每句严格十五到四十个汉字，纯中文，不含英文字母或阿拉伯数字；人工智能也写成中文。'
+    prompt = ROAST_SYSTEM_PROMPT + '本次提前准备整局台词。返回 JSON {"lines":[{"index":0,"roast":"一句台词"}]}，为每个输入索引各写一句。每句轻松可爱，只开道具玩笑，不写死亡、遗照等沉重梗。每句严格十五到四十个汉字，纯中文，不含英文字母或阿拉伯数字；人工智能也写成中文。'
     try:
         lines={}
         async with httpx.AsyncClient(timeout=18) as client:
@@ -734,7 +734,7 @@ async def prepare_roast_lines(body, request, quota_kind):
                     if type(index)!=int or index not in range(len(items)) or counts[index]!=1 or index in lines or not isinstance(value,str):
                         continue
                     line=value.strip()
-                    if safe_roast(line) and not sensitive_persona_text(line):
+                    if safe_roast(line) and not sensitive_persona_text(line) and not any(word in line for word in ("遗照", "死亡")):
                         lines[index]=line
         if not lines:
             raise ValueError('no usable lines')
@@ -778,8 +778,8 @@ def image_mime(data):
 def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
-    return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-persona-r12'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
-            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'playtest-persona-r12', 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
+    return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-persona-r13'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
+            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'playtest-persona-r13', 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
