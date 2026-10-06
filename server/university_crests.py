@@ -16,6 +16,7 @@ from urllib.parse import urljoin, urlsplit
 from server.university_search import search_university
 
 import httpx
+from fastapi import HTTPException
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 MAX_DOWNLOAD = 5 * 1024 * 1024
@@ -350,7 +351,11 @@ async def verify_candidate(name, candidate):
 
 
 async def resolve_crest(name):
-    directory = cache_dir(); directory.mkdir(parents=True, exist_ok=True)
+    directory = cache_dir()
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise HTTPException(503, '校徽缓存暂不可用，请稍后重试') from exc
     lookup = hashlib.sha256(name.encode()).hexdigest()
     async with _locks.setdefault(lookup, asyncio.Lock()):
         metadata_path = directory / (lookup + '.json')
@@ -397,7 +402,10 @@ async def resolve_crest(name):
         if result['status'] != 'ready':
             result['retryAfter'] = time.time() + 300
         temporary = metadata_path.with_suffix('.tmp')
-        temporary.write_text(json.dumps(result, ensure_ascii=False)); temporary.replace(metadata_path)
+        try:
+            temporary.write_text(json.dumps(result, ensure_ascii=False)); temporary.replace(metadata_path)
+        except OSError as exc:
+            raise HTTPException(503, '校徽缓存暂不可用，请稍后重试') from exc
         if result['status'] == 'ready':
             report_crest_progress(.95, '校徽贴图已保存')
         return result

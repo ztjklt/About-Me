@@ -94,7 +94,7 @@ mergeInto(LibraryManager.library, {
     input.__aboutMeFinish=finish;
     var update=function(){if(!closed){values[target]=input.value;SendMessage(target,'OnBrowserInput',input.value);}};
     input.addEventListener('input',update);input.addEventListener('compositionupdate',update);input.addEventListener('compositionend',update);input.addEventListener('change',update);
-    input.addEventListener('keydown',function(event){event.stopPropagation();if(!multiline&&event.key==='Enter'){event.preventDefault();input.blur();}});
+    input.addEventListener('keydown',function(event){event.stopPropagation();if(!multiline&&event.key==='Enter'&&!event.isComposing&&event.keyCode!==229){event.preventDefault();input.blur();}});
     input.addEventListener('keyup',function(event){event.stopPropagation();});input.addEventListener('keypress',function(event){event.stopPropagation();});
     input.addEventListener('blur',function(){finish(true);});
     document.body.appendChild(input);

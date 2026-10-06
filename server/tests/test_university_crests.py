@@ -150,3 +150,14 @@ def test_old_verified_cache_gains_color_without_network(monkeypatch):
     monkeypatch.setattr(crests,'discover_candidates',forbidden)
     result=asyncio.run(crests.resolve_crest('北京大学'))
     assert result['id']==identity and result['color']=='#006E41'
+
+
+def test_unwritable_crest_cache_has_controlled_error(tmp_path, monkeypatch):
+    from fastapi import HTTPException
+    blocked = tmp_path / 'not-a-directory'
+    blocked.write_text('read-only deployment root surrogate')
+    monkeypatch.setenv('UNIVERSITY_CREST_CACHE', str(blocked / 'crests'))
+    with pytest.raises(HTTPException) as error:
+        asyncio.run(crests.resolve_crest('北京大学'))
+    assert error.value.status_code == 503
+    assert error.value.detail == '校徽缓存暂不可用，请稍后重试'
