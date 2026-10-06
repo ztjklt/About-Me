@@ -41,7 +41,7 @@ namespace AboutMe
                 bubble.root.gameObject.SetActive(visible);if(!visible)continue;
                 bubble.text.text=text;
                 var size=canvas.rect.size;
-                var desired=new Vector2(point.x/Screen.width*size.x-size.x*.5f,point.y/Screen.height*size.y-size.y*.5f+52);
+                var desired=new Vector2(point.x/Screen.width*size.x-size.x*.5f,point.y/Screen.height*size.y-size.y*.5f+94);
                 bool onRight=desired.x+146<size.x*.5f-132;
                 desired.x+=onRight?146:-146;
                 bubble.root.GetComponent<HollowSpeechBubble>().SetTailSide(!onRight);
@@ -80,8 +80,8 @@ namespace AboutMe
             panel.GetComponent<HollowSpeechBubble>().raycastTarget=false;
             var label=new GameObject("Line",typeof(RectTransform),typeof(Text));label.transform.SetParent(root,false);
             var rect=label.GetComponent<RectTransform>();rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.offsetMin=new Vector2(12,8);rect.offsetMax=new Vector2(-12,-8);
-            var text=label.GetComponent<Text>();text.font=Resources.Load<Font>("AboutMeFont");text.fontSize=18;text.resizeTextForBestFit=true;text.resizeTextMinSize=16;text.resizeTextMaxSize=18;text.alignment=TextAnchor.MiddleCenter;text.color=ToyFactory.ColorOf("#FFFDF5");text.supportRichText=false;text.raycastTarget=false;
-            var textOutline=label.AddComponent<Outline>();textOutline.effectColor=ToyFactory.ColorOf("#263248");textOutline.effectDistance=new Vector2(1,-1);
+            var text=label.GetComponent<Text>();text.font=Resources.Load<Font>("AboutMeFont");text.fontSize=18;text.resizeTextForBestFit=true;text.resizeTextMinSize=16;text.resizeTextMaxSize=18;text.alignment=TextAnchor.MiddleCenter;text.fontStyle=FontStyle.Bold;text.color=ToyFactory.ColorOf("#263248");text.supportRichText=false;text.raycastTarget=false;
+            var textOutline=label.AddComponent<Outline>();textOutline.effectColor=ToyFactory.ColorOf("#FFFDF5");textOutline.effectDistance=new Vector2(1,-1);
             bubble=new Bubble{root=root,text=text};bubbles[id]=bubble;return bubble;
         }
     }
