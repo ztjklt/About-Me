@@ -124,3 +124,26 @@ def generation_terms(assets, terms, catalogs, pending=False):
 def playable_assets(assets):
     return [a for a in assets if a.get('visualId') != 'school-disc' or
             (a.get('emblemPath') and a.get('crestStatus') != 'unavailable')]
+
+
+def skin_generation_terms(terms, introduction, unlocked):
+    """Cosmetic entitlements are usable results, without consuming a Persona slot."""
+    from server.easter_egg import SKINS, liked_ai_brands, BRAND_TOKEN, ALIASES
+    likes = liked_ai_brands(introduction)
+    rows = [dict(t) for t in terms]
+    for skin in SKINS:
+        if not likes[skin['brand']] or skin['skin'] not in unlocked:
+            continue
+        names = [m.group() for m in BRAND_TOKEN.finditer(introduction)
+                 if ALIASES[re.sub(r'\s+', '', m.group()).lower()] == skin['brand']]
+        related = [t for t in rows if any(n.casefold() in t['term'].casefold() for n in names)]
+        if not related:
+            related = [dict(term=names[0], source=introduction)]
+            rows.extend(related)
+        for row in related:
+            # An independently generated prop retains its own asset identity.
+            if row.get('assetId'):
+                continue
+            row.update(kind='ai-skin', status='ready', skinId=skin['skin'], assetId='',
+                       reason=skin['label']+'已解锁，可在衣橱切换', progress=1, stage='角色皮肤已解锁')
+    return rows

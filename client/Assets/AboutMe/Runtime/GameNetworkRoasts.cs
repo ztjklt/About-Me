@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 namespace AboutMe
 {
     [Serializable] class RoastSessionRequest { public string nickname="试玩玩家"; }
     [Serializable] class RoastSessionResponse { public string token; }
+    [Serializable] class PublicRoastItem { public string item_name,template_id,visual_id; }
+    [Serializable] class PreparedRoastLine { public string item_name,template_id,visual_id,roast; }
+    [Serializable] class RoastPreparationReply { public string aiSource; public PreparedRoastLine[] lines; }
     public partial class GameNetwork
     {
         string localRoastToken="",localRoastApi="";
@@ -13,17 +17,51 @@ namespace AboutMe
         float nextRoastSession;
         void QueueRoasts(Match room,bool local=false)
         {
+            if(room.Phase==MatchPhase.Finished)return;
+            if(!local&&string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GAME_SERVER_KEY")))return;
+            var pending=room.Items.Select(x=>x.asset).GroupBy(Match.RoastItemKey).Select(g=>g.First())
+                .Where(x=>!room.RoastPreparationRequested.Contains(Match.RoastItemKey(x))).ToArray();
+            if(pending.Length>0&&!room.RoastPreparationPending)
+            {
+                foreach(var asset in pending)room.RoastPreparationRequested.Add(Match.RoastItemKey(asset));
+                room.RoastPreparationPending=true;
+                StartCoroutine(PrepareEatingRoasts(room,pending,local));
+            }
             int seen=roastCursor.TryGetValue(room.MatchId,out var count)?count:0;
             roastCursor[room.MatchId]=room.EatingRoasts.Count;
-            if(!local&&string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GAME_SERVER_KEY")))return;
             for(int i=seen;i<room.EatingRoasts.Count;i++)
             {
-                var attempt=room.EatingRoasts[i];if(attempt.cancelled)continue;
-                var item=room.Item(attempt.itemId);if(item==null)continue;
-                StartCoroutine(RequestEatingRoast(room,attempt,new RoastRequestPayload{
-                    match_id=room.MatchId,event_id=attempt.id,item_name=item.asset.name,
-                    template_id=item.asset.templateId,visual_id=item.asset.visualId},local));
+                var attempt=room.EatingRoasts[i];var item=room.Item(attempt.itemId);
+                if(item!=null&&room.PreparedRoasts.TryGetValue(Match.RoastItemKey(item.asset),out var line))
+                    room.SayEatingRoast(attempt,line);
             }
+        }
+        IEnumerator PrepareEatingRoasts(Match room,PersonaAsset[] assets,bool local)
+        {
+            try
+            {
+                if(local)yield return EnsureLocalRoastSession();
+                if(!RoastRoomCurrent(room,local)||(local&&string.IsNullOrEmpty(localRoastToken)))yield break;
+                // The preparation API accepts public item descriptors, never player introductions.
+                string json="{\"items\":["+string.Join(",",assets.Select(x=>JsonUtility.ToJson(new PublicRoastItem{
+                    item_name=x.name,template_id=x.templateId,visual_id=x.visualId})))+"]}";
+                using(var req=ApiRequest(ApiUrl+(local?"/roast/prepare":"/internal/roast/prepare"),json,local?localRoastToken:""))
+                {
+                    req.timeout=45;if(!local)req.SetRequestHeader("X-Game-Key",Environment.GetEnvironmentVariable("GAME_SERVER_KEY"));
+                    yield return req.SendWebRequest();
+                    if(!RoastRoomCurrent(room,local)||req.result!=UnityWebRequest.Result.Success)yield break;
+                    RoastPreparationReply reply=null;try{reply=JsonUtility.FromJson<RoastPreparationReply>(req.downloadHandler.text);}catch(Exception){}
+                    if(reply?.aiSource!="provider"||reply.lines==null)yield break;
+                    foreach(var row in reply.lines)
+                    {
+                        var asset=assets.FirstOrDefault(x=>x.name==row.item_name&&x.templateId==row.template_id&&x.visualId==row.visual_id);
+                        if(asset!=null&&!string.IsNullOrWhiteSpace(row.roast)&&row.roast.Length<=120&&row.roast.IndexOfAny(new[]{'\r','\n'})<0)
+                            room.PreparedRoasts[Match.RoastItemKey(asset)]=row.roast.Trim();
+                    }
+                    Debug.Log("ABOUTME_ROAST_PREPARED count="+room.PreparedRoasts.Count+" source=provider");
+                }
+            }
+            finally{room.RoastPreparationPending=false;}
         }
         bool RoastRoomCurrent(Match room,bool local)=>local?localSession!=null&&ReferenceEquals(localSession.Match,room):rooms.TryGetValue(room.Room,out var current)&&ReferenceEquals(current,room);
         IEnumerator EnsureLocalRoastSession()
@@ -42,49 +80,6 @@ namespace AboutMe
                 {try{localRoastToken=JsonUtility.FromJson<RoastSessionResponse>(req.downloadHandler.text)?.token??"";}catch(Exception){}}
             }
             creatingRoastSession=false;nextRoastSession=UnityEngine.Time.realtimeSinceStartup+5;
-        }
-        IEnumerator RequestEatingRoast(Match room,EatingRoastAttempt attempt,RoastRequestPayload payload,bool local)
-        {
-            if(local)yield return EnsureLocalRoastSession();
-            if(local&&string.IsNullOrEmpty(localRoastToken))
-            {Debug.LogWarning("ABOUTME_ROAST_UNAVAILABLE reason=session event="+attempt.id);yield break;}
-            for(int retry=0;retry<3;retry++)
-            {
-                if(attempt.cancelled||!RoastRoomCurrent(room,local))yield break;
-                using(var req=ApiRequest(ApiUrl+(local?"/roast/eating":"/internal/roast"),JsonUtility.ToJson(payload),local?localRoastToken:""))
-                {
-                    req.timeout=15;
-                    if(!local)req.SetRequestHeader("X-Game-Key",Environment.GetEnvironmentVariable("GAME_SERVER_KEY"));
-                    yield return req.SendWebRequest();
-                    if(attempt.cancelled||!RoastRoomCurrent(room,local))yield break;
-                    if(req.result!=UnityWebRequest.Result.Success||req.responseCode<200||req.responseCode>=300)
-                    {
-                        if(local&&req.responseCode==401&&retry==0){localRoastToken="";yield return CreateFreshLocalRoastSession();continue;}
-                        if(retry<2&&(req.responseCode==429||req.responseCode==502||req.responseCode==504||req.responseCode==0))
-                        {yield return new WaitForSeconds(2*(retry+1));continue;}
-                        Debug.LogWarning("ABOUTME_ROAST_UNAVAILABLE event="+attempt.id+" status="+req.responseCode);yield break;
-                    }
-                    RoastResponsePayload response=null;
-                    try{response=JsonUtility.FromJson<RoastResponsePayload>(req.downloadHandler.text);}catch(Exception){}
-                    if(response==null||response.event_id!=attempt.id||response.aiSource!="provider"||string.IsNullOrWhiteSpace(response.roast))yield break;
-                    var line=response.roast.Trim();if(line.Length>120||line.IndexOfAny(new[]{'\r','\n'})>=0)yield break;
-                    if(room.SayEatingRoast(attempt,line))Debug.Log("ABOUTME_EATER_ROAST speaker="+attempt.eaterId+" item="+attempt.itemId+" event="+attempt.id+" source=provider");
-                    yield break;
-                }
-            }
-        }
-        IEnumerator CreateFreshLocalRoastSession()
-        {
-            // An expired game login must not prevent an otherwise playable local match.
-            while(creatingRoastSession)yield return null;
-            creatingRoastSession=true;
-            using(var req=ApiRequest(ApiUrl+"/sessions",JsonUtility.ToJson(new RoastSessionRequest())))
-            {
-                req.timeout=10;yield return req.SendWebRequest();
-                if(req.result==UnityWebRequest.Result.Success)
-                {try{localRoastToken=JsonUtility.FromJson<RoastSessionResponse>(req.downloadHandler.text)?.token??"";}catch(Exception){}}
-            }
-            creatingRoastSession=false;
         }
     }
 }

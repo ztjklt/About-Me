@@ -449,10 +449,13 @@ namespace AboutMe
                 if(state.events.Length>0&&state.events.Last().id!=lastEvent)
                 {
                     lastEvent=state.events.Last().id;
-                    var line=state.events.Last().text;
-                    SetGeneratedDisplay(eventText,line);if(resultEventText)SetGeneratedDisplay(resultEventText,line);
-                    if(resultEventLine)resultEventLine.gameObject.SetActive(true);
-                    toastPulse.Play();
+                    var entry=state.events.Last();
+                    if(entry.kind!="eating-roast")
+                    {
+                        SetGeneratedDisplay(eventText,entry.text);if(resultEventText)SetGeneratedDisplay(resultEventText,entry.text);
+                        if(resultEventLine)resultEventLine.gameObject.SetActive(true);
+                        toastPulse.Play();
+                    }
                 }
                 string inventory=string.Join("|",state.inventory.Select(x=>x.id+":"+x.state));
                 if(inventory!=lastInventory)

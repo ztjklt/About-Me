@@ -41,11 +41,20 @@ namespace AboutMe.Editor
             borrowed.asset.templateId="SpecialAbility";borrowed.asset.visualId="trait-word";borrowed.asset.name="理性";borrowed.asset.wordText="理性";borrowed.asset.abilityId="front-shield";
             borrowed.state=ItemState.Equipped;borrowed.carrierId="human";word.Players["human"].equipped=borrowed.id;word.Interact(word.Players["human"]);
             Check(word.EatingRoasts.Single().itemId==borrowed.id,"borrowed word uses same eater event");word.Dispose();
+            var prepared=Create();var preparedBot=prepared.Players.Keys.Single(x=>x!="human");
+            var preparedItem=Ground(prepared,preparedBot,"human");prepared.PreparedRoasts[Match.RoastItemKey(preparedItem.asset)]=line;
+            prepared.Interact(prepared.Players["human"],preparedItem.id);
+            Check(prepared.Events.Last().kind=="eating-roast"&&prepared.EatingRoasts.Single().spoken&&prepared.Eaten.Count==0,"prepared line speaks synchronously before any eat tick");
+            prepared.Interrupt(prepared.Players["human"]);Check(prepared.EatingRoasts.Single().cancelled,"cached attempt still cancels normally");prepared.Dispose();
+            var loading=Create();loading.Phase=MatchPhase.Reveal;loading.Rules.revealDuration=.1f;loading.Time=0;loading.RoastPreparationPending=true;
+            for(int i=0;i<8;i++)loading.Tick(.02f);
+            Check(loading.Phase==MatchPhase.Reveal,"battle waits for opening preparation");
+            loading.RoastPreparationPending=false;loading.Tick(.02f);Check(loading.Active,"battle begins once preparation finishes or fails");loading.Dispose();
             var occupied=new System.Collections.Generic.List<Rect>();
             for(int i=0;i<7;i++)
             {
                 var point=EaterRoastPresentation.PlaceBubble(new Vector2(0,200),new Vector2(1600,900),occupied);
-                var rect=new Rect(point-new Vector2(181,72),new Vector2(362,144));
+                var rect=new Rect(point-new Vector2(132,55),new Vector2(264,110));
                 Check(!occupied.Any(other=>other.Overlaps(rect)),"concurrent bubble "+i+" does not overlap");occupied.Add(rect);
             }
             Debug.Log("EATER_ROAST_PASSED "+passed);

@@ -173,6 +173,7 @@ namespace AboutMe
         public GrabLinkState[] grabLinks = Array.Empty<GrabLinkState>();
         public float simulationTime, handStartedAt;
         public MatchPhase phase;
+        public bool roastPreparing;
         public float time, handAt, finalAt, handAnimation;
         public PublicPlayer[] players;
         public PublicPersonaInstance[] ground, inventory, revealed;
@@ -312,7 +313,7 @@ namespace AboutMe
             if (Phase == MatchPhase.Reveal)
             {
                 BodyWorld?.WarmOne(Players.Values);
-                if (Time >= Rules.revealDuration)
+                if (Time >= Rules.revealDuration && !RoastPreparationPending)
                 { Phase = MatchPhase.Battle; BattleStarted = Time; nextHand = Time + Rules.handInterval; Say("你们可以开始互相介绍了。"); BodyWorld?.PublishInitial(this); }
                 return;
             }
@@ -775,7 +776,7 @@ namespace AboutMe
         public Snapshot View(string recipient)
         {
             return new Snapshot {protocolVersion=TraitAbilityCatalog.ProtocolVersion,serverTick=serverTick,combatEvents=CombatEvents.ToArray(),grabLinks=GrabLinks(),room=Room,matchId=MatchId,you=recipient,host=Host,winner=Winner,winners=Winners,rankings=Rankings,endReason=EndReason,simulationTime=Time,handEventId=HandEventId,handStartedAt=LastHand,phase=Phase,handPosition=handPosition,handFist=handFist,
-                time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
+                roastPreparing=RoastPreparationPending,time=Active||Phase==MatchPhase.Finished?Time-BattleStarted:Time,handAt=nextHand-BattleStarted,finalAt=Rules.finalTime,handAnimation=Active&&HandEventId>0?Mathf.Max(0,1.5f-(Time-LastHand)):0,
                 players=Players.Values.Select(p=> {
                     var item=Item(p.equipped);return new PublicPlayer {id=p.profile.playerId,nickname=p.profile.nickname,color=p.profile.color,outfit=p.profile.outfit,appearance=p.profile.appearance?.Copy(),characterSkin=VerifiedCharacterSkin(p.profile),
                         portalProgress=p.portalEntry==""?0:Mathf.Clamp01((Time-p.portalStartedAt)/.6f),movementStatus=MovementStatus(p),fieldStatus=LinkStatus(p)??VirtualStatus(p)??ControlStatus(p)??p.fieldStatus,mechanicCooldown=PartyCooldown(p),equippedName=item?.asset.name??"空手",equippedVisual=item?.asset.visualId??"",equippedColor=item?.asset.color??"#FFFFFF",remaining=Remaining(p.profile.playerId),

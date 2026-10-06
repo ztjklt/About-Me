@@ -1,34 +1,14 @@
-**公网最新版发布：完整 R11。** GitHub 源码与 Railway Web/API/Game 使用本发布工作区；公开网页右下角显示“最新版 R11”及发布提交，`/version.json` 和 `/api/health` 提供版本核对。版本身份及验收范围见 [公网 R11 交付](docs/RAILWAY_R11_DELIVERY.md)。
+**本机最新整合：完整 R13。** AI 皮肤关键词按已解锁状态显示绿色；调侃进场时提前准备，吞噬时立即显示人物旁的透明小气泡。默认双击 `scripts/start-latest.command`，配套 API／权威端口 8097／7797。详见 [R13 交付](docs/PERSONA_R13_DELIVERY.md)。
+
+**公网当前仍为完整 R12。** [打开在线试玩](https://web-production-fb9b1.up.railway.app/)；本次 R13 尚未部署公网。
 
 # About Me
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-persona-r12`：每个真人、人机和 AI 角色开始吞噬别人的 Persona 时，由 DeepSeek 针对当前道具生成一句第一人称调侃，气泡跟随吞噬者；保留完整 R11 的20件Persona、16型MBTI机制、四种动物动画、1–6人机和277道具。Mac、Web、API同源，8096／7796；详见 [R12交付](docs/PERSONA_R12_DELIVERY.md)。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前 `playtest-persona-r13`，保留完整 R12 功能；源码和客户端、权威服务器、API 的匹配身份由发布清单核对。
 
-## 小动物 R6 候选交付
-
-猫、狗、兔子和仓鼠已有实际 Tripo 网格、贴图与选择题；动物追击击飞一次后作为原 Persona 落地，所有实际投掷道具不再自动回手。候选成品和验证范围见 [小动物交付](docs/ANIMAL_PERSONA_DELIVERY.md)，尚待产品负责人指定正式整合，默认试玩仍为上方完整 R5。
-
-## 小动物骨骼走动 R7 候选
-
-四种动物已经接入实际骨骼迈步动画；猫狗四足走动，兔子与仓鼠直立迈步，追击期间播放，持握与落地恢复静止。独立候选入口 `scripts/start-playtest-animal-walk-r7.command`，配套 API 8095 / 权威 7795。见 [走动动画交付与费用](docs/ANIMAL_PERSONA_WALK_DELIVERY.md)。默认整合入口仍由产品负责人管理。
-
-## 2026-09-24 当前 DS 娘与真实 AI 整合候选
-
-当前候选以 `codex/ds-local-current` 的 `git rev-parse HEAD` 为唯一源码版本。它保留新版四气泡首页、战斗音乐、校徽飞盘与 DeepSeek Vision 校徽裁切，加入 DS 娘免费解锁与选装、八件 Persona 实体投掷，以及真实 Persona 生成和由游戏服务器异步请求、向同房广播的 DeepSeek 吞噬调侃。结算页可接收晚到事件，网页房间码输入修复也已包含。此处说明源码范围；可运行包的构建 SHA 和验收范围以 [当前整合交付](docs/CURRENT_DS_INTEGRATION.md) 为准。
-
-本机窗口试玩双击 `scripts/start-local-unified-windowed.command`：它先启动当前分支的 Persona API，再打开独立的 `builds/unified-qa/About Me Integration QA.app`。角色介绍页可用“解锁彩蛋”更新 DeepSeek 娘和 Claude 娘的独立资格；随后在衣橱中显式选择普通、DS 或 Claude 并保存。选好后可用练习道具玩离线陪练，或在允许样例的房间玩；联机服务端会向 API 验证已保存的彩蛋选择。真实角色入房仍需先生成 Persona。生成 Persona 才会调用真实文本模型；语音识别未配置时入口会立即提示改用文字或图片。若 API 端口 8081 已被别的服务占用，启动器会提示维护者切换。
-
-GitHub 与微信发布必须取同一已验收源码提交重新构建。微信导出还需要正确的 AppID、CDN 地址和微信真机验收；本机 macOS 或浏览器运行不能替代微信真机结论。下方 2026-09-23 试玩记录保留为历史交付，不代表当前候选。
-
-## 2026-09-23 普通角色与界面整合试玩
-
-当前整合源码为 `codex/unity-default-menu-integration` 的 `18ca3f4`。从同一次构建得到的试玩包位于 `builds/reviewed-windowed-mac/About Me QA.app`、`builds/reviewed-windowed-web` 与 `builds/reviewed-windowed-linux/AboutMeServer`。Mac 包采用独立 QA 存储域，默认 1280×720 窗口；它不会覆盖旧版游戏。首次启动直接进入暖色教室四气泡菜单。普通布娃娃的脚部接地、移动与单键道具规则以及 Persona 背包和触控按钮已整合；DS 娘、GPT 娘仍保持暂停状态。
-
-Mac 试玩首选双击 `builds/reviewed-windowed-mac/Start About Me QA Windowed.command`，它会以 1280×720 窗口启动独立 QA app，并固定普通默认角色。浏览器版需通过 HTTP 服务打开，例如 `python3 -m http.server 8198 --bind 127.0.0.1 --directory builds/reviewed-windowed-web`，然后访问 `http://127.0.0.1:8198/?qa-default-actor`。窗口化启动与测试详情、验收范围和余项见 [本轮整合交付](docs/TUANJIE_CHARACTER_UI_INTEGRATION.md)。下文 `builds/mac` 等路径属于之前的交付基线。
-
-V4 主动布娃娃新版在 `builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
+`builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
 
 这是可以编译运行的开发工程。**样例测试、真实 AI 生成、本机联机验证、异地联机验证是不同状态，请勿混用。** 验证结果与尚未完成的工作见 [开发状态](docs/STATUS.md)。
 

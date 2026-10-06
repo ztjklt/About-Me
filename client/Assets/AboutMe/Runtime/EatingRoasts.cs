@@ -11,11 +11,17 @@ namespace AboutMe
     }
     public partial class Match
     {
+        public bool RoastPreparationPending;
+        public readonly Dictionary<string,string> PreparedRoasts=new Dictionary<string,string>();
+        public readonly HashSet<string> RoastPreparationRequested=new HashSet<string>();
+        public static string RoastItemKey(PersonaAsset asset)=>asset.templateId+"\t"+asset.visualId+"\t"+asset.name;
         public readonly List<EatingRoastAttempt> EatingRoasts=new List<EatingRoastAttempt>();
         void BeginEatingRoast(Player eater,PersonaInstance item)
         {
             if(item.ownerId==eater.profile.playerId)return;
-            EatingRoasts.Add(new EatingRoastAttempt{id=Guid.NewGuid().ToString("N"),eaterId=eater.profile.playerId,itemId=item.id});
+            var attempt=new EatingRoastAttempt{id=Guid.NewGuid().ToString("N"),eaterId=eater.profile.playerId,itemId=item.id};
+            EatingRoasts.Add(attempt);
+            if(PreparedRoasts.TryGetValue(RoastItemKey(item.asset),out var line))SayEatingRoast(attempt,line);
         }
         EatingRoastAttempt CurrentEatingRoast(Player eater)=>EatingRoasts.LastOrDefault(x=>x.eaterId==eater.profile.playerId&&!x.completed&&!x.cancelled);
         void CancelEatingRoast(Player eater)

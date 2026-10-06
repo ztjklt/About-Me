@@ -51,6 +51,9 @@ def normalized_profile(profile,introduction=None):
     skin=profile.get('characterSkin')
     if skin!='normal' and skin not in unlocked:profile['characterSkin']='normal'
     profile.setdefault('characterSkin','normal')
+    if introduction and profile.get('generationTerms') is not None:
+        from server.persona_results import skin_generation_terms
+        profile['generationTerms']=skin_generation_terms(profile['generationTerms'], introduction, profile['unlockedCharacterSkins'])
     return profile
 
 class AppearanceSave(BaseModel):

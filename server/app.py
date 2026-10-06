@@ -22,7 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from server.appearance import AppearanceSave, RecommendRequest, CATALOG as APPEARANCE_CATALOG, normalized_profile, recommend
 from server.easter_egg import liked_ai_brands as liked_brands, SKINS
 from server.university_crests import resolve_crest, cache_dir
-from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity, specific_catalog_pairs
+from server.persona_results import PersonaBatch, extracted_terms, generation_terms, playable_assets, fact_identity, specific_catalog_pairs, skin_generation_terms
 from server.roast_safety import safe_public_text, safe_roast
 from server import trait_words
 
@@ -694,6 +694,73 @@ async def eating_roast_event(body, request, scope, quota_kind):
         raise
 
 
+class RoastPreparationRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    items: list[RoastRequest] = Field(min_length=1, max_length=140)
+
+
+async def prepare_roast_lines(body, request, quota_kind):
+    items = [validated_roast_item(item) for item in body.items]
+    enforce_quota(request, quota_kind)
+    key, model, base = (os.getenv(k, '') for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
+    if not all((key, model, base)):
+        raise HTTPException(503, '尚未配置真实 AI 服务')
+    prompt = ROAST_SYSTEM_PROMPT + '本次提前准备整局台词。返回 JSON {"lines":[{"index":0,"roast":"一句台词"}]}，为每个输入索引各写一句。每句严格十五到四十个汉字，纯中文，不含英文字母或阿拉伯数字；人工智能也写成中文。'
+    try:
+        lines={}
+        async with httpx.AsyncClient(timeout=18) as client:
+            for attempt in range(2):
+                pending=[dict(index=i, **item) for i,item in enumerate(items) if i not in lines]
+                if not pending:
+                    break
+                response = await client.post(base.rstrip('/')+'/chat/completions',
+                    headers={'Authorization':'Bearer '+key}, json={
+                        'model':model, 'messages':[{'role':'system','content':prompt},
+                        {'role':'user','content':json.dumps(pending, ensure_ascii=False)}],
+                        'response_format':{'type':'json_object'}, 'thinking':{'type':'disabled'},
+                        'temperature':.8, 'max_tokens':min(12000, len(pending)*120+100)})
+                response.raise_for_status()
+                raw=json.loads(response.json()['choices'][0]['message']['content'])['lines']
+                if not isinstance(raw, list):
+                    raise ValueError('invalid lines')
+                counts={}
+                for row in raw:
+                    if isinstance(row, dict) and type(row.get('index'))==int:
+                        counts[row['index']]=counts.get(row['index'],0)+1
+                for row in raw:
+                    if not isinstance(row, dict):
+                        continue
+                    index=row.get('index'); value=row.get('roast')
+                    if type(index)!=int or index not in range(len(items)) or counts[index]!=1 or index in lines or not isinstance(value,str):
+                        continue
+                    line=value.strip()
+                    if safe_roast(line) and not sensitive_persona_text(line):
+                        lines[index]=line
+        if not lines:
+            raise ValueError('no usable lines')
+        # One refused line must not discard the other safely prepared item jokes.
+        return {'aiSource':'provider', 'unavailableCount':len(items)-len(lines),
+                'lines':[dict(**items[i], roast=line) for i,line in sorted(lines.items())]}
+    except httpx.TimeoutException as exc:
+        raise HTTPException(504, '开场调侃准备超时') from exc
+    except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError, AttributeError) as exc:
+        raise HTTPException(502, '开场调侃准备失败') from exc
+
+
+@app.post('/roast/prepare')
+async def local_roast_preparation(body: RoastPreparationRequest, request: Request,
+                                  authorization: str | None = Header(default=None)):
+    authenticate(authorization)
+    return await prepare_roast_lines(body, request, 'ai_local_roast')
+
+
+@app.post('/internal/roast/prepare')
+async def authority_roast_preparation(body: RoastPreparationRequest, request: Request,
+                                      x_game_key: str | None = Header(default=None)):
+    require_server(x_game_key)
+    return await prepare_roast_lines(body, request, 'ai_internal')
+
+
 def image_mime(data):
     """Determine an allowed image type from bytes, never from an upload filename."""
     if data.startswith(b'\xff\xd8\xff'):
@@ -712,7 +779,7 @@ def health():
     ai_ready = all(os.getenv(k) for k in ('LLM_API_KEY', 'LLM_MODEL', 'LLM_BASE_URL'))
     ai_host = urlparse(os.getenv('LLM_BASE_URL', '')).hostname
     return {'ok': True, 'releaseId': os.getenv('ABOUTME_RELEASE_ID', 'playtest-persona-r12'), 'releaseSourceCommit': os.getenv('ABOUTME_RELEASE_SHA', ''), 'protocolVersion': 5, 'playerSettingsLanguage': 'settings-language-v2', 'universityCrests': True, 'personaKeywordResults': True, 'webUniversitySearch': True,
-            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'playtest-persona-r12', 'eaterRoasts': True, 'aiConfigured': ai_ready,
+            'universityProgress': True, 'domesticPriority': True, 'latestUI': 'playtest-persona-r12', 'eaterRoasts': True, 'preparedRoasts': True, 'aiConfigured': ai_ready,
             'aiProvider': 'DeepSeek' if ai_ready and ai_host == 'api.deepseek.com' else 'unconfigured' if not ai_ready else 'other',
             'aiModel': os.getenv('LLM_MODEL', '') if ai_ready else '',
             'asrConfigured': all(os.getenv(k) for k in ('ASR_API_KEY', 'ASR_MODEL', 'ASR_BASE_URL')),
@@ -909,7 +976,9 @@ async def generate(body: GenerateRequest, request: Request, authorization: str |
     old = json.loads(previous)
     progress = start_generation_progress(player_id, body.generationId)
     def publish(candidates, terms, phase):
-        progress.update(phase=phase, generationTerms=generation_terms(candidates, terms, CATALOG_BY_PAIR, pending=phase=='searching'), updated=time.time())
+        unlocked = [s['skin'] for s in SKINS if liked_brands(body.introduction)[s['brand']]]
+        rows = generation_terms(candidates, terms, CATALOG_BY_PAIR, pending=phase=='searching')
+        progress.update(phase=phase, generationTerms=skin_generation_terms(rows, body.introduction, unlocked), updated=time.time())
     if intro == body.introduction.strip() and (old.get('generationCandidates') is not None or profile_follows_generation_rules(old, intro)) and not catalog_upgrade_can_retry_props(old, intro):
         candidates = old.get('generationCandidates', old['personas'])
         terms = old.get('generationTerms', [])

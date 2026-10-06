@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace AboutMe
 {
     [Serializable] public class GenerationTerm
-    { public string term,source,status,reason,assetId,kind,stage,wordCategory,wordText,abilityId; public float progress; }
+    { public string term,source,status,reason,assetId,kind,stage,wordCategory,wordText,abilityId,skinId; public float progress; }
     [Serializable] class GenerationProgress
     { public string generationId,phase; public GenerationTerm[] generationTerms; }
 
@@ -62,7 +62,7 @@ namespace AboutMe
                 var card=ArtPanel(generationTermGrid,"Keyword · "+term.term,(i/2)*144,(i%2)*67,134,61,GenerationTermColor(term.status),false,false);
                 var click=card.gameObject.AddComponent<Button>();click.onClick.AddListener(()=>ShowGenerationTermDetail(term));
                 var title=ArtText(card,term.term,8,3,118,32,15,Color.white,FontStyle.Bold);title.horizontalOverflow=HorizontalWrapMode.Wrap;title.resizeTextMinSize=12;
-                string state=term.status=="ready"?"正常":term.status=="failed"?"未生成":term.status=="needs-confirmation"?"请选择能力":"处理中";
+                string state=term.kind=="ai-skin"&&term.status=="ready"?"皮肤已解锁":term.status=="ready"?"正常":term.status=="failed"?"未生成":term.status=="needs-confirmation"?"请选择能力":"处理中";
                 float progress=term.status=="ready"?1:Mathf.Clamp(term.progress,0,.95f);
                 ArtText(card,state+(term.kind=="university"?" · "+Mathf.RoundToInt(progress*100)+"%":" · 查看"),8,36,118,20,12,Color.white);
                 if(term.kind=="university")ArtPanel(card,"University progress",8,58,118*progress,3,UITheme.Mint,false,false).GetComponent<Image>().raycastTarget=false;
@@ -81,7 +81,8 @@ namespace AboutMe
             generationTermDetail=ArtPanel(studioCard,"Result detail",450,352,408,194,UITheme.Paper,true,true);
             var fullDetail=ArtScrollableField(generationTermDetail,14,12,378,122,"");fullDetail.readOnly=true;fullDetail.characterLimit=0;fullDetail.text=term.term+"\n"+GameLocalization.Text(term.reason??"")+"\n"+GameLocalization.Text(term.stage??"")+(term.kind=="trait-word"&&!string.IsNullOrEmpty(term.abilityId)?"\n"+GameLocalization.Text(TraitAbilityCatalog.AbilityLabel(term.abilityId)):"");
             ArtButton(generationTermDetail,"关闭",290,145,102,34,()=>Destroy(generationTermDetail.gameObject),UITheme.Field,UITheme.Ink);
-            if(term.kind=="trait-word")ArtButton(generationTermDetail,string.IsNullOrEmpty(term.abilityId)?"请选择能力":"改选能力",14,145,160,34,()=>OpenWordAbilityPicker(term),UITheme.Mint,UITheme.Ink);
+            if(term.kind=="ai-skin"&&term.status=="ready")ArtButton(generationTermDetail,"切换皮肤",14,145,160,34,()=>{Destroy(generationTermDetail.gameObject);OpenWardrobe();},UITheme.Mint,UITheme.Ink);
+            else if(term.kind=="trait-word")ArtButton(generationTermDetail,string.IsNullOrEmpty(term.abilityId)?"请选择能力":"改选能力",14,145,160,34,()=>OpenWordAbilityPicker(term),UITheme.Mint,UITheme.Ink);
             else if(term.status=="failed")ArtButton(generationTermDetail,"重试生成",14,145,160,34,()=>{Destroy(generationTermDetail.gameObject);if(!busy)StartCoroutine(Generate());},UITheme.Mint,UITheme.Ink);
         }
 
