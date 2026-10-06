@@ -1,12 +1,12 @@
-**本机最新整合：完整 R14。** AI 娘平时无嘴，普通玩偶闭嘴微笑，吞噬时保留大嘴；头顶透明小气泡显示五到七字损梗。默认双击 `scripts/start-latest.command`，配套 API／权威 8098／7798。详见 [R14 交付](docs/PERSONA_R14_DELIVERY.md)。
+**本机最新整合：完整 R15。** 普通近战两次有效命中击飞掉落，重击／干扰／范围攻击一次有效命中掉落；攻击性路障与场地接触击倒。保留完整 R14 嘴型与短梗气泡。双击 `scripts/start-latest.command`，API／权威 8099／7799。详见 [R15 交付](docs/COMBAT_R15_DELIVERY.md)。
 
-**公网当前仍为完整 R12。** 本次 R14 尚未部署公网。
+**公网当前仍为完整 R12。** R15 尚未部署公网。
 
 # About Me
 
 团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前 `playtest-persona-r14`，保留完整 R13 功能；源码和客户端、权威服务器、API 的匹配身份由发布清单核对。
+**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-combat-r15`：近战每次60，重击与干扰一次命中掉落，喷火两次各60，攻击性场地踩中掉落；保留20 Persona、16 MBTI、277道具、四种动物与1–6人机。参见 [R15交付](docs/COMBAT_R15_DELIVERY.md)。
 
 `builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
 

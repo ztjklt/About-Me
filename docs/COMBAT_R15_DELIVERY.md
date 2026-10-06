@@ -31,4 +31,10 @@
 - 11项真实15刚体场景通过：近战、重型、干扰、球、圆盘、反弹、盆栽投掷以及湿迹、沙地、胶场、冰面；每例只掉落一件，生命身份保持，检查速度低于25m/s与15段公开姿态。不是多人真人手感验收。
 - 532项后端检查通过，使用测试夹具；没有新增真实AI生成或公网部署。
 
-完整构建与匹配服务验收结果随最终交付更新。尚待真人局确认更高伤害后的节奏、手机／微信真机和异地联机；不把规则或真实刚体场景当成人类体验评分。最终成果交产品负责人任务，由其安排后续真人与公网验收。
+Mac 与 WebGL 完整 Release 构建通过；构建自带31项基础、菜单/NPC、25项吞噬调侃及237项嘴型检查通过；Mac签名核对通过。两个实际Mac客户端本机WebSocket、单向150ms延迟与主机重连完成（376／475物理帧）；使用既有样例，本轮吞噬数0，不能称为新增吞噬联机验收。配套API／Mac权威实际启动、端口、PID、进程路径、运行清单与全文件hash核对通过；Web只完成编译和静态本机服务入口核对，未声称浏览器真人试玩。
+
+运行源码 `7cf19de1e40ac1fc37b87f1fea2c6274b1a24721`；源码快照 `c933be487d8fb4b93fb14cafa1f9351bd1a2a9f2bfd459fbdfa7f7547d8d280a`，4523运行相关源码文件；冻结在 `/Users/jitian/.codex/worktrees/combat-impact-r15/About Me/artifacts/combat-r15/source-freeze`。源码已提交；发布时唯一未提交文件为本任务自动生成的既有文字规则结果记录，不参与运行源快照。Mac／Web／API发布清单、构建时间及文件hash位于上述整合包目录。
+
+默认入口已切换完整R15，根README与STATUS同步，验证入口 `scripts/start-latest.command --verify-only`／`scripts/start-playtest-combat-r15.command --check`。公网仍是R12，本任务未部署Railway。根工作区只新增产物、脚本、交付记录和定点更新入口／说明；没有覆盖或提交其他角色的客户端源码。
+
+证据目录：`artifacts/combat-r15/validation-summary.json`、`CombatImpactTests.log`、`CombatImpactPhysics.log`、`BuildMac.log`、`BuildWeb.log`及`network/`。尚待真人局确认更高伤害后的节奏、手机／微信真机和异地联机；不把规则或真实刚体场景当成人类体验评分。最终成果交产品负责人任务，由其安排后续真人与公网验收。
