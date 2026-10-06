@@ -5987,6 +5987,42 @@
     {
       "zh": "可改选已有16种能力；文字道具跟随装备生效。外观推荐另在衣橱保存。",
       "en": "Choose from 16 abilities. Word abilities follow the equipped item. Save outfit recommendations separately in your wardrobe."
+    },
+    {
+      "zh": "前方两次各削60韧，完整命中击倒掉落；侧绕或墙体挡火",
+      "en": "Two frontal 60-stability pulses knock down and drop a Persona; dodge sideways or behind walls"
+    },
+    {
+      "zh": "走动留下湿迹，对手踩中击倒掉落一次；跳过安全，Q停止",
+      "en": "Leave wet footprints: opponents touching them fall and drop once; jump over them, Q to stop"
+    },
+    {
+      "zh": "对手踩入沙地击倒掉落一次；跳过、绕行或两击拆除",
+      "en": "Sand contact knocks opponents down and drops once; jump, go around, or hit twice to dismantle"
+    },
+    {
+      "zh": "对手踩中胶场击倒掉落一次；跳过、喷雨清除或两击拆除",
+      "en": "Glue contact knocks opponents down and drops once; jump, wash away, or dismantle with two hits"
+    },
+    {
+      "zh": "将已有湿迹凝结，对手踩中击倒掉落一次；跳过或浴球擦除",
+      "en": "Freeze existing wet spots; opponents touching ice fall and drop once; jump or dry it with a sponge"
+    },
+    {
+      "zh": "两次F放线；跑步跨线击倒掉落一次，步行或跳过安全",
+      "en": "F twice to place a tripwire; running across knocks down and drops once; walk or jump safely"
+    },
+    {
+      "zh": "预告0.7秒后低杆扫动，接触击倒掉落；跳过安全，根部可拆",
+      "en": "Low sweep after a 0.7s warning knocks down and drops on contact; jump over or dismantle the base"
+    },
+    {
+      "zh": "近距离向上击倒并掉落；侧绕避开，起身保护有效",
+      "en": "Close frontal uppercut knocks down and drops; dodge sideways, get-up protection applies"
+    },
+    {
+      "zh": "先跳起再F，落地震荡击倒掉落；跳起或墙体可躲避",
+      "en": "Jump then F: landing pulse knocks down and drops; jumping or walls protect you"
     }
   ]
 }

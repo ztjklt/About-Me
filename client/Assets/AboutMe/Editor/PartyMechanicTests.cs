@@ -83,7 +83,7 @@ namespace AboutMe.Editor
                     var m=Make("cluster-burst");Deploy(m);var nodes=m.Effects.Where(e=>e.kind=="PartyMechanic").ToArray();Check(nodes.Length==3&&nodes.Select(e=>e.position).Distinct().Count()==3,"cluster landing duplicate");Check(nodes.Sum(e=>e.force)<=8,"cluster force exceeds single blast budget");Tick(m,2);Check(m.CombatEvents.Count(e=>e.kind=="party_burst")==3,"cluster failed to fire separately");
                 });
                 Test("ground ring hits once and jumping is safe",()=>{
-                    var m=Make("ring-burst");m.Players["p1"].position=new Vector3(0,1,3);m.Players["p2"].position=new Vector3(3,1,0);var e=Deploy(m);m.Players["p2"].position=new Vector3(3,2.5f,0);m.Players["p2"].verticalSpeed=8;m.Players["p2"].airborne=true;Tick(m,.55f);Check(m.Players["p1"].stability==72&&m.Players["p2"].stability==100,"ring hit count or jump immunity wrong");Tick(m,.5f);Check(m.Players["p1"].stability==72,"ring repeatedly hit same target");
+                    var m=Make("ring-burst");m.Players["p1"].position=new Vector3(0,1,3);m.Players["p2"].position=new Vector3(3,1,0);var e=Deploy(m);m.Players["p2"].position=new Vector3(3,2.5f,0);m.Players["p2"].verticalSpeed=8;m.Players["p2"].airborne=true;Tick(m,.55f);Check(m.Items.Count(x=>x.ownerId=="p1"&&x.state==ItemState.Ground)==1&&m.Players["p2"].stability==100,"ring hit count or jump immunity wrong");Tick(m,.5f);Check(m.Items.Count(x=>x.ownerId=="p1"&&x.state==ItemState.Ground)==1,"ring repeatedly hit same target");
                 });
                 Test("raised floor blocks ground ring",()=>{
                     Cache.SetValue(null,Flat.Concat(new[]{new CampusSolid{name="raised",center=new Vector3(3,.6f,0),size=new Vector3(2,1.2f,2)}}).ToArray());

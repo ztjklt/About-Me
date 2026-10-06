@@ -245,7 +245,7 @@ namespace AboutMe.Editor
                 {
                     var m=Make(); var victim=m.Players["b"]; var before=victim.stability;
                     Send(m,"a","use_item"); Check(victim.stability==before,"item use hit immediately");
-                    Tick(m,.12f); Check(victim.stability==before,"item use hit during anticipation");
+                    Tick(m,.08f); Check(victim.stability==before,"item use hit during anticipation");
                     Tick(m,.08f); var hit=victim.stability;
                     Check(hit<before,"item use missed valid contact window");
                     Tick(m,.5f); Check(Mathf.Abs(victim.stability-hit)<.001f,"one strike dealt repeated damage");
@@ -285,17 +285,17 @@ namespace AboutMe.Editor
                     Tick(m,.12f);
                     Check(prop.holder==""&&m.Players["a"].publicProp==""&&prop.thrower=="a"&&prop.velocity.z>5,"item use did not throw the held prop");
                 });
-                Test("item use applies the existing full-charge template strength",()=>
+                Test("item use routes ordinary melee through the light template",()=>
                 {
                     var m=Make(); Send(m,"a","use_item"); var victim=m.Players["b"];
                     Check(m.Players["a"].pendingCharge==1,"template did not receive full internal charge");
-                    Tick(m,.12f); Check(victim.stability==100,"item use hit during anticipation");
+                    Tick(m,.08f); Check(victim.stability==100,"item use hit during anticipation");
                     Tick(m,.08f);
                     Check(victim.stability<100&&victim.impulse.magnitude>0,"item use lacked the existing template hit");
                 });
-                Test("ordinary item templates stagger but do not force a full-stability knockdown",()=>
+                Test("ordinary melee first hit staggers without dropping",()=>
                 {
-                    foreach(var template in new[]{"Melee","Utility"})
+                    foreach(var template in new[]{"Melee"})
                     {
                         var m=Make();var attacker=m.Players["a"];var victim=m.Players["b"];
                         m.Item(attacker.equipped).asset.templateId=template;
@@ -348,7 +348,7 @@ namespace AboutMe.Editor
                             "ground throw could not be "+(eater=="a"?"recovered":"consumed")+" state="+item.state+" equipped="+owner.equipped+" carrying="+collector.carrying);
                     }
                 });
-                Test("HeavyWeapon and SpecialAbility retain explicit strong knockdown",()=>
+                Test("HeavyWeapon and SpecialAbility knock down and drop in one hit",()=>
                 {
                     foreach(var template in new[]{"HeavyWeapon","SpecialAbility"})
                     {
@@ -357,7 +357,7 @@ namespace AboutMe.Editor
                         Send(m,"a","use_item");Tick(m,.2f);
                         Check(victim.bodyMode==BodyMode.Falling,"strong template did not knock down: "+template);
                         Check(victim.stability>0,"strong fixture unexpectedly depleted stability: "+template);
-                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==0,"non-depleting strong hit dropped Persona: "+template);
+                        Check(m.Items.Count(x=>x.ownerId=="b"&&x.state==ItemState.Ground)==1,"strong hit failed to drop Persona: "+template);
                     }
                 });
                 Test("stability exhaustion still drops once with ordinary item use",()=>
@@ -384,7 +384,7 @@ namespace AboutMe.Editor
                 {
                     var m=Make(); Connect(m); var victim=m.Players["b"];
                     victim.stability=.1f; Send(m,"b","use_item");
-                    Check(victim.pendingAction=="heavy","victim item-use fixture did not start");
+                    Check(victim.pendingAction=="light","victim item-use fixture did not start");
                     Tick(m,Step);
                     Check(victim.staggerUntil>m.Time,"grip did not exhaust low stability");
                     Check(victim.pendingAction=="","grip exhaustion retained pending contact");
@@ -395,7 +395,7 @@ namespace AboutMe.Editor
                 Test("out-of-map respawn cancels item use before controls recover",()=>
                 {
                     var m=Make(); var fallen=m.Players["a"]; Send(m,"a","use_item");
-                    Check(fallen.pendingAction=="heavy","respawn item-use fixture did not start");
+                    Check(fallen.pendingAction=="light","respawn item-use fixture did not start");
                     fallen.position=new Vector3(0,-9,0); Tick(m,Step);
                     Check(fallen.position.y>0&&fallen.staggerUntil>m.Time,"out-of-map fixture did not respawn");
                     Check(fallen.pendingAction=="","respawn retained pending contact");

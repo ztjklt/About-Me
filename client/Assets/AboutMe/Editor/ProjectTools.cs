@@ -10,6 +10,7 @@ namespace AboutMe.Editor
 {
     public static class ProjectTools
     {
+        public static void CombatImpactTests(){AboutMe.Editor.CombatImpactTests.Run();}
         public static void BuildPersonaVisuals(){PersonaVisualTools.BuildPrefabs();}
         public static void ValidatePersonaVisuals(){PersonaVisualTools.Validate();}
         public static void BuildDeliverables(){BuildMac();BuildServer();BuildWeb();Debug.Log("ABOUTME_DELIVERABLES_BUILT");}
@@ -188,7 +189,7 @@ namespace AboutMe.Editor
                 Assert(m.Players["a"].stability==before&&m.Players["a"].cushionUntil==0&&m.Players["b"].impulse.z<0,"cushion did not absorb and rebound");
             });
             Test("barricade blocks movement and breaks after two heavy strikes",()=>{
-                var m=MechanicMatch("Barricade","book-stack");Heavy(m);var barrier=m.Effects.Single(x=>x.kind=="Barricade");var p=m.Players["b"];p.position=barrier.position+Vector3.back*1.5f;p.position.y=1;p.input.z=1;p.input.yaw=0;p.lastInput=m.Time;Tick(m,.25f);
+                var m=MechanicMatch("Barricade","book-stack");Heavy(m);var barrier=m.Effects.Single(x=>x.kind=="Barricade");var p=m.Players["b"];p.bodyProtectedUntil=m.Time+5;p.position=barrier.position+Vector3.back*1.5f;p.position.y=1;p.input.z=1;p.input.yaw=0;p.lastInput=m.Time;Tick(m,.25f);
                 Assert(Vector3.Distance(p.position,barrier.position)>=barrier.radius+.3f,"barricade did not block movement");
                 p.position=barrier.position+Vector3.back*1.2f;p.position.y=1;p.input=new Command();p.yaw=0;p.nextAttack=0;m.Item(p.equipped).asset.templateId="HeavyWeapon";Heavy(m,"b");Assert(barrier.health==1,"first heavy did not damage barricade");
                 p.nextAttack=0;p.chargingSince=-1;Heavy(m,"b");Assert(!m.Effects.Contains(barrier),"barricade did not break after two heavy strikes health="+barrier.health+" pending="+p.pendingAction+" kind="+p.actionKind+" stagger="+p.staggerUntil+" time="+m.Time+" charging="+p.chargingSince);

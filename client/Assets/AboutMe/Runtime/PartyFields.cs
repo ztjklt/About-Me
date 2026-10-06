@@ -124,6 +124,13 @@ namespace AboutMe
                 var point=GroundParty(owner.position);
                 if(e.path==null||Flat(point-e.path.Last()).magnitude>.5f){var points=(e.path??Array.Empty<Vector3>()).ToList();points.Add(point);while(points.Count>6)points.RemoveAt(0);e.path=points.ToArray();}e.nextHit=Time+.3f;
             }
+            if(d.id=="wet-trail"||d.id=="sand-sink"||d.id=="sticky-step")
+                foreach(var target in Players.Values.Where(x=>x!=owner&&!x.eliminated&&OnPartyGround(x)).ToArray())
+                {
+                    var point=target.position;point.y=MotorY(target);
+                    bool touching=d.id=="wet-trail"?WetAt(e,point,1):FieldGround(e,point,1);
+                    if(touching)HitContactHazard(e,owner,target);
+                }
             if(d.id=="fan-volume"&&BodyWorld!=null)
                 foreach(var player in Players.Values.Where(x=>!x.eliminated&&x.bodyMode!=BodyMode.GettingUp&&Time>=x.bodyProtectedUntil&&FieldCone(e,x.position)))BodyWorld.Impact(player,e.velocity*(5*dt),player.position,false);
             if(d.id=="polarity-push"&&e.stage=="repel_warning")

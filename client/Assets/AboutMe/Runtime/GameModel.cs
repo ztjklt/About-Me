@@ -41,7 +41,7 @@ namespace AboutMe
     [Serializable] public class MatchRules
     {
         public float moveSpeed = 5.5f, runSpeed = 7.8f, jumpSpeed = 8, gravity = 23, maxStability = 100;
-        public float lightDamage = 22, heavyDamage = 48, lightInterval = .5f, heavyInterval = 1.05f;
+        public float lightDamage = 60, heavyDamage = 90, lightInterval = .5f, heavyInterval = 1.05f;
         public float eatDuration = 2.5f, recoverDuration = 1.5f, switchDuration = .3f;
         public float revealDuration = 5, handInterval = 150, finalTime = 450;
         public float grabReach = 1.25f, grabContactDistance=1.12f, grabBreakDistance = 2.6f, interactionRange = 2.4f;
@@ -372,7 +372,7 @@ namespace AboutMe
                     var old=p.position;if(BodyWorld!=null)old.y=p.motorHeight;var next=old+(desired+(BodyWorld==null?p.impulse:Vector3.zero))*dt;
                     float oldSurface=SurfaceFloor(old);
                     if(Mathf.Abs(old.y-(oldSurface+1))<.10f&&p.verticalSpeed<=0){p.fallOriginHeight=oldSurface;p.airborne=false;}
-                    next=MoveOnMachines(old,CampusGeometry.Move(old,next));if(BlockedByBarricade(next))next=old;
+                    next=MoveOnMachines(old,CampusGeometry.Move(old,next));if(BlockedByBarricade(next)){HitBarricadeContact(p,next);next=old;}
                     var travelled=next-old;travelled.y=0;p.locomotionSpeed=dt>0?Mathf.Min(desired.magnitude,Mathf.Max(0,Vector3.Dot(travelled,desired.normalized)/dt)):0;
                     p.verticalSpeed-=ArenaGravityAt(p.position)*dt;PartyVertical(p);ControlVertical(p,dt);next.y+=p.verticalSpeed*dt;
                     LinkVertical(p,ref next);RescueLink(p,ref next);
@@ -448,7 +448,7 @@ namespace AboutMe
                 prop.position=VirtualPublicMove(prop,propFrom,prop.position);
                 if(prop.velocity.magnitude>4&&Time>prop.hitAfter&&Players.TryGetValue(prop.thrower,out var thrower))
                 foreach(var p in Players.Values.Where(x=>x!=thrower&&!x.eliminated).ToArray())
-                if(Vector3.Distance(p.position,prop.position)<1.5f&&MachineClear(prop.position,p.position)){Hit(p,thrower,12,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
+                if(Vector3.Distance(p.position,prop.position)<1.5f&&MachineClear(prop.position,p.position)){Hit(p,thrower,Rules.maxStability,4,true,horizontalScale:prop.pushScale);prop.hitAfter=Time+.8f;prop.velocity*=.3f;break;}
             }
             TickLootCargo();TickVirtualPublicForces(dt);
         }
@@ -519,11 +519,12 @@ namespace AboutMe
                 p.nextAttack=Time+2f;return;
             }
             float reach=heavy?2.8f:2.2f;
-            if(heavy && template=="Utility") { reach=5; damage=28; force=2; p.nextAttack=Time+5; }
+            if(template=="Melee")damage=Rules.lightDamage;
+            if(heavy && template=="Utility") { reach=5; damage=100; force=2; p.nextAttack=Time+5; }
             if(heavy && template=="SpecialAbility") { reach=4.5f; force=15; p.nextAttack=Time+7; }
             if(template=="HeavyWeapon") { damage*=1.25f; force*=1.2f; p.nextAttack+=.3f; }
             Effects.Add(new EffectState {id=Guid.NewGuid().ToString("N"),owner=p.profile.playerId,kind="Pulse",color=equipped?.asset.color??"#FFFFFF",position=p.position+Forward(p),remaining=.25f,damage=reach});
-            if(heavy){DamageBarricades(p,p.position+Forward(p)*reach,reach);DamagePartyDevices(p,p.position+Forward(p)*reach,reach);}
+            if(equipped!=null){DamageBarricades(p,p.position+Forward(p)*reach,reach);DamagePartyDevices(p,p.position+Forward(p)*reach,reach);}
             foreach(var target in Players.Values.Where(x=>x!=p&&!x.eliminated).ToArray())
             {
                 var delta=target.position-p.position;
@@ -544,6 +545,11 @@ namespace AboutMe
             target.stability=Mathf.Max(0,target.stability-damage);target.lastHit=Time;
             bool depleted=target.stability<=0;bool falls=knockdown||depleted;
             var kick=impulseOverride??(direction*(falls?7:heavy?11.5f:5.8f)+(falls?Vector3.up*3:Vector3.zero));
+            if(depleted&&impulseOverride.HasValue)
+            {
+                var horizontal=Flat(kick);if(horizontal.sqrMagnitude<.001f)horizontal=direction;
+                kick=horizontal.normalized*Mathf.Max(7,horizontal.magnitude)+Vector3.up*Mathf.Max(3,kick.y);
+            }
             kick.x*=horizontalScale;kick.z*=horizontalScale;GuardIncoming(target,ref kick,falls);
             if(falls)BeginBodyFall(target,kick,point);
             else

@@ -48,8 +48,9 @@ namespace AboutMe
             // public prop being carried). There is no unarmed light attack.
             if(Item(p.equipped)==null&&Props.Find(x=>x.id==p.publicProp)==null)return;
             var item=Item(p.equipped);if(p.publicProp==""&&!PartyCanUse(p,item))return;
-            int before=p.actionId;Attack(p,true,1f);
             var mechanic=PartyMechanicRegistry.ForAsset(item?.asset);
+            bool light=p.publicProp==""&&mechanic==null&&item?.asset.templateId=="Melee";
+            int before=p.actionId;Attack(p,!light,1f);
             if(p.actionId!=before&&p.publicProp==""&&mechanic!=null)p.pendingAt=Time+mechanic.windup;
         }
         void Grab(Player p,bool item)

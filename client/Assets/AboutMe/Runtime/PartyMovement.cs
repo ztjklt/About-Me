@@ -179,7 +179,7 @@ namespace AboutMe
                     {
                         e.position=GroundParty(owner.position);e.stage="burst";e.deadline=Time+.4f;e.remaining=.4f;
                         foreach(var target in Players.Values.Where(x=>x!=owner&&!x.eliminated&&OnPartyGround(x)&&Vector3.Distance(x.position,e.position)<d.radius&&Mathf.Abs(CampusGeometry.Floor(x.position)-CampusGeometry.Floor(e.position,.1f))<.3f&&PartyClear(e.position,x.position)).ToArray())
-                        {var direction=Flat(target.position-e.position).normalized;Hit(target,owner,Mathf.Min(30,d.damage+Mathf.Max(0,e.height-MotorY(owner))*3),d.force,true,false,false,e.position,direction*d.force+Vector3.up);e.hit.Add(target.profile.playerId);}
+                        {var direction=Flat(target.position-e.position).normalized;Hit(target,owner,d.damage+Mathf.Max(0,e.height-MotorY(owner))*3,d.force,true,false,false,e.position,direction*d.force+Vector3.up);e.hit.Add(target.profile.playerId);}
                         CombatEvent("party_stomp",owner,reason:d.id);return;
                     }
                 }

@@ -117,7 +117,14 @@ namespace AboutMe
         }
         void TickVirtual(EffectState e,Player owner,PartyMechanic d,float dt)
         {
-            e.remaining=Mathf.Max(0,e.deadline-Time);if(Time>=e.deadline){RemovePartyEffect(e);return;}
+            e.remaining=Mathf.Max(0,e.deadline-Time);
+            if(d.id=="frost-lock")
+                foreach(var target in Players.Values.Where(x=>x!=owner&&!x.eliminated&&OnPartyGround(x)).ToArray())
+                {
+                    var point=target.position;point.y=MotorY(target);
+                    if(e.path!=null&&e.path.Any(spot=>Flat(point-spot).magnitude<1.2f&&Mathf.Abs(SurfaceFloor(point)-CampusGeometry.Floor(spot,.1f))<.3f&&PartyClear(spot,point)))HitContactHazard(e,owner,target);
+                }
+            if(Time>=e.deadline){RemovePartyEffect(e);return;}
             if(e.machine!=null){if(e.machine.lastTick==Time)return;e.machine.lastTick=Time;}
             if(d.id=="solid-shadow"){if(e.remaining<.8f)e.stage="shadow_fading";return;}
             if(d.id=="pixel-stamp")
