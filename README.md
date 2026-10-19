@@ -1,124 +1,105 @@
-**本机最新整合：完整 R16。** 修复学校生成校徽缓存权限，以及网页直接输入的空格、换行和中文确认；保留完整R15战斗与嘴型短梗。双击 `scripts/start-latest.command`，API／权威8136／7836。详见 [R16交付](docs/INPUT_R16_DELIVERY.md)。
-
-**公网最新：完整 R16，GitHub 与 Railway Web/API/Game 已同步。** [打开游戏](https://web-production-fb9b1.up.railway.app/)；[R16交付与验证](docs/INPUT_R16_DELIVERY.md)。AI额度暂时关闭。
+<div align="center">
 
 # About Me
 
-团结引擎 2022.3.62t11 / 3D Persona 派对对战原型。
+**把「我是谁」，变成一场玩具派对。**
 
-**最新整合试玩入口：双击 `scripts/start-latest.command`。** 当前完整 `playtest-input-r16`：网页空格／换行和学校缓存已修复；近战每次60，重击与干扰一次命中掉落，喷火两次各60，攻击性场地踩中掉落；保留20 Persona、16 MBTI、277道具、四种动物与1–6人机。参见 [R16交付](docs/INPUT_R16_DELIVERY.md)。
+A self-introduction becomes your inventory. Your inventory becomes the game.
 
-`builds/v4-mac/About Me.app`；直接打开后选择「单人游戏 → 使用练习道具开始」。需要独立多人服务时运行 `scripts/start-v4.command`（7794 / 8094 端口）。旧 V3 试玩包未覆盖。详见 [V4 实现与实测记录](docs/ACTIVE_RAGDOLL_V4.md)，以及 [动作对比视频](artifacts/characters-v4/v4-actions-comparison.mp4)。
+[![Repository checks](https://github.com/ztjklt/About-Me/actions/workflows/repository-checks.yml/badge.svg)](https://github.com/ztjklt/About-Me/actions/workflows/repository-checks.yml)
+![Engine](https://img.shields.io/badge/Tuanjie-2022.3-202A3D?style=flat-square)
+![Client](https://img.shields.io/badge/Client-C%23%20%2F%20WebGL-77C8BD?style=flat-square)
+![API](https://img.shields.io/badge/API-Python%20%2F%20FastAPI-A5AFF0?style=flat-square)
 
-这是可以编译运行的开发工程。**样例测试、真实 AI 生成、本机联机验证、异地联机验证是不同状态，请勿混用。** 验证结果与尚未完成的工作见 [开发状态](docs/STATUS.md)。
+**[浏览器试玩 ↗](https://web-production-fb9b1.up.railway.app/)** · [English](README.en.md) · [开发指南](docs/DEVELOPMENT.md) · [架构](docs/ARCHITECTURE.md)
 
-## 开始菜单与单人对战
+<img src="docs/images/about-me-r16-home.png" alt="About Me R16：暖色教室、玩具角色与四个主菜单入口" width="100%">
 
-打开游戏后显示 **About Me** 主菜单：单人游戏、多人游戏、自我介绍预设、设置。一个人体验直接选择「单人游戏 → 使用练习道具开始（非 AI）」即可；无需启动 API 或游戏服务器。NPC 使用同一套战斗规则，会追击、使用道具、抓取、吞噬、回收和沿楼梯追到二层。已有真实角色会缓存到本机，可离线用于单人局。
+</div>
 
-自我介绍预设支持多份草稿，切换草稿不会替换当前 Persona。只有点击生成并成功返回才替换当前资产。设置包含服务地址、镜头灵敏度、触控显示与减少动态效果。
+**About Me** 是一款 3D Persona 派对对战游戏原型。写下兴趣、学校和性格，AI 会把介绍中可定位的内容变成可装备的道具：篮球、相机、校徽飞盘，或立体性格词条。在桌面上的微缩校园里，拿它们投掷、抓取、争抢和吞噬，直到产生最后的赢家。
 
-标准对局为 5 秒展示后开始计时，2:30 和 5:00 大手点名，7:30 强制结算；只剩一名存活者可提前结束。到时在存活者中先比完成吞噬数，再比剩余 Persona，完全相同则并列获胜。地面和未吞噬完成的资产仍计入原主人剩余数。
+项目已经串起 **自我介绍 → Persona 生成与保存 → 单人练习 / 多人房间 → 战斗 → 结算与重玩**。当前公开展示基线为 **R16**，支持 macOS 和 WebGL 客户端、Linux 权威游戏服务及 Python API。
 
-详细测试与已知限制见 [菜单与 NPC 交付记录](docs/MENU_SOLO_DELIVERY.md)。
+## 先玩一局
 
-![About Me 主菜单](docs/menu-solo/home-1600x900.png)
+打开 **[在线试玩](https://web-production-fb9b1.up.railway.app/)**，选择 **Single Player → 使用练习道具开始（非 AI）**，即可先体验核心玩法，无需填写 API key。单人可搭配 1–6 名人机；多人房间支持 2–6 人。
 
-## 玩具贴纸派对 UI
+在 **Intro Presets** 中可以编辑介绍并生成自己的 Persona。真实生成依赖演示服务器的模型配置和可用额度；服务不可用时会明确提示。练习道具始终是标注过的固定样例。
 
-完整流程使用统一的奶油纸张、深蓝粗描边、彩色贴纸、软阴影和轻量弹性动效。首页、连接设置、六人房、战斗 HUD、Persona 背包、横屏触控、二维码和结算均使用同一主题；所有形状与图标由小型运行时图集生成，不依赖第三方 UI 或动画插件。
+> 浏览器试玩需要加载 WebGL 资源，首次打开请稍候。建议先用桌面浏览器体验；移动端有横屏触控，微信真机仍待验收。
 
-界面以 1600×900 为桌面基准，通过安全区画布适配 16:9、19.5:9 和 4:3 横屏。横屏手机隐藏键盘提示，并启用独立的摇杆和分组动作按钮。竖屏不在当前范围内，微信真机安全区仍需取得 AppID 和设备后复验。
+## 游戏里有什么
 
-开发构建可以直接生成确定性的界面截图：
+| 体验 | 设计与实现 |
+| --- | --- |
+| **介绍就是装备** | 从原文事实生成 Persona；每人最多 20 件，可保存、装备并编入五格快捷栏。 |
+| **软身体派对对战** | 投掷、击倒、抓人、拉扯道具、持续挣脱；吞噬或回收需要时间，也会被攻击打断。 |
+| **每局都在争夺身份** | 掉落仍归原主人，完成吞噬才转移计数；淘汰后观战，结束后查看结果并重玩。 |
+| **有个性的道具库** | R16 交付包含 277 项道具、16 型 MBTI、性格与心情词条、四类动物表现。 |
+| **桌面上的小校园** | 双层场地、公共道具与机关，以及定时进入场地的「大手点名」。 |
+| **一起玩，也能独自练习** | 单人 NPC 与玩家共用战斗规则；多人使用权威服务器、WebSocket 同步和身份重连。 |
 
-```sh
-'builds/mac/About Me.app/Contents/MacOS/About Me' \
-  --ui-preview home --capture-size 1600x900 \
-  --capture "$PWD/artifacts/ui-home.png"
-```
+标准对局先展示 5 秒；第 2:30 和 5:00 触发大手点名，第 7:30 到时结算。只剩一名存活者时可提前结束；到时先比较吞噬数，再比较剩余 Persona。
 
-`--ui-preview` 支持 `home`、`home-expanded`（兼容别名）、`solo`、`multiplayer`、`presets`、`settings`、`lobby`、`qr`、`hud`、`bag`、`touch` 和 `results`。`home` 直接显示四个英文气泡入口；预览数据明确标注为 UI 预览，不连接服务器，也不写入正式结算。
+## 画面与界面
 
-## 打开和运行
+<table>
+  <tr>
+    <td width="50%"><img src="docs/previews/desk-campus/in-engine-overview.png" alt="引擎内的桌面微缩校园场景"><br><b>桌面微缩校园</b><br>场景专项的引擎截图。</td>
+    <td width="50%"><img src="docs/persona-library/new-four-preview.png" alt="已导入的 CC0 Persona 道具预览"><br><b>可拿在手里的 Persona</b><br>已导入工程的 CC0 道具预览。</td>
+  </tr>
+  <tr>
+    <td><img src="docs/ui-touch-polish/bag-1600x900.png" alt="Persona 背包界面预览"><br><b>随身 Persona 背包</b><br>装备、分类与五格快捷栏。</td>
+    <td><img src="docs/ui-interaction/wardrobe-front.png" alt="角色衣橱界面预览"><br><b>介绍与角色表达</b><br>配色、造型和角色外观。</td>
+  </tr>
+</table>
 
-**本机双客户端体验（已有构建）：**双击 `scripts/start-local.command`。脚本启动本机游戏服务、API 和网页服务，并打开 macOS 游戏与浏览器。两边先到「自我介绍预设」选择「本地样例（无需 AI）」，返回主菜单后进入「多人游戏」；一边创建房间，另一边输入该房间码加入；房间达到 2 人后房主即可开始，最多 6 人，Ready 仅作状态提示。保留终端，结束后按 Ctrl+C 停止服务。此流程不需要 AI 账号，使用明确标注的测试资产。
+主菜单为 R16 留存截图；画廊保留了场景、CC0 道具和界面设计的开发预览。背包使用固定预览数据，不连接服务器；历史界面数值不代表 R16 的容量配置。实测范围见 [R16 交付记录](docs/INPUT_R16_DELIVERY.md)。
 
-「自我介绍预设」页会显示“真实 AI 已连接 / 未配置 / 服务不可达”。“AI 生成 Persona”只调用真实模型；未配置 `server/.env` 时不会用固定内容冒充生成结果。此时请点击“本地样例（无需 AI）”测试房间和战斗。大学 Persona 会先搜索公开校徽候选，由 `deepseek-flash` Vision 核对校徽并给出保留完整轮廓的裁切范围，游戏中明确标记“DeepSeek 生成”。预设页的「上传自我介绍图片并识别」会自动将 JPEG、PNG、GIF 或 WebP（最大 10 MB）发送至服务端，以 `deepseek-flash` 提取可编辑介绍并回填当前草稿；图片不会保存。macOS、WebGL 和微信输入框均接入中文组合输入；网页首次点击输入框后由浏览器原生输入控件接管键盘。
-
-构建产物在 `builds/mac/About Me.app`、`builds/web` 和 `builds/linux`；它们不提交到 Git，换电脑后按下方命令重建。浏览器版本需通过 HTTP 打开，不能直接双击 HTML。
-
-**引擎中开发：**
-
-1. 在团结 Hub 中添加本仓库的 `client` 目录，使用 **2022.3.62t11**。
-2. 打开 `Assets/AboutMe/Scenes/Bootstrap.unity`，点击 Play。也可用菜单 `About Me / 1. Generate project scenes` 重建场景。
-3. 单人局直接从主菜单开始；多人局先使用本机启动脚本启动服务。
-4. 「自我介绍预设」中生成 Persona 或选择本地样例，再从「多人游戏」创建／加入房间。两人进入后房主即可开始。
-
-同机体验建议使用一个 macOS 客户端加一个浏览器，它们各自保存身份。重复打开两个 macOS 窗口或同浏览器的两个普通标签，会共享保存的凭据并被拒绝重复登录。自动多客户端测试脚本为每位测试者生成独立身份。
-
-## 控制
+## 操作
 
 | 操作 | 键位 |
-|---|---|
-| 移动 / 视角 / 跳跃 | WASD（各键双击奔跑，A/D 侧跑、S 倒跑）/ 鼠标直接转视角 / Space |
-| 使用已装备道具 | F（手机端点击“使用道具”） |
-| 抓人 / 抓对手的道具 | G / H |
-| 拾取并吞噬或回收 / 挣脱与取消 | E / 被抓时按住 Q；其他状态 Q 取消 |
-| 快捷栏 / 完整背包 | 1–5 / B |
-| 抓起公共道具 | 靠近椅子、纸箱或垃圾桶按 G，F 使用道具扔出 |
-| 观战切换 / 释放光标 | Tab / Esc（背包和设置自动释放）|
+| --- | --- |
+| 移动 / 奔跑 | `WASD` / 双击方向键 |
+| 观察 / 跳跃 | 鼠标 / `Space` |
+| 使用当前道具 / 抛出公共道具 | `F` |
+| 抓人 / 抓对手的道具 | `G` / `H` |
+| 拾取、吞噬或回收 | `E` |
+| 持续挣脱 / 取消交互 | 按住 `Q` / `Q` |
+| 切换道具 / 背包 | `1`–`5` / `B` |
+| 观战切换 / 释放光标 | `Tab` / `Esc` |
 
-手机端有共用操作协议的触控控件，真机手感仍需测试。吞噬和回收期间角色停步，受到攻击或抓取会中断。背包中可将任意 Persona 放入快捷栏。
-
-篮球、保龄球瓶、汉堡、蔬菜汉堡、红笔、番茄、土豆和足球按 F 后会抛出实际装备的 Persona；它离手飞行，命中时清空对手韧性并触发对手掉落一件 Persona，随后自身落地。未命中也会落地。原主人可按 E 回收，其他玩家可按 E 吞噬；投出期间该件仍计入原主人的剩余 Persona。命中者倒地期间韧性显示为 0，起身时恢复到常规值。
-
-软物理战斗的参数、实现边界及验证入口见 [V3 交付记录](docs/SOFT_COMBAT_V3.md)。客户端与服务器协议升至版本 2，更新时应一起重建。
-
-## AI 和存储服务
+## 从源码打开
 
 ```sh
-python3 -m venv .venv
-.venv/bin/pip install -r server/requirements.txt
-cp server/.env.example server/.env
-# 编辑 server/.env，设置模型服务及 GAME_SERVER_KEY；不要提交密钥。
-sh scripts/start-api.sh
+git clone https://github.com/ztjklt/About-Me.git
+cd About-Me
 ```
 
-服务默认 `http://127.0.0.1:8081`，接口文档为 `/docs`。聊天服务须支持 `/chat/completions` 的 JSON 对象输出；语音服务须支持 multipart `/audio/transcriptions`。自我介绍只作为模型输入数据，不允许生成任意可执行逻辑。未配置服务时返回明确错误，不自动伪造 AI 输出。
+在 **团结 Hub** 中添加 `client/`，使用 **2022.3.62t11**，打开 `Assets/AboutMe/Scenes/Bootstrap.unity` 后点击 Play。单人练习可直接体验；AI 生成与多人联机的服务配置见 [开发指南](docs/DEVELOPMENT.md)。
 
-生产服务器设置 `ABOUTME_API_URL` 和 `GAME_SERVER_KEY`；客户端不能携带服务器密钥。桌面原型使用设备登录令牌，微信登录接口支持绑定微信身份。原始介绍保存在 SQLite，不输出到应用日志。
+仓库包含源码与游戏资源。预编译包、本机账号数据和凭据不随仓库发布；`scripts/start-latest.command` 是已有 R16 整合包的本机入口，首次克隆需先按开发指南构建。
 
-## 构建与测试
+## 技术与源码导航
 
-```sh
-sh scripts/editor.sh TestRules
-.venv/bin/python -m pytest server/tests -q
-sh scripts/editor.sh BuildMac
-python3 scripts/test-network.py --players 2
-python3 scripts/test-network.py --players 4
-python3 scripts/test-network.py --players 6
-sh scripts/editor.sh BuildWeb
-sh scripts/editor.sh BuildServer
-```
+| 目录 | 内容 |
+| --- | --- |
+| [`client/Assets/AboutMe/Runtime`](client/Assets/AboutMe/Runtime) | C# 战斗规则、软身体表现、网络同步、UI 与平台桥接 |
+| [`client/Assets/AboutMe/Editor`](client/Assets/AboutMe/Editor) | 场景生成、规则测试和多平台构建入口 |
+| [`server`](server) | FastAPI、SQLite、账号、AI 生成与识别、校徽和调侃接口 |
+| [`shared`](shared) | 受控道具目录、机制、外观与词条契约 |
+| [`deploy`](deploy) | Docker、Caddy、HTTPS/WSS 与 Railway 发布辅助工具 |
 
-正式交付的 macOS/WebGL 包在同一源码上设置 `ABOUTME_RELEASE_BUILD=1` 后运行 `BuildMac` / `BuildWeb`；默认命令仍生成带调试水印的开发包。
+Persona 生成采用受控目录与数据校验；原始自我介绍留在本人鉴权资料和服务端，公开对局投影只包含玩法所需的道具字段。模型与游戏服务密钥只通过服务端环境变量配置。
 
-游戏服务器启动参数是 **`--aboutme-server`**，不要用引擎占用的 `--server`。
+## 项目状态与更多文档
 
-```sh
-'builds/mac/About Me.app/Contents/MacOS/About Me' -batchmode -nographics --aboutme-server --allow-samples -logFile artifacts/server.log
-```
+R16 的历史交付记录包含 Mac / WebGL / Linux 构建、后端回归及公网自动联机检查。本次公开整理另行重跑 **538 项后端测试**，并核对密钥与 Git 历史；这不替代真人对战平衡、两地网络或微信真机验收。
 
-`--allow-samples` 仅用于明确标注的测试；`--accelerated` 仅用于自动验收，压缩时间到 2 秒介绍、4 秒大手、8 秒终局。普通对局是 2:30 / 5:00 大手、7:30 到时结算。公网部署见 [部署文档](docs/DEPLOYMENT.md)。
+- [开发与构建](docs/DEVELOPMENT.md) · [部署](docs/DEPLOYMENT.md) · [架构](docs/ARCHITECTURE.md)
+- [产品设计](docs/PRD.md) · [开发状态与历史验收](docs/STATUS.md) · [R16 交付](docs/INPUT_R16_DELIVERY.md)
+- [公开仓库检查记录](docs/PUBLIC_REPOSITORY_AUDIT.md) · [安全与凭据](SECURITY.md) · [贡献指南](CONTRIBUTING.md)
+- [第三方资源来源](docs/THIRD_PARTY_PERSONA_ASSETS.md)
 
-## 项目组织
-
-- `client/Assets/AboutMe/Runtime`：权威规则、网络、角色表现、UI 和平台桥接。
-- `client/Assets/AboutMe/Editor`：场景生成、规则测试、构建命令。
-- `server`：账号、AI、语音、微信接口和 SQLite。
-- `shared/catalog.json`：允许生成的模板与外观目录；与客户端 Resources 副本保持一致。
-- `deploy`：Linux 游戏服务与 API 容器、HTTPS/WSS 反向代理。
-- `docs`：PRD、接口、协作和验收状态。
-
-Mirror 固定为 `v96.9.23 / 1aa5a33c24a81d1999c33367952e39694ff525b3`，源码与许可证在 `client/Assets/Mirror`。中文字体使用 Noto Sans CJK SC，许可证位于字体同目录 `OFL.txt`。
+本仓库用于作品展示与技术交流，目前没有为整个工程授予统一的开源许可证。Mirror、字体和第三方模型保留各自的许可与来源；品牌角色、校徽及其他标识请按对应来源的要求使用。

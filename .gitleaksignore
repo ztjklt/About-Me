@@ -1,0 +1,43 @@
+# Exact historical false positives reviewed on 2026-10-19.
+# No path, rule, or commit range is excluded; new matches still fail the scan.
+# See docs/PUBLIC_REPOSITORY_AUDIT.md for the review scope.
+
+# Reviewed Git commit and file checksums (not credentials)
+07cf06d5def4f9ce871a80ffb6c24fed2693d592:scripts/package-playtest-settings-r3.py:generic-api-key:53
+1baa8a3c305c99c2be152fb0c2346de95da751b9:scripts/package-playtest-settings-r3.py:generic-api-key:53
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:1984
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:1986
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:1987
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:2751
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:2752
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3485
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3486
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3685
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3686
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3695
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3696
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3858
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3867
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3870
+78208762df19afa2bea556858690ec6b141b4edd:artifacts/trait-persona-r5/r4-baseline.json:generic-api-key:3907
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/delivery-manifest.json:generic-api-key:110
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/delivery-manifest.json:generic-api-key:187
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/delivery-manifest.json:generic-api-key:7
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/delivery-manifest.json:generic-api-key:8
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/delivery-manifest.json:generic-api-key:9
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:1986
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:1988
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:1989
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:2753
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:2754
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3487
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3488
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3687
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3688
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3697
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3698
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3848
+99a0f176ba9ad511b34bf2691130331189715b56:artifacts/playtest-introduction-r3/source-snapshot.json:generic-api-key:3873
+
+# Deterministic isolated test fixture (not a deployed credential)
+9151aec5169c0352e0b07198c7584d6cd76d7078:scripts/test-persona-budget20.py:generic-api-key:57

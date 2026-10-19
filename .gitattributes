@@ -1,0 +1,8 @@
+# Keep GitHub's language overview focused on project code.
+client/Assets/Mirror/** linguist-vendored
+client/Assets/AboutMe/Art/ThirdParty/** linguist-vendored
+client/Packages/packages-lock.json linguist-generated
+*.meta linguist-generated
+*.unity linguist-generated
+*.prefab linguist-generated
+*.mat linguist-generated
