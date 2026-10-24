@@ -11,15 +11,32 @@ A self-introduction becomes your inventory. Your inventory becomes the game.
 ![Client](https://img.shields.io/badge/Client-C%23%20%2F%20WebGL-77C8BD?style=flat-square)
 ![API](https://img.shields.io/badge/API-Python%20%2F%20FastAPI-A5AFF0?style=flat-square)
 
-**[浏览器试玩 ↗](https://web-production-fb9b1.up.railway.app/)** · [English](README.en.md) · [开发指南](docs/DEVELOPMENT.md) · [架构](docs/ARCHITECTURE.md)
-
-<img src="docs/images/about-me-r16-home.png" alt="About Me R16：暖色教室、玩具角色与四个主菜单入口" width="100%">
+**[浏览器试玩 ↗](https://web-production-fb9b1.up.railway.app/)** · [最新演示](#最新演示) · [English](README.en.md) · [开发指南](docs/DEVELOPMENT.md) · [架构](docs/ARCHITECTURE.md)
 
 </div>
 
 **About Me** 是一款 3D Persona 派对对战游戏原型。写下兴趣、学校和性格，AI 会把介绍中可定位的内容变成可装备的道具：篮球、相机、校徽飞盘，或立体性格词条。在桌面上的微缩校园里，拿它们投掷、抓取、争抢和吞噬，直到产生最后的赢家。
 
 项目已经串起 **自我介绍 → Persona 生成与保存 → 单人练习 / 多人房间 → 战斗 → 结算与重玩**。当前公开展示基线为 **R16**，支持 macOS 和 WebGL 客户端、Linux 权威游戏服务及 Python API。
+
+## 最新演示
+
+<div align="center">
+  <a href="docs/media/about-me-poster.png">
+    <img src="docs/media/about-me-poster.png" alt="About Me 宣传海报：戴黄色耳机的玩具角色与相机、小猫、披萨和故事书" width="520">
+  </a>
+  <p><strong>More Than Just a Game.</strong><br>把兴趣、故事和性格，变成拿在手里的 Persona。</p>
+  <p><a href="docs/media/about-me-poster.png">查看完整海报</a></p>
+</div>
+
+### 宣传视频 · 2:14
+
+<div align="center">
+  <a href="docs/media/about-me-promo.mp4"><img src="docs/media/about-me-promo-cover.jpg" alt="About Me 宣传视频预览：玩具角色在微缩校园中使用 Persona 道具对战" width="880"></a>
+  <p><a href="docs/media/about-me-promo.mp4"><strong>▶ 观看宣传与实机演示</strong></a></p>
+</div>
+
+点击封面或上方链接进入视频文件页。视频中的界面标注 R15；当前公开试玩基线为 R16，具体能力与验收范围见本页及交付记录。
 
 ## 先玩一局
 
@@ -43,6 +60,8 @@ A self-introduction becomes your inventory. Your inventory becomes the game.
 标准对局先展示 5 秒；第 2:30 和 5:00 触发大手点名，第 7:30 到时结算。只剩一名存活者时可提前结束；到时先比较吞噬数，再比较剩余 Persona。
 
 ## 画面与界面
+
+<img src="docs/images/about-me-r16-home.png" alt="About Me R16：暖色教室、玩具角色与四个主菜单入口" width="100%">
 
 <table>
   <tr>

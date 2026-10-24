@@ -4,15 +4,32 @@
 
 **Turn who you are into a toy-box party battle.**
 
-[Play in your browser ↗](https://web-production-fb9b1.up.railway.app/) · [中文](README.md) · [Development guide](docs/DEVELOPMENT.md)
-
-<img src="docs/images/about-me-r16-home.png" alt="About Me R16 main menu in a warm, toy-like classroom" width="100%">
+[Play in your browser ↗](https://web-production-fb9b1.up.railway.app/) · [Latest showcase](#latest-showcase) · [中文](README.md) · [Development guide](docs/DEVELOPMENT.md)
 
 </div>
 
 **About Me** is a 3D party battle prototype where a self-introduction becomes your equipment. Interests, schools and personality traits turn into playable Personas: a basketball, a camera, a university-emblem disc, or a three-dimensional word. Throw them, fight for them, recover your own, and consume your opponents' dropped Personas in a miniature campus arena.
 
 The playable loop connects **introduction → Persona generation and storage → solo practice or multiplayer → combat → results and replay**. The showcase baseline is **R16**, with macOS and WebGL clients, a Linux authoritative game server, and a Python API.
+
+## Latest showcase
+
+<div align="center">
+  <a href="docs/media/about-me-poster.png">
+    <img src="docs/media/about-me-poster.png" alt="About Me promotional poster: a toy character wearing yellow headphones, surrounded by a camera, a cat, pizza and a storybook" width="520">
+  </a>
+  <p><strong>More Than Just a Game.</strong><br>Turn interests, stories and personality into playable Personas.</p>
+  <p><a href="docs/media/about-me-poster.png">View the full poster</a></p>
+</div>
+
+### Promotional video · 2:14
+
+<div align="center">
+  <a href="docs/media/about-me-promo.mp4"><img src="docs/media/about-me-promo-cover.jpg" alt="About Me gameplay video: toy characters battling with Persona items in a miniature campus" width="880"></a>
+  <p><a href="docs/media/about-me-promo.mp4"><strong>▶ Watch the promotional and gameplay video</strong></a></p>
+</div>
+
+Select the cover or watch link to open the video file page. The recorded interface is labelled R15; the current public demo baseline is R16. See this page and the delivery record for current capabilities and validation scope.
 
 ## Try it
 
@@ -34,6 +51,8 @@ Use **Intro Presets** to edit an introduction and generate Personas. Live genera
 The standard match opens with a five-second reveal, triggers giant hands at 2:30 and 5:00, and ends at 7:30 or when one player remains. Time-limit ranking compares completed consumption, then remaining Personas.
 
 ## Screens
+
+<img src="docs/images/about-me-r16-home.png" alt="About Me R16 main menu in a warm, toy-like classroom" width="100%">
 
 | Miniature campus | Persona props |
 | --- | --- |
